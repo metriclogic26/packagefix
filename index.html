@@ -579,6 +579,16 @@
       font-family: 'JetBrains Mono', monospace;
     }
 
+    .gem-version-range-note {
+      font-size: 0.78rem;
+      color: var(--orange);
+      border: 1px solid var(--orange);
+      border-radius: 6px;
+      padding: 0.5rem 0.75rem;
+      margin-bottom: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
     .cve-table-wrap {
       overflow-x: auto;
       margin-bottom: 1.5rem;
@@ -1181,6 +1191,7 @@
       function parseGemfile(content) {
         var lines = (content || '').split('\n');
         var packages = [];
+        var versionRangeOps = ['~>', '>=', '<=', '>', '<'];
         for (var i = 0; i < lines.length; i++) {
           var line = lines[i];
           var trimmed = line.trim();
@@ -1194,6 +1205,8 @@
           var rest = trimmed.substring(4).trim();
           var name = null;
           var version = null;
+          var versionConstraint = null;
+          var versionRange = false;
           var unpinned = true;
           var quote = rest.indexOf("'") === 0 ? "'" : rest.indexOf('"') === 0 ? '"' : null;
           if (quote) {
@@ -1206,19 +1219,27 @@
               if (q2 !== null) {
                 var endVer = rest.indexOf(q2, 1);
                 if (endVer !== -1) {
-                  version = rest.substring(1, endVer).trim();
+                  versionConstraint = rest.substring(1, endVer).trim();
                   unpinned = false;
-                  if (version.indexOf('~>') === 0) version = version.substring(2).trim();
-                  if (version.indexOf('>=') === 0) version = version.substring(2).trim();
-                  if (version.indexOf('>') === 0) version = version.substring(1).trim();
-                  var space = version.indexOf(' ');
-                  if (space !== -1) version = version.substring(0, space).trim();
+                  version = versionConstraint;
+                  versionRange = versionRangeOps.some(function (op) { return version.indexOf(op) !== -1; });
+                  if (versionRange) {
+                    var stripped = versionConstraint;
+                    if (stripped.indexOf('~>') === 0) stripped = stripped.substring(2).trim();
+                    else if (stripped.indexOf('>=') === 0) stripped = stripped.substring(2).trim();
+                    else if (stripped.indexOf('<=') === 0) stripped = stripped.substring(2).trim();
+                    else if (stripped.indexOf('>') === 0) stripped = stripped.substring(1).trim();
+                    else if (stripped.indexOf('<') === 0) stripped = stripped.substring(1).trim();
+                    var space = stripped.indexOf(' ');
+                    if (space !== -1) stripped = stripped.substring(0, space).trim();
+                    version = stripped;
+                  }
                 }
               }
             }
           }
           if (!name) continue;
-          packages.push({ name: name, version: version, unpinned: unpinned, rawLine: line });
+          packages.push({ name: name, version: version, versionConstraint: versionConstraint, versionRange: versionRange, unpinned: unpinned, rawLine: line });
         }
         return packages;
       }
@@ -1972,9 +1993,15 @@
                 }
                 var resolved = resolveFixVersion(minFix, latestVersions, pkgName, topVuln.id);
                 var pkg = packages.find(function (p) { return p.name === pkgName || (p.name && p.name.toLowerCase() === pkgName.toLowerCase()); });
+                var installedDisplay = '—';
+                if (pkg) {
+                  if (pkg.versionRange && pkg.versionConstraint) installedDisplay = pkg.versionConstraint;
+                  else if (pkg.version) installedDisplay = pkg.version;
+                  else if (pkg.unpinned) installedDisplay = 'unpinned';
+                }
                 packageRows.push({
                   name: pkgName,
-                  installed: (pkg && (pkg.version || pkg.unpinned)) ? (pkg.version || 'unpinned') : '—',
+                  installed: installedDisplay,
                   fixVersion: resolved.fixVersion,
                   advisoryId: resolved.advisoryId,
                   severity: topSev,
@@ -1986,6 +2013,7 @@
 
               var health = calculateHealthScore(packageRows);
               setStep(4, true);
+              var gemVersionRanges = packages.some(function (p) { return p.versionRange; });
 
               setTimeout(function () {
                 renderResults({
@@ -1999,7 +2027,8 @@
                   packages: packages,
                   manifestStr: manifestStr,
                   ecosystem: 'gems',
-                  unpinnedCount: unpinnedCount
+                  unpinnedCount: unpinnedCount,
+                  gemVersionRanges: gemVersionRanges
                 });
                 loadingPanel.classList.remove('visible');
                 resultsSection.classList.add('visible');
@@ -2173,6 +2202,9 @@
         }
 
         if (data.packageRows && data.packageRows.length > 0) {
+          if (data.ecosystem === 'gems' && data.gemVersionRanges) {
+            resultsContent.innerHTML += '<div class="gem-version-range-note">⚠ Version ranges detected. Upload Gemfile.lock for exact installed versions and more accurate results.</div>';
+          }
           var table = '<div class="cve-table-wrap"><table class="cve-table"><thead><tr>' +
             '<th>Package</th><th>Installed</th><th>Fix Version</th><th>Severity</th><th>CVE ID</th><th>KEV</th></tr></thead><tbody>';
           data.packageRows.forEach(function (r) {
