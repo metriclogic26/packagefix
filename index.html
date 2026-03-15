@@ -652,6 +652,18 @@
       color: var(--muted);
     }
 
+    .severity-badge.private {
+      background: rgba(107, 114, 128, 0.2);
+      border: 1px solid var(--muted);
+      color: var(--muted);
+    }
+
+    .private-skipped-note {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+
     .diff-section-title {
       font-size: 1rem;
       font-weight: 600;
@@ -1157,6 +1169,13 @@
         return packages;
       }
 
+      function pypiConstraintToVersion(constraint) {
+        if (!constraint || typeof constraint !== 'string') return null;
+        var first = constraint.split(',')[0].trim();
+        var v = first.replace(/^(==|>=|<=|~=|!=|>|<)\s*/i, '').trim();
+        return v || null;
+      }
+
       function parseRequirementsTxt(content) {
         var lines = (content || '').split('\n');
         var packages = [];
@@ -1165,6 +1184,7 @@
           if (!line || line.indexOf('#') === 0) continue;
           var name = line;
           var version = null;
+          var versionConstraint = null;
           var unpinned = true;
           var eq = line.indexOf('==');
           var ge = line.indexOf('>=');
@@ -1176,14 +1196,15 @@
           if (tilde !== -1 && (idx === -1 || tilde < idx)) { idx = tilde; sep = '~='; }
           if (idx !== -1) {
             name = line.substring(0, idx).trim();
-            version = line.substring(idx + sep.length).trim();
+            versionConstraint = line.substring(idx).trim();
+            version = pypiConstraintToVersion(versionConstraint);
             unpinned = false;
           }
           var bracket = name.indexOf('[');
           if (bracket !== -1) name = name.substring(0, bracket).trim();
           name = name.trim();
           if (!name) continue;
-          packages.push({ name: name, version: version, unpinned: unpinned });
+          packages.push({ name: name, version: version, versionConstraint: versionConstraint, unpinned: unpinned });
         }
         return packages;
       }
@@ -1430,14 +1451,23 @@
         var urls = packages.map(function (p) {
           return 'https://registry.npmjs.org/' + encodeURIComponent(p.name) + '/latest';
         });
-        return Promise.all(urls.map(function (url) {
-          return fetch(url).then(function (r) { return r.json(); });
+        return Promise.all(packages.map(function (p, i) {
+          var url = urls[i];
+          return fetch(url).then(function (r) {
+            if (r.ok) return r.json().then(function (data) { return { pkg: p, version: (data && data.version) ? data.version : p.version, skipped: false }; });
+            if (p.name.indexOf('@') === 0) return { pkg: p, version: p.version, skipped: true };
+            return { pkg: p, version: p.version, skipped: false };
+          }).catch(function () {
+            if (p.name.indexOf('@') === 0) return { pkg: p, version: p.version, skipped: true };
+            return { pkg: p, version: p.version, skipped: false };
+          });
         })).then(function (responses) {
           var out = {};
-          packages.forEach(function (p, i) {
-            out[p.name] = (responses[i] && responses[i].version) ? responses[i].version : p.version;
+          var skipped = [];
+          responses.forEach(function (res) {
+            if (res.skipped) skipped.push({ name: res.pkg.name, version: res.pkg.version }); else out[res.pkg.name] = res.version;
           });
-          return out;
+          return { latestVersions: out, skipped: skipped };
         });
       }
 
@@ -1748,11 +1778,14 @@
         setStep(0, true);
         setStep(1, false);
 
-        fetchLatestVersions(packages).then(function (latestVersions) {
+        fetchLatestVersions(packages).then(function (result) {
+          var latestVersions = result.latestVersions;
+          var skipped = result.skipped || [];
+          var packagesForOsv = packages.filter(function (p) { return !skipped.some(function (s) { return s.name === p.name; }); });
           setStep(1, true);
           setStep(2, false);
           return checkNpmSuspicious(packages).then(function (suspiciousList) {
-            return fetchOsvVulns(packages).then(function (osvByPackage) {
+            return fetchOsvVulns(packagesForOsv).then(function (osvByPackage) {
               setStep(2, true);
               setStep(3, false);
               return fetchKevList().then(function (kevIds) {
@@ -1809,7 +1842,20 @@
                   });
                 });
 
-                var health = calculateHealthScore(packageRows.filter(function (r) { return !r.suspicious; }));
+                skipped.forEach(function (s) {
+                  packageRows.push({
+                    name: s.name,
+                    installed: s.version,
+                    fixVersion: '—',
+                    advisoryId: null,
+                    severity: 'PRIVATE',
+                    cveId: 'Not scannable',
+                    kev: false,
+                    private: true
+                  });
+                });
+
+                var health = calculateHealthScore(packageRows.filter(function (r) { return !r.suspicious && !r.private; }));
                 setStep(4, true);
 
                 setTimeout(function () {
@@ -1824,7 +1870,8 @@
                     packages: packages,
                     manifestStr: manifestStr,
                     ecosystem: 'npm',
-                    suspiciousCount: suspiciousList.length
+                    suspiciousCount: suspiciousList.length,
+                    skippedCount: skipped.length
                   });
                 loadingPanel.classList.remove('visible');
                 resultsSection.classList.add('visible');
@@ -1895,9 +1942,10 @@
                 }
                 var resolved = resolveFixVersion(minFix, latestVersions, pkgName, topVuln.id);
                 var pkg = packages.find(function (p) { return p.name === pkgName || (p.name && p.name.toLowerCase() === pkgName.toLowerCase()); });
+                var installedDisplay = (pkg && (pkg.versionConstraint || pkg.version)) ? (pkg.versionConstraint || pkg.version) : '—';
                 packageRows.push({
                   name: pkgName,
-                  installed: (pkg && pkg.version) ? pkg.version : '—',
+                  installed: installedDisplay,
                   fixVersion: resolved.fixVersion,
                   advisoryId: resolved.advisoryId,
                   severity: topSev,
@@ -2205,21 +2253,28 @@
           if (data.ecosystem === 'gems' && data.gemVersionRanges) {
             resultsContent.innerHTML += '<div class="gem-version-range-note">⚠ Version ranges detected. Upload Gemfile.lock for exact installed versions and more accurate results.</div>';
           }
+          if (data.ecosystem === 'npm' && data.skippedCount > 0) {
+            resultsContent.innerHTML += '<div class="private-skipped-note">' + data.skippedCount + ' private/internal package(s) were skipped — PackageFix can only scan public registry packages.</div>';
+          }
           var table = '<div class="cve-table-wrap"><table class="cve-table"><thead><tr>' +
             '<th>Package</th><th>Installed</th><th>Fix Version</th><th>Severity</th><th>CVE ID</th><th>KEV</th></tr></thead><tbody>';
           data.packageRows.forEach(function (r) {
-            var sevClass = r.suspicious ? 'suspicious' : (r.severity || 'MEDIUM').toLowerCase();
-            var sevLabel = r.suspicious ? '⚠ SUSPICIOUS' : (r.severity || 'MEDIUM');
-            var fixCell = r.suspicious
-              ? escapeHtml(r.fixVersion || 'pin current')
-              : (r.advisoryId
-                ? (r.fixVersion === 'see packagist.org'
-                  ? '<a href="' + escapeHtml(r.advisoryId) + '" target="_blank" rel="noopener">see packagist.org</a>'
-                  : '<a href="https://osv.dev/vulnerability/' + escapeHtml(r.advisoryId) + '" target="_blank" rel="noopener">see advisory</a>')
-                : escapeHtml(r.fixVersion || '—'));
+            var sevClass = r.private ? 'private' : (r.suspicious ? 'suspicious' : (r.severity || 'MEDIUM').toLowerCase());
+            var sevLabel = r.private ? 'PRIVATE' : (r.suspicious ? '⚠ SUSPICIOUS' : (r.severity || 'MEDIUM'));
+            var fixCell = r.private
+              ? '—'
+              : (r.suspicious
+                ? escapeHtml(r.fixVersion || 'pin current')
+                : (r.advisoryId
+                  ? (r.fixVersion === 'see packagist.org'
+                    ? '<a href="' + escapeHtml(r.advisoryId) + '" target="_blank" rel="noopener">see packagist.org</a>'
+                    : '<a href="https://osv.dev/vulnerability/' + escapeHtml(r.advisoryId) + '" target="_blank" rel="noopener">see advisory</a>')
+                  : escapeHtml(r.fixVersion || '—')));
+            var cveCell = r.private ? 'Not scannable' : (r.suspicious ? '—' : (r.cveId || '—'));
+            var kevCell = r.private ? '—' : (r.suspicious ? '—' : (r.kev ? '🔴' : ''));
             table += '<tr><td>' + escapeHtml(r.name) + '</td><td>' + escapeHtml(r.installed) + '</td><td>' + fixCell + '</td>' +
               '<td><span class="severity-badge ' + sevClass + '">' + escapeHtml(sevLabel) + '</span></td>' +
-              '<td>' + escapeHtml(r.suspicious ? '—' : (r.cveId || '—')) + '</td><td>' + (r.suspicious ? '—' : (r.kev ? '🔴' : '')) + '</td></tr>';
+              '<td>' + escapeHtml(cveCell) + '</td><td>' + kevCell + '</td></tr>';
             if (r.suspicious && r.warningMessage) {
               table += '<tr><td colspan="6" style="padding:0; border-bottom:1px solid var(--border);"><div class="suspicious-warning">' + escapeHtml(r.warningMessage) + '</div></td></tr>';
             }
