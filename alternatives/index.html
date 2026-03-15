@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snyk Advisor Alternative, david-dm Alternative, Greenkeeper Alternative — PackageFix</title>
+  <meta name="description" content="Looking for a Snyk Advisor alternative? david-dm shut down. Greenkeeper is gone. Gemnasium closed. requires.io went dark. PackageFix is the free browser-based replacement — no login, no CLI, paste your manifest and download the fix.">
+  <meta name="keywords" content="snyk advisor alternative, david-dm alternative, greenkeeper alternative, gemnasium alternative, requires.io alternative, dependency checker browser, npm vulnerability scanner browser 2026">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0B0D14;
+      --surface: #13151F;
+      --border: #1E2130;
+      --purple: #6C63FF;
+      --green: #22C55E;
+      --red: #EF4444;
+      --text: #E2E4F0;
+      --muted: #6B7280;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'JetBrains Mono', monospace;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 2rem 1.5rem;
+      text-align: center;
+    }
+
+    .header-back {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-decoration: none;
+      margin-bottom: 1rem;
+    }
+
+    .header-back:hover {
+      color: var(--text);
+    }
+
+    .logo {
+      font-size: 1.75rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .logo a {
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .logo-fix {
+      color: var(--purple);
+    }
+
+    main {
+      flex: 1;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+      width: 100%;
+    }
+
+    .hero-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.75rem;
+    }
+
+    .hero-subtitle {
+      font-size: 0.95rem;
+      color: var(--muted);
+      margin-bottom: 2.5rem;
+      line-height: 1.5;
+    }
+
+    .comparison-table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      margin-bottom: 3rem;
+    }
+
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    .comparison-table th {
+      color: var(--muted);
+      text-align: left;
+      padding: 0.75rem;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .comparison-table td {
+      padding: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .comparison-table tbody tr:hover {
+      background: var(--surface);
+    }
+
+    .status-bad {
+      color: var(--red);
+      font-size: 0.8rem;
+    }
+
+    .covers-yes {
+      color: var(--green);
+      font-weight: 600;
+    }
+
+    .section-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 1.5rem;
+    }
+
+    .feature-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 3rem;
+    }
+
+    @media (max-width: 767px) {
+      .feature-cards {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .feature-card-header {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .feature-card-subtext {
+      color: var(--muted);
+      font-size: 0.82rem;
+      line-height: 1.5;
+    }
+
+    .cta-section {
+      text-align: center;
+      margin: 2.5rem 0;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1rem;
+      font-weight: 600;
+      background: var(--purple);
+      color: var(--text);
+      padding: 1rem 2.5rem;
+      border-radius: 8px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .cta-btn:hover {
+      opacity: 0.9;
+    }
+
+    footer {
+      margin-top: 4rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .footer-disclaimer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 0.75rem 2rem;
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .footer-bar {
+      padding: 0.75rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    footer a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      color: var(--text);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="/" class="header-back">← Back to PackageFix</a>
+    <h1 class="logo"><a href="/">Package<span class="logo-fix">Fix</span></a></h1>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h2 class="hero-title">Looking for a dependency checker alternative?</h2>
+      <p class="hero-subtitle">These tools shut down. PackageFix fills the gap — free, browser-based, no login required.</p>
+    </section>
+
+    <section class="comparison-table-wrap">
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>Tool</th>
+            <th>Status</th>
+            <th>Ecosystems</th>
+            <th>PackageFix covers it?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Snyk Advisor</td>
+            <td><span class="status-bad">Shut down Feb 2026</span></td>
+            <td>npm, PyPI, Ruby, PHP</td>
+            <td><span class="covers-yes">✅ Yes</span></td>
+          </tr>
+          <tr>
+            <td>david-dm</td>
+            <td><span class="status-bad">Unmaintained 2022</span></td>
+            <td>npm only</td>
+            <td><span class="covers-yes">✅ Yes</span></td>
+          </tr>
+          <tr>
+            <td>Greenkeeper</td>
+            <td><span class="status-bad">Shut down 2020</span></td>
+            <td>npm only</td>
+            <td><span class="covers-yes">✅ Yes</span></td>
+          </tr>
+          <tr>
+            <td>Gemnasium</td>
+            <td><span class="status-bad">Shut down 2018</span></td>
+            <td>Ruby</td>
+            <td><span class="covers-yes">✅ Yes</span></td>
+          </tr>
+          <tr>
+            <td>requires.io</td>
+            <td><span class="status-bad">Went dark 2022</span></td>
+            <td>PyPI only</td>
+            <td><span class="covers-yes">✅ Yes</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2 class="section-title">What PackageFix does that they never did</h2>
+      <div class="feature-cards">
+        <div class="feature-card">
+          <span class="feature-card-header">🔴 CISA KEV Alerts</span>
+          <span class="feature-card-subtext">Flags vulnerabilities actively exploited in the wild right now.</span>
+        </div>
+        <div class="feature-card">
+          <span class="feature-card-header">⬇ Download the fix</span>
+          <span class="feature-card-subtext">Get a fixed manifest + changelog .zip in one click, not just a badge.</span>
+        </div>
+        <div class="feature-card">
+          <span class="feature-card-header">🌐 4 Ecosystems</span>
+          <span class="feature-card-subtext">npm, PyPI, Ruby, and PHP in one tool.</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <a href="/" class="cta-btn">Try PackageFix Free →</a>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-disclaimer">
+      Vulnerability data is sourced from OSV and public package registries. Always test in a staging environment before deploying to production. PackageFix provides these tools for informational purposes only.
+    </div>
+    <div class="footer-bar">
+      <span>PackageFix by MetricLogic · Also try <a href="https://configclarity.dev" target="_blank" rel="noopener">configclarity.dev</a> · <a href="https://domainpreflight.dev" target="_blank" rel="noopener">domainpreflight.dev</a></span>
+      <span>Open source · MIT · <a href="https://github.com/metriclogic26/packagefix" target="_blank" rel="noopener">GitHub →</a> · <a href="https://github.com/metriclogic26/packagefix/issues/new" target="_blank" rel="noopener">Report issue →</a></span>
+    </div>
+  </footer>
+</body>
+</html>

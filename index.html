@@ -1,0 +1,2526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PackageFix — Dependency Security Fixer</title>
+  <meta name="description" content="Free Snyk Advisor alternative. Paste package.json, requirements.txt, Gemfile, or composer.json. Get CVE patches, CISA KEV alerts, and a fixed manifest. No signup. No CLI. Browser-only.">
+  <meta name="keywords" content="dependency vulnerability scanner, CVE checker, CISA KEV, npm audit, pip audit, bundle audit, OSV, package security, software composition analysis">
+  <meta property="og:title" content="PackageFix — Paste your manifest. Download the fix.">
+  <link rel="canonical" href="https://packagefix.dev">
+  <meta name="google-site-verification" content="lltYdLAeNu8RgHF3JojA7hL_sgbo5bQS7PPe1ldKgz4" />
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"PackageFix","url":"https://packagefix.dev","description":"Browser-based dependency security fixer. Paste your manifest, get a fixed version with CVE patches and CISA KEV alerts.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <style>
+    :root {
+      --bg: #0B0D14;
+      --surface: #13151F;
+      --border: #1E2130;
+      --purple: #6C63FF;
+      --green: #22C55E;
+      --orange: #F97316;
+      --red: #EF4444;
+      --yellow: #EAB308;
+      --text: #E2E4F0;
+      --muted: #6B7280;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'JetBrains Mono', monospace;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 2rem 1.5rem;
+      text-align: center;
+    }
+
+    .logo {
+      font-size: 1.75rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .logo-fix {
+      color: var(--purple);
+    }
+
+    .tagline {
+      margin-top: 0.5rem;
+      font-weight: 400;
+    }
+
+    .tagline-line1 {
+      display: block;
+      font-size: 1.1rem;
+      color: var(--text);
+    }
+
+    .tagline-line2 {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    main {
+      flex: 1;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+      width: 100%;
+    }
+
+    .tab-bar {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1.5rem;
+    }
+
+    .tab {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.875rem;
+      background: none;
+      border: none;
+      padding: 0.75rem 1rem;
+      color: var(--muted);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+    }
+
+    .tab.active {
+      color: var(--text);
+      border-bottom-color: var(--purple);
+    }
+
+    .tab:not(.active):hover {
+      color: var(--text);
+    }
+
+    .panel {
+      display: none;
+    }
+
+    .panel.active {
+      display: block;
+    }
+
+    .drop-zones {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .drop-zone {
+      background: var(--surface);
+      border: 2px dashed var(--border);
+      border-radius: 8px;
+      padding: 2rem 1rem;
+      text-align: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8125rem;
+      color: var(--muted);
+      min-height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .drop-zone-inner {
+      width: 100%;
+      text-align: center;
+    }
+
+    .drop-zone-label {
+      max-width: 180px;
+    }
+
+    .drop-zone-accept {
+      font-size: 0.7rem;
+      color: var(--muted);
+      opacity: 0.85;
+      margin: 0.5rem 0 0;
+    }
+
+    .drop-zone.drag-over {
+      border: 1px solid var(--purple);
+      background: rgba(108, 99, 255, 0.08);
+    }
+
+    .drop-zone.has-file {
+      border: 2px solid var(--green);
+    }
+
+    .drop-zone.has-file.drop-zone-lock {
+      border-color: var(--purple);
+    }
+
+    .drop-zone.error {
+      border: 2px solid var(--red);
+    }
+
+    .drop-zone-filename {
+      color: var(--green);
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .drop-zone-ecosystem {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .ecosystem-badge {
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      display: inline-block;
+    }
+
+    .ecosystem-badge.npm {
+      background: rgba(108, 99, 255, 0.2);
+      border: 1px solid var(--purple);
+      color: var(--purple);
+    }
+
+    .ecosystem-badge.pypi {
+      background: rgba(34, 197, 94, 0.2);
+      border: 1px solid var(--green);
+      color: var(--green);
+    }
+
+    .ecosystem-badge.gems {
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid var(--red);
+      color: var(--red);
+    }
+
+    .ecosystem-badge.composer {
+      background: rgba(249, 115, 22, 0.2);
+      border: 1px solid var(--orange);
+      color: var(--orange);
+    }
+
+    .manifest-ecosystem-picker {
+      margin-top: 0.75rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .manifest-ecosystem-picker .eco-pick-btn {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      padding: 0.4rem 0.75rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .manifest-ecosystem-picker .eco-pick-btn:hover {
+      border-color: var(--purple);
+    }
+
+    .drop-zone-preview {
+      font-size: 0.7rem;
+      color: var(--muted);
+      text-align: left;
+      white-space: pre-wrap;
+      word-break: break-all;
+      max-height: 3em;
+      overflow: hidden;
+      margin-top: 0.5rem;
+    }
+
+    .drop-zone-error {
+      font-size: 0.8rem;
+      color: var(--red);
+      margin-top: 0.5rem;
+    }
+
+    .scan-btn {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      background: var(--purple);
+      color: var(--text);
+      border: none;
+      border-radius: 6px;
+      padding: 0.75rem 1.5rem;
+      display: block;
+      width: 100%;
+    }
+
+    .scan-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    .scan-btn.hidden {
+      display: none;
+    }
+
+    .scan-btn-pulse {
+      animation: scan-btn-pulse 1.2s ease-in-out infinite;
+    }
+
+    @keyframes scan-btn-pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.75; }
+    }
+
+    footer {
+      margin-top: 4rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .footer-disclaimer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 0.75rem 2rem;
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .footer-bar {
+      padding: 0.75rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    footer a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      color: var(--text);
+    }
+
+    .example-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .example-btn {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9375rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 1.5rem;
+      border-radius: 6px;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .example-btn:hover {
+      border-color: var(--purple);
+    }
+
+    .example-btn.selected {
+      border-color: var(--purple);
+    }
+
+    .code-preview {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--text);
+      max-height: 200px;
+      overflow-y: auto;
+      white-space: pre;
+      margin-top: 1rem;
+    }
+
+    .code-preview:empty {
+      display: none;
+    }
+
+    #input-section.hidden {
+      display: none;
+    }
+
+    .loading-panel {
+      display: none;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 600px;
+      margin: 2rem auto;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .loading-panel.visible {
+      display: block;
+    }
+
+    .loading-step {
+      display: none;
+      color: var(--muted);
+      font-size: 0.9375rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .loading-step.visible {
+      display: block;
+    }
+
+    .loading-step.done {
+      color: var(--green);
+    }
+
+    .loading-step .step-icon {
+      display: inline-block;
+      margin-right: 0.5rem;
+    }
+
+    .loading-step .step-icon.pulse {
+      animation: step-pulse 1s ease-in-out infinite;
+    }
+
+    @keyframes step-pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    #results-section {
+      display: none;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    #results-section.visible {
+      display: block;
+    }
+
+    .health-score-label {
+      font-size: 1rem;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+
+    .health-score-bar-wrap {
+      height: 12px;
+      background: var(--surface);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+
+    .health-score-bar {
+      height: 100%;
+      border-radius: 6px;
+      transition: width 0.3s ease;
+    }
+
+    .health-score-bar.green { background: var(--green); }
+    .health-score-bar.orange { background: var(--orange); }
+    .health-score-bar.red { background: var(--red); }
+
+    .no-vuln-state {
+      text-align: center;
+      padding: 2rem 0;
+    }
+    .no-vuln-icon {
+      font-size: 3rem;
+      margin-bottom: 0.75rem;
+    }
+    .no-vuln-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--green);
+      margin-bottom: 0.5rem;
+    }
+    .no-vuln-sub {
+      color: var(--muted);
+      font-size: 0.875rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    .stat-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.8rem;
+    }
+
+    .stat-pill {
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+
+    .stat-pill.suspicious {
+      background: rgba(234, 179, 8, 0.1);
+      border: 1px solid var(--yellow);
+      color: var(--yellow);
+    }
+
+    .suspicious-warning {
+      background: rgba(234, 179, 8, 0.08);
+      border-left: 3px solid var(--yellow);
+      padding: 0.5rem 1rem;
+      font-size: 0.78rem;
+      color: var(--yellow);
+    }
+
+    .severity-badge.suspicious {
+      background: var(--yellow);
+      color: var(--bg);
+    }
+
+    .kev-banner {
+      background: rgba(234, 179, 8, 0.1);
+      border: 1px solid var(--yellow);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.875rem;
+    }
+
+    .kev-banner-title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .kev-banner-list {
+      margin: 0;
+      padding-left: 1.25rem;
+    }
+
+    .unpinned-warning {
+      font-size: 0.8rem;
+      color: var(--orange);
+      border: 1px solid var(--orange);
+      border-radius: 6px;
+      padding: 0.5rem 0.75rem;
+      margin-bottom: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .cve-table-wrap {
+      overflow-x: auto;
+      margin-bottom: 1.5rem;
+    }
+
+    .cve-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+    }
+
+    .cve-table th {
+      color: var(--muted);
+      text-align: left;
+      padding: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cve-table td {
+      padding: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cve-table tbody tr:hover {
+      background: var(--surface);
+    }
+
+    @media (max-width: 600px) {
+      .cve-table-wrap {
+        display: block;
+        overflow-x: auto;
+      }
+      .cve-table {
+        white-space: nowrap;
+      }
+    }
+
+    .severity-badge {
+      border-radius: 4px;
+      padding: 2px 8px;
+      font-size: 0.75rem;
+    }
+
+    .severity-badge.critical {
+      background: #EF4444;
+      color: white;
+    }
+
+    .severity-badge.high {
+      background: #F97316;
+      color: white;
+    }
+
+    .severity-badge.medium {
+      background: #EAB308;
+      color: black;
+    }
+
+    .severity-badge.low {
+      border: 1px solid var(--muted);
+      color: var(--muted);
+    }
+
+    .scan-again-btn {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .scan-again-btn:hover {
+      border-color: var(--purple);
+    }
+
+    .diff-section-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 1.5rem 0 0.75rem;
+    }
+
+    .diff-toggle-wrap {
+      margin-bottom: 0.5rem;
+    }
+
+    .diff-toggle-btn {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.4rem 0.75rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .diff-toggle-btn:hover {
+      border-color: var(--purple);
+    }
+
+    .diff-panel-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+    }
+
+    .diff-col {
+      overflow-x: auto;
+      padding: 0.75rem;
+      background: var(--surface);
+    }
+
+    .diff-col-header {
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+      padding-bottom: 0.25rem;
+    }
+
+    .diff-line {
+      white-space: pre;
+      padding: 2px 8px;
+      margin: 0;
+    }
+
+    .diff-line.unchanged {
+      opacity: 0.45;
+    }
+
+    .diff-line.changed-right {
+      background: rgba(34, 197, 94, 0.15);
+      border-left: 3px solid var(--green);
+      opacity: 1;
+    }
+
+    .copy-fixed-btn {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      font-weight: 600;
+      background: var(--purple);
+      color: var(--text);
+      border: none;
+      padding: 0.6rem 1.25rem;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 0.75rem;
+    }
+
+    .copy-fixed-btn:hover {
+      opacity: 0.9;
+    }
+
+    .diff-buttons-wrap {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-top: 0.75rem;
+    }
+
+    .download-zip-btn {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      font-weight: 600;
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--purple);
+      padding: 0.6rem 1.25rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .download-zip-btn:hover {
+      opacity: 0.9;
+    }
+
+    .action-cards-row {
+      margin-top: 2rem;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    @media (max-width: 767px) {
+      .action-cards-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .action-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      min-height: 200px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .action-card-header {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .action-card-subtext {
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .action-card-btn {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 600;
+      background: var(--purple);
+      color: var(--text);
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: auto;
+    }
+
+    .action-card-btn:hover {
+      opacity: 0.9;
+    }
+
+    .action-card-severity-block {
+      font-size: 0.82rem;
+      color: var(--text);
+    }
+
+    .action-card-footer-links {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-top: 0.5rem;
+    }
+
+    .action-card-footer-links a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    .action-card-footer-links a:hover {
+      color: var(--text);
+    }
+
+    #faq-section.hidden {
+      display: none;
+    }
+
+    .how-it-works {
+      max-width: 860px;
+      margin: 3rem auto;
+    }
+
+    .how-it-works-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 1.5rem;
+    }
+
+    .how-it-works-steps {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .how-it-works-step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem;
+      text-align: center;
+      flex: 1;
+      min-width: 160px;
+    }
+
+    .how-it-works-step-num {
+      color: var(--purple);
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .how-it-works-step-title {
+      color: var(--text);
+      font-weight: 600;
+      margin: 0.5rem 0;
+    }
+
+    .how-it-works-step-desc {
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    .faq-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .faq-question {
+      padding: 1rem 0;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--text);
+      gap: 0.5rem;
+    }
+
+    .faq-question:hover {
+      color: var(--purple);
+    }
+
+    .faq-chevron {
+      color: var(--purple);
+      font-size: 1.25rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .faq-answer {
+      padding: 0;
+      color: var(--muted);
+      font-size: 0.85rem;
+      line-height: 1.7;
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.3s ease;
+    }
+
+    .faq-item.open .faq-answer {
+      max-height: 1500px;
+      padding: 0 0 1rem 0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1 class="logo">
+      Package<span class="logo-fix">Fix</span>
+    </h1>
+    <p class="tagline"><span class="tagline-line1">Paste your manifest. Get back the fixed files.</span><span class="tagline-line2">No login. No GitHub. No CLI.</span></p>
+  </header>
+
+  <main>
+    <div id="input-section">
+      <div class="tab-bar">
+        <button type="button" class="tab active" data-tab="paste">Paste Files</button>
+        <button type="button" class="tab" data-tab="example">Try Example</button>
+      </div>
+
+      <div id="panel-paste" class="panel active">
+        <input type="file" id="manifest-file-input" accept=".json,.txt,Gemfile,composer.json" style="display: none">
+        <input type="file" id="lockfile-file-input" accept=".json,.lock" style="display: none">
+        <div class="drop-zones">
+          <div class="drop-zone-manifest-wrap">
+            <div class="drop-zone" id="drop-zone-manifest" role="button" tabindex="0">
+              <div class="drop-zone-inner">
+                <div class="drop-zone-default">
+                  <span class="drop-zone-label">Drop manifest here or click to upload</span>
+                  <p class="drop-zone-accept">package.json, requirements.txt, Gemfile, composer.json</p>
+                </div>
+                <div class="drop-zone-loaded" style="display: none;"></div>
+                <div class="drop-zone-error-msg" style="display: none;"></div>
+              </div>
+            </div>
+            <div class="manifest-ecosystem-picker" id="manifest-ecosystem-picker" style="display: none;">
+              <button type="button" class="eco-pick-btn" data-ecosystem="npm">npm</button>
+              <button type="button" class="eco-pick-btn" data-ecosystem="pypi">PyPI</button>
+              <button type="button" class="eco-pick-btn" data-ecosystem="gems">Ruby</button>
+              <button type="button" class="eco-pick-btn" data-ecosystem="composer">PHP</button>
+            </div>
+          </div>
+          <div class="drop-zone drop-zone-lock" id="drop-zone-lockfile" role="button" tabindex="0">
+            <div class="drop-zone-inner">
+              <div class="drop-zone-default">
+                <span class="drop-zone-label">Drop lockfile here (optional)</span>
+                <p class="drop-zone-accept">package-lock.json, poetry.lock, Gemfile.lock, composer.lock</p>
+              </div>
+              <div class="drop-zone-loaded" style="display: none;"></div>
+              <div class="drop-zone-error-msg" style="display: none;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="panel-example" class="panel">
+        <div class="example-grid">
+          <button type="button" class="example-btn" data-ecosystem="npm">npm (Node.js)</button>
+          <button type="button" class="example-btn" data-ecosystem="pypi">PyPI (Python)</button>
+          <button type="button" class="example-btn" data-ecosystem="gems">Gems (Ruby)</button>
+          <button type="button" class="example-btn" data-ecosystem="composer">Composer (PHP)</button>
+        </div>
+        <pre class="code-preview" id="example-preview"></pre>
+      </div>
+    </div>
+
+    <div id="loading-panel" class="loading-panel">
+      <div class="loading-step" data-step="1"><span class="step-icon">●</span> Parsing manifest...</div>
+      <div class="loading-step" data-step="2"><span class="step-icon">●</span> Fetching current versions from registry...</div>
+      <div class="loading-step" data-step="3"><span class="step-icon">●</span> Checking OSV vulnerability database...</div>
+      <div class="loading-step" data-step="4"><span class="step-icon">●</span> Checking CISA KEV catalog...</div>
+      <div class="loading-step" data-step="5"><span class="step-icon">●</span> Computing fix versions...</div>
+    </div>
+
+    <div id="results-section">
+      <div id="results-content"></div>
+      <button type="button" class="scan-again-btn">Scan again →</button>
+    </div>
+
+    <button type="button" class="scan-btn" disabled>Scan Dependencies →</button>
+
+    <section id="faq-section" class="how-it-works">
+      <h2 class="how-it-works-title">How it works</h2>
+      <div class="how-it-works-steps">
+        <div class="how-it-works-step">
+          <div class="how-it-works-step-num">1. Paste</div>
+          <div class="how-it-works-step-title">Drop your manifest</div>
+          <div class="how-it-works-step-desc">file or try an example</div>
+        </div>
+        <div class="how-it-works-step">
+          <div class="how-it-works-step-num">2. Scan</div>
+          <div class="how-it-works-step-title">Live CVE lookup</div>
+          <div class="how-it-works-step-desc">from OSV database & CISA KEV</div>
+        </div>
+        <div class="how-it-works-step">
+          <div class="how-it-works-step-num">3. Download</div>
+          <div class="how-it-works-step-title">Fixed manifest +</div>
+          <div class="how-it-works-step-desc">changelog .zip in one click</div>
+        </div>
+      </div>
+      <h2 class="faq-title">Frequently asked questions</h2>
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-question">Does my manifest file leave my browser?<span class="faq-chevron">+</span></div>
+          <div class="faq-answer">No. Parsing happens entirely in your browser. Only package names and version ranges are sent to public APIs (OSV, npm registry, PyPI, RubyGems, Packagist) — the same requests any package manager makes. Your actual code and file contents never leave your device.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">How current is the vulnerability data?<span class="faq-chevron">+</span></div>
+          <div class="faq-answer">The OSV database updates continuously — vulnerabilities published yesterday, zero-days from this morning, and safe fix versions released last week are all reflected. This is data no AI model can give you from training alone.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">What is the CISA KEV catalog?<span class="faq-chevron">+</span></div>
+          <div class="faq-answer">The CISA Known Exploited Vulnerabilities catalog lists vulnerabilities actively being exploited in real attacks right now. A package flagged with 🔴 KEV should be treated as an emergency fix, not a routine update.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">How is this different from Snyk or Dependabot?<span class="faq-chevron">+</span></div>
+          <div class="faq-answer">Snyk and Dependabot require GitHub repo access, a CLI install, or an account. PackageFix is zero-access — it runs entirely in your browser, never writes to your system, and never connects to your repository. Paste your manifest file, get back fixed files in seconds. No agent, no CLI, no disk access. This makes it safe to use even in environments where autonomous AI agents or third-party integrations are blocked by corporate security policy.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-disclaimer">
+      Vulnerability data is sourced from OSV and public package registries. Always test in a staging environment before deploying to production. PackageFix provides these tools for informational purposes only.
+    </div>
+    <div class="footer-bar">
+      <span>PackageFix by MetricLogic · Also try <a href="https://configclarity.dev" target="_blank" rel="noopener">configclarity.dev</a> · <a href="https://domainpreflight.dev" target="_blank" rel="noopener">domainpreflight.dev</a></span>
+      <span>Open source · MIT · <a href="https://github.com/metriclogic26/packagefix" target="_blank" rel="noopener">GitHub →</a> · <a href="https://github.com/metriclogic26/packagefix/issues/new" target="_blank" rel="noopener">Report issue →</a></span>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var KEV_FALLBACK = [
+        'CVE-2024-43796', 'CVE-2021-23337', 'CVE-2022-23529',
+        'CVE-2021-3749', 'CVE-2020-28168', 'CVE-2021-44228',
+        'GHSA-qwph-4952-7xr6', 'GHSA-xxjr-mmjv-4gpg',
+        'GHSA-wf5p-g6vw-rhxx', 'GHSA-29mw-wpgm-hmr9'
+      ];
+
+      var selectedEcosystem = null;
+      var manifestFilename = null;
+      var manifestContent = null;
+      var detectedEcosystem = null;
+      var lockfileFilename = null;
+      var lockfileContent = null;
+
+      var exampleManifests = {
+        npm: '{\n  "name": "my-app",\n  "version": "1.0.0",\n  "dependencies": {\n    "express": "4.17.1",\n    "lodash": "4.17.15",\n    "axios": "0.21.1",\n    "jsonwebtoken": "8.5.1",\n    "react": "18.2.0",\n    "moment": "2.29.1"\n  },\n  "devDependencies": {\n    "jest": "27.0.0",\n    "eslint": "8.0.0"\n  }\n}',
+        pypi: 'requests==2.25.1\npillow==8.1.0\npyyaml==5.3.1\ncryptography==36.0.0\ndjango==3.1.0\nflask==1.1.2',
+        gems: "gem 'rails', '6.1.0'\ngem 'devise', '4.7.3'\ngem 'nokogiri', '1.11.1'\ngem 'puma', '5.0.4'\ngem 'rack', '2.2.2'",
+        composer: '{\n  "require": {\n    "laravel/framework": "8.0.0",\n    "guzzlehttp/guzzle": "7.0.1",\n    "symfony/http-foundation": "5.2.0",\n    "monolog/monolog": "2.0.0",\n    "league/flysystem": "1.1.0"\n  }\n}'
+      };
+
+      var tabs = document.querySelectorAll('.tab');
+      var panels = document.querySelectorAll('.panel');
+      var exampleBtns = document.querySelectorAll('.example-btn');
+      var examplePreview = document.getElementById('example-preview');
+      var scanBtn = document.querySelector('.scan-btn');
+      var inputSection = document.getElementById('input-section');
+      var loadingPanel = document.getElementById('loading-panel');
+      var resultsSection = document.getElementById('results-section');
+      var resultsContent = document.getElementById('results-content');
+      var faqSection = document.getElementById('faq-section');
+      var loadingSteps = document.querySelectorAll('.loading-step');
+
+      function setStep(index, done) {
+        for (var i = 0; i < loadingSteps.length; i++) {
+          var step = loadingSteps[i];
+          var icon = step.querySelector('.step-icon');
+          if (i < index) {
+            step.classList.add('visible', 'done');
+            step.classList.remove('pulse');
+            icon.textContent = '✓';
+            icon.classList.remove('pulse');
+          } else if (i === index) {
+            step.classList.add('visible');
+            if (done) {
+              step.classList.add('done');
+              icon.textContent = '✓';
+              icon.classList.remove('pulse');
+            } else {
+              icon.textContent = '●';
+              icon.classList.add('pulse');
+            }
+          } else {
+            step.classList.remove('visible', 'done');
+            icon.textContent = '●';
+            icon.classList.remove('pulse');
+          }
+        }
+      }
+
+      function parseNpmManifest(jsonStr) {
+        var data = JSON.parse(jsonStr);
+        var packages = [];
+        var deps = data.dependencies || {};
+        var devDeps = data.devDependencies || {};
+        Object.keys(deps).forEach(function (name) {
+          var v = deps[name];
+          if (typeof v === 'string') v = v.replace(/^[\^~]/, '');
+          packages.push({ name: name, version: v, dev: false });
+        });
+        Object.keys(devDeps).forEach(function (name) {
+          var v = devDeps[name];
+          if (typeof v === 'string') v = v.replace(/^[\^~]/, '');
+          packages.push({ name: name, version: v, dev: true });
+        });
+        return packages;
+      }
+
+      function parseRequirementsTxt(content) {
+        var lines = (content || '').split('\n');
+        var packages = [];
+        for (var i = 0; i < lines.length; i++) {
+          var line = lines[i].trim();
+          if (!line || line.indexOf('#') === 0) continue;
+          var name = line;
+          var version = null;
+          var unpinned = true;
+          var eq = line.indexOf('==');
+          var ge = line.indexOf('>=');
+          var tilde = line.indexOf('~=');
+          var idx = -1;
+          var sep = '';
+          if (eq !== -1) { idx = eq; sep = '=='; }
+          if (ge !== -1 && (idx === -1 || ge < idx)) { idx = ge; sep = '>='; }
+          if (tilde !== -1 && (idx === -1 || tilde < idx)) { idx = tilde; sep = '~='; }
+          if (idx !== -1) {
+            name = line.substring(0, idx).trim();
+            version = line.substring(idx + sep.length).trim();
+            unpinned = false;
+          }
+          var bracket = name.indexOf('[');
+          if (bracket !== -1) name = name.substring(0, bracket).trim();
+          name = name.trim();
+          if (!name) continue;
+          packages.push({ name: name, version: version, unpinned: unpinned });
+        }
+        return packages;
+      }
+
+      function parseGemfile(content) {
+        var lines = (content || '').split('\n');
+        var packages = [];
+        for (var i = 0; i < lines.length; i++) {
+          var line = lines[i];
+          var trimmed = line.trim();
+          if (!trimmed) continue;
+          if (trimmed.indexOf('#') === 0) continue;
+          if (trimmed.indexOf('source') === 0) continue;
+          if (trimmed.indexOf('ruby') === 0) continue;
+          if (trimmed.indexOf('group') === 0) continue;
+          if (trimmed === 'end') continue;
+          if (trimmed.indexOf('gem ') !== 0) continue;
+          var rest = trimmed.substring(4).trim();
+          var name = null;
+          var version = null;
+          var unpinned = true;
+          var quote = rest.indexOf("'") === 0 ? "'" : rest.indexOf('"') === 0 ? '"' : null;
+          if (quote) {
+            var endName = rest.indexOf(quote, 1);
+            if (endName !== -1) name = rest.substring(1, endName).trim();
+            rest = rest.substring(endName + 1).trim();
+            if (rest.indexOf(',') === 0) {
+              rest = rest.substring(1).trim();
+              var q2 = rest.indexOf("'") === 0 ? "'" : rest.indexOf('"') === 0 ? '"' : null;
+              if (q2 !== null) {
+                var endVer = rest.indexOf(q2, 1);
+                if (endVer !== -1) {
+                  version = rest.substring(1, endVer).trim();
+                  unpinned = false;
+                  if (version.indexOf('~>') === 0) version = version.substring(2).trim();
+                  if (version.indexOf('>=') === 0) version = version.substring(2).trim();
+                  if (version.indexOf('>') === 0) version = version.substring(1).trim();
+                  var space = version.indexOf(' ');
+                  if (space !== -1) version = version.substring(0, space).trim();
+                }
+              }
+            }
+          }
+          if (!name) continue;
+          packages.push({ name: name, version: version, unpinned: unpinned, rawLine: line });
+        }
+        return packages;
+      }
+
+      function parseComposerJson(content) {
+        var data = JSON.parse(content);
+        var packages = [];
+        function addFrom(obj, dev) {
+          if (!obj || typeof obj !== 'object') return;
+          Object.keys(obj).forEach(function (name) {
+            if (name.indexOf('php') === 0 || name.indexOf('ext-') === 0) return;
+            var v = obj[name];
+            if (typeof v !== 'string') return;
+            var version = v.replace(/^[\^~>=]+/, '').trim();
+            packages.push({ name: name, version: version, dev: !!dev });
+          });
+        }
+        addFrom(data.require, false);
+        addFrom(data['require-dev'], true);
+        return packages;
+      }
+
+      function detectEcosystem(filename, content) {
+        var n = (filename || '').toLowerCase();
+        var c = (content || '').trim();
+
+        if (n.endsWith('package.json')) return 'npm';
+        if (n.endsWith('requirements.txt')) return 'pypi';
+        if (n.endsWith('gemfile') || n === 'gemfile') return 'gems';
+        if (n.endsWith('composer.json')) return 'composer';
+        if (n.endsWith('.lock')) {
+          if (n.indexOf('package-lock') !== -1) return 'npm';
+          if (n.indexOf('poetry') !== -1) return 'pypi';
+          if (n.indexOf('gemfile') !== -1) return 'gems';
+          if (n.indexOf('composer') !== -1) return 'composer';
+        }
+
+        if (c) {
+          try {
+            var json = JSON.parse(c);
+            if (json && typeof json === 'object') {
+              if ('dependencies' in json || 'devDependencies' in json) return 'npm';
+              if ('require' in json || 'require-dev' in json) return 'composer';
+            }
+          } catch (e) {}
+          var lines = c.split('\n');
+          for (var i = 0; i < lines.length; i++) {
+            var line = lines[i].trim();
+            if (line.indexOf('==') !== -1 || (line.indexOf('>=') !== -1 && line.length < 80)) return 'pypi';
+            if (line.indexOf("gem '") === 0) return 'gems';
+          }
+        }
+        return null;
+      }
+
+      function firstThreeLines(text) {
+        if (!text || !text.trim()) return '';
+        return text.trim().split('\n').slice(0, 3).join('\n');
+      }
+
+      function updateManifestZoneUI() {
+        var zone = document.getElementById('drop-zone-manifest');
+        var defaultEl = zone.querySelector('.drop-zone-default');
+        var loadedEl = zone.querySelector('.drop-zone-loaded');
+        var errEl = zone.querySelector('.drop-zone-error-msg');
+        zone.classList.remove('has-file', 'error');
+        if (manifestFilename === null) {
+          defaultEl.style.display = '';
+          loadedEl.style.display = 'none';
+          errEl.style.display = 'none';
+          errEl.textContent = '';
+          var picker0 = document.getElementById('manifest-ecosystem-picker');
+          if (picker0) picker0.style.display = 'none';
+          return;
+        }
+        if (manifestContent === null) {
+          defaultEl.style.display = 'none';
+          loadedEl.style.display = 'none';
+          errEl.style.display = 'block';
+          errEl.textContent = errEl.getAttribute('data-msg') || 'Error';
+          zone.classList.add('error');
+          var pickerErr = document.getElementById('manifest-ecosystem-picker');
+          if (pickerErr) pickerErr.style.display = 'none';
+          return;
+        }
+        defaultEl.style.display = 'none';
+        errEl.style.display = 'none';
+        errEl.textContent = '';
+        loadedEl.style.display = '';
+        var ecoBadge = '';
+        if (detectedEcosystem) {
+          var ecoLabel = detectedEcosystem === 'gems' ? 'Ruby' : detectedEcosystem === 'composer' ? 'PHP' : detectedEcosystem === 'pypi' ? 'PyPI' : detectedEcosystem;
+          ecoBadge = '<span class="ecosystem-badge ' + detectedEcosystem + '">' + escapeHtml(ecoLabel) + ' detected</span>';
+        } else {
+          ecoBadge = '<span class="drop-zone-ecosystem">Unknown — please select ecosystem</span>';
+        }
+        loadedEl.innerHTML = '<div class="drop-zone-filename">' + escapeHtml(manifestFilename) + '</div>' +
+          '<div class="drop-zone-ecosystem-wrap">' + ecoBadge + '</div>' +
+          '<div class="drop-zone-preview">' + escapeHtml(firstThreeLines(manifestContent)) + '</div>';
+        zone.classList.add('has-file');
+        var picker = document.getElementById('manifest-ecosystem-picker');
+        if (picker) picker.style.display = detectedEcosystem ? 'none' : 'flex';
+      }
+
+      function updateLockfileZoneUI() {
+        var zone = document.getElementById('drop-zone-lockfile');
+        var defaultEl = zone.querySelector('.drop-zone-default');
+        var loadedEl = zone.querySelector('.drop-zone-loaded');
+        zone.classList.remove('has-file');
+        if (lockfileFilename === null) {
+          defaultEl.style.display = '';
+          loadedEl.style.display = 'none';
+          loadedEl.textContent = '';
+          return;
+        }
+        defaultEl.style.display = 'none';
+        loadedEl.style.display = '';
+        loadedEl.innerHTML = '<div class="drop-zone-filename">' + escapeHtml(lockfileFilename) + '</div>';
+        zone.classList.add('has-file');
+      }
+
+      function handleManifestFile(file) {
+        var name = (file && file.name) || '';
+        var reader = new FileReader();
+        reader.onload = function () {
+          var text = (reader.result != null && typeof reader.result === 'string') ? reader.result : '';
+          if (!text.trim()) {
+            manifestFilename = name;
+            manifestContent = null;
+            detectedEcosystem = null;
+            var errEl = document.getElementById('drop-zone-manifest').querySelector('.drop-zone-error-msg');
+            errEl.setAttribute('data-msg', 'File appears to be empty');
+            updateManifestZoneUI();
+            scanBtn.disabled = true;
+            return;
+          }
+          if (name.toLowerCase().endsWith('.json')) {
+            try {
+              JSON.parse(text);
+            } catch (e) {
+              manifestFilename = name;
+              manifestContent = null;
+              detectedEcosystem = null;
+              var errEl2 = document.getElementById('drop-zone-manifest').querySelector('.drop-zone-error-msg');
+              errEl2.setAttribute('data-msg', 'Invalid JSON — check your file');
+              updateManifestZoneUI();
+              scanBtn.disabled = true;
+              return;
+            }
+          }
+          manifestFilename = name;
+          manifestContent = text;
+          detectedEcosystem = detectEcosystem(name, text);
+          selectedEcosystem = detectedEcosystem;
+          document.getElementById('drop-zone-manifest').querySelector('.drop-zone-error-msg').removeAttribute('data-msg');
+          updateManifestZoneUI();
+          var pasteActive = document.getElementById('panel-paste').classList.contains('active');
+          if (pasteActive) scanBtn.disabled = (detectedEcosystem === null);
+        };
+        reader.readAsText(file, 'UTF-8');
+      }
+
+      function handleLockfileFile(file) {
+        var name = (file && file.name) || '';
+        var reader = new FileReader();
+        reader.onload = function () {
+          lockfileFilename = name;
+          lockfileContent = (reader.result != null && typeof reader.result === 'string') ? reader.result : '';
+          updateLockfileZoneUI();
+        };
+        reader.readAsText(file, 'UTF-8');
+      }
+
+      function resetDropZones() {
+        manifestFilename = null;
+        manifestContent = null;
+        detectedEcosystem = null;
+        lockfileFilename = null;
+        lockfileContent = null;
+        document.getElementById('drop-zone-manifest').querySelector('.drop-zone-error-msg').removeAttribute('data-msg');
+        updateManifestZoneUI();
+        updateLockfileZoneUI();
+        var pasteActive = document.getElementById('panel-paste').classList.contains('active');
+        if (pasteActive) scanBtn.disabled = true;
+      }
+
+      function fetchLatestVersions(packages) {
+        var urls = packages.map(function (p) {
+          return 'https://registry.npmjs.org/' + encodeURIComponent(p.name) + '/latest';
+        });
+        return Promise.all(urls.map(function (url) {
+          return fetch(url).then(function (r) { return r.json(); });
+        })).then(function (responses) {
+          var out = {};
+          packages.forEach(function (p, i) {
+            out[p.name] = (responses[i] && responses[i].version) ? responses[i].version : p.version;
+          });
+          return out;
+        });
+      }
+
+      function fetchNpmFullPackage(name) {
+        return fetch('https://registry.npmjs.org/' + encodeURIComponent(name))
+          .then(function (r) { return r.json(); })
+          .catch(function () { return null; });
+      }
+
+      function checkNpmSuspicious(packages) {
+        if (packages.length === 0) return Promise.resolve([]);
+        return Promise.all(packages.map(function (p) {
+          return fetchNpmFullPackage(p.name).then(function (res) {
+            if (!res || !res.time) return null;
+            var created = res.time.created;
+            var modified = res.time.modified;
+            if (!created || !modified || typeof created !== 'string' || typeof modified !== 'string') return null;
+            var createdMs = new Date(created).getTime();
+            var modifiedMs = new Date(modified).getTime();
+            var now = Date.now();
+            var daysBetween = (modifiedMs - createdMs) / (24 * 60 * 60 * 1000);
+            var modifiedWithin72h = (now - modifiedMs) < 72 * 60 * 60 * 1000;
+            var downloadsOk = res.downloads == null || (typeof res.downloads === 'number' && res.downloads > 10000);
+            if (daysBetween > 365 && modifiedWithin72h && downloadsOk) {
+              var hoursAgo = Math.floor((now - modifiedMs) / (60 * 60 * 1000));
+              var daysAgo = Math.floor((now - modifiedMs) / (24 * 60 * 60 * 1000));
+              var monthsInactive = Math.floor(daysBetween / 30);
+              var timeAgoStr = hoursAgo < 24 ? hoursAgo + ' hours' : daysAgo + ' days';
+              return {
+                name: p.name,
+                version: p.version,
+                warningMessage: 'Updated ' + timeAgoStr + ' ago after ' + monthsInactive + ' months of inactivity. May indicate a compromised maintainer account. Recommend pinning to current version for 48 hours.'
+              };
+            }
+            return null;
+          });
+        })).then(function (results) {
+          return results.filter(Boolean);
+        });
+      }
+
+      function fetchPyPiLatestVersions(packages) {
+        var withVersion = packages.filter(function (p) { return p.version != null && p.version !== ''; });
+        if (withVersion.length === 0) return Promise.resolve({});
+        var urls = withVersion.map(function (p) {
+          return 'https://pypi.org/pypi/' + encodeURIComponent(p.name) + '/json';
+        });
+        return Promise.all(urls.map(function (url) {
+          return fetch(url).then(function (r) { return r.json(); });
+        })).then(function (responses) {
+          var out = {};
+          withVersion.forEach(function (p, i) {
+            var info = responses[i] && responses[i].info;
+            out[p.name] = (info && info.version) ? info.version : p.version;
+          });
+          return out;
+        });
+      }
+
+      function fetchRubyGemsLatestVersions(packages) {
+        if (packages.length === 0) return Promise.resolve({});
+        var urls = packages.map(function (p) {
+          return 'https://rubygems.org/api/v1/gems/' + encodeURIComponent(p.name) + '.json';
+        });
+        return Promise.all(urls.map(function (url) {
+          return fetch(url).then(function (r) { return r.json(); }).catch(function () { return null; });
+        })).then(function (responses) {
+          var out = {};
+          packages.forEach(function (p, i) {
+            var info = responses[i];
+            out[p.name] = (info && info.version) ? info.version : (p.version || '');
+          });
+          return out;
+        });
+      }
+
+      function extractSeverityFromFullVuln(vuln) {
+        var s;
+        if (vuln.database_specific && vuln.database_specific.severity) {
+          s = String(vuln.database_specific.severity).trim();
+          if (s.length > 0) {
+            s = s.toUpperCase();
+            if (s.indexOf('CRITICAL') !== -1) return 'CRITICAL';
+            if (s.indexOf('HIGH') !== -1) return 'HIGH';
+            if (s.indexOf('MEDIUM') !== -1) return 'MEDIUM';
+            if (s.indexOf('LOW') !== -1) return 'LOW';
+          }
+        }
+        if (vuln.severity && vuln.severity[0] && typeof vuln.severity[0].score === 'string' && vuln.severity[0].score.indexOf('CVSS:3') === 0) {
+          var vec = vuln.severity[0].score;
+          if (vec.indexOf('C:H') !== -1 || vec.indexOf('I:H') !== -1 || vec.indexOf('A:H') !== -1) return 'HIGH';
+          if (vec.indexOf('C:L') !== -1 && vec.indexOf('I:L') !== -1 && vec.indexOf('A:L') !== -1) return 'MEDIUM';
+          if (vec.indexOf('C:N') !== -1 && vec.indexOf('I:N') !== -1 && vec.indexOf('A:N') !== -1) return 'LOW';
+        }
+        return 'MEDIUM';
+      }
+
+      function getFixVersionFromFullVuln(vuln) {
+        var aff = vuln.affected && vuln.affected[0];
+        if (!aff || !aff.ranges || !aff.ranges[0] || !aff.ranges[0].events) return null;
+        var events = aff.ranges[0].events;
+        for (var i = 0; i < events.length; i++) {
+          if (events[i].fixed !== undefined && events[i].fixed !== null) return String(events[i].fixed);
+        }
+        return null;
+      }
+
+      function semverCompare(a, b) {
+        var pa = (a || '').split('.');
+        var pb = (b || '').split('.');
+        for (var i = 0; i < 3; i++) {
+          var na = parseInt(pa[i] || '0', 10) || 0;
+          var nb = parseInt(pb[i] || '0', 10) || 0;
+          if (na !== nb) return na - nb;
+        }
+        return 0;
+      }
+
+      function isStableVersion(v) {
+        if (!v || typeof v !== 'string') return false;
+        var lower = v.toLowerCase();
+        return lower.indexOf('dev') === -1 && lower.indexOf('alpha') === -1 && lower.indexOf('beta') === -1 && lower.indexOf('rc') === -1;
+      }
+
+      function fetchPackagistLatestVersions(packages) {
+        if (packages.length === 0) return Promise.resolve({ versions: {}, corsBlocked: false });
+        var parts = packages.map(function (p) {
+          var idx = p.name.indexOf('/');
+          return idx !== -1 ? { vendor: p.name.substring(0, idx), package: p.name.substring(idx + 1), name: p.name } : { vendor: p.name, package: p.name, name: p.name };
+        });
+        var urls = parts.map(function (x) {
+          return 'https://packagist.org/packages/' + encodeURIComponent(x.vendor) + '/' + encodeURIComponent(x.package) + '.json';
+        });
+        return Promise.all(urls.map(function (url) {
+          return fetch(url).then(function (r) { return r.json(); });
+        })).then(function (responses) {
+          var out = {};
+          parts.forEach(function (x, i) {
+            var data = responses[i];
+            var versions = data && data.package && data.package.versions ? data.package.versions : {};
+            var stable = Object.keys(versions).filter(isStableVersion);
+            if (stable.length === 0) {
+              out[x.name] = '';
+              return;
+            }
+            var best = stable[0];
+            for (var j = 1; j < stable.length; j++) {
+              if (semverCompare(stable[j], best) > 0) best = stable[j];
+            }
+            out[x.name] = best;
+          });
+          return { versions: out, corsBlocked: false };
+        }).catch(function () {
+          return { versions: {}, corsBlocked: true };
+        });
+      }
+
+      function getDisplayId(vuln) {
+        var aliases = vuln.aliases || [];
+        for (var i = 0; i < aliases.length; i++) {
+          if (aliases[i].indexOf('CVE-') === 0) return aliases[i];
+        }
+        return vuln.id || '';
+      }
+
+      function fetchOsvVulns(packages, ecosystem) {
+        ecosystem = ecosystem || 'npm';
+        var queries = packages.map(function (p) {
+          var name = (ecosystem === 'PyPI') ? (p.name || '').toLowerCase() : p.name;
+          return {
+            package: { name: name, ecosystem: ecosystem },
+            version: p.version
+          };
+        });
+        return fetch('https://api.osv.dev/v1/querybatch', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ queries: queries })
+        }).then(function (r) { return r.json(); }).then(function (data) {
+          var vulnIdsByPkg = {};
+          var allIds = [];
+          packages.forEach(function (p, i) {
+            var result = (data.results && data.results[i]) ? data.results[i] : {};
+            var vulns = result.vulns || [];
+            vulnIdsByPkg[p.name] = vulns.map(function (v) { return v.id || ''; }).filter(Boolean);
+            vulnIdsByPkg[p.name].forEach(function (id) { allIds.push(id); });
+          });
+          var uniqueIds = [];
+          var seen = {};
+          allIds.forEach(function (id) {
+            if (!seen[id]) { seen[id] = true; uniqueIds.push(id); }
+          });
+          if (uniqueIds.length === 0) {
+            var byPackage = {};
+            packages.forEach(function (p) { byPackage[p.name] = []; });
+            return byPackage;
+          }
+          return Promise.all(uniqueIds.map(function (id) {
+            return fetch('https://api.osv.dev/v1/vulns/' + encodeURIComponent(id)).then(function (r) { return r.json(); });
+          })).then(function (responses) {
+            var fullVulnMap = {};
+            uniqueIds.forEach(function (id, i) { fullVulnMap[id] = responses[i]; });
+            var firstId = Object.keys(fullVulnMap)[0];
+            if (firstId) console.log('FULL VULN:', JSON.stringify(fullVulnMap[firstId], null, 2));
+            var byPackage = {};
+            packages.forEach(function (p) {
+              var ids = vulnIdsByPkg[p.name] || [];
+              byPackage[p.name] = ids.map(function (id) {
+                var full = fullVulnMap[id];
+                if (!full) return { id: id, aliases: [], summary: '', severity: 'MEDIUM', fixVersion: null, displayId: id };
+                return {
+                  id: id,
+                  aliases: full.aliases || [],
+                  summary: full.summary || '',
+                  severity: extractSeverityFromFullVuln(full),
+                  fixVersion: getFixVersionFromFullVuln(full),
+                  displayId: getDisplayId(full)
+                };
+              });
+            });
+            return byPackage;
+          });
+        });
+      }
+
+      function fetchKevList() {
+        return fetch('https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json')
+          .then(function (r) { return r.json(); })
+          .then(function (data) {
+            if (data.vulnerabilities && Array.isArray(data.vulnerabilities)) {
+              return data.vulnerabilities.map(function (v) { return (v.cveID || v.cve_id || '').toUpperCase(); }).filter(Boolean);
+            }
+            return KEV_FALLBACK;
+          })
+          .catch(function () { return KEV_FALLBACK; });
+      }
+
+      var SEV_ORDER = { CRITICAL: 0, HIGH: 1, MEDIUM: 2, LOW: 3 };
+
+      function looksLikeGitHash(version) {
+        if (!version || typeof version !== 'string') return false;
+        var v = version.trim();
+        return v.length >= 20 && /^[0-9a-f]+$/i.test(v);
+      }
+
+      function resolveFixVersion(osvFixVersion, latestFromRegistry, pkgName, advisoryVulnId) {
+        if (!osvFixVersion) return { fixVersion: '—', advisoryId: null };
+        if (!looksLikeGitHash(osvFixVersion)) return { fixVersion: osvFixVersion, advisoryId: null };
+        var latest = latestFromRegistry && latestFromRegistry[pkgName];
+        if (latest && typeof latest === 'string' && !looksLikeGitHash(latest)) return { fixVersion: latest, advisoryId: null };
+        return { fixVersion: 'see advisory', advisoryId: advisoryVulnId || null };
+      }
+
+      function calculateHealthScore(packageRows) {
+        var deduction = 0;
+        var critical = 0, high = 0, medium = 0;
+        packageRows.forEach(function (r) {
+          if (r.severity === 'CRITICAL') { deduction += 25; critical++; }
+          else if (r.severity === 'HIGH') { deduction += 15; high++; }
+          else if (r.severity === 'MEDIUM') { deduction += 8; medium++; }
+          else if (r.severity === 'LOW') { deduction += 3; }
+        });
+        var score = Math.max(0, 100 - deduction);
+        return { score: score, critical: critical, high: high, medium: medium };
+      }
+
+      function maxSeverity(vulns) {
+        var best = 'LOW';
+        var bestOrder = 4;
+        vulns.forEach(function (v) {
+          var o = SEV_ORDER[v.severity] !== undefined ? SEV_ORDER[v.severity] : 3;
+          if (o < bestOrder) { bestOrder = o; best = v.severity; }
+        });
+        return best;
+      }
+
+      function runNpmScan(manifestStr) {
+        manifestStr = manifestStr || exampleManifests.npm;
+        inputSection.classList.add('hidden');
+        if (faqSection) faqSection.classList.add('hidden');
+        loadingPanel.classList.add('visible');
+        resultsSection.classList.remove('visible');
+        setStep(0, false);
+
+        var packages = parseNpmManifest(manifestStr);
+        setStep(0, true);
+        setStep(1, false);
+
+        fetchLatestVersions(packages).then(function (latestVersions) {
+          setStep(1, true);
+          setStep(2, false);
+          return checkNpmSuspicious(packages).then(function (suspiciousList) {
+            return fetchOsvVulns(packages).then(function (osvByPackage) {
+              setStep(2, true);
+              setStep(3, false);
+              return fetchKevList().then(function (kevIds) {
+                setStep(3, true);
+                setStep(4, false);
+                var kevSet = {};
+                kevIds.forEach(function (id) { kevSet[id.toUpperCase()] = true; });
+
+                var packageRows = [];
+                Object.keys(osvByPackage).forEach(function (pkgName) {
+                  var vulns = osvByPackage[pkgName];
+                  if (vulns.length === 0) return;
+                  var topSev = maxSeverity(vulns);
+                  var topVuln = vulns[0];
+                  vulns.forEach(function (v) {
+                    if (SEV_ORDER[v.severity] !== undefined && (SEV_ORDER[topVuln.severity] === undefined || SEV_ORDER[v.severity] <= SEV_ORDER[topVuln.severity])) topVuln = v;
+                  });
+                  var isKev = vulns.some(function (v) {
+                    var allIds = [v.id].concat(v.aliases || []);
+                    return allIds.some(function (id) { return id && kevSet[id.toUpperCase()]; });
+                  });
+                  var fixVersions = vulns.map(function (v) { return v.fixVersion; }).filter(Boolean);
+                  var minFix = null;
+                  if (fixVersions.length > 0) {
+                    minFix = fixVersions[0];
+                    for (var f = 1; f < fixVersions.length; f++) {
+                      if (semverCompare(fixVersions[f], minFix) < 0) minFix = fixVersions[f];
+                    }
+                  }
+                  var resolved = resolveFixVersion(minFix, latestVersions, pkgName, topVuln.id);
+                  packageRows.push({
+                    name: pkgName,
+                    installed: (packages.find(function (p) { return p.name === pkgName; }) || {}).version,
+                    fixVersion: resolved.fixVersion,
+                    advisoryId: resolved.advisoryId,
+                    severity: topSev,
+                    cveId: topVuln.displayId || topVuln.id,
+                    kev: isKev,
+                    vulns: vulns.map(function (v) { return { id: v.id, displayId: v.displayId || v.id, severity: v.severity, summary: v.summary || '' }; })
+                  });
+                });
+
+                suspiciousList.forEach(function (s) {
+                  packageRows.push({
+                    name: s.name,
+                    installed: s.version,
+                    fixVersion: 'pin current',
+                    advisoryId: null,
+                    severity: 'SUSPICIOUS',
+                    cveId: '—',
+                    kev: false,
+                    suspicious: true,
+                    warningMessage: s.warningMessage
+                  });
+                });
+
+                var health = calculateHealthScore(packageRows.filter(function (r) { return !r.suspicious; }));
+                setStep(4, true);
+
+                setTimeout(function () {
+                  renderResults({
+                    score: health.score,
+                    critical: health.critical,
+                    high: health.high,
+                    medium: health.medium,
+                    totalPackages: packages.length,
+                    kevPackages: packageRows.filter(function (r) { return r.kev; }),
+                    packageRows: packageRows,
+                    packages: packages,
+                    manifestStr: manifestStr,
+                    ecosystem: 'npm',
+                    suspiciousCount: suspiciousList.length
+                  });
+                loadingPanel.classList.remove('visible');
+                resultsSection.classList.add('visible');
+                scanBtn.classList.add('hidden');
+              }, 500);
+            });
+          });
+          });
+        }).catch(function (err) {
+          setStep(4, true);
+          setTimeout(function () {
+            renderResults({ error: String(err && err.message || err) });
+            loadingPanel.classList.remove('visible');
+            resultsSection.classList.add('visible');
+            scanBtn.classList.add('hidden');
+          }, 500);
+        });
+      }
+
+      function runPypiScan(manifestStr) {
+        manifestStr = manifestStr || exampleManifests.pypi;
+        inputSection.classList.add('hidden');
+        if (faqSection) faqSection.classList.add('hidden');
+        loadingPanel.classList.add('visible');
+        resultsSection.classList.remove('visible');
+        setStep(0, false);
+
+        var packages = parseRequirementsTxt(manifestStr);
+        var pinnedPackages = packages.filter(function (p) { return !p.unpinned && p.version; });
+        var unpinnedCount = packages.filter(function (p) { return p.unpinned; }).length;
+        setStep(0, true);
+        setStep(1, false);
+
+        fetchPyPiLatestVersions(packages).then(function (latestVersions) {
+          setStep(1, true);
+          setStep(2, false);
+          return fetchOsvVulns(pinnedPackages, 'PyPI').then(function (osvByPackage) {
+            setStep(2, true);
+            setStep(3, false);
+            return fetchKevList().then(function (kevIds) {
+              setStep(3, true);
+              setStep(4, false);
+              var kevSet = {};
+              kevIds.forEach(function (id) { kevSet[id.toUpperCase()] = true; });
+
+              var packageRows = [];
+              Object.keys(osvByPackage).forEach(function (pkgName) {
+                var vulns = osvByPackage[pkgName];
+                if (vulns.length === 0) return;
+                var topSev = maxSeverity(vulns);
+                var topVuln = vulns[0];
+                vulns.forEach(function (v) {
+                  if (SEV_ORDER[v.severity] !== undefined && (SEV_ORDER[topVuln.severity] === undefined || SEV_ORDER[v.severity] <= SEV_ORDER[topVuln.severity])) topVuln = v;
+                });
+                var isKev = vulns.some(function (v) {
+                  var allIds = [v.id].concat(v.aliases || []);
+                  return allIds.some(function (id) { return id && kevSet[id.toUpperCase()]; });
+                });
+                var fixVersions = vulns.map(function (v) { return v.fixVersion; }).filter(Boolean);
+                var minFix = null;
+                if (fixVersions.length > 0) {
+                  minFix = fixVersions[0];
+                  for (var f = 1; f < fixVersions.length; f++) {
+                    if (semverCompare(fixVersions[f], minFix) < 0) minFix = fixVersions[f];
+                  }
+                }
+                var resolved = resolveFixVersion(minFix, latestVersions, pkgName, topVuln.id);
+                var pkg = packages.find(function (p) { return p.name === pkgName || (p.name && p.name.toLowerCase() === pkgName.toLowerCase()); });
+                packageRows.push({
+                  name: pkgName,
+                  installed: (pkg && pkg.version) ? pkg.version : '—',
+                  fixVersion: resolved.fixVersion,
+                  advisoryId: resolved.advisoryId,
+                  severity: topSev,
+                  cveId: topVuln.displayId || topVuln.id,
+                  kev: isKev,
+                  vulns: vulns.map(function (v) { return { id: v.id, displayId: v.displayId || v.id, severity: v.severity, summary: v.summary || '' }; })
+                });
+              });
+
+              var health = calculateHealthScore(packageRows);
+              setStep(4, true);
+
+              setTimeout(function () {
+                renderResults({
+                  score: health.score,
+                  critical: health.critical,
+                  high: health.high,
+                  medium: health.medium,
+                  totalPackages: packages.length,
+                  kevPackages: packageRows.filter(function (r) { return r.kev; }),
+                  packageRows: packageRows,
+                  packages: packages,
+                  manifestStr: manifestStr,
+                  ecosystem: 'pypi',
+                  unpinnedCount: unpinnedCount
+                });
+                loadingPanel.classList.remove('visible');
+                resultsSection.classList.add('visible');
+                scanBtn.classList.add('hidden');
+              }, 500);
+            });
+          });
+        }).catch(function (err) {
+          setStep(4, true);
+          setTimeout(function () {
+            renderResults({ error: String(err && err.message || err) });
+            loadingPanel.classList.remove('visible');
+            resultsSection.classList.add('visible');
+            scanBtn.classList.add('hidden');
+          }, 500);
+        });
+      }
+
+      function runRubyScan(manifestStr) {
+        manifestStr = manifestStr || exampleManifests.gems;
+        inputSection.classList.add('hidden');
+        if (faqSection) faqSection.classList.add('hidden');
+        loadingPanel.classList.add('visible');
+        resultsSection.classList.remove('visible');
+        setStep(0, false);
+
+        var packages = parseGemfile(manifestStr);
+        var pinnedPackages = packages.filter(function (p) { return !p.unpinned && p.version; });
+        var unpinnedCount = packages.filter(function (p) { return p.unpinned; }).length;
+        setStep(0, true);
+        setStep(1, false);
+
+        fetchRubyGemsLatestVersions(packages).then(function (latestVersions) {
+          setStep(1, true);
+          setStep(2, false);
+          var osvPromise = pinnedPackages.length ? fetchOsvVulns(pinnedPackages, 'RubyGems') : Promise.resolve({});
+          return osvPromise.then(function (osvByPackage) {
+            setStep(2, true);
+            setStep(3, false);
+            return fetchKevList().then(function (kevIds) {
+              setStep(3, true);
+              setStep(4, false);
+              var kevSet = {};
+              kevIds.forEach(function (id) { kevSet[id.toUpperCase()] = true; });
+
+              var packageRows = [];
+              Object.keys(osvByPackage).forEach(function (pkgName) {
+                var vulns = osvByPackage[pkgName];
+                if (vulns.length === 0) return;
+                var topSev = maxSeverity(vulns);
+                var topVuln = vulns[0];
+                vulns.forEach(function (v) {
+                  if (SEV_ORDER[v.severity] !== undefined && (SEV_ORDER[topVuln.severity] === undefined || SEV_ORDER[v.severity] <= SEV_ORDER[topVuln.severity])) topVuln = v;
+                });
+                var isKev = vulns.some(function (v) {
+                  var allIds = [v.id].concat(v.aliases || []);
+                  return allIds.some(function (id) { return id && kevSet[id.toUpperCase()]; });
+                });
+                var fixVersions = vulns.map(function (v) { return v.fixVersion; }).filter(Boolean);
+                var minFix = null;
+                if (fixVersions.length > 0) {
+                  minFix = fixVersions[0];
+                  for (var f = 1; f < fixVersions.length; f++) {
+                    if (semverCompare(fixVersions[f], minFix) < 0) minFix = fixVersions[f];
+                  }
+                }
+                var resolved = resolveFixVersion(minFix, latestVersions, pkgName, topVuln.id);
+                var pkg = packages.find(function (p) { return p.name === pkgName || (p.name && p.name.toLowerCase() === pkgName.toLowerCase()); });
+                packageRows.push({
+                  name: pkgName,
+                  installed: (pkg && (pkg.version || pkg.unpinned)) ? (pkg.version || 'unpinned') : '—',
+                  fixVersion: resolved.fixVersion,
+                  advisoryId: resolved.advisoryId,
+                  severity: topSev,
+                  cveId: topVuln.displayId || topVuln.id,
+                  kev: isKev,
+                  vulns: vulns.map(function (v) { return { id: v.id, displayId: v.displayId || v.id, severity: v.severity, summary: v.summary || '' }; })
+                });
+              });
+
+              var health = calculateHealthScore(packageRows);
+              setStep(4, true);
+
+              setTimeout(function () {
+                renderResults({
+                  score: health.score,
+                  critical: health.critical,
+                  high: health.high,
+                  medium: health.medium,
+                  totalPackages: packages.length,
+                  kevPackages: packageRows.filter(function (r) { return r.kev; }),
+                  packageRows: packageRows,
+                  packages: packages,
+                  manifestStr: manifestStr,
+                  ecosystem: 'gems',
+                  unpinnedCount: unpinnedCount
+                });
+                loadingPanel.classList.remove('visible');
+                resultsSection.classList.add('visible');
+                scanBtn.classList.add('hidden');
+              }, 500);
+            });
+          });
+        }).catch(function (err) {
+          setStep(4, true);
+          setTimeout(function () {
+            renderResults({ error: String(err && err.message || err) });
+            loadingPanel.classList.remove('visible');
+            resultsSection.classList.add('visible');
+            scanBtn.classList.add('hidden');
+          }, 500);
+        });
+      }
+
+      function runComposerScan(manifestStr) {
+        manifestStr = manifestStr || exampleManifests.composer;
+        inputSection.classList.add('hidden');
+        if (faqSection) faqSection.classList.add('hidden');
+        loadingPanel.classList.add('visible');
+        resultsSection.classList.remove('visible');
+        setStep(0, false);
+
+        var packages = parseComposerJson(manifestStr);
+        setStep(0, true);
+        setStep(1, false);
+
+        fetchPackagistLatestVersions(packages).then(function (packagistResult) {
+          var latestVersions = packagistResult.versions || {};
+          var corsBlocked = packagistResult.corsBlocked || false;
+          setStep(1, true);
+          setStep(2, false);
+          return fetchOsvVulns(packages, 'Packagist').then(function (osvByPackage) {
+            setStep(2, true);
+            setStep(3, false);
+            return fetchKevList().then(function (kevIds) {
+              setStep(3, true);
+              setStep(4, false);
+              var kevSet = {};
+              kevIds.forEach(function (id) { kevSet[id.toUpperCase()] = true; });
+
+              var packageRows = [];
+              Object.keys(osvByPackage).forEach(function (pkgName) {
+                var vulns = osvByPackage[pkgName];
+                if (vulns.length === 0) return;
+                var topSev = maxSeverity(vulns);
+                var topVuln = vulns[0];
+                vulns.forEach(function (v) {
+                  if (SEV_ORDER[v.severity] !== undefined && (SEV_ORDER[topVuln.severity] === undefined || SEV_ORDER[v.severity] <= SEV_ORDER[topVuln.severity])) topVuln = v;
+                });
+                var isKev = vulns.some(function (v) {
+                  var allIds = [v.id].concat(v.aliases || []);
+                  return allIds.some(function (id) { return id && kevSet[id.toUpperCase()]; });
+                });
+                var fixVersions = vulns.map(function (v) { return v.fixVersion; }).filter(Boolean);
+                var minFix = null;
+                if (fixVersions.length > 0) {
+                  minFix = fixVersions[0];
+                  for (var f = 1; f < fixVersions.length; f++) {
+                    if (semverCompare(fixVersions[f], minFix) < 0) minFix = fixVersions[f];
+                  }
+                }
+                var resolved;
+                if (corsBlocked && !minFix) {
+                  resolved = { fixVersion: 'see packagist.org', advisoryId: 'https://packagist.org/packages/' + pkgName };
+                } else {
+                  resolved = resolveFixVersion(minFix, latestVersions, pkgName, topVuln.id);
+                }
+                var pkg = packages.find(function (p) { return p.name === pkgName; });
+                packageRows.push({
+                  name: pkgName,
+                  installed: (pkg && pkg.version) ? pkg.version : '—',
+                  fixVersion: resolved.fixVersion,
+                  advisoryId: resolved.advisoryId,
+                  severity: topSev,
+                  cveId: topVuln.displayId || topVuln.id,
+                  kev: isKev,
+                  vulns: vulns.map(function (v) { return { id: v.id, displayId: v.displayId || v.id, severity: v.severity, summary: v.summary || '' }; })
+                });
+              });
+
+              var health = calculateHealthScore(packageRows);
+              setStep(4, true);
+
+              setTimeout(function () {
+                renderResults({
+                  score: health.score,
+                  critical: health.critical,
+                  high: health.high,
+                  medium: health.medium,
+                  totalPackages: packages.length,
+                  kevPackages: packageRows.filter(function (r) { return r.kev; }),
+                  packageRows: packageRows,
+                  packages: packages,
+                  manifestStr: manifestStr,
+                  ecosystem: 'composer'
+                });
+                loadingPanel.classList.remove('visible');
+                resultsSection.classList.add('visible');
+                scanBtn.classList.add('hidden');
+              }, 500);
+            });
+          });
+        }).catch(function (err) {
+          setStep(4, true);
+          setTimeout(function () {
+            renderResults({ error: String(err && err.message || err) });
+            loadingPanel.classList.remove('visible');
+            resultsSection.classList.add('visible');
+            scanBtn.classList.add('hidden');
+          }, 500);
+        });
+      }
+
+      function renderResults(data) {
+        resultsContent.innerHTML = '';
+        if (data.error) {
+          resultsContent.innerHTML = '<p style="color: var(--red);">' + escapeHtml(data.error) + '</p>';
+          return;
+        }
+
+        var hasVulns = data.packageRows && data.packageRows.length > 0;
+        if (!hasVulns) {
+          var today = new Date();
+          var m = today.getMonth() + 1, d = today.getDate();
+          var dateStr = today.getFullYear() + '-' + (m < 10 ? '0' : '') + m + '-' + (d < 10 ? '0' : '') + d;
+          var totalPkgs = data.totalPackages != null ? data.totalPackages : 0;
+          resultsContent.innerHTML = '<div class="no-vuln-state">' +
+            '<div class="no-vuln-icon">✅</div>' +
+            '<div class="no-vuln-title">No known vulnerabilities found</div>' +
+            '<p class="no-vuln-sub">' + totalPkgs + ' packages scanned · OSV database checked · CISA KEV checked<br>All dependencies appear safe as of ' + dateStr + '.</p>' +
+            '<div class="health-score-label">Health Score: 100 / 100</div>' +
+            '<div class="health-score-bar-wrap"><div class="health-score-bar green" style="width:100%"></div></div>' +
+            '</div>';
+          return;
+        }
+
+        var score = data.score;
+        var barClass = score >= 80 ? 'green' : score >= 50 ? 'orange' : 'red';
+
+        var pills = '<span class="stat-pill">🔴 ' + data.critical + ' Critical</span>' +
+          '<span class="stat-pill">🟠 ' + data.high + ' High</span>' +
+          '<span class="stat-pill">🟡 ' + data.medium + ' Medium</span>' +
+          '<span class="stat-pill">📦 ' + data.totalPackages + ' packages scanned</span>';
+        if (data.suspiciousCount > 0) {
+          pills += '<span class="stat-pill suspicious">⚠ ' + data.suspiciousCount + ' suspicious</span>';
+        }
+        var healthHtml = '<div class="health-score-label">Health Score: ' + score + ' / 100</div>' +
+          '<div class="health-score-bar-wrap"><div class="health-score-bar ' + barClass + '" style="width:' + score + '%"></div></div>' +
+          '<div class="stat-pills">' + pills + '</div>';
+        resultsContent.innerHTML = healthHtml;
+
+        if (data.unpinnedCount > 0) {
+          resultsContent.innerHTML += '<div class="unpinned-warning">⚠ ' + data.unpinnedCount + ' package(s) unpinned — pin versions to enable full scanning</div>';
+        }
+
+        if (data.kevPackages && data.kevPackages.length > 0) {
+          var kevList = data.kevPackages.map(function (r) { return r.name + ' (' + r.cveId + ')'; }).join(', ');
+          var banner = '<div class="kev-banner">' +
+            '<div class="kev-banner-title">⚠ ACTIVELY EXPLOITED — ' + data.kevPackages.length + ' package(s) are on the CISA Known Exploited Vulnerabilities catalog. Fix these first.</div>' +
+            '<ul class="kev-banner-list"><li>' + data.kevPackages.map(function (r) { return escapeHtml(r.name) + ' — ' + escapeHtml(r.cveId); }).join('</li><li>') + '</li></ul>' +
+            '</div>';
+          resultsContent.innerHTML += banner;
+        }
+
+        if (data.packageRows && data.packageRows.length > 0) {
+          var table = '<div class="cve-table-wrap"><table class="cve-table"><thead><tr>' +
+            '<th>Package</th><th>Installed</th><th>Fix Version</th><th>Severity</th><th>CVE ID</th><th>KEV</th></tr></thead><tbody>';
+          data.packageRows.forEach(function (r) {
+            var sevClass = r.suspicious ? 'suspicious' : (r.severity || 'MEDIUM').toLowerCase();
+            var sevLabel = r.suspicious ? '⚠ SUSPICIOUS' : (r.severity || 'MEDIUM');
+            var fixCell = r.suspicious
+              ? escapeHtml(r.fixVersion || 'pin current')
+              : (r.advisoryId
+                ? (r.fixVersion === 'see packagist.org'
+                  ? '<a href="' + escapeHtml(r.advisoryId) + '" target="_blank" rel="noopener">see packagist.org</a>'
+                  : '<a href="https://osv.dev/vulnerability/' + escapeHtml(r.advisoryId) + '" target="_blank" rel="noopener">see advisory</a>')
+                : escapeHtml(r.fixVersion || '—'));
+            table += '<tr><td>' + escapeHtml(r.name) + '</td><td>' + escapeHtml(r.installed) + '</td><td>' + fixCell + '</td>' +
+              '<td><span class="severity-badge ' + sevClass + '">' + escapeHtml(sevLabel) + '</span></td>' +
+              '<td>' + escapeHtml(r.suspicious ? '—' : (r.cveId || '—')) + '</td><td>' + (r.suspicious ? '—' : (r.kev ? '🔴' : '')) + '</td></tr>';
+            if (r.suspicious && r.warningMessage) {
+              table += '<tr><td colspan="6" style="padding:0; border-bottom:1px solid var(--border);"><div class="suspicious-warning">' + escapeHtml(r.warningMessage) + '</div></td></tr>';
+            }
+          });
+          table += '</tbody></table></div>';
+          resultsContent.innerHTML += table;
+        }
+
+        if (data.manifestStr && (data.ecosystem === 'pypi' || data.ecosystem === 'gems' || data.ecosystem === 'composer' || (data.packageRows && data.packageRows.length > 0))) {
+          var isPypi = data.ecosystem === 'pypi';
+          var isGems = data.ecosystem === 'gems';
+          var isComposer = data.ecosystem === 'composer';
+          var diffLines = [];
+          var leftStr = '';
+          var rightStr = '';
+          var fixedManifest = null;
+          var fixedComposer = null;
+          var fixedRequirementsStr = '';
+          var fixedGemfileStr = '';
+
+          if (isComposer) {
+            fixedComposer = JSON.parse(data.manifestStr);
+            data.packageRows.forEach(function (r) {
+              if (r.fixVersion && r.fixVersion !== 'see advisory' && r.fixVersion !== 'see packagist.org') {
+                if (fixedComposer.require && fixedComposer.require[r.name] !== undefined) fixedComposer.require[r.name] = r.fixVersion;
+                if (fixedComposer['require-dev'] && fixedComposer['require-dev'][r.name] !== undefined) fixedComposer['require-dev'][r.name] = r.fixVersion;
+              }
+            });
+            leftStr = data.manifestStr;
+            var rightComposerStr = JSON.stringify(fixedComposer, null, 2);
+            var leftComposerLines = leftStr.split('\n');
+            var rightComposerLines = rightComposerStr.split('\n');
+            var maxComposerLen = Math.max(leftComposerLines.length, rightComposerLines.length);
+            for (var ci = 0; ci < maxComposerLen; ci++) {
+              var cl = ci < leftComposerLines.length ? leftComposerLines[ci] : '';
+              var cr = ci < rightComposerLines.length ? rightComposerLines[ci] : '';
+              diffLines.push({ left: cl, right: cr, changed: cl !== cr });
+            }
+          } else if (isGems) {
+            var fixMapGems = {};
+            data.packageRows.forEach(function (r) {
+              if (r.fixVersion && r.fixVersion !== 'see advisory') fixMapGems[r.name] = r.fixVersion;
+            });
+            var gemNameRe = /gem\s+['"]([^'"]+)['"]/;
+            var gemLines = data.manifestStr.split('\n');
+            for (var gi = 0; gi < gemLines.length; gi++) {
+              var gline = gemLines[gi];
+              var gtrim = gline.trim();
+              var rightLine = gline;
+              if (gtrim.indexOf('gem ') === 0) {
+                var gm = gtrim.match(gemNameRe);
+                if (gm && fixMapGems[gm[1]]) rightLine = "gem '" + gm[1] + "', '" + fixMapGems[gm[1]] + "'";
+              }
+              diffLines.push({ left: gline, right: rightLine, changed: gline !== rightLine });
+            }
+            fixedGemfileStr = diffLines.map(function (d) { return d.right; }).join('\n');
+          } else if (isPypi) {
+            var fixMapPypi = {};
+            data.packageRows.forEach(function (r) {
+              if (r.fixVersion && r.fixVersion !== 'see advisory') fixMapPypi[r.name.toLowerCase()] = r.fixVersion;
+            });
+            var reqLines = data.manifestStr.split('\n');
+            for (var ri = 0; ri < reqLines.length; ri++) {
+              var line = reqLines[ri];
+              var trimmed = line.trim();
+              var rightLine = line;
+              if (trimmed && trimmed.indexOf('#') !== 0) {
+                var eq = trimmed.indexOf('=='), ge = trimmed.indexOf('>='), tilde = trimmed.indexOf('~=');
+                var idx = -1, sep = '';
+                if (eq !== -1) { idx = eq; sep = '=='; }
+                if (ge !== -1 && (idx === -1 || ge < idx)) { idx = ge; sep = '>='; }
+                if (tilde !== -1 && (idx === -1 || tilde < idx)) { idx = tilde; sep = '~='; }
+                if (idx !== -1) {
+                  var pkgName = trimmed.substring(0, idx).trim();
+                  var bracket = pkgName.indexOf('[');
+                  if (bracket !== -1) pkgName = pkgName.substring(0, bracket).trim();
+                  var fixVer = fixMapPypi[pkgName.toLowerCase()];
+                  if (fixVer) rightLine = pkgName + '==' + fixVer;
+                }
+              }
+              diffLines.push({ left: line, right: rightLine, changed: line !== rightLine });
+            }
+            leftStr = data.manifestStr;
+            fixedRequirementsStr = diffLines.map(function (d) { return d.right; }).join('\n');
+          } else {
+            var manifestObj = JSON.parse(data.manifestStr);
+            fixedManifest = JSON.parse(data.manifestStr);
+            data.packageRows.forEach(function (r) {
+              if (r.fixVersion && r.fixVersion !== 'see advisory') {
+                if (fixedManifest.dependencies && fixedManifest.dependencies[r.name] !== undefined) fixedManifest.dependencies[r.name] = r.fixVersion;
+                if (fixedManifest.devDependencies && fixedManifest.devDependencies[r.name] !== undefined) fixedManifest.devDependencies[r.name] = r.fixVersion;
+              }
+            });
+            var leftDeps = { dependencies: manifestObj.dependencies || {}, devDependencies: manifestObj.devDependencies || {} };
+            var rightDeps = { dependencies: fixedManifest.dependencies || {}, devDependencies: fixedManifest.devDependencies || {} };
+            leftStr = JSON.stringify(leftDeps, null, 2);
+            rightStr = JSON.stringify(rightDeps, null, 2);
+            var leftLines = leftStr.split('\n');
+            var rightLines = rightStr.split('\n');
+            var maxLen = Math.max(leftLines.length, rightLines.length);
+            for (var i = 0; i < maxLen; i++) {
+              var l = i < leftLines.length ? leftLines[i] : '';
+              var r = i < rightLines.length ? rightLines[i] : '';
+              diffLines.push({ left: l, right: r, changed: l !== r });
+            }
+          }
+
+          var leftHeader = isComposer ? 'YOUR composer.json' : isGems ? 'YOUR Gemfile' : isPypi ? 'YOUR requirements.txt' : 'YOUR package.json';
+          var rightHeader = isComposer ? 'FIXED composer.json' : isGems ? 'FIXED Gemfile' : isPypi ? 'FIXED requirements.txt' : 'FIXED package.json';
+          var diffHtml = '<div class="diff-section-title">Recommended Changes</div>' +
+            '<div class="diff-toggle-wrap"><button type="button" class="diff-toggle-btn" id="diff-toggle-btn">Show changed only</button></div>' +
+            '<div class="diff-panel-wrap">' +
+            '<div class="diff-col"><div class="diff-col-header">' + leftHeader + '</div><div id="diff-left"></div></div>' +
+            '<div class="diff-col"><div class="diff-col-header">' + rightHeader + '</div><div id="diff-right"></div></div></div>' +
+            '<div class="diff-buttons-wrap">' +
+            '<button type="button" class="copy-fixed-btn" id="copy-fixed-btn">Copy fixed manifest</button>' +
+            '<button type="button" class="download-zip-btn" id="download-zip-btn">⬇ Download .zip</button></div>' +
+            '<div class="action-cards-row">' +
+            '<div class="action-card">' +
+            '<span class="action-card-header">🤖 Automate with Renovate</span>' +
+            '<span class="action-card-subtext">Keep dependencies updated automatically</span>' +
+            '<button type="button" class="action-card-btn" id="copy-renovate-btn">Copy renovate.json</button></div>' +
+            '<div class="action-card">' +
+            '<span class="action-card-header">⚙ Add to CI/CD</span>' +
+            '<span class="action-card-subtext">Scan dependencies on every push</span>' +
+            '<button type="button" class="action-card-btn" id="copy-workflow-btn">Copy workflow.yml</button></div>' +
+            '<div class="action-card">' +
+            '<span class="action-card-header">📖 Understanding your results</span>' +
+            '<span class="action-card-subtext">What do these severity levels mean?</span>' +
+            '<div class="action-card-severity-block">🔴 CRITICAL / HIGH — Fix immediately. Active exploits exist.</div>' +
+            '<div class="action-card-severity-block">🟡 MEDIUM — Fix in next release cycle.</div>' +
+            '<div class="action-card-severity-block">⚪ LOW — Fix when convenient.</div>' +
+            '<div class="action-card-footer-links">Vulnerability data: <a href="https://osv.dev" target="_blank" rel="noopener">OSV Database</a> · <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">CISA KEV Catalog</a></div></div></div>';
+          resultsContent.innerHTML += diffHtml;
+
+          var leftEl = document.getElementById('diff-left');
+          var rightEl = document.getElementById('diff-right');
+          var showChangedOnly = false;
+          function renderDiff() {
+            leftEl.innerHTML = '';
+            rightEl.innerHTML = '';
+            diffLines.forEach(function (line) {
+              if (showChangedOnly && !line.changed) return;
+              var leftCls = 'diff-line' + (line.changed ? '' : ' unchanged');
+              var rightCls = 'diff-line' + (line.changed ? ' changed-right' : ' unchanged');
+              var leftDiv = document.createElement('div');
+              leftDiv.className = leftCls;
+              leftDiv.textContent = line.left || '\u00A0';
+              var rightDiv = document.createElement('div');
+              rightDiv.className = rightCls;
+              rightDiv.textContent = line.right || '\u00A0';
+              leftEl.appendChild(leftDiv);
+              rightEl.appendChild(rightDiv);
+            });
+          }
+          renderDiff();
+          document.getElementById('diff-toggle-btn').addEventListener('click', function () {
+            showChangedOnly = !showChangedOnly;
+            this.textContent = showChangedOnly ? 'Show all lines' : 'Show changed only';
+            renderDiff();
+          });
+          document.getElementById('copy-fixed-btn').addEventListener('click', function () {
+            var text = isComposer ? JSON.stringify(fixedComposer, null, 2) : isGems ? fixedGemfileStr : isPypi ? fixedRequirementsStr : JSON.stringify(fixedManifest, null, 2);
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              navigator.clipboard.writeText(text).then(function () {
+                var btn = document.getElementById('copy-fixed-btn');
+                var prev = btn.textContent;
+                btn.textContent = 'Copied!';
+                setTimeout(function () { btn.textContent = prev; }, 1500);
+              });
+            }
+          });
+          document.getElementById('download-zip-btn').addEventListener('click', function () {
+            if (typeof JSZip === 'undefined') return;
+            var zip = new JSZip();
+            if (isComposer) {
+              zip.file('composer.json', JSON.stringify(fixedComposer, null, 2));
+            } else if (isGems) {
+              zip.file('Gemfile', fixedGemfileStr);
+            } else if (isPypi) {
+              zip.file('requirements.txt', fixedRequirementsStr);
+            } else {
+              zip.file('package.json', JSON.stringify(fixedManifest, null, 2));
+            }
+            var today = new Date();
+            var m = today.getMonth() + 1, d = today.getDate();
+            var dateStr = today.getFullYear() + '-' + (m < 10 ? '0' : '') + m + '-' + (d < 10 ? '0' : '') + d;
+            var changelog = '# PackageFix Changelog\nGenerated: ' + dateStr + '\n\n## Security Fixes\n\n';
+            data.packageRows.forEach(function (r) {
+              changelog += '### ' + r.name + ' ' + r.installed + ' → ' + r.fixVersion + '\n';
+              (r.vulns || []).forEach(function (v) {
+                changelog += '- ' + (v.displayId || v.id) + ' (' + v.severity + ') — ' + (v.summary || '') + '\n';
+                changelog += '- Source: https://osv.dev/vulnerability/' + encodeURIComponent(v.id) + '\n';
+              });
+              changelog += '\n';
+            });
+            zip.file('PACKAGEFIX-CHANGELOG.md', changelog);
+            zip.generateAsync({ type: 'blob' }).then(function (blob) {
+              var a = document.createElement('a');
+              a.href = URL.createObjectURL(blob);
+              a.download = 'packagefix-' + dateStr + '.zip';
+              a.click();
+              URL.revokeObjectURL(a.href);
+            });
+          });
+          var renovateJson = '{\n  "$schema": "https://docs.renovatebot.com/renovate-schema.json",\n  "extends": ["config:recommended"],\n  "vulnerabilityAlerts": {\n    "enabled": true,\n    "labels": ["security"]\n  },\n  "osvVulnerabilityAlerts": true,\n  "prCreation": "immediate",\n  "automerge": false\n}';
+          var workflowYaml = 'name: Dependency Security Scan\non: [push, pull_request]\njobs:\n  osv-scan:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: google/osv-scanner-action@v2\n        with:\n          scan-args: |-\n            --lockfile=package-lock.json';
+          function copyAndShowCopied(btn, text) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              navigator.clipboard.writeText(text).then(function () {
+                var prev = btn.textContent;
+                btn.textContent = 'Copied! ✓';
+                setTimeout(function () { btn.textContent = prev; }, 1500);
+              });
+            }
+          }
+          document.getElementById('copy-renovate-btn').addEventListener('click', function () {
+            copyAndShowCopied(this, renovateJson);
+          });
+          document.getElementById('copy-workflow-btn').addEventListener('click', function () {
+            copyAndShowCopied(this, workflowYaml);
+          });
+        }
+
+        var againBtn = document.querySelector('.scan-again-btn');
+        if (againBtn) againBtn.style.marginTop = '1rem';
+      }
+
+      function escapeHtml(s) {
+        if (s == null) return '';
+        var div = document.createElement('div');
+        div.textContent = s;
+        return div.innerHTML;
+      }
+
+      function runFakeScan() {
+        inputSection.classList.add('hidden');
+        if (faqSection) faqSection.classList.add('hidden');
+        loadingPanel.classList.add('visible');
+        resultsSection.classList.remove('visible');
+        loadingSteps.forEach(function (step) {
+          step.classList.remove('visible', 'done');
+          var icon = step.querySelector('.step-icon');
+          icon.textContent = '●';
+          icon.classList.remove('pulse');
+        });
+        var idx = 0;
+        function next() {
+          if (idx >= 5) {
+            setTimeout(function () {
+              resultsContent.innerHTML = '<p style="text-align:center;color:var(--green);font-size:1.2rem;">✅ Scan complete — results will appear here</p>';
+              loadingPanel.classList.remove('visible');
+              resultsSection.classList.add('visible');
+              scanBtn.classList.add('hidden');
+            }, 500);
+            return;
+          }
+          var step = loadingSteps[idx];
+          step.classList.add('visible');
+          step.querySelector('.step-icon').classList.add('pulse');
+          setTimeout(function () {
+            step.classList.add('done');
+            step.querySelector('.step-icon').textContent = '✓';
+            step.querySelector('.step-icon').classList.remove('pulse');
+            idx++;
+            next();
+          }, 600);
+        }
+        next();
+      }
+
+      scanBtn.addEventListener('click', function () {
+        if (scanBtn.disabled) return;
+        scanBtn.textContent = 'Scanning...';
+        scanBtn.classList.add('scan-btn-pulse');
+        var pasteActive = document.getElementById('panel-paste').classList.contains('active');
+        if (pasteActive && manifestContent) {
+          if (detectedEcosystem === 'npm') runNpmScan(manifestContent);
+          else if (detectedEcosystem === 'pypi') runPypiScan(manifestContent);
+          else if (detectedEcosystem === 'gems') runRubyScan(manifestContent);
+          else if (detectedEcosystem === 'composer') runComposerScan(manifestContent);
+          else runFakeScan();
+        } else if (!pasteActive && selectedEcosystem === 'npm') {
+          runNpmScan(exampleManifests.npm);
+        } else if (!pasteActive && selectedEcosystem === 'pypi') {
+          runPypiScan(exampleManifests.pypi);
+        } else if (!pasteActive && selectedEcosystem === 'gems') {
+          runRubyScan(exampleManifests.gems);
+        } else if (!pasteActive && selectedEcosystem === 'composer') {
+          runComposerScan(exampleManifests.composer);
+        } else {
+          runFakeScan();
+        }
+      });
+
+      document.querySelector('.scan-again-btn').addEventListener('click', function () {
+        resultsSection.classList.remove('visible');
+        inputSection.classList.remove('hidden');
+        if (faqSection) faqSection.classList.remove('hidden');
+        scanBtn.classList.remove('hidden');
+        scanBtn.textContent = 'Scan Dependencies →';
+        scanBtn.classList.remove('scan-btn-pulse');
+        resetDropZones();
+      });
+
+      var faqList = document.querySelector('.faq-list');
+      if (faqList) {
+        faqList.addEventListener('click', function (e) {
+          var q = e.target && e.target.closest && e.target.closest('.faq-question');
+          if (!q) return;
+          var item = q.closest('.faq-item');
+          if (!item) return;
+          var wasOpen = item.classList.contains('open');
+          faqList.querySelectorAll('.faq-item.open').forEach(function (other) {
+            other.classList.remove('open');
+            var ch = other.querySelector('.faq-chevron');
+            if (ch) ch.textContent = '+';
+          });
+          if (!wasOpen) {
+            item.classList.add('open');
+            var chevron = item.querySelector('.faq-chevron');
+            if (chevron) chevron.textContent = '−';
+          }
+        });
+      }
+
+      tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+          var targetId = 'panel-' + tab.getAttribute('data-tab');
+          tabs.forEach(function (t) { t.classList.remove('active'); });
+          panels.forEach(function (p) {
+            p.classList.toggle('active', p.id === targetId);
+          });
+          tab.classList.add('active');
+          if (targetId === 'panel-paste') {
+            scanBtn.disabled = !manifestContent || detectedEcosystem === null;
+          } else if (targetId === 'panel-example') {
+            scanBtn.disabled = !selectedEcosystem;
+          }
+        });
+      });
+
+      exampleBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          exampleBtns.forEach(function (b) { b.classList.remove('selected'); });
+          btn.classList.add('selected');
+          selectedEcosystem = btn.getAttribute('data-ecosystem');
+          examplePreview.textContent = exampleManifests[selectedEcosystem];
+          scanBtn.disabled = false;
+        });
+      });
+
+      var manifestFileInput = document.getElementById('manifest-file-input');
+      var lockfileFileInput = document.getElementById('lockfile-file-input');
+      var dropZoneManifest = document.getElementById('drop-zone-manifest');
+      var dropZoneLockfile = document.getElementById('drop-zone-lockfile');
+
+      function preventDrop(e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+
+      dropZoneManifest.addEventListener('click', function () { manifestFileInput.click(); });
+      dropZoneManifest.addEventListener('dragover', function (e) {
+        preventDrop(e);
+        dropZoneManifest.classList.add('drag-over');
+      });
+      dropZoneManifest.addEventListener('dragleave', function (e) {
+        preventDrop(e);
+        dropZoneManifest.classList.remove('drag-over');
+      });
+      dropZoneManifest.addEventListener('drop', function (e) {
+        preventDrop(e);
+        dropZoneManifest.classList.remove('drag-over');
+        var files = e.dataTransfer && e.dataTransfer.files;
+        if (files && files[0]) handleManifestFile(files[0]);
+      });
+      manifestFileInput.addEventListener('change', function () {
+        var files = this.files;
+        if (files && files[0]) handleManifestFile(files[0]);
+        this.value = '';
+      });
+
+      dropZoneLockfile.addEventListener('click', function () { lockfileFileInput.click(); });
+      dropZoneLockfile.addEventListener('dragover', function (e) {
+        preventDrop(e);
+        dropZoneLockfile.classList.add('drag-over');
+      });
+      dropZoneLockfile.addEventListener('dragleave', function (e) {
+        preventDrop(e);
+        dropZoneLockfile.classList.remove('drag-over');
+      });
+      dropZoneLockfile.addEventListener('drop', function (e) {
+        preventDrop(e);
+        dropZoneLockfile.classList.remove('drag-over');
+        var files = e.dataTransfer && e.dataTransfer.files;
+        if (files && files[0]) handleLockfileFile(files[0]);
+      });
+      lockfileFileInput.addEventListener('change', function () {
+        var files = this.files;
+        if (files && files[0]) handleLockfileFile(files[0]);
+        this.value = '';
+      });
+
+      document.getElementById('manifest-ecosystem-picker').addEventListener('click', function (e) {
+        var btn = e.target && e.target.closest && e.target.closest('.eco-pick-btn');
+        if (!btn) return;
+        var eco = btn.getAttribute('data-ecosystem');
+        if (eco) {
+          detectedEcosystem = eco;
+          selectedEcosystem = eco;
+          updateManifestZoneUI();
+          scanBtn.disabled = false;
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
