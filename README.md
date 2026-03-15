@@ -52,6 +52,12 @@ are restricted by security policy.
 | [DomainPreflight](https://domainpreflight.dev) | [domainpreflight.dev](https://domainpreflight.dev) | DNS & Email |
 | [PackageFix](https://packagefix.dev) | [packagefix.dev](https://packagefix.dev) | Dependencies |
 
+## Alternatives
+
+Looking for a Snyk Advisor, david-dm, Greenkeeper, Gemnasium,
+requires.io, or bundle-audit replacement?
+See [packagefix.dev/alternatives](https://packagefix.dev/alternatives)
+
 ## License
 
 MIT — use it, fork it, build on it.
