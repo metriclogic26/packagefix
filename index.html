@@ -168,6 +168,12 @@
       margin-bottom: 1.5rem;
     }
 
+    @media (max-width: 600px) {
+      .drop-zones {
+        grid-template-columns: 1fr;
+      }
+    }
+
     .drop-zone {
       background: var(--surface);
       border: 2px dashed var(--border);
@@ -704,6 +710,15 @@
       overflow-x: auto;
       padding: 0.75rem;
       background: var(--surface);
+    }
+
+    @media (max-width: 600px) {
+      .diff-panel-wrap {
+        grid-template-columns: 1fr;
+      }
+      .diff-col:first-child {
+        border-bottom: 1px solid var(--border);
+      }
     }
 
     .diff-col-header {
@@ -1503,25 +1518,29 @@
           if (isNeverSuspicious(p.name)) return Promise.resolve(null);
           return fetchNpmFullPackage(p.name).then(function (res) {
             if (!res || !res.time) return null;
-            var created = res.time.created;
-            var modified = res.time.modified;
-            if (!created || !modified || typeof created !== 'string' || typeof modified !== 'string') return null;
-            var createdMs = new Date(created).getTime();
-            var modifiedMs = new Date(modified).getTime();
-            var now = Date.now();
-            var daysBetween = (modifiedMs - createdMs) / (24 * 60 * 60 * 1000);
-            var dormant24months = daysBetween > 730;
-            var modifiedWithin24h = (now - modifiedMs) < 24 * 60 * 60 * 1000;
-            var downloadsUnder5M = res.downloads == null || (typeof res.downloads === 'number' && res.downloads < 5000000);
-            if (dormant24months && modifiedWithin24h && downloadsUnder5M) {
-              var hoursAgo = Math.floor((now - modifiedMs) / (60 * 60 * 1000));
-              var daysAgo = Math.floor((now - modifiedMs) / (24 * 60 * 60 * 1000));
-              var monthsInactive = Math.floor(daysBetween / 30);
-              var timeAgoStr = hoursAgo < 24 ? hoursAgo + ' hours' : daysAgo + ' days';
+            var timeData = res.time;
+            var versionKeys = Object.keys(timeData)
+              .filter(function (k) { return k !== 'created' && k !== 'modified'; })
+              .sort(function (a, b) { return new Date(timeData[a]) - new Date(timeData[b]); });
+
+            if (versionKeys.length < 2) return null;
+
+            var penultimate = new Date(timeData[versionKeys[versionKeys.length - 2]]);
+            var lastUpdate = new Date(timeData[versionKeys[versionKeys.length - 1]]);
+            var now = new Date();
+
+            var monthsDormant = (lastUpdate - penultimate) / (1000 * 60 * 60 * 24 * 30);
+            var hoursSinceUpdate = (now - lastUpdate) / (1000 * 60 * 60);
+
+            if (monthsDormant > 18 && hoursSinceUpdate < 48) {
+              var hoursAgo = Math.floor(hoursSinceUpdate);
               return {
                 name: p.name,
                 version: p.version,
-                warningMessage: 'Updated ' + timeAgoStr + ' ago after ' + monthsInactive + ' months of inactivity. May indicate a compromised maintainer account. Recommend pinning to current version for 48 hours.'
+                warningMessage: 'Updated ' + hoursAgo + ' hour(s) ago after ' +
+                  Math.floor(monthsDormant) + ' months of inactivity. ' +
+                  'May indicate a compromised maintainer account. ' +
+                  'Recommend pinning to current version for 48 hours.'
               };
             }
             return null;
@@ -1736,11 +1755,33 @@
       }
 
       function resolveFixVersion(osvFixVersion, latestFromRegistry, pkgName, advisoryVulnId) {
+        function isUnstable(v) {
+          if (!v || typeof v !== 'string') return true;
+          var lower = v.toLowerCase();
+          return lower.indexOf('rc') !== -1 || lower.indexOf('alpha') !== -1 ||
+                 lower.indexOf('beta') !== -1 || lower.indexOf('dev') !== -1 ||
+                 lower.indexOf('pre') !== -1;
+        }
+
         if (!osvFixVersion) return { fixVersion: '—', advisoryId: null };
-        if (!looksLikeGitHash(osvFixVersion)) return { fixVersion: osvFixVersion, advisoryId: null };
-        var latest = latestFromRegistry && latestFromRegistry[pkgName];
-        if (latest && typeof latest === 'string' && !looksLikeGitHash(latest)) return { fixVersion: latest, advisoryId: null };
-        return { fixVersion: 'see advisory', advisoryId: advisoryVulnId || null };
+        if (looksLikeGitHash(osvFixVersion)) {
+          var latest = latestFromRegistry && latestFromRegistry[pkgName];
+          if (latest && typeof latest === 'string' && !looksLikeGitHash(latest)) {
+            return { fixVersion: latest, advisoryId: null };
+          }
+          return { fixVersion: 'see advisory', advisoryId: advisoryVulnId || null };
+        }
+
+        // If OSV fix version is unstable (RC/beta/alpha), prefer latest stable from registry
+        if (isUnstable(osvFixVersion)) {
+          var latestStable = latestFromRegistry && latestFromRegistry[pkgName];
+          if (latestStable && typeof latestStable === 'string' && !isUnstable(latestStable)) {
+            return { fixVersion: latestStable, advisoryId: null };
+          }
+          return { fixVersion: 'see advisory', advisoryId: advisoryVulnId || null };
+        }
+
+        return { fixVersion: osvFixVersion, advisoryId: null };
       }
 
       function calculateHealthScore(packageRows) {
@@ -2199,9 +2240,22 @@
       }
 
       function renderResults(data) {
-        resultsContent.innerHTML = '';
+        resultsContent.innerHTML = '<div style="margin-bottom:1.5rem;">' +
+          '<button type="button" id="scan-another-btn" style="' +
+            'font-family: JetBrains Mono, monospace;' +
+            'font-size: 0.85rem;' +
+            'background: var(--surface);' +
+            'border: 1px solid var(--border);' +
+            'color: var(--muted);' +
+            'padding: 0.4rem 0.85rem;' +
+            'border-radius: 6px;' +
+            'cursor: pointer;' +
+          '">← Scan another file</button>' +
+        '</div>';
         if (data.error) {
-          resultsContent.innerHTML = '<p style="color: var(--red);">' + escapeHtml(data.error) + '</p>';
+          resultsContent.innerHTML += '<p style="color: var(--red);">' + escapeHtml(data.error) + '</p>';
+          var scanAnotherBtn = document.getElementById('scan-another-btn');
+          if (scanAnotherBtn) scanAnotherBtn.addEventListener('click', function () { resetToInputState(); });
           return;
         }
 
@@ -2211,13 +2265,15 @@
           var m = today.getMonth() + 1, d = today.getDate();
           var dateStr = today.getFullYear() + '-' + (m < 10 ? '0' : '') + m + '-' + (d < 10 ? '0' : '') + d;
           var totalPkgs = data.totalPackages != null ? data.totalPackages : 0;
-          resultsContent.innerHTML = '<div class="no-vuln-state">' +
+          resultsContent.innerHTML += '<div class="no-vuln-state">' +
             '<div class="no-vuln-icon">✅</div>' +
             '<div class="no-vuln-title">No known vulnerabilities found</div>' +
             '<p class="no-vuln-sub">' + totalPkgs + ' packages scanned · OSV database checked · CISA KEV checked<br>All dependencies appear safe as of ' + dateStr + '.</p>' +
             '<div class="health-score-label">Health Score: 100 / 100</div>' +
             '<div class="health-score-bar-wrap"><div class="health-score-bar green" style="width:100%"></div></div>' +
             '</div>';
+          var scanAnotherBtn = document.getElementById('scan-another-btn');
+          if (scanAnotherBtn) scanAnotherBtn.addEventListener('click', function () { resetToInputState(); });
           return;
         }
 
@@ -2234,7 +2290,7 @@
         var healthHtml = '<div class="health-score-label">Health Score: ' + score + ' / 100</div>' +
           '<div class="health-score-bar-wrap"><div class="health-score-bar ' + barClass + '" style="width:' + score + '%"></div></div>' +
           '<div class="stat-pills">' + pills + '</div>';
-        resultsContent.innerHTML = healthHtml;
+        resultsContent.innerHTML += healthHtml;
 
         if (data.unpinnedCount > 0) {
           resultsContent.innerHTML += '<div class="unpinned-warning">⚠ ' + data.unpinnedCount + ' package(s) unpinned — pin versions to enable full scanning</div>';
@@ -2363,12 +2419,15 @@
             var manifestObj = JSON.parse(data.manifestStr);
             fixedManifest = JSON.parse(data.manifestStr);
             data.packageRows.forEach(function (r) {
-              var versionForDiff = (r.fixVersion && r.fixVersion !== 'see advisory' && r.fixVersion !== 'pin current')
-                ? r.fixVersion
-                : (r.installed || (fixedManifest.dependencies && fixedManifest.dependencies[r.name]) || (fixedManifest.devDependencies && fixedManifest.devDependencies[r.name]));
-              if (versionForDiff != null && versionForDiff !== '') {
-                if (fixedManifest.dependencies && fixedManifest.dependencies[r.name] !== undefined) fixedManifest.dependencies[r.name] = versionForDiff;
-                if (fixedManifest.devDependencies && fixedManifest.devDependencies[r.name] !== undefined) fixedManifest.devDependencies[r.name] = versionForDiff;
+              if (r.private) return; // skip private packages — keep original version
+              if (!r.fixVersion || r.fixVersion === '—' || r.fixVersion === 'see advisory') return;
+              if (r.fixVersion === 'pin current') return;
+              var versionForDiff = r.fixVersion;
+              if (fixedManifest.dependencies && fixedManifest.dependencies[r.name] !== undefined) {
+                fixedManifest.dependencies[r.name] = versionForDiff;
+              }
+              if (fixedManifest.devDependencies && fixedManifest.devDependencies[r.name] !== undefined) {
+                fixedManifest.devDependencies[r.name] = versionForDiff;
               }
             });
             var leftDeps = { dependencies: manifestObj.dependencies || {}, devDependencies: manifestObj.devDependencies || {} };
@@ -2502,6 +2561,12 @@
           });
         }
 
+        var scanAnotherBtn = document.getElementById('scan-another-btn');
+        if (scanAnotherBtn) {
+          scanAnotherBtn.addEventListener('click', function () {
+            resetToInputState();
+          });
+        }
       }
 
       function escapeHtml(s) {
