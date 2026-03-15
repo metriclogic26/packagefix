@@ -1427,17 +1427,29 @@
       }
 
       var NEVER_SUSPICIOUS = [
-        'react', 'typescript', 'lodash', 'express', 'axios',
-        'vue', 'angular', 'next', 'webpack', 'babel',
-        'eslint', 'prettier', 'jest', 'vite', 'rollup'
+        'react', 'react-dom', 'typescript', 'lodash', 'express',
+        'axios', 'vue', 'next', 'webpack', 'babel', 'eslint',
+        'prettier', 'jest', 'vite', 'rollup', 'svelte', 'nuxt',
+        'angular', 'jquery', 'moment', 'dayjs', 'chalk', 'dotenv',
+        'cors', 'helmet', 'passport', 'mongoose', 'sequelize',
+        'prisma', 'graphql', 'apollo', 'redux', 'zustand'
       ];
 
       function checkNpmSuspicious(packages) {
         if (packages.length === 0) return Promise.resolve([]);
-        var allowlist = {};
-        NEVER_SUSPICIOUS.forEach(function (name) { allowlist[name.toLowerCase()] = true; });
+        var neverLower = NEVER_SUSPICIOUS.map(function (n) { return n.toLowerCase(); });
+        function isNeverSuspicious(packageName) {
+          var nameLower = (packageName || '').toLowerCase();
+          if (neverLower.indexOf(nameLower) !== -1) return true;
+          var parts = nameLower.split('/');
+          for (var i = 0; i < parts.length; i++) {
+            var segment = parts[i].replace(/^@/, '');
+            if (neverLower.indexOf(segment) !== -1) return true;
+          }
+          return false;
+        }
         return Promise.all(packages.map(function (p) {
-          if (allowlist[(p.name || '').toLowerCase()]) return null;
+          if (isNeverSuspicious(p.name)) return Promise.resolve(null);
           return fetchNpmFullPackage(p.name).then(function (res) {
             if (!res || !res.time) return null;
             var created = res.time.created;
@@ -2264,9 +2276,12 @@
             var manifestObj = JSON.parse(data.manifestStr);
             fixedManifest = JSON.parse(data.manifestStr);
             data.packageRows.forEach(function (r) {
-              if (r.fixVersion && r.fixVersion !== 'see advisory' && r.fixVersion !== 'pin current') {
-                if (fixedManifest.dependencies && fixedManifest.dependencies[r.name] !== undefined) fixedManifest.dependencies[r.name] = r.fixVersion;
-                if (fixedManifest.devDependencies && fixedManifest.devDependencies[r.name] !== undefined) fixedManifest.devDependencies[r.name] = r.fixVersion;
+              var versionForDiff = (r.fixVersion && r.fixVersion !== 'see advisory' && r.fixVersion !== 'pin current')
+                ? r.fixVersion
+                : (r.installed || (fixedManifest.dependencies && fixedManifest.dependencies[r.name]) || (fixedManifest.devDependencies && fixedManifest.devDependencies[r.name]));
+              if (versionForDiff != null && versionForDiff !== '') {
+                if (fixedManifest.dependencies && fixedManifest.dependencies[r.name] !== undefined) fixedManifest.dependencies[r.name] = versionForDiff;
+                if (fixedManifest.devDependencies && fixedManifest.devDependencies[r.name] !== undefined) fixedManifest.devDependencies[r.name] = versionForDiff;
               }
             });
             var leftDeps = { dependencies: manifestObj.dependencies || {}, devDependencies: manifestObj.devDependencies || {} };
