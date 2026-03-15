@@ -44,23 +44,65 @@
       flex-direction: column;
     }
 
-    header {
-      padding: 2rem 1.5rem;
+    header.top-bar {
+      display: none;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 2rem;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+    }
+
+    header.top-bar.visible {
+      display: grid;
+    }
+
+    .back-to-home-link {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .back-to-home-link:hover {
+      color: var(--text);
+    }
+
+    .top-bar-logo {
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--text);
       text-align: center;
     }
 
-    .logo {
-      font-size: 1.75rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-    }
-
-    .logo-fix {
+    .top-bar-logo .logo-fix {
       color: var(--purple);
     }
 
+    #hero-section.hero-hidden {
+      display: none;
+    }
+
+    .hero-logo {
+      font-size: 2rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+
+    .hero-logo .logo-fix {
+      color: var(--purple);
+    }
+
+    .tagline-section {
+      text-align: center;
+      padding: 1.5rem 1rem;
+    }
+
     .tagline {
-      margin-top: 0.5rem;
+      margin: 0;
       font-weight: 400;
     }
 
@@ -130,12 +172,12 @@
       background: var(--surface);
       border: 2px dashed var(--border);
       border-radius: 8px;
-      padding: 2rem 1rem;
+      padding: 1.5rem;
       text-align: center;
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.8125rem;
       color: var(--muted);
-      min-height: 140px;
+      min-height: unset;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -331,11 +373,12 @@
 
     .example-btn {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.9375rem;
+      font-size: 0.85rem;
       background: var(--surface);
       border: 1px solid var(--border);
       color: var(--text);
-      padding: 1.5rem;
+      padding: 0.75rem 1rem;
+      height: auto;
       border-radius: 6px;
       cursor: pointer;
       text-align: center;
@@ -894,12 +937,15 @@
   </style>
 </head>
 <body>
-  <header>
-    <h1 class="logo">
-      Package<span class="logo-fix">Fix</span>
-    </h1>
-    <p class="tagline"><span class="tagline-line1">Paste your manifest. Get back the fixed files.</span><span class="tagline-line2">No login. No GitHub. No CLI.</span></p>
+  <header class="top-bar" id="top-bar">
+    <a href="#" class="back-to-home-link" id="back-to-home-link">← Back to home</a>
+    <span class="top-bar-logo">Package<span class="logo-fix">Fix</span></span>
+    <div></div>
   </header>
+  <section id="hero-section" class="tagline-section">
+    <div class="hero-logo">Package<span class="logo-fix">Fix</span></div>
+    <p class="tagline"><span class="tagline-line1">Paste your manifest. Get back the fixed files.</span><span class="tagline-line2">No login. No GitHub. No CLI.</span></p>
+  </section>
 
   <main>
     <div id="input-section">
@@ -1004,7 +1050,7 @@
         </div>
         <div class="faq-item">
           <div class="faq-question">How is this different from Snyk or Dependabot?<span class="faq-chevron">+</span></div>
-          <div class="faq-answer">Snyk and Dependabot require GitHub repo access, a CLI install, or an account. PackageFix is zero-access — it runs entirely in your browser, never writes to your system, and never connects to your repository. Paste your manifest file, get back fixed files in seconds. No agent, no CLI, no disk access. This makes it safe to use even in environments where autonomous AI agents or third-party integrations are blocked by corporate security policy.</div>
+          <div class="faq-answer">Snyk and Dependabot require a GitHub connection, CLI install, or account signup. PackageFix runs entirely in your browser — nothing installed, nothing connected, nothing written to your system. Paste your file, get back the fixed version in seconds. Safe to use even where third-party integrations are blocked by security policy.</div>
         </div>
       </div>
     </section>
@@ -1053,7 +1099,27 @@
       var resultsSection = document.getElementById('results-section');
       var resultsContent = document.getElementById('results-content');
       var faqSection = document.getElementById('faq-section');
+      var backToHomeLink = document.getElementById('back-to-home-link');
+      var topBar = document.getElementById('top-bar');
+      var heroSection = document.getElementById('hero-section');
       var loadingSteps = document.querySelectorAll('.loading-step');
+
+      function resetToInputState() {
+        resultsSection.classList.remove('visible');
+        inputSection.classList.remove('hidden');
+        if (faqSection) faqSection.classList.remove('hidden');
+        scanBtn.classList.remove('hidden');
+        scanBtn.textContent = 'Scan Dependencies →';
+        scanBtn.classList.remove('scan-btn-pulse');
+        if (topBar) topBar.classList.remove('visible');
+        if (heroSection) heroSection.classList.remove('hero-hidden');
+        resetDropZones();
+      }
+
+      function showResultsState() {
+        if (topBar) topBar.classList.add('visible');
+        if (heroSection) heroSection.classList.add('hero-hidden');
+      }
 
       function setStep(index, done) {
         for (var i = 0; i < loadingSteps.length; i++) {
@@ -1739,6 +1805,7 @@
                 loadingPanel.classList.remove('visible');
                 resultsSection.classList.add('visible');
                 scanBtn.classList.add('hidden');
+                showResultsState();
               }, 500);
             });
           });
@@ -1750,6 +1817,7 @@
             loadingPanel.classList.remove('visible');
             resultsSection.classList.add('visible');
             scanBtn.classList.add('hidden');
+            showResultsState();
           }, 500);
         });
       }
@@ -1835,6 +1903,7 @@
                 loadingPanel.classList.remove('visible');
                 resultsSection.classList.add('visible');
                 scanBtn.classList.add('hidden');
+                showResultsState();
               }, 500);
             });
           });
@@ -1845,6 +1914,7 @@
             loadingPanel.classList.remove('visible');
             resultsSection.classList.add('visible');
             scanBtn.classList.add('hidden');
+            showResultsState();
           }, 500);
         });
       }
@@ -1931,6 +2001,7 @@
                 loadingPanel.classList.remove('visible');
                 resultsSection.classList.add('visible');
                 scanBtn.classList.add('hidden');
+                showResultsState();
               }, 500);
             });
           });
@@ -1941,6 +2012,7 @@
             loadingPanel.classList.remove('visible');
             resultsSection.classList.add('visible');
             scanBtn.classList.add('hidden');
+            showResultsState();
           }, 500);
         });
       }
@@ -2030,6 +2102,7 @@
                 loadingPanel.classList.remove('visible');
                 resultsSection.classList.add('visible');
                 scanBtn.classList.add('hidden');
+                showResultsState();
               }, 500);
             });
           });
@@ -2040,6 +2113,7 @@
             loadingPanel.classList.remove('visible');
             resultsSection.classList.add('visible');
             scanBtn.classList.add('hidden');
+            showResultsState();
           }, 500);
         });
       }
@@ -2363,6 +2437,7 @@
               loadingPanel.classList.remove('visible');
               resultsSection.classList.add('visible');
               scanBtn.classList.add('hidden');
+              showResultsState();
             }, 500);
             return;
           }
@@ -2404,15 +2479,14 @@
         }
       });
 
-      document.querySelector('.scan-again-btn').addEventListener('click', function () {
-        resultsSection.classList.remove('visible');
-        inputSection.classList.remove('hidden');
-        if (faqSection) faqSection.classList.remove('hidden');
-        scanBtn.classList.remove('hidden');
-        scanBtn.textContent = 'Scan Dependencies →';
-        scanBtn.classList.remove('scan-btn-pulse');
-        resetDropZones();
-      });
+      document.querySelector('.scan-again-btn').addEventListener('click', resetToInputState);
+
+      if (backToHomeLink) {
+        backToHomeLink.addEventListener('click', function (e) {
+          e.preventDefault();
+          resetToInputState();
+        });
+      }
 
       var faqList = document.querySelector('.faq-list');
       if (faqList) {
