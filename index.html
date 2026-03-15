@@ -642,24 +642,6 @@
       color: var(--muted);
     }
 
-    .scan-again-btn {
-      float: right;
-      margin-bottom: 1rem;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.8rem;
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--muted);
-      padding: 0.4rem 1rem;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    .scan-again-btn:hover {
-      border-color: var(--purple);
-      color: var(--text);
-    }
-
     .diff-section-title {
       font-size: 1rem;
       font-weight: 600;
@@ -1009,7 +991,6 @@
     </div>
 
     <div id="results-section">
-      <button type="button" class="scan-again-btn">← Scan another file</button>
       <div id="results-content"></div>
     </div>
 
@@ -2478,8 +2459,6 @@
           runFakeScan();
         }
       });
-
-      document.querySelector('.scan-again-btn').addEventListener('click', resetToInputState);
 
       if (backToHomeLink) {
         backToHomeLink.addEventListener('click', function (e) {
