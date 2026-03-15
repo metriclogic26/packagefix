@@ -424,6 +424,10 @@
       display: block;
     }
 
+    #results-content {
+      clear: both;
+    }
+
     .health-score-label {
       font-size: 1rem;
       color: var(--text);
@@ -596,19 +600,21 @@
     }
 
     .scan-again-btn {
+      float: right;
+      margin-bottom: 1rem;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.9375rem;
-      font-weight: 600;
-      background: var(--surface);
+      font-size: 0.8rem;
+      background: transparent;
       border: 1px solid var(--border);
-      color: var(--text);
-      padding: 0.75rem 1.5rem;
+      color: var(--muted);
+      padding: 0.4rem 1rem;
       border-radius: 6px;
       cursor: pointer;
     }
 
     .scan-again-btn:hover {
       border-color: var(--purple);
+      color: var(--text);
     }
 
     .diff-section-title {
@@ -957,8 +963,8 @@
     </div>
 
     <div id="results-section">
+      <button type="button" class="scan-again-btn">← Scan another file</button>
       <div id="results-content"></div>
-      <button type="button" class="scan-again-btn">Scan again →</button>
     </div>
 
     <button type="button" class="scan-btn" disabled>Scan Dependencies →</button>
@@ -2329,8 +2335,6 @@
           });
         }
 
-        var againBtn = document.querySelector('.scan-again-btn');
-        if (againBtn) againBtn.style.marginTop = '1rem';
       }
 
       function escapeHtml(s) {
