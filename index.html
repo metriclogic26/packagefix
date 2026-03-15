@@ -1426,9 +1426,18 @@
           .catch(function () { return null; });
       }
 
+      var NEVER_SUSPICIOUS = [
+        'react', 'typescript', 'lodash', 'express', 'axios',
+        'vue', 'angular', 'next', 'webpack', 'babel',
+        'eslint', 'prettier', 'jest', 'vite', 'rollup'
+      ];
+
       function checkNpmSuspicious(packages) {
         if (packages.length === 0) return Promise.resolve([]);
+        var allowlist = {};
+        NEVER_SUSPICIOUS.forEach(function (name) { allowlist[name.toLowerCase()] = true; });
         return Promise.all(packages.map(function (p) {
+          if (allowlist[(p.name || '').toLowerCase()]) return null;
           return fetchNpmFullPackage(p.name).then(function (res) {
             if (!res || !res.time) return null;
             var created = res.time.created;
@@ -1438,9 +1447,10 @@
             var modifiedMs = new Date(modified).getTime();
             var now = Date.now();
             var daysBetween = (modifiedMs - createdMs) / (24 * 60 * 60 * 1000);
-            var modifiedWithin72h = (now - modifiedMs) < 72 * 60 * 60 * 1000;
-            var downloadsOk = res.downloads == null || (typeof res.downloads === 'number' && res.downloads > 10000);
-            if (daysBetween > 365 && modifiedWithin72h && downloadsOk) {
+            var dormant24months = daysBetween > 730;
+            var modifiedWithin24h = (now - modifiedMs) < 24 * 60 * 60 * 1000;
+            var downloadsUnder5M = res.downloads == null || (typeof res.downloads === 'number' && res.downloads < 5000000);
+            if (dormant24months && modifiedWithin24h && downloadsUnder5M) {
               var hoursAgo = Math.floor((now - modifiedMs) / (60 * 60 * 1000));
               var daysAgo = Math.floor((now - modifiedMs) / (24 * 60 * 60 * 1000));
               var monthsInactive = Math.floor(daysBetween / 30);
@@ -2254,7 +2264,7 @@
             var manifestObj = JSON.parse(data.manifestStr);
             fixedManifest = JSON.parse(data.manifestStr);
             data.packageRows.forEach(function (r) {
-              if (r.fixVersion && r.fixVersion !== 'see advisory') {
+              if (r.fixVersion && r.fixVersion !== 'see advisory' && r.fixVersion !== 'pin current') {
                 if (fixedManifest.dependencies && fixedManifest.dependencies[r.name] !== undefined) fixedManifest.dependencies[r.name] = r.fixVersion;
                 if (fixedManifest.devDependencies && fixedManifest.devDependencies[r.name] !== undefined) fixedManifest.devDependencies[r.name] = r.fixVersion;
               }
