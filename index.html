@@ -14,8 +14,11 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <link rel="preconnect" href="https://api-gateway.umami.dev">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap"></noscript>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <style>
     :root {
       --bg: #0B0D14;
@@ -85,7 +88,7 @@
     }
 
     .hero-logo {
-      font-size: 2rem;
+      font-size: 1.5rem;
       font-weight: 700;
       text-align: center;
       margin-bottom: 0.5rem;
@@ -98,7 +101,7 @@
 
     .tagline-section {
       text-align: center;
-      padding: 1.5rem 1rem;
+      padding: 0.75rem 1rem;
     }
 
     .tagline {
@@ -108,7 +111,7 @@
 
     .tagline-line1 {
       display: block;
-      font-size: 1.1rem;
+      font-size: 0.95rem;
       color: var(--text);
     }
 
@@ -130,7 +133,7 @@
       display: flex;
       gap: 0;
       border-bottom: 1px solid var(--border);
-      margin-bottom: 1.5rem;
+      margin-bottom: 0.75rem;
     }
 
     .tab {
@@ -1033,6 +1036,13 @@
     </div>
 
     <button type="button" class="scan-btn" disabled>Scan Dependencies →</button>
+    <p id="cta-hint" style="
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.78rem;
+      margin-top: 0.5rem;
+      animation: scan-btn-pulse 2s ease-in-out infinite;
+    ">↑ Drop your package.json here to get started</p>
 
     <section id="faq-section" class="how-it-works">
       <h2 class="how-it-works-title">How it works</h2>
@@ -1133,6 +1143,8 @@
         if (topBar) topBar.classList.remove('visible');
         if (heroSection) heroSection.classList.remove('hero-hidden');
         resetDropZones();
+        var hint = document.getElementById('cta-hint');
+        if (hint) hint.style.display = '';
       }
 
       function showResultsState() {
@@ -1433,6 +1445,8 @@
           selectedEcosystem = detectedEcosystem;
           document.getElementById('drop-zone-manifest').querySelector('.drop-zone-error-msg').removeAttribute('data-msg');
           updateManifestZoneUI();
+          var hint = document.getElementById('cta-hint');
+          if (hint) hint.style.display = 'none';
           var pasteActive = document.getElementById('panel-paste').classList.contains('active');
           if (pasteActive) scanBtn.disabled = (detectedEcosystem === null);
         };
@@ -1712,8 +1726,6 @@
           })).then(function (responses) {
             var fullVulnMap = {};
             uniqueIds.forEach(function (id, i) { fullVulnMap[id] = responses[i]; });
-            var firstId = Object.keys(fullVulnMap)[0];
-            if (firstId) console.log('FULL VULN:', JSON.stringify(fullVulnMap[firstId], null, 2));
             var byPackage = {};
             packages.forEach(function (p) {
               var ids = vulnIdsByPkg[p.name] || [];
