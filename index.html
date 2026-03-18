@@ -588,6 +588,12 @@
       color: var(--yellow);
     }
 
+    .severity-badge.deprecated {
+      background: rgba(107, 114, 128, 0.2);
+      border: 1px solid #9CA3AF;
+      color: #9CA3AF;
+    }
+
     .kev-banner {
       background: rgba(234, 179, 8, 0.1);
       border: 1px solid var(--yellow);
@@ -1820,6 +1826,29 @@
         });
       }
 
+      function checkDeprecated(packages) {
+        if (packages.length === 0) return Promise.resolve([]);
+        
+        return Promise.all(packages.map(function (p) {
+          return fetch('https://registry.npmjs.org/' + 
+            encodeURIComponent(p.name) + '/latest')
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+              if (!data || !data.deprecated) return null;
+              return {
+                name: p.name,
+                version: p.version,
+                type: 'deprecated',
+                deprecatedMessage: data.deprecated,
+                warningMessage: 'Deprecated: ' + data.deprecated
+              };
+            })
+            .catch(function() { return null; });
+        })).then(function(results) {
+          return results.filter(Boolean);
+        });
+      }
+
       var NEVER_SUSPICIOUS = [
         'react', 'react-dom', 'typescript', 'lodash', 'express',
         'axios', 'vue', 'next', 'webpack', 'babel', 'eslint',
@@ -2264,9 +2293,11 @@
           return Promise.all([
             checkNpmSuspicious(packages),
             checkMaintainerTakeover(packages),
-            checkLicensePoison(packages)
+            checkLicensePoison(packages),
+            checkDeprecated(packages)
           ]).then(function (results) {
             var suspiciousList = results[0].concat(results[1]).concat(results[2]);
+            suspiciousList = suspiciousList.concat(results[3]);
             // remove duplicates by name
             var seen = {};
             suspiciousList = suspiciousList.filter(function (s) {
@@ -2318,14 +2349,17 @@
                 });
 
                 suspiciousList.forEach(function (s) {
+                  var fixVersion = s.type === 'takeover'
+                    ? 'verify before upgrading'
+                    : s.type === 'license'
+                      ? 'find MIT alternative'
+                      : s.type === 'deprecated'
+                        ? 'find replacement'
+                        : 'pin current';
                   packageRows.push({
                     name: s.name,
                     installed: s.version,
-                    fixVersion: s.type === 'takeover'
-                      ? 'verify before upgrading'
-                      : s.type === 'license'
-                        ? 'find MIT alternative'
-                        : 'pin current',
+                    fixVersion: fixVersion,
                     advisoryId: null,
                     severity: 'SUSPICIOUS',
                     cveId: s.type === 'license' ? (s.license || '—') : '—',
@@ -3076,12 +3110,14 @@
             var sevLabel = r.private ? 'PRIVATE' :
               (r.suspicious ? (r.type === 'takeover' ? '🚨 TAKEOVER?' :
                 r.type === 'license' ? '⚖ LICENSE' :
+                r.type === 'deprecated' ? '🪦 DEPRECATED' :
                 '⚠ SUSPICIOUS') :
                 (r.severity || 'MEDIUM'));
 
             var sevClass = r.private ? 'private' :
               (r.suspicious ? (r.type === 'takeover' ? 'takeover' :
                 r.type === 'license' ? 'license' :
+                r.type === 'deprecated' ? 'deprecated' :
                 'suspicious') :
                 (r.severity || 'MEDIUM').toLowerCase());
             var fixCell = r.private
@@ -3089,6 +3125,7 @@
               : (r.suspicious
                 ? (r.type === 'license' ? 'find MIT alternative' :
                   r.type === 'takeover' ? 'verify before upgrading' :
+                  r.type === 'deprecated' ? 'find replacement' :
                   escapeHtml(r.fixVersion || 'pin current'))
                 : (r.advisoryId
                   ? (r.fixVersion === 'see packagist.org'
