@@ -576,6 +576,12 @@
       color: var(--bg);
     }
 
+    .severity-badge.takeover {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid var(--red);
+      color: var(--red);
+    }
+
     .kev-banner {
       background: rgba(234, 179, 8, 0.1);
       border: 1px solid var(--yellow);
@@ -1728,6 +1734,93 @@
         });
       }
 
+      function checkMaintainerTakeover(packages) {
+        if (packages.length === 0) return Promise.resolve([]);
+
+        var neverLower = NEVER_SUSPICIOUS.map(function (n) {
+          return n.toLowerCase();
+        });
+
+        function isNeverSuspicious(packageName) {
+          var nameLower = (packageName || '').toLowerCase();
+          if (neverLower.indexOf(nameLower) !== -1) return true;
+          var parts = nameLower.split('/');
+          for (var i = 0; i < parts.length; i++) {
+            var segment = parts[i].replace(/^@/, '');
+            if (neverLower.indexOf(segment) !== -1) return true;
+          }
+          return false;
+        }
+
+        return Promise.all(packages.map(function (p) {
+          if (isNeverSuspicious(p.name)) return Promise.resolve(null);
+
+          return fetchNpmFullPackage(p.name).then(function (res) {
+            if (!res || !res.time || !res.maintainers) return null;
+
+            // Get maintainers from latest version
+            var latestVersion = res['dist-tags'] && res['dist-tags'].latest;
+            if (!latestVersion) return null;
+
+            var latestVersionData = res.versions && res.versions[latestVersion];
+            if (!latestVersionData || !latestVersionData.maintainers) return null;
+
+            var currentMaintainers = latestVersionData.maintainers.map(
+              function (m) { return m.name || m.email || ''; }
+            );
+
+            // Get previous version maintainers
+            var versionKeys = Object.keys(res.time)
+              .filter(function (k) { return k !== 'created' && k !== 'modified'; })
+              .sort(function (a, b) {
+                return new Date(res.time[a]) - new Date(res.time[b]);
+              });
+
+            if (versionKeys.length < 2) return null;
+
+            var prevVersion = versionKeys[versionKeys.length - 2];
+            var prevVersionData = res.versions && res.versions[prevVersion];
+            if (!prevVersionData || !prevVersionData.maintainers) return null;
+
+            var prevMaintainers = prevVersionData.maintainers.map(
+              function (m) { return m.name || m.email || ''; }
+            );
+
+            // Check if latest version was published recently
+            var latestPublished = new Date(res.time[latestVersion]);
+            var now = new Date();
+            var hoursSinceLatest = (now - latestPublished) / (1000 * 60 * 60);
+
+            if (hoursSinceLatest > 168) return null; // Only flag if within 7 days
+
+            // Find new maintainers not in previous version
+            var newMaintainers = currentMaintainers.filter(function (m) {
+              return m && prevMaintainers.indexOf(m) === -1;
+            });
+
+            if (newMaintainers.length === 0) return null;
+
+            var hoursAgo = Math.floor(hoursSinceLatest);
+            var timeStr = hoursAgo < 24
+              ? hoursAgo + ' hour(s)'
+              : Math.floor(hoursSinceLatest / 24) + ' day(s)';
+
+            return {
+              name: p.name,
+              version: p.version,
+              type: 'takeover',
+              warningMessage: 'New maintainer detected: ' +
+                newMaintainers.join(', ') +
+                '. Published ' + timeStr + ' ago. ' +
+                'Verify this change is legitimate before upgrading. ' +
+                'May indicate a compromised or sold package.'
+            };
+          }).catch(function () { return null; });
+        })).then(function (results) {
+          return results.filter(Boolean);
+        });
+      }
+
       function fetchPyPiLatestVersions(packages) {
         var withVersion = packages.filter(function (p) { return p.version != null && p.version !== ''; });
         if (withVersion.length === 0) return Promise.resolve({});
@@ -2024,7 +2117,18 @@
           var packagesForOsv = packages.filter(function (p) { return !skipped.some(function (s) { return s.name === p.name; }); });
           setStep(1, true);
           setStep(2, false);
-          return checkNpmSuspicious(packages).then(function (suspiciousList) {
+          return Promise.all([
+            checkNpmSuspicious(packages),
+            checkMaintainerTakeover(packages)
+          ]).then(function (results) {
+            var suspiciousList = results[0].concat(results[1]);
+            // remove duplicates by name
+            var seen = {};
+            suspiciousList = suspiciousList.filter(function (s) {
+              if (seen[s.name]) return false;
+              seen[s.name] = true;
+              return true;
+            });
             return fetchOsvVulns(packagesForOsv).then(function (osvByPackage) {
               setStep(2, true);
               setStep(3, false);
@@ -2072,12 +2176,13 @@
                   packageRows.push({
                     name: s.name,
                     installed: s.version,
-                    fixVersion: 'pin current',
+                    fixVersion: s.type === 'takeover' ? 'verify before upgrading' : 'pin current',
                     advisoryId: null,
                     severity: 'SUSPICIOUS',
                     cveId: '—',
                     kev: false,
                     suspicious: true,
+                    type: s.type || 'suspicious',
                     warningMessage: s.warningMessage
                   });
                 });
@@ -2819,8 +2924,13 @@
           var table = '<div class="cve-table-wrap"><table class="cve-table"><thead><tr>' +
             '<th>Package</th><th>Installed</th><th>Fix Version</th><th>Severity</th><th>CVE ID</th><th>KEV</th></tr></thead><tbody>';
           data.packageRows.forEach(function (r) {
-            var sevClass = r.private ? 'private' : (r.suspicious ? 'suspicious' : (r.severity || 'MEDIUM').toLowerCase());
-            var sevLabel = r.private ? 'PRIVATE' : (r.suspicious ? '⚠ SUSPICIOUS' : (r.severity || 'MEDIUM'));
+            var sevLabel = r.private ? 'PRIVATE' :
+              (r.suspicious ? (r.type === 'takeover' ? '🚨 TAKEOVER?' : '⚠ SUSPICIOUS') :
+                (r.severity || 'MEDIUM'));
+
+            var sevClass = r.private ? 'private' :
+              (r.suspicious ? (r.type === 'takeover' ? 'takeover' : 'suspicious') :
+                (r.severity || 'MEDIUM').toLowerCase());
             var fixCell = r.private
               ? '—'
               : (r.suspicious
