@@ -273,6 +273,12 @@
       color: #00ADD8;
     }
 
+    .ecosystem-badge.rust {
+      background: rgba(206, 74, 40, 0.2);
+      border: 1px solid #CE4A28;
+      color: #CE4A28;
+    }
+
     .manifest-ecosystem-picker {
       margin-top: 0.75rem;
       display: flex;
@@ -983,7 +989,7 @@
       </div>
 
       <div id="panel-paste" class="panel active">
-        <input type="file" id="manifest-file-input" accept=".json,.txt,Gemfile,composer.json,go.mod" style="display: none">
+        <input type="file" id="manifest-file-input" accept=".json,.txt,Gemfile,composer.json,go.mod,Cargo.toml" style="display: none">
         <input type="file" id="lockfile-file-input" accept=".json,.lock" style="display: none">
         <div class="drop-zones">
           <div class="drop-zone-manifest-wrap">
@@ -1003,6 +1009,7 @@
               <button type="button" class="eco-pick-btn" data-ecosystem="gems">Ruby</button>
               <button type="button" class="eco-pick-btn" data-ecosystem="composer">PHP</button>
               <button type="button" class="eco-pick-btn" data-ecosystem="go">Go</button>
+              <button type="button" class="eco-pick-btn" data-ecosystem="rust">Rust</button>
             </div>
           </div>
           <div class="drop-zone drop-zone-lock" id="drop-zone-lockfile" role="button" tabindex="0">
@@ -1025,6 +1032,7 @@
           <button type="button" class="example-btn" data-ecosystem="gems">Gems (Ruby)</button>
           <button type="button" class="example-btn" data-ecosystem="composer">Composer (PHP)</button>
           <button type="button" class="example-btn" data-ecosystem="go">Go (go.mod)</button>
+          <button type="button" class="example-btn" data-ecosystem="rust">Rust (Cargo.toml)</button>
         </div>
         <pre class="code-preview" id="example-preview"></pre>
       </div>
@@ -1150,6 +1158,8 @@
         composer: '{\n  "require": {\n    "laravel/framework": "8.0.0",\n    "guzzlehttp/guzzle": "7.0.1",\n    "symfony/http-foundation": "5.2.0",\n    "monolog/monolog": "2.0.0",\n    "league/flysystem": "1.1.0"\n  }\n}'
         ,
         go: 'module github.com/myapp/server\n\ngo 1.21\n\nrequire (\n\tgithub.com/gin-gonic/gin v1.8.1\n\tgithub.com/golang-jwt/jwt v3.2.2+incompatible\n\tgithub.com/gorilla/mux v1.8.0\n\tgithub.com/jackc/pgx/v5 v5.0.0\n\tgolang.org/x/crypto v0.0.0-20220214200702-86341886e292\n\tgolang.org/x/net v0.0.0-20211112202133-69e39bad7dc2\n)'
+        ,
+        rust: '[package]\nname = "my-app"\nversion = "0.1.0"\nedition = "2021"\n\n[dependencies]\nactix-web = "4.2.1"\ntokio = { version = "1.20.0", features = ["full"] }\nserde = { version = "1.0.144", features = ["derive"] }\nreqwest = { version = "0.11.11", features = ["json"] }\nopenssl = "0.10.41"\ntime = "0.1.44"\ncrossbeam = "0.8.2"'
       };
 
       var tabs = document.querySelectorAll('.tab');
@@ -1372,6 +1382,47 @@
         return packages;
       }
 
+      function parseCargoToml(content) {
+        var lines = (content || '').split('\n');
+        var packages = [];
+        var inDependencies = false;
+        for (var i = 0; i < lines.length; i++) {
+          var line = lines[i].trim();
+          if (line === '[dependencies]' ||
+              line === '[dev-dependencies]' ||
+              line === '[build-dependencies]') {
+            inDependencies = true;
+            continue;
+          }
+          if (line.indexOf('[') === 0 && line !== '[dependencies]' &&
+              line !== '[dev-dependencies]' &&
+              line !== '[build-dependencies]') {
+            inDependencies = false;
+            continue;
+          }
+          if (!inDependencies || !line || line.indexOf('#') === 0) continue;
+          var eqIdx = line.indexOf('=');
+          if (eqIdx === -1) continue;
+          var name = line.substring(0, eqIdx).trim();
+          var rest = line.substring(eqIdx + 1).trim();
+          var version = null;
+          // Simple string version: name = "1.0.0"
+          var simpleMatch = rest.match(/^"([^"]+)"/);
+          if (simpleMatch) {
+            version = simpleMatch[1].replace(/^[\^~>=]+/, '').trim();
+          }
+          // Inline table: name = { version = "1.0.0", ... }
+          var tableMatch = rest.match(/version\s*=\s*"([^"]+)"/);
+          if (!version && tableMatch) {
+            version = tableMatch[1].replace(/^[\^~>=]+/, '').trim();
+          }
+          if (name && version) {
+            packages.push({ name: name, version: version });
+          }
+        }
+        return packages;
+      }
+
       function detectEcosystem(filename, content) {
         var n = (filename || '').toLowerCase();
         var c = (content || '').trim();
@@ -1405,6 +1456,11 @@
             if (line.indexOf("gem '") === 0) return 'gems';
           }
         }
+
+        if (n.endsWith('cargo.toml') || n === 'cargo.toml') return 'rust';
+
+        if (c && c.indexOf('[dependencies]') !== -1 &&
+            c.indexOf('edition') !== -1) return 'rust';
         return null;
       }
 
@@ -1448,6 +1504,7 @@
             : detectedEcosystem === 'composer' ? 'PHP'
               : detectedEcosystem === 'pypi' ? 'PyPI'
                 : detectedEcosystem === 'go' ? 'Go'
+                  : detectedEcosystem === 'rust' ? 'Rust'
                   : detectedEcosystem;
           ecoBadge = '<span class="ecosystem-badge ' + detectedEcosystem + '">' + escapeHtml(ecoLabel) + ' detected</span>';
         } else {
@@ -1663,6 +1720,25 @@
           packages.forEach(function (p, i) {
             var info = responses[i];
             out[p.name] = (info && info.version) ? info.version : (p.version || '');
+          });
+          return out;
+        });
+      }
+
+      function fetchCratesLatestVersions(packages) {
+        if (packages.length === 0) return Promise.resolve({});
+        return Promise.all(packages.map(function (p) {
+          return fetch('https://crates.io/api/v1/crates/' +
+            encodeURIComponent(p.name))
+            .then(function (r) { return r.json(); })
+            .catch(function () { return null; });
+        })).then(function (responses) {
+          var out = {};
+          packages.forEach(function (p, i) {
+            var info = responses[i];
+            out[p.name] = (info && info.crate && info.crate.newest_version)
+              ? info.crate.newest_version
+              : p.version;
           });
           return out;
         });
@@ -2214,6 +2290,120 @@
         });
       }
 
+      function runRustScan(manifestStr) {
+        manifestStr = manifestStr || exampleManifests.rust;
+        inputSection.classList.add('hidden');
+        if (faqSection) faqSection.classList.add('hidden');
+        loadingPanel.classList.add('visible');
+        resultsSection.classList.remove('visible');
+        setStep(0, false);
+
+        var packages = parseCargoToml(manifestStr);
+        setStep(0, true);
+        setStep(1, false);
+
+        fetchCratesLatestVersions(packages).then(function (latestVersions) {
+          setStep(1, true);
+          setStep(2, false);
+          return fetchOsvVulns(packages, 'crates.io').then(function (osvByPackage) {
+            setStep(2, true);
+            setStep(3, false);
+            return fetchKevList().then(function (kevIds) {
+              setStep(3, true);
+              setStep(4, false);
+              var kevSet = {};
+              kevIds.forEach(function(id) { kevSet[id.toUpperCase()] = true; });
+
+              var packageRows = [];
+              Object.keys(osvByPackage).forEach(function (pkgName) {
+                var vulns = osvByPackage[pkgName];
+                if (vulns.length === 0) return;
+                var topSev = maxSeverity(vulns);
+                var topVuln = vulns[0];
+                vulns.forEach(function(v) {
+                  if (SEV_ORDER[v.severity] !== undefined &&
+                     (SEV_ORDER[topVuln.severity] === undefined ||
+                      SEV_ORDER[v.severity] <= SEV_ORDER[topVuln.severity])) {
+                    topVuln = v;
+                  }
+                });
+                var isKev = vulns.some(function (v) {
+                  var allIds = [v.id].concat(v.aliases || []);
+                  return allIds.some(function(id) {
+                    return id && kevSet[id.toUpperCase()];
+                  });
+                });
+                var fixVersions = vulns.map(function (v) {
+                  return v.fixVersion;
+                }).filter(Boolean);
+                var minFix = null;
+                if (fixVersions.length > 0) {
+                  minFix = fixVersions[0];
+                  for (var f = 1; f < fixVersions.length; f++) {
+                    if (semverCompare(fixVersions[f], minFix) < 0) {
+                      minFix = fixVersions[f];
+                    }
+                  }
+                }
+                var resolved = resolveFixVersion(minFix, latestVersions, pkgName, topVuln.id);
+                var pkg = packages.find(function(p) {
+                  return p.name === pkgName;
+                });
+                packageRows.push({
+                  name: pkgName,
+                  installed: (pkg && pkg.version) ? pkg.version : '—',
+                  fixVersion: resolved.fixVersion,
+                  advisoryId: resolved.advisoryId,
+                  severity: topSev,
+                  cveId: topVuln.displayId || topVuln.id,
+                  kev: isKev,
+                  vulns: vulns.map(function(v) {
+                    return {
+                      id: v.id,
+                      displayId: v.displayId || v.id,
+                      severity: v.severity,
+                      summary: v.summary || ''
+                    };
+                  })
+                });
+              });
+
+              var health = calculateHealthScore(packageRows);
+              setStep(4, true);
+
+              setTimeout(function() {
+                renderResults({
+                  score: health.score,
+                  critical: health.critical,
+                  high: health.high,
+                  medium: health.medium,
+                  totalPackages: packages.length,
+                  kevPackages: packageRows.filter(function(r) { return r.kev; }),
+                  packageRows: packageRows,
+                  packages: packages,
+                  manifestStr: manifestStr,
+                  ecosystem: 'rust',
+                  unpinnedCount: packages.filter(function(p) { return !p.version; }).length
+                });
+                loadingPanel.classList.remove('visible');
+                resultsSection.classList.add('visible');
+                scanBtn.classList.add('hidden');
+                showResultsState();
+              }, 500);
+            });
+          });
+        }).catch(function (err) {
+          setStep(4, true);
+          setTimeout(function () {
+            renderResults({ error: String(err && err.message || err) });
+            loadingPanel.classList.remove('visible');
+            resultsSection.classList.add('visible');
+            scanBtn.classList.add('hidden');
+            showResultsState();
+          }, 500);
+        });
+      }
+
       function runRubyScan(manifestStr) {
         manifestStr = manifestStr || exampleManifests.gems;
         inputSection.classList.add('hidden');
@@ -2526,6 +2716,7 @@
           var isGems = data.ecosystem === 'gems';
           var isComposer = data.ecosystem === 'composer';
           var isGo = data.ecosystem === 'go';
+          var isRust = data.ecosystem === 'rust';
           var diffLines = [];
           var leftStr = '';
           var rightStr = '';
@@ -2534,6 +2725,7 @@
           var fixedRequirementsStr = '';
           var fixedGemfileStr = '';
           var fixedGoModStr = '';
+          var fixedRustStr = '';
 
           if (isComposer) {
             fixedComposer = JSON.parse(data.manifestStr);
@@ -2643,6 +2835,36 @@
               diffLines.push({ left: gline, right: rightLine, changed: gline !== rightLine });
             }
             fixedGoModStr = diffLines.map(function (d) { return d.right; }).join('\n');
+          } else if (isRust) {
+            var fixMapRust = {};
+            data.packageRows.forEach(function (r) {
+              if (r.fixVersion && r.fixVersion !== 'see advisory') {
+                fixMapRust[r.name] = r.fixVersion;
+              }
+            });
+            var cargoLines = data.manifestStr.split('\n');
+            for (var ri = 0; ri < cargoLines.length; ri++) {
+              var cline = cargoLines[ri];
+              var ctrim = cline.trim();
+              var rightLine = cline;
+              var eqIdx = ctrim.indexOf('=');
+              if (eqIdx !== -1) {
+                var pkgName = ctrim.substring(0, eqIdx).trim();
+                if (fixMapRust[pkgName]) {
+                  var rest = ctrim.substring(eqIdx + 1).trim();
+                  if (/^"/.test(rest)) {
+                    rightLine = pkgName + ' = "' + fixMapRust[pkgName] + '"';
+                  } else if (rest.indexOf('{') !== -1) {
+                    rightLine = cline.replace(
+                      /version\s*=\s*"[^"]+"/,
+                      'version = "' + fixMapRust[pkgName] + '"'
+                    );
+                  }
+                }
+              }
+              diffLines.push({ left: cline, right: rightLine, changed: cline !== rightLine });
+            }
+            fixedRustStr = diffLines.map(function (d) { return d.right; }).join('\n');
           } else {
             var manifestObj = JSON.parse(data.manifestStr);
             fixedManifest = JSON.parse(data.manifestStr);
@@ -2672,8 +2894,16 @@
             }
           }
 
-          var leftHeader = isComposer ? 'YOUR composer.json' : isGems ? 'YOUR Gemfile' : isPypi ? 'YOUR requirements.txt' : isGo ? 'YOUR go.mod' : 'YOUR package.json';
-          var rightHeader = isComposer ? 'FIXED composer.json' : isGems ? 'FIXED Gemfile' : isPypi ? 'FIXED requirements.txt' : isGo ? 'FIXED go.mod' : 'FIXED package.json';
+          var leftHeader = isComposer ? 'YOUR composer.json' :
+            isGems ? 'YOUR Gemfile' :
+              isPypi ? 'YOUR requirements.txt' :
+                isRust ? 'YOUR Cargo.toml' :
+                  data.ecosystem === 'go' ? 'YOUR go.mod' : 'YOUR package.json';
+          var rightHeader = isComposer ? 'FIXED composer.json' :
+            isGems ? 'FIXED Gemfile' :
+              isPypi ? 'FIXED requirements.txt' :
+                isRust ? 'FIXED Cargo.toml' :
+                  data.ecosystem === 'go' ? 'FIXED go.mod' : 'FIXED package.json';
           var diffHtml = '<div class="diff-section-title">Recommended Changes</div>' +
             '<div class="diff-toggle-wrap"><button type="button" class="diff-toggle-btn" id="diff-toggle-btn">Show changed only</button></div>' +
             '<div class="diff-panel-wrap">' +
@@ -2775,7 +3005,7 @@
             renderDiff();
           });
           document.getElementById('copy-fixed-btn').addEventListener('click', function () {
-            var text = isComposer ? JSON.stringify(fixedComposer, null, 2) : isGems ? fixedGemfileStr : isPypi ? fixedRequirementsStr : isGo ? fixedGoModStr : JSON.stringify(fixedManifest, null, 2);
+            var text = isComposer ? JSON.stringify(fixedComposer, null, 2) : isGems ? fixedGemfileStr : isPypi ? fixedRequirementsStr : isGo ? fixedGoModStr : isRust ? fixedRustStr : JSON.stringify(fixedManifest, null, 2);
             if (navigator.clipboard && navigator.clipboard.writeText) {
               navigator.clipboard.writeText(text).then(function () {
                 var btn = document.getElementById('copy-fixed-btn');
@@ -2796,6 +3026,8 @@
               zip.file('requirements.txt', fixedRequirementsStr);
             } else if (isGo) {
               zip.file('go.mod', fixedGoModStr);
+            } else if (isRust) {
+              zip.file('Cargo.toml', fixedRustStr);
             } else {
               zip.file('package.json', JSON.stringify(fixedManifest, null, 2));
             }
@@ -2902,6 +3134,7 @@
           else if (detectedEcosystem === 'gems') runRubyScan(manifestContent);
           else if (detectedEcosystem === 'composer') runComposerScan(manifestContent);
           else if (detectedEcosystem === 'go') runGoScan(manifestContent);
+          else if (detectedEcosystem === 'rust') runRustScan(manifestContent);
           else runFakeScan();
         } else if (!pasteActive && selectedEcosystem === 'npm') {
           runNpmScan(exampleManifests.npm);
@@ -2913,6 +3146,8 @@
           runComposerScan(exampleManifests.composer);
         } else if (!pasteActive && selectedEcosystem === 'go') {
           runGoScan(exampleManifests.go);
+        } else if (!pasteActive && selectedEcosystem === 'rust') {
+          runRustScan(exampleManifests.rust);
         } else {
           runFakeScan();
         }
