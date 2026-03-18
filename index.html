@@ -279,6 +279,12 @@
       color: #CE4A28;
     }
 
+    .ecosystem-badge.java {
+      background: rgba(249, 115, 22, 0.2);
+      border: 1px solid #F97316;
+      color: #F97316;
+    }
+
     .manifest-ecosystem-picker {
       margin-top: 0.75rem;
       display: flex;
@@ -989,7 +995,7 @@
       </div>
 
       <div id="panel-paste" class="panel active">
-        <input type="file" id="manifest-file-input" accept=".json,.txt,Gemfile,composer.json,go.mod,Cargo.toml" style="display: none">
+        <input type="file" id="manifest-file-input" accept=".json,.txt,.xml,Gemfile,composer.json,go.mod,Cargo.toml" style="display: none">
         <input type="file" id="lockfile-file-input" accept=".json,.lock" style="display: none">
         <div class="drop-zones">
           <div class="drop-zone-manifest-wrap">
@@ -1010,6 +1016,7 @@
               <button type="button" class="eco-pick-btn" data-ecosystem="composer">PHP</button>
               <button type="button" class="eco-pick-btn" data-ecosystem="go">Go</button>
               <button type="button" class="eco-pick-btn" data-ecosystem="rust">Rust</button>
+              <button type="button" class="eco-pick-btn" data-ecosystem="java">Java</button>
             </div>
           </div>
           <div class="drop-zone drop-zone-lock" id="drop-zone-lockfile" role="button" tabindex="0">
@@ -1033,6 +1040,7 @@
           <button type="button" class="example-btn" data-ecosystem="composer">Composer (PHP)</button>
           <button type="button" class="example-btn" data-ecosystem="go">Go (go.mod)</button>
           <button type="button" class="example-btn" data-ecosystem="rust">Rust (Cargo.toml)</button>
+          <button type="button" class="example-btn" data-ecosystem="java">Java (pom.xml)</button>
         </div>
         <pre class="code-preview" id="example-preview"></pre>
       </div>
@@ -1160,6 +1168,8 @@
         go: 'module github.com/myapp/server\n\ngo 1.21\n\nrequire (\n\tgithub.com/gin-gonic/gin v1.8.1\n\tgithub.com/golang-jwt/jwt v3.2.2+incompatible\n\tgithub.com/gorilla/mux v1.8.0\n\tgithub.com/jackc/pgx/v5 v5.0.0\n\tgolang.org/x/crypto v0.0.0-20220214200702-86341886e292\n\tgolang.org/x/net v0.0.0-20211112202133-69e39bad7dc2\n)'
         ,
         rust: '[package]\nname = "my-app"\nversion = "0.1.0"\nedition = "2021"\n\n[dependencies]\nactix-web = "4.2.1"\ntokio = { version = "1.20.0", features = ["full"] }\nserde = { version = "1.0.144", features = ["derive"] }\nreqwest = { version = "0.11.11", features = ["json"] }\nopenssl = "0.10.41"\ntime = "0.1.44"\ncrossbeam = "0.8.2"'
+        ,
+        java: '<?xml version="1.0" encoding="UTF-8"?>\n<project>\n  <modelVersion>4.0.0</modelVersion>\n  <groupId>com.myapp</groupId>\n  <artifactId>server</artifactId>\n  <version>1.0.0</version>\n\n  <dependencies>\n    <dependency>\n      <groupId>org.springframework.boot</groupId>\n      <artifactId>spring-boot-starter-web</artifactId>\n      <version>2.7.0</version>\n    </dependency>\n    <dependency>\n      <groupId>org.apache.struts</groupId>\n      <artifactId>struts2-core</artifactId>\n      <version>2.5.28</version>\n    </dependency>\n    <dependency>\n      <groupId>com.fasterxml.jackson.core</groupId>\n      <artifactId>jackson-databind</artifactId>\n      <version>2.13.0</version>\n    </dependency>\n    <dependency>\n      <groupId>org.apache.logging.log4j</groupId>\n      <artifactId>log4j-core</artifactId>\n      <version>2.14.1</version>\n    </dependency>\n    <dependency>\n      <groupId>commons-collections</groupId>\n      <artifactId>commons-collections</artifactId>\n      <version>3.2.1</version>\n    </dependency>\n  </dependencies>\n</project>'
       };
 
       var tabs = document.querySelectorAll('.tab');
@@ -1423,6 +1433,30 @@
         return packages;
       }
 
+      function parsePomXml(content) {
+        var packages = [];
+        var depRegex = /<dependency>([\s\S]*?)<\/dependency>/g;
+        var match;
+        while ((match = depRegex.exec(content)) !== null) {
+          var block = match[1];
+          var groupMatch = block.match(/<groupId>([^<]+)<\/groupId>/);
+          var artifactMatch = block.match(/<artifactId>([^<]+)<\/artifactId>/);
+          var versionMatch = block.match(/<version>([^<${}]+)<\/version>/);
+          if (groupMatch && artifactMatch && versionMatch) {
+            var groupId = groupMatch[1].trim();
+            var artifactId = artifactMatch[1].trim();
+            var version = versionMatch[1].trim();
+            packages.push({
+              name: groupId + ':' + artifactId,
+              version: version,
+              groupId: groupId,
+              artifactId: artifactId
+            });
+          }
+        }
+        return packages;
+      }
+
       function detectEcosystem(filename, content) {
         var n = (filename || '').toLowerCase();
         var c = (content || '').trim();
@@ -1461,6 +1495,10 @@
 
         if (c && c.indexOf('[dependencies]') !== -1 &&
             c.indexOf('edition') !== -1) return 'rust';
+
+        if (n.endsWith('pom.xml') || n === 'pom.xml') return 'java';
+        if (c && c.indexOf('<groupId>') !== -1 &&
+            c.indexOf('<artifactId>') !== -1) return 'java';
         return null;
       }
 
@@ -2404,6 +2442,100 @@
         });
       }
 
+      function runJavaScan(manifestStr) {
+        manifestStr = manifestStr || exampleManifests.java;
+        inputSection.classList.add('hidden');
+        if (faqSection) faqSection.classList.add('hidden');
+        loadingPanel.classList.add('visible');
+        resultsSection.classList.remove('visible');
+        setStep(0, false);
+
+        var packages = parsePomXml(manifestStr);
+        var pinnedPackages = packages.filter(function (p) { return p.version != null && p.version !== ''; });
+        var unpinnedCount = packages.filter(function (p) { return !p.version; }).length;
+        setStep(0, true);
+        setStep(1, false);
+
+        fetchOsvVulns(pinnedPackages, 'Maven').then(function (osvByPackage) {
+          setStep(2, true);
+          setStep(3, false);
+          return fetchKevList().then(function (kevIds) {
+            setStep(3, true);
+            setStep(4, false);
+            var kevSet = {};
+            kevIds.forEach(function (id) { kevSet[id.toUpperCase()] = true; });
+
+            var packageRows = [];
+            Object.keys(osvByPackage).forEach(function (pkgName) {
+              var vulns = osvByPackage[pkgName];
+              if (vulns.length === 0) return;
+              var topSev = maxSeverity(vulns);
+              var topVuln = vulns[0];
+              vulns.forEach(function (v) {
+                if (SEV_ORDER[v.severity] !== undefined && (SEV_ORDER[topVuln.severity] === undefined || SEV_ORDER[v.severity] <= SEV_ORDER[topVuln.severity])) topVuln = v;
+              });
+              var isKev = vulns.some(function (v) {
+                var allIds = [v.id].concat(v.aliases || []);
+                return allIds.some(function (id) { return id && kevSet[id.toUpperCase()]; });
+              });
+              var fixVersions = vulns.map(function (v) { return v.fixVersion; }).filter(Boolean);
+              var minFix = null;
+              if (fixVersions.length > 0) {
+                minFix = fixVersions[0];
+                for (var f = 1; f < fixVersions.length; f++) {
+                  if (semverCompare(fixVersions[f], minFix) < 0) minFix = fixVersions[f];
+                }
+              }
+              var resolved = resolveFixVersion(minFix, {}, pkgName, topVuln.id);
+              var pkg = packages.find(function (p) { return p.name === pkgName; });
+              packageRows.push({
+                name: pkgName,
+                installed: (pkg && pkg.version) ? pkg.version : '—',
+                fixVersion: resolved.fixVersion,
+                advisoryId: resolved.advisoryId,
+                severity: topSev,
+                cveId: topVuln.displayId || topVuln.id,
+                kev: isKev,
+                vulns: vulns.map(function (v) { return { id: v.id, displayId: v.displayId || v.id, severity: v.severity, summary: v.summary || '' }; })
+              });
+            });
+
+            var health = calculateHealthScore(packageRows);
+            setStep(4, true);
+
+            setTimeout(function () {
+              renderResults({
+                score: health.score,
+                critical: health.critical,
+                high: health.high,
+                medium: health.medium,
+                totalPackages: packages.length,
+                kevPackages: packageRows.filter(function (r) { return r.kev; }),
+                packageRows: packageRows,
+                packages: packages,
+                manifestStr: manifestStr,
+                ecosystem: 'java',
+                unpinnedCount: unpinnedCount,
+                suspiciousCount: 0
+              });
+              loadingPanel.classList.remove('visible');
+              resultsSection.classList.add('visible');
+              scanBtn.classList.add('hidden');
+              showResultsState();
+            }, 500);
+          });
+        }).catch(function (err) {
+          setStep(4, true);
+          setTimeout(function () {
+            renderResults({ error: String(err && err.message || err) });
+            loadingPanel.classList.remove('visible');
+            resultsSection.classList.add('visible');
+            scanBtn.classList.add('hidden');
+            showResultsState();
+          }, 500);
+        });
+      }
+
       function runRubyScan(manifestStr) {
         manifestStr = manifestStr || exampleManifests.gems;
         inputSection.classList.add('hidden');
@@ -2717,6 +2849,7 @@
           var isComposer = data.ecosystem === 'composer';
           var isGo = data.ecosystem === 'go';
           var isRust = data.ecosystem === 'rust';
+          var isJava = data.ecosystem === 'java';
           var diffLines = [];
           var leftStr = '';
           var rightStr = '';
@@ -2726,6 +2859,7 @@
           var fixedGemfileStr = '';
           var fixedGoModStr = '';
           var fixedRustStr = '';
+          var fixedJavaPomStr = '';
 
           if (isComposer) {
             fixedComposer = JSON.parse(data.manifestStr);
@@ -2865,6 +2999,48 @@
               diffLines.push({ left: cline, right: rightLine, changed: cline !== rightLine });
             }
             fixedRustStr = diffLines.map(function (d) { return d.right; }).join('\n');
+          } else if (isJava) {
+            var fixMapJava = {};
+            data.packageRows.forEach(function (r) {
+              if (r.fixVersion && r.fixVersion !== 'see advisory' && r.fixVersion !== '—' && !r.private) fixMapJava[r.name] = r.fixVersion;
+            });
+            var pomLines = data.manifestStr.split('\n');
+            var inDependency = false;
+            var curGroup = null;
+            var curArtifact = null;
+            for (var pi = 0; pi < pomLines.length; pi++) {
+              var pline = pomLines[pi];
+              var ptrim = pline.trim();
+              var rightLine = pline;
+
+              if (ptrim === '<dependency>') {
+                inDependency = true;
+                curGroup = null;
+                curArtifact = null;
+              } else if (ptrim === '</dependency>') {
+                inDependency = false;
+                curGroup = null;
+                curArtifact = null;
+              }
+
+              if (inDependency) {
+                var gm = ptrim.match(/^<groupId>([^<]+)<\/groupId>$/);
+                if (gm) curGroup = gm[1].trim();
+                var am = ptrim.match(/^<artifactId>([^<]+)<\/artifactId>$/);
+                if (am) curArtifact = am[1].trim();
+                var vm = ptrim.match(/^<version>([^<]+)<\/version>$/);
+                if (vm && curGroup && curArtifact) {
+                  var key = curGroup + ':' + curArtifact;
+                  if (fixMapJava[key]) {
+                    var newV = fixMapJava[key];
+                    rightLine = pline.replace(/<version>[^<]*<\/version>/, '<version>' + newV + '</version>');
+                  }
+                }
+              }
+
+              diffLines.push({ left: pline, right: rightLine, changed: pline !== rightLine });
+            }
+            fixedJavaPomStr = diffLines.map(function (d) { return d.right; }).join('\n');
           } else {
             var manifestObj = JSON.parse(data.manifestStr);
             fixedManifest = JSON.parse(data.manifestStr);
@@ -2898,12 +3074,14 @@
             isGems ? 'YOUR Gemfile' :
               isPypi ? 'YOUR requirements.txt' :
                 isRust ? 'YOUR Cargo.toml' :
-                  data.ecosystem === 'go' ? 'YOUR go.mod' : 'YOUR package.json';
+                  isGo ? 'YOUR go.mod' :
+                    isJava ? 'YOUR pom.xml' : 'YOUR package.json';
           var rightHeader = isComposer ? 'FIXED composer.json' :
             isGems ? 'FIXED Gemfile' :
               isPypi ? 'FIXED requirements.txt' :
                 isRust ? 'FIXED Cargo.toml' :
-                  data.ecosystem === 'go' ? 'FIXED go.mod' : 'FIXED package.json';
+                  isGo ? 'FIXED go.mod' :
+                    isJava ? 'FIXED pom.xml' : 'FIXED package.json';
           var diffHtml = '<div class="diff-section-title">Recommended Changes</div>' +
             '<div class="diff-toggle-wrap"><button type="button" class="diff-toggle-btn" id="diff-toggle-btn">Show changed only</button></div>' +
             '<div class="diff-panel-wrap">' +
@@ -3005,7 +3183,7 @@
             renderDiff();
           });
           document.getElementById('copy-fixed-btn').addEventListener('click', function () {
-            var text = isComposer ? JSON.stringify(fixedComposer, null, 2) : isGems ? fixedGemfileStr : isPypi ? fixedRequirementsStr : isGo ? fixedGoModStr : isRust ? fixedRustStr : JSON.stringify(fixedManifest, null, 2);
+            var text = isComposer ? JSON.stringify(fixedComposer, null, 2) : isGems ? fixedGemfileStr : isPypi ? fixedRequirementsStr : isGo ? fixedGoModStr : isRust ? fixedRustStr : isJava ? fixedJavaPomStr : JSON.stringify(fixedManifest, null, 2);
             if (navigator.clipboard && navigator.clipboard.writeText) {
               navigator.clipboard.writeText(text).then(function () {
                 var btn = document.getElementById('copy-fixed-btn');
@@ -3028,6 +3206,8 @@
               zip.file('go.mod', fixedGoModStr);
             } else if (isRust) {
               zip.file('Cargo.toml', fixedRustStr);
+            } else if (isJava) {
+              zip.file('pom.xml', fixedJavaPomStr);
             } else {
               zip.file('package.json', JSON.stringify(fixedManifest, null, 2));
             }
@@ -3135,6 +3315,7 @@
           else if (detectedEcosystem === 'composer') runComposerScan(manifestContent);
           else if (detectedEcosystem === 'go') runGoScan(manifestContent);
           else if (detectedEcosystem === 'rust') runRustScan(manifestContent);
+          else if (detectedEcosystem === 'java') runJavaScan(manifestContent);
           else runFakeScan();
         } else if (!pasteActive && selectedEcosystem === 'npm') {
           runNpmScan(exampleManifests.npm);
@@ -3148,6 +3329,8 @@
           runGoScan(exampleManifests.go);
         } else if (!pasteActive && selectedEcosystem === 'rust') {
           runRustScan(exampleManifests.rust);
+        } else if (!pasteActive && selectedEcosystem === 'java') {
+          runJavaScan(exampleManifests.java);
         } else {
           runFakeScan();
         }
