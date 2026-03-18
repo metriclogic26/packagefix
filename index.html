@@ -1035,13 +1035,26 @@
     </div>
 
     <button type="button" class="scan-btn" disabled>Scan Dependencies →</button>
-    <p id="cta-hint" style="
+    <div id="cta-hint" style="
       text-align: center;
-      color: var(--muted);
-      font-size: 0.78rem;
-      margin-top: 0.5rem;
-      animation: scan-btn-pulse 2s ease-in-out infinite;
-    ">↑ Drop your package.json here to get started</p>
+      margin-top: 1rem;
+      padding: 0.75rem;
+      background: rgba(108, 99, 255, 0.08);
+      border: 1px dashed rgba(108, 99, 255, 0.3);
+      border-radius: 8px;
+      font-size: 0.82rem;
+      color: #9CA3AF;
+    ">
+      <span id="cta-hint-link" style="
+        color: var(--purple); 
+        font-weight: 600; 
+        cursor: pointer;
+        text-decoration: underline;
+        text-decoration-style: dotted;
+      ">
+        No file? Try an example — select npm, PyPI, Ruby, or PHP to see a live scan →
+      </span>
+    </div>
 
     <section id="faq-section" class="how-it-works">
       <h2 class="how-it-works-title">How it works</h2>
@@ -1089,8 +1102,20 @@
       Vulnerability data is sourced from OSV and public package registries. Always test in a staging environment before deploying to production. PackageFix provides these tools for informational purposes only.
     </div>
     <div class="footer-bar">
-      <span>PackageFix by MetricLogic · Also try <a href="https://configclarity.dev" target="_blank" rel="noopener">configclarity.dev</a> · <a href="https://domainpreflight.dev" target="_blank" rel="noopener">domainpreflight.dev</a></span>
-      <span>Open source · MIT · <a href="https://github.com/metriclogic26/packagefix" target="_blank" rel="noopener">GitHub →</a> · <a href="https://github.com/metriclogic26/packagefix/issues/new" target="_blank" rel="noopener">Report issue →</a></span>
+      <span>
+        PackageFix by MetricLogic · 
+        <a href="https://configclarity.dev" target="_blank" rel="noopener">ConfigClarity</a> · 
+        <a href="https://domainpreflight.dev" target="_blank" rel="noopener">DomainPreflight</a> · 
+        <a href="https://metriclogic.dev" target="_blank" rel="noopener">MetricLogic Hub</a>
+      </span>
+      <span>
+        <a href="https://github.com/metriclogic26/packagefix" target="_blank" rel="noopener">
+          ⭐ Star on GitHub
+        </a> · 
+        MIT Licensed · 
+        <a href="https://github.com/metriclogic26/packagefix/issues/new" 
+           target="_blank" rel="noopener">Report issue →</a>
+      </span>
     </div>
   </footer>
 
@@ -2484,6 +2509,54 @@
             '<div class="action-card-footer-links">Vulnerability data: <a href="https://osv.dev" target="_blank" rel="noopener">OSV Database</a> · <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">CISA KEV Catalog</a></div></div></div>';
           resultsContent.innerHTML += diffHtml;
 
+          var showOverrides = data.packageRows && data.packageRows.some(function (r) {
+            return !r.private && !r.suspicious && r.fixVersion &&
+              r.fixVersion !== '—' && r.fixVersion !== 'see advisory' &&
+              (r.severity === 'CRITICAL' || r.severity === 'HIGH');
+          });
+
+          if (showOverrides) {
+            var overridesCardHtml =
+              '<div class="action-card">' +
+              '<span class="action-card-header">🔧 Fix transitive deps</span>' +
+              '<span class="action-card-subtext">Vulnerabilities in nested dependencies ' +
+              'you don\'t directly control. Add this to your package.json:</span>' +
+              '<pre id="overrides-block" style="' +
+              'background: var(--bg);' +
+              'border: 1px solid var(--border);' +
+              'border-radius: 6px;' +
+              'padding: 0.5rem;' +
+              'font-size: 0.72rem;' +
+              'overflow-x: auto;' +
+              'margin: 0;' +
+              '"></pre>' +
+              '<button type="button" class="action-card-btn" id="copy-overrides-btn">' +
+              'Copy overrides block</button></div>';
+
+            var actionCardsRow = resultsContent.querySelector('.action-cards-row');
+            if (actionCardsRow) actionCardsRow.insertAdjacentHTML('beforeend', overridesCardHtml);
+          }
+
+          var overrides = {};
+          data.packageRows.forEach(function (r) {
+            if (!r.private && !r.suspicious && r.fixVersion &&
+                r.fixVersion !== '—' && r.fixVersion !== 'see advisory' &&
+                (r.severity === 'CRITICAL' || r.severity === 'HIGH')) {
+              overrides[r.name] = r.fixVersion;
+            }
+          });
+
+          var overridesJson = JSON.stringify({ overrides: overrides }, null, 2);
+          var overridesEl = document.getElementById('overrides-block');
+          if (overridesEl) overridesEl.textContent = overridesJson;
+
+          var copyOverridesBtn = document.getElementById('copy-overrides-btn');
+          if (copyOverridesBtn) {
+            copyOverridesBtn.addEventListener('click', function () {
+              copyAndShowCopied(this, overridesJson);
+            });
+          }
+
           var leftEl = document.getElementById('diff-left');
           var rightEl = document.getElementById('diff-right');
           var showChangedOnly = false;
@@ -2693,12 +2766,25 @@
         });
       });
 
+      var ctaHintLink = document.getElementById('cta-hint-link');
+      if (ctaHintLink) {
+        ctaHintLink.addEventListener('click', function () {
+          tabs.forEach(function (t) { t.classList.remove('active'); });
+          panels.forEach(function (p) { p.classList.remove('active'); });
+          document.querySelector('.tab[data-tab="example"]').classList.add('active');
+          document.getElementById('panel-example').classList.add('active');
+          scanBtn.disabled = !selectedEcosystem;
+        });
+      }
+
       exampleBtns.forEach(function (btn) {
         btn.addEventListener('click', function () {
           exampleBtns.forEach(function (b) { b.classList.remove('selected'); });
           btn.classList.add('selected');
           selectedEcosystem = btn.getAttribute('data-ecosystem');
           examplePreview.textContent = exampleManifests[selectedEcosystem];
+          var hint = document.getElementById('cta-hint');
+          if (hint) hint.style.display = 'none';
           scanBtn.disabled = false;
         });
       });
