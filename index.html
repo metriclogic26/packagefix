@@ -4,13 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PackageFix — Dependency Security Fixer</title>
-  <meta name="description" content="Free Snyk Advisor alternative. Paste package.json, requirements.txt, Gemfile, or composer.json. Get CVE patches, CISA KEV alerts, and a fixed manifest. No signup. No CLI. Browser-only.">
-  <meta name="keywords" content="dependency vulnerability scanner, CVE checker, CISA KEV, npm audit, pip audit, bundle audit, OSV, package security, software composition analysis">
+  <meta name="description" content="Free browser-based dependency security scanner. Paste package.json, requirements.txt, Gemfile, composer.json, go.mod, Cargo.toml, or pom.xml. Get CVE patches, CISA KEV alerts, license risk flags, and a fixed manifest download. No signup. No CLI. Supports npm, PyPI, Ruby, PHP, Go, Rust, Java.">
+  <meta name="keywords" content="dependency vulnerability scanner, CVE checker, CISA KEV, npm audit, pip audit, bundle audit, cargo audit, go vulnerability scanner, maven security scanner, OSV, package security, software composition analysis, snyk advisor alternative, free dependency scanner browser, license compliance checker, deprecated package detector">
   <meta property="og:title" content="PackageFix — Paste your manifest. Download the fix.">
+  <meta property="og:description" content="Free browser-based dependency scanner. 7 ecosystems. CVE patches, CISA KEV alerts, license risk, deprecated package detection. No signup. No CLI.">
+  <meta property="og:url" content="https://packagefix.dev">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="PackageFix — Paste your manifest. Download the fix.">
+  <meta name="twitter:description" content="Free CVE scanner for npm, PyPI, Ruby, PHP, Go, Rust, Java. CISA KEV alerts. No signup. No CLI.">
   <link rel="canonical" href="https://packagefix.dev">
   <meta name="google-site-verification" content="lltYdLAeNu8RgHF3JojA7hL_sgbo5bQS7PPe1ldKgz4" />
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"WebApplication","name":"PackageFix","url":"https://packagefix.dev","description":"Browser-based dependency security fixer. Paste your manifest, get a fixed version with CVE patches and CISA KEV alerts.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  {"@context":"https://schema.org","@type":"WebApplication","name":"PackageFix","url":"https://packagefix.dev","description":"Browser-based dependency security scanner for npm, PyPI, Ruby, PHP, Go, Rust and Java. Paste your manifest, get CVE patches, CISA KEV alerts, license risk flags and a fixed file download.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -88,7 +94,7 @@
     }
 
     .hero-logo {
-      font-size: 1.5rem;
+      font-size: 2.2rem;
       font-weight: 700;
       text-align: center;
       margin-bottom: 0.5rem;
@@ -119,6 +125,7 @@
       display: block;
       font-size: 0.85rem;
       color: #9CA3AF;
+      margin-top: 0.2rem;
     }
 
     main {
@@ -1002,7 +1009,23 @@
   </header>
   <section id="hero-section" class="tagline-section">
     <div class="hero-logo">Package<span class="logo-fix">Fix</span></div>
-    <p class="tagline"><span class="tagline-line1">Paste your manifest. Get back the fixed files.</span><span class="tagline-line2">No login. No GitHub. No CLI.</span></p>
+    <div style="
+      display: inline-block;
+      background: rgba(34, 197, 94, 0.1);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      border-radius: 20px;
+      padding: 0.25rem 0.75rem;
+      font-size: 0.72rem;
+      color: var(--green);
+      margin-bottom: 0.5rem;
+    ">🔒 Runs 100% in your browser — your files never leave your device</div>
+    <p class="tagline">
+      <span class="tagline-line1">Paste your manifest. Get back the fixed files.</span>
+      <span class="tagline-line2">No login. No GitHub. No CLI.</span>
+      <span class="tagline-line2" style="margin-top: 0.25rem; font-size: 0.78rem;">
+        npm · PyPI · Ruby · PHP · Go · Rust · Java
+      </span>
+    </p>
   </section>
 
   <main>
@@ -1128,14 +1151,14 @@
       font-size: 0.82rem;
       color: #9CA3AF;
     ">
-      <span id="cta-hint-link" style="
+        <span id="cta-hint-link" style="
         color: var(--purple); 
         font-weight: 600; 
         cursor: pointer;
         text-decoration: underline;
         text-decoration-style: dotted;
       ">
-        No file? Try an example — select npm, PyPI, Ruby, or PHP to see a live scan →
+        No file? Try an example — npm, PyPI, Ruby, PHP, Go, Rust, or Java →
       </span>
     </div>
 
@@ -1145,7 +1168,7 @@
         <div class="how-it-works-step">
           <div class="how-it-works-step-num">1. Paste</div>
           <div class="how-it-works-step-title">Drop your manifest</div>
-          <div class="how-it-works-step-desc">file or try an example</div>
+          <div class="how-it-works-step-desc">npm, PyPI, Ruby, PHP, Go, Rust or Java</div>
         </div>
         <div class="how-it-works-step">
           <div class="how-it-works-step-num">2. Scan</div>
@@ -1170,11 +1193,30 @@
         </div>
         <div class="faq-item">
           <div class="faq-question">What is the CISA KEV catalog?<span class="faq-chevron">+</span></div>
-          <div class="faq-answer">The CISA Known Exploited Vulnerabilities catalog lists vulnerabilities actively being exploited in real attacks right now. A package flagged with 🔴 KEV should be treated as an emergency fix, not a routine update.</div>
+          <div class="faq-answer">
+            The CISA Known Exploited Vulnerabilities catalog is maintained by
+            the US Cybersecurity and Infrastructure Security Agency. It lists
+            vulnerabilities actively being exploited in real attacks right now.
+            A package flagged with a red KEV dot should be treated as an
+            emergency fix — not a routine update.
+          </div>
         </div>
         <div class="faq-item">
           <div class="faq-question">How is this different from Snyk or Dependabot?<span class="faq-chevron">+</span></div>
           <div class="faq-answer">Snyk and Dependabot require a GitHub connection, CLI install, or account signup. PackageFix runs entirely in your browser — nothing installed, nothing connected, nothing written to your system. Paste your file, get back the fixed version in seconds. Safe to use even where third-party integrations are blocked by security policy.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            Which package ecosystems are supported?
+            <span class="faq-chevron">+</span>
+          </div>
+          <div class="faq-answer">
+            PackageFix supports 7 ecosystems: npm (Node.js), PyPI (Python),
+            RubyGems (Ruby), Packagist (PHP), Go modules (go.mod),
+            Rust/Cargo (Cargo.toml), and Maven/Java (pom.xml).
+            Drop your manifest file or try a built-in example for any ecosystem.
+          </div>
         </div>
       </div>
     </section>
@@ -1182,14 +1224,21 @@
 
   <footer>
     <div class="footer-disclaimer">
-      Vulnerability data is sourced from OSV and public package registries. Always test in a staging environment before deploying to production. PackageFix provides these tools for informational purposes only.
+      Vulnerability data sourced from OSV (Apache 2.0) and
+      CISA KEV (US Government, public domain). Package metadata
+      from public registries (npm, PyPI, RubyGems, Packagist,
+      crates.io, proxy.golang.org, Maven Central).
+      Fix suggestions are recommendations only — always test in
+      staging before deploying to production.
+      PackageFix is not a substitute for professional security advice.
+      License risk information is informational only — verify with
+      qualified legal counsel before making licensing decisions.
     </div>
     <div class="footer-bar">
       <span>
         PackageFix by MetricLogic · 
         <a href="https://configclarity.dev" target="_blank" rel="noopener">ConfigClarity</a> · 
-        <a href="https://domainpreflight.dev" target="_blank" rel="noopener">DomainPreflight</a> · 
-        <a href="https://metriclogic.dev" target="_blank" rel="noopener">MetricLogic Hub</a>
+        <a href="https://domainpreflight.dev" target="_blank" rel="noopener">DomainPreflight</a>
       </span>
       <span>
         <a href="https://github.com/metriclogic26/packagefix" target="_blank" rel="noopener">
@@ -1245,6 +1294,13 @@
       var topBar = document.getElementById('top-bar');
       var heroSection = document.getElementById('hero-section');
       var loadingSteps = document.querySelectorAll('.loading-step');
+
+      // Hide CTA hint on initial load if "Try Example" is active.
+      var _initialCtaHint = document.getElementById('cta-hint');
+      var _initialExamplePanel = document.getElementById('panel-example');
+      if (_initialCtaHint && _initialExamplePanel && _initialExamplePanel.classList.contains('active')) {
+        _initialCtaHint.style.display = 'none';
+      }
 
       function resetToInputState() {
         resultsSection.classList.remove('visible');
@@ -3834,10 +3890,20 @@
             p.classList.toggle('active', p.id === targetId);
           });
           tab.classList.add('active');
-          if (targetId === 'panel-paste') {
-            scanBtn.disabled = !manifestContent || detectedEcosystem === null;
-          } else if (targetId === 'panel-example') {
+ 
+          var hint = document.getElementById('cta-hint');
+          if (targetId === 'panel-example') {
+            if (hint) hint.style.display = 'none';
             scanBtn.disabled = !selectedEcosystem;
+          } else {
+            // Only show hint if no file loaded
+            if (hint) hint.style.display = manifestContent ? 'none' : '';
+            scanBtn.disabled = !manifestContent || detectedEcosystem === null;
+
+            // Reset example selection when switching back to paste tab
+            exampleBtns.forEach(function (b) { b.classList.remove('selected'); });
+            selectedEcosystem = null;
+            examplePreview.textContent = '';
           }
         });
       });
@@ -3850,6 +3916,8 @@
           document.querySelector('.tab[data-tab="example"]').classList.add('active');
           document.getElementById('panel-example').classList.add('active');
           scanBtn.disabled = !selectedEcosystem;
+          var hint = document.getElementById('cta-hint');
+          if (hint) hint.style.display = 'none';
         });
       }
 
