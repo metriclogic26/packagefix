@@ -1070,6 +1070,47 @@
       <div id="results-content"></div>
     </div>
 
+    <div style="margin-bottom: 0.75rem;">
+      <div style="
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 0.75rem;
+        font-size: 0.8rem;
+      " id="scan-mode-toggle">
+        <span style="color: var(--muted); font-size: 0.8rem; 
+          line-height: 2; margin-right: 0.25rem;">Scan:</span>
+        <button type="button" class="scan-mode-btn" data-mode="all" style="
+          font-family: JetBrains Mono, monospace;
+          font-size: 0.8rem;
+          padding: 0.35rem 0.75rem;
+          border-radius: 6px;
+          border: 1px solid var(--purple);
+          background: var(--purple);
+          color: var(--text);
+          cursor: pointer;
+        ">All deps</button>
+        <button type="button" class="scan-mode-btn" data-mode="prod" style="
+          font-family: JetBrains Mono, monospace;
+          font-size: 0.8rem;
+          padding: 0.35rem 0.75rem;
+          border-radius: 6px;
+          border: 1px solid var(--border);
+          background: var(--surface);
+          color: var(--muted);
+          cursor: pointer;
+        ">Prod only</button>
+        <button type="button" class="scan-mode-btn" data-mode="dev" style="
+          font-family: JetBrains Mono, monospace;
+          font-size: 0.8rem;
+          padding: 0.35rem 0.75rem;
+          border-radius: 6px;
+          border: 1px solid var(--border);
+          background: var(--surface);
+          color: var(--muted);
+          cursor: pointer;
+        ">Dev only</button>
+      </div>
+    </div>
     <button type="button" class="scan-btn" disabled>Scan Dependencies →</button>
     <div id="cta-hint" style="
       text-align: center;
@@ -1245,21 +1286,26 @@
         }
       }
 
-      function parseNpmManifest(jsonStr) {
+      function parseNpmManifest(jsonStr, mode) {
+        mode = mode || 'all';
         var data = JSON.parse(jsonStr);
         var packages = [];
         var deps = data.dependencies || {};
         var devDeps = data.devDependencies || {};
-        Object.keys(deps).forEach(function (name) {
-          var v = deps[name];
-          if (typeof v === 'string') v = v.replace(/^[\^~]/, '');
-          packages.push({ name: name, version: v, dev: false });
-        });
-        Object.keys(devDeps).forEach(function (name) {
-          var v = devDeps[name];
-          if (typeof v === 'string') v = v.replace(/^[\^~]/, '');
-          packages.push({ name: name, version: v, dev: true });
-        });
+        if (mode === 'all' || mode === 'prod') {
+          Object.keys(deps).forEach(function (name) {
+            var v = deps[name];
+            if (typeof v === 'string') v = v.replace(/^[\^~]/, '');
+            packages.push({ name: name, version: v, dev: false });
+          });
+        }
+        if (mode === 'all' || mode === 'dev') {
+          Object.keys(devDeps).forEach(function (name) {
+            var v = devDeps[name];
+            if (typeof v === 'string') v = v.replace(/^[\^~]/, '');
+            packages.push({ name: name, version: v, dev: true });
+          });
+        }
         return packages;
       }
 
@@ -1532,6 +1578,8 @@
           errEl.textContent = '';
           var picker0 = document.getElementById('manifest-ecosystem-picker');
           if (picker0) picker0.style.display = 'none';
+          var toggle0 = document.getElementById('scan-mode-toggle');
+          if (toggle0) toggle0.style.display = 'none';
           return;
         }
         if (manifestContent === null) {
@@ -1542,6 +1590,8 @@
           zone.classList.add('error');
           var pickerErr = document.getElementById('manifest-ecosystem-picker');
           if (pickerErr) pickerErr.style.display = 'none';
+          var toggle1 = document.getElementById('scan-mode-toggle');
+          if (toggle1) toggle1.style.display = 'none';
           return;
         }
         defaultEl.style.display = 'none';
@@ -1564,6 +1614,11 @@
           '<div class="drop-zone-ecosystem-wrap">' + ecoBadge + '</div>' +
           '<div class="drop-zone-preview">' + escapeHtml(firstThreeLines(manifestContent)) + '</div>';
         zone.classList.add('has-file');
+        var toggle = document.getElementById('scan-mode-toggle');
+        if (toggle) {
+          toggle.style.display =
+            (detectedEcosystem === 'npm') ? 'flex' : 'none';
+        }
         var picker = document.getElementById('manifest-ecosystem-picker');
         if (picker) picker.style.display = detectedEcosystem ? 'none' : 'flex';
       }
@@ -2196,7 +2251,7 @@
         resultsSection.classList.remove('visible');
         setStep(0, false);
 
-        var packages = parseNpmManifest(manifestStr);
+        var packages = parseNpmManifest(manifestStr, scanMode);
         setStep(0, true);
         setStep(1, false);
 
@@ -3546,6 +3601,22 @@
         }
       });
 
+      var scanMode = 'all';
+      var scanModeBtns = document.querySelectorAll('.scan-mode-btn');
+      scanModeBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          scanMode = btn.getAttribute('data-mode');
+          scanModeBtns.forEach(function (b) {
+            b.style.background = 'var(--surface)';
+            b.style.color = 'var(--muted)';
+            b.style.borderColor = 'var(--border)';
+          });
+          btn.style.background = 'var(--purple)';
+          btn.style.color = 'var(--text)';
+          btn.style.borderColor = 'var(--purple)';
+        });
+      });
+
       if (backToHomeLink) {
         backToHomeLink.addEventListener('click', function (e) {
           e.preventDefault();
@@ -3606,6 +3677,10 @@
           exampleBtns.forEach(function (b) { b.classList.remove('selected'); });
           btn.classList.add('selected');
           selectedEcosystem = btn.getAttribute('data-ecosystem');
+          var toggle = document.getElementById('scan-mode-toggle');
+          if (toggle) {
+            toggle.style.display = selectedEcosystem === 'npm' ? 'flex' : 'none';
+          }
           examplePreview.textContent = exampleManifests[selectedEcosystem];
           var hint = document.getElementById('cta-hint');
           if (hint) hint.style.display = 'none';
