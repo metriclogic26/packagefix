@@ -1044,7 +1044,8 @@
               <div class="drop-zone-inner">
                 <div class="drop-zone-default">
                   <span class="drop-zone-label">Drop manifest here or click to upload</span>
-                  <p class="drop-zone-accept">package.json, requirements.txt, Gemfile, composer.json</p>
+                  <p class="drop-zone-accept">package.json · requirements.txt · 
+Gemfile · composer.json<br>go.mod · Cargo.toml · pom.xml</p>
                 </div>
                 <div class="drop-zone-loaded" style="display: none;"></div>
                 <div class="drop-zone-error-msg" style="display: none;"></div>
@@ -1216,6 +1217,19 @@
             RubyGems (Ruby), Packagist (PHP), Go modules (go.mod),
             Rust/Cargo (Cargo.toml), and Maven/Java (pom.xml).
             Drop your manifest file or try a built-in example for any ecosystem.
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">
+            Why do I see network errors in the browser console?
+            <span class="faq-chevron">+</span>
+          </div>
+          <div class="faq-answer">
+            The CISA KEV feed blocks direct browser requests due to CORS 
+            policy. PackageFix automatically falls back to a 
+            built-in list of actively exploited CVEs — all scans 
+            work correctly and CISA KEV flags still appear as expected.
+            This does not affect scan accuracy.
           </div>
         </div>
       </div>
@@ -3550,6 +3564,9 @@
               if (r.private) return; // skip private packages — keep original version
               if (!r.fixVersion || r.fixVersion === '—' || r.fixVersion === 'see advisory') return;
               if (r.fixVersion === 'pin current') return;
+              if (r.fixVersion === 'find MIT alternative') return;
+              if (r.fixVersion === 'find replacement') return;
+              if (r.fixVersion === 'verify before upgrading') return;
               var versionForDiff = r.fixVersion;
               if (fixedManifest.dependencies && fixedManifest.dependencies[r.name] !== undefined) {
                 fixedManifest.dependencies[r.name] = versionForDiff;
