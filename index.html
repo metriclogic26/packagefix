@@ -582,6 +582,12 @@
       color: var(--red);
     }
 
+    .severity-badge.license {
+      background: rgba(234, 179, 8, 0.15);
+      border: 1px solid var(--yellow);
+      color: var(--yellow);
+    }
+
     .kev-banner {
       background: rgba(234, 179, 8, 0.1);
       border: 1px solid var(--yellow);
@@ -1676,6 +1682,89 @@
           .catch(function () { return null; });
       }
 
+      function fetchNpmLicense(packageName) {
+        return fetch('https://registry.npmjs.org/' +
+          encodeURIComponent(packageName) + '/latest')
+          .then(function (r) { return r.json(); })
+          .then(function (data) {
+            var license = data && (data.license ||
+              (data.licenses && data.licenses[0] &&
+                (data.licenses[0].type || data.licenses[0])));
+            return { name: packageName, license: license || 'Unknown' };
+          })
+          .catch(function () {
+            return { name: packageName, license: 'Unknown' };
+          });
+      }
+
+      var POISONED_LICENSES = [
+        'GPL-2.0', 'GPL-3.0', 'AGPL-3.0', 'AGPL-1.0',
+        'GPL-2.0-only', 'GPL-3.0-only', 'AGPL-3.0-only',
+        'GPL-2.0-or-later', 'GPL-3.0-or-later',
+        'LGPL-2.0', 'LGPL-2.1', 'LGPL-3.0',
+        'LGPL-2.0-only', 'LGPL-2.1-only', 'LGPL-3.0-only',
+        'CC-BY-SA-4.0', 'CC-BY-NC-4.0'
+      ];
+
+      var LICENSE_RISK = {
+        'GPL-2.0': 'HIGH', 'GPL-3.0': 'HIGH',
+        'AGPL-3.0': 'HIGH', 'AGPL-1.0': 'HIGH',
+        'GPL-2.0-only': 'HIGH', 'GPL-3.0-only': 'HIGH',
+        'AGPL-3.0-only': 'HIGH',
+        'GPL-2.0-or-later': 'HIGH', 'GPL-3.0-or-later': 'HIGH',
+        'LGPL-2.0': 'MEDIUM', 'LGPL-2.1': 'MEDIUM', 'LGPL-3.0': 'MEDIUM',
+        'LGPL-2.0-only': 'MEDIUM', 'LGPL-2.1-only': 'MEDIUM',
+        'LGPL-3.0-only': 'MEDIUM',
+        'CC-BY-SA-4.0': 'MEDIUM', 'CC-BY-NC-4.0': 'MEDIUM'
+      };
+
+      var LICENSE_DESCRIPTIONS = {
+        'GPL-2.0': 'Copyleft — requires your entire app to be GPL licensed',
+        'GPL-3.0': 'Copyleft — requires your entire app to be GPL licensed',
+        'GPL-2.0-only': 'Copyleft — requires your entire app to be GPL licensed',
+        'GPL-3.0-only': 'Copyleft — requires your entire app to be GPL licensed',
+        'GPL-2.0-or-later': 'Copyleft — requires your entire app to be GPL licensed',
+        'GPL-3.0-or-later': 'Copyleft — requires your entire app to be GPL licensed',
+        'AGPL-3.0': 'Strong copyleft — includes network use, affects SaaS apps',
+        'AGPL-3.0-only': 'Strong copyleft — includes network use, affects SaaS apps',
+        'AGPL-1.0': 'Strong copyleft — includes network use, affects SaaS apps',
+        'LGPL-2.0': 'Weak copyleft — may require dynamic linking',
+        'LGPL-2.1': 'Weak copyleft — may require dynamic linking',
+        'LGPL-3.0': 'Weak copyleft — may require dynamic linking',
+        'LGPL-2.0-only': 'Weak copyleft — may require dynamic linking',
+        'LGPL-2.1-only': 'Weak copyleft — may require dynamic linking',
+        'LGPL-3.0-only': 'Weak copyleft — may require dynamic linking',
+        'CC-BY-SA-4.0': 'ShareAlike — derived works must use same license',
+        'CC-BY-NC-4.0': 'Non-commercial — cannot be used in commercial products'
+      };
+
+      function checkLicensePoison(packages) {
+        if (packages.length === 0) return Promise.resolve([]);
+        return Promise.all(packages.map(function (p) {
+          return fetchNpmLicense(p.name).then(function (result) {
+            var license = (result.license || '').trim();
+            var isPoison = POISONED_LICENSES.some(function (pl) {
+              return license.toUpperCase().indexOf(pl.toUpperCase()) !== -1;
+            });
+            if (!isPoison) return null;
+            var risk = LICENSE_RISK[license] || 'MEDIUM';
+            var desc = LICENSE_DESCRIPTIONS[license] ||
+              'Restrictive license — verify compatibility with your project';
+            return {
+              name: p.name,
+              version: p.version,
+              license: license,
+              risk: risk,
+              type: 'license',
+              warningMessage: license + ' — ' + desc +
+                '. Verify with legal counsel before using in commercial projects.'
+            };
+          });
+        })).then(function (results) {
+          return results.filter(Boolean);
+        });
+      }
+
       var NEVER_SUSPICIOUS = [
         'react', 'react-dom', 'typescript', 'lodash', 'express',
         'axios', 'vue', 'next', 'webpack', 'babel', 'eslint',
@@ -2119,9 +2208,10 @@
           setStep(2, false);
           return Promise.all([
             checkNpmSuspicious(packages),
-            checkMaintainerTakeover(packages)
+            checkMaintainerTakeover(packages),
+            checkLicensePoison(packages)
           ]).then(function (results) {
-            var suspiciousList = results[0].concat(results[1]);
+            var suspiciousList = results[0].concat(results[1]).concat(results[2]);
             // remove duplicates by name
             var seen = {};
             suspiciousList = suspiciousList.filter(function (s) {
@@ -2176,10 +2266,14 @@
                   packageRows.push({
                     name: s.name,
                     installed: s.version,
-                    fixVersion: s.type === 'takeover' ? 'verify before upgrading' : 'pin current',
+                    fixVersion: s.type === 'takeover'
+                      ? 'verify before upgrading'
+                      : s.type === 'license'
+                        ? 'find MIT alternative'
+                        : 'pin current',
                     advisoryId: null,
                     severity: 'SUSPICIOUS',
-                    cveId: '—',
+                    cveId: s.type === 'license' ? (s.license || '—') : '—',
                     kev: false,
                     suspicious: true,
                     type: s.type || 'suspicious',
@@ -2925,22 +3019,28 @@
             '<th>Package</th><th>Installed</th><th>Fix Version</th><th>Severity</th><th>CVE ID</th><th>KEV</th></tr></thead><tbody>';
           data.packageRows.forEach(function (r) {
             var sevLabel = r.private ? 'PRIVATE' :
-              (r.suspicious ? (r.type === 'takeover' ? '🚨 TAKEOVER?' : '⚠ SUSPICIOUS') :
+              (r.suspicious ? (r.type === 'takeover' ? '🚨 TAKEOVER?' :
+                r.type === 'license' ? '⚖ LICENSE' :
+                '⚠ SUSPICIOUS') :
                 (r.severity || 'MEDIUM'));
 
             var sevClass = r.private ? 'private' :
-              (r.suspicious ? (r.type === 'takeover' ? 'takeover' : 'suspicious') :
+              (r.suspicious ? (r.type === 'takeover' ? 'takeover' :
+                r.type === 'license' ? 'license' :
+                'suspicious') :
                 (r.severity || 'MEDIUM').toLowerCase());
             var fixCell = r.private
               ? '—'
               : (r.suspicious
-                ? escapeHtml(r.fixVersion || 'pin current')
+                ? (r.type === 'license' ? 'find MIT alternative' :
+                  r.type === 'takeover' ? 'verify before upgrading' :
+                  escapeHtml(r.fixVersion || 'pin current'))
                 : (r.advisoryId
                   ? (r.fixVersion === 'see packagist.org'
                     ? '<a href="' + escapeHtml(r.advisoryId) + '" target="_blank" rel="noopener">see packagist.org</a>'
                     : '<a href="https://osv.dev/vulnerability/' + escapeHtml(r.advisoryId) + '" target="_blank" rel="noopener">see advisory</a>')
                   : escapeHtml(r.fixVersion || '—')));
-            var cveCell = r.private ? 'Not scannable' : (r.suspicious ? '—' : (r.cveId || '—'));
+            var cveCell = r.private ? 'Not scannable' : (r.suspicious ? (r.type === 'license' ? (r.cveId || '—') : '—') : (r.cveId || '—'));
             var kevCell = r.private ? '—' : (r.suspicious ? '—' : (r.kev ? '🔴' : ''));
             table += '<tr><td>' + escapeHtml(r.name) + '</td><td>' + escapeHtml(r.installed) + '</td><td>' + fixCell + '</td>' +
               '<td><span class="severity-badge ' + sevClass + '">' + escapeHtml(sevLabel) + '</span></td>' +
