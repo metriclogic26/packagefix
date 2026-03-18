@@ -1758,6 +1758,67 @@
           });
       }
 
+      function fetchNpmHealthData(packages) {
+        if (packages.length === 0) return Promise.resolve({});
+
+        return Promise.all(packages.map(function (p) {
+          var registryUrl = 'https://registry.npmjs.org/' +
+            encodeURIComponent(p.name) + '/latest';
+          var downloadsUrl = 'https://api.npmjs.org/downloads/point/last-month/' +
+            encodeURIComponent(p.name);
+
+          return Promise.all([
+            fetch(registryUrl).then(function (r) {
+              return r.json();
+            }).catch(function () { return null; }),
+            fetch(downloadsUrl).then(function (r) {
+              return r.json();
+            }).catch(function () { return null; })
+          ]).then(function (results) {
+            var pkgData = results[0];
+            var dlData = results[1];
+
+            if (!pkgData) return { name: p.name, health: null };
+
+            // Last publish date (informational)
+            var publishedAt = pkgData.time || pkgData._time;
+            var lastPublish = null;
+            if (pkgData._id && pkgData.time) {
+              lastPublish = pkgData.time;
+            }
+
+            // Monthly downloads
+            var monthlyDownloads = (dlData && dlData.downloads) ? dlData.downloads : 0;
+
+            // Has types
+            var hasTypes = !!(pkgData.types || pkgData.typings ||
+              (pkgData.dependencies && pkgData.dependencies['@types/' + p.name]));
+
+            // Is deprecated
+            var isDeprecated = !!pkgData.deprecated;
+
+            // License
+            var license = pkgData.license || 'Unknown';
+
+            return {
+              name: p.name,
+              version: pkgData.version,
+              monthlyDownloads: monthlyDownloads,
+              hasTypes: hasTypes,
+              isDeprecated: isDeprecated,
+              license: license,
+              description: pkgData.description || ''
+            };
+          });
+        })).then(function (results) {
+          var out = {};
+          results.forEach(function (r) {
+            if (r && r.name) out[r.name] = r;
+          });
+          return out;
+        });
+      }
+
       var POISONED_LICENSES = [
         'GPL-2.0', 'GPL-3.0', 'AGPL-3.0', 'AGPL-1.0',
         'GPL-2.0-only', 'GPL-3.0-only', 'AGPL-3.0-only',
@@ -2262,6 +2323,60 @@
         return { score: score, critical: critical, high: high, medium: medium };
       }
 
+      function calculatePackageHealth(healthData) {
+        if (!healthData || healthData.health === null) return { score: null, label: 'Unknown', color: 'var(--muted)' };
+
+        var score = 100;
+        var issues = [];
+
+        // Deprecation — major penalty
+        if (healthData.isDeprecated) {
+          score -= 40;
+          issues.push('deprecated');
+        }
+
+        // Download count
+        if (healthData.monthlyDownloads === 0) {
+          score -= 20;
+          issues.push('no downloads');
+        } else if (healthData.monthlyDownloads < 1000) {
+          score -= 15;
+          issues.push('low downloads');
+        } else if (healthData.monthlyDownloads < 10000) {
+          score -= 5;
+        }
+
+        // No types
+        if (!healthData.hasTypes) {
+          score -= 5;
+          issues.push('no TypeScript types');
+        }
+
+        // Unknown license
+        if (!healthData.license || healthData.license === 'Unknown') {
+          score -= 10;
+          issues.push('unknown license');
+        }
+
+        score = Math.max(0, score);
+
+        var label, color;
+        if (score >= 80) { label = 'Healthy'; color = 'var(--green)'; }
+        else if (score >= 50) { label = 'Moderate'; color = 'var(--yellow)'; }
+        else { label = 'Unhealthy'; color = 'var(--red)'; }
+
+        return {
+          score: score,
+          label: label,
+          color: color,
+          issues: issues,
+          monthlyDownloads: healthData.monthlyDownloads,
+          hasTypes: healthData.hasTypes,
+          license: healthData.license,
+          isDeprecated: healthData.isDeprecated
+        };
+      }
+
       function maxSeverity(vulns) {
         var best = 'LOW';
         var bestOrder = 4;
@@ -2291,13 +2406,22 @@
           setStep(1, true);
           setStep(2, false);
           return Promise.all([
-            checkNpmSuspicious(packages),
-            checkMaintainerTakeover(packages),
-            checkLicensePoison(packages),
-            checkDeprecated(packages)
-          ]).then(function (results) {
-            var suspiciousList = results[0].concat(results[1]).concat(results[2]);
-            suspiciousList = suspiciousList.concat(results[3]);
+            Promise.all([
+              checkNpmSuspicious(packages),
+              checkMaintainerTakeover(packages),
+              checkLicensePoison(packages),
+              checkDeprecated(packages)
+            ]),
+            fetchOsvVulns(packagesForOsv),
+            fetchNpmHealthData(packages)
+          ]).then(function (allResults) {
+            var suspiciousResults = allResults[0];
+            var osvByPackage = allResults[1];
+            var healthDataMap = allResults[2];
+            var suspiciousList = suspiciousResults[0]
+              .concat(suspiciousResults[1])
+              .concat(suspiciousResults[2])
+              .concat(suspiciousResults[3]);
             // remove duplicates by name
             var seen = {};
             suspiciousList = suspiciousList.filter(function (s) {
@@ -2305,10 +2429,9 @@
               seen[s.name] = true;
               return true;
             });
-            return fetchOsvVulns(packagesForOsv).then(function (osvByPackage) {
-              setStep(2, true);
-              setStep(3, false);
-              return fetchKevList().then(function (kevIds) {
+            setStep(2, true);
+            setStep(3, false);
+            return fetchKevList().then(function (kevIds) {
                 setStep(3, true);
                 setStep(4, false);
                 var kevSet = {};
@@ -2344,6 +2467,7 @@
                     severity: topSev,
                     cveId: topVuln.displayId || topVuln.id,
                     kev: isKev,
+                    health: calculatePackageHealth(healthDataMap[pkgName]),
                     vulns: vulns.map(function (v) { return { id: v.id, displayId: v.displayId || v.id, severity: v.severity, summary: v.summary || '' }; })
                   });
                 });
@@ -2364,6 +2488,7 @@
                     severity: 'SUSPICIOUS',
                     cveId: s.type === 'license' ? (s.license || '—') : '—',
                     kev: false,
+                    health: calculatePackageHealth(healthDataMap[s.name]),
                     suspicious: true,
                     type: s.type || 'suspicious',
                     warningMessage: s.warningMessage
@@ -2379,6 +2504,7 @@
                     severity: 'PRIVATE',
                     cveId: 'Not scannable',
                     kev: false,
+                    health: null,
                     private: true
                   });
                 });
@@ -2399,7 +2525,9 @@
                     manifestStr: manifestStr,
                     ecosystem: 'npm',
                     suspiciousCount: suspiciousList.length,
-                    skippedCount: skipped.length
+                    skippedCount: skipped.length,
+                    scanMode: scanMode,
+                    healthDataMap: healthDataMap
                   });
                 loadingPanel.classList.remove('visible');
                 resultsSection.classList.add('visible');
@@ -2407,7 +2535,6 @@
                 showResultsState();
               }, 500);
             });
-          });
           });
         }).catch(function (err) {
           setStep(4, true);
@@ -3031,6 +3158,13 @@
         });
       }
 
+      function formatDownloads(n) {
+        if (!n || n === 0) return '';
+        if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
+        if (n >= 1000) return Math.round(n / 1000) + 'K';
+        return String(n);
+      }
+
       function renderResults(data) {
         resultsContent.innerHTML = '<div style="margin-bottom:1.5rem;">' +
           '<button type="button" id="scan-another-btn" style="' +
@@ -3105,7 +3239,7 @@
             resultsContent.innerHTML += '<div class="private-skipped-note">' + data.skippedCount + ' private/internal package(s) were skipped — PackageFix can only scan public registry packages.</div>';
           }
           var table = '<div class="cve-table-wrap"><table class="cve-table"><thead><tr>' +
-            '<th>Package</th><th>Installed</th><th>Fix Version</th><th>Severity</th><th>CVE ID</th><th>KEV</th></tr></thead><tbody>';
+            '<th>Package</th><th>Installed</th><th>Fix Version</th><th>Severity</th><th>CVE ID</th><th>KEV</th><th>Health</th></tr></thead><tbody>';
           data.packageRows.forEach(function (r) {
             var sevLabel = r.private ? 'PRIVATE' :
               (r.suspicious ? (r.type === 'takeover' ? '🚨 TAKEOVER?' :
@@ -3134,11 +3268,21 @@
                   : escapeHtml(r.fixVersion || '—')));
             var cveCell = r.private ? 'Not scannable' : (r.suspicious ? (r.type === 'license' ? (r.cveId || '—') : '—') : (r.cveId || '—'));
             var kevCell = r.private ? '—' : (r.suspicious ? '—' : (r.kev ? '🔴' : ''));
+            var healthCell = '';
+            if (r.health && r.health.label) {
+              healthCell = '<span style="font-size:0.75rem;color:' +
+                r.health.color + ';font-weight:600;">' +
+                escapeHtml(r.health.label) + '</span>' +
+                '<div style="font-size:0.68rem;color:var(--muted);">' +
+                (r.health.monthlyDownloads ?
+                  formatDownloads(r.health.monthlyDownloads) + '/mo' : '') +
+                '</div>';
+            }
             table += '<tr><td>' + escapeHtml(r.name) + '</td><td>' + escapeHtml(r.installed) + '</td><td>' + fixCell + '</td>' +
               '<td><span class="severity-badge ' + sevClass + '">' + escapeHtml(sevLabel) + '</span></td>' +
-              '<td>' + escapeHtml(cveCell) + '</td><td>' + kevCell + '</td></tr>';
+              '<td>' + escapeHtml(cveCell) + '</td><td>' + kevCell + '</td><td>' + healthCell + '</td></tr>';
             if (r.suspicious && r.warningMessage) {
-              table += '<tr><td colspan="6" style="padding:0; border-bottom:1px solid var(--border);"><div class="suspicious-warning">' + escapeHtml(r.warningMessage) + '</div></td></tr>';
+              table += '<tr><td colspan="7" style="padding:0; border-bottom:1px solid var(--border);"><div class="suspicious-warning">' + escapeHtml(r.warningMessage) + '</div></td></tr>';
             }
           });
           table += '</tbody></table></div>';
