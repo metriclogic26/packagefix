@@ -578,6 +578,14 @@
       color: var(--yellow);
     }
 
+    .typosquat-warning {
+      background: rgba(249, 115, 22, 0.08);
+      border-left: 3px solid #F97316;
+      padding: 0.5rem 1rem;
+      font-size: 0.78rem;
+      color: #F97316;
+    }
+
     .severity-badge.suspicious {
       background: var(--yellow);
       color: var(--bg);
@@ -691,6 +699,21 @@
     .severity-badge.high {
       background: #F97316;
       color: white;
+    }
+
+    .severity-badge.typosquat {
+      background: #F97316;
+      color: white;
+    }
+
+    .severity-badge.unpinned {
+      background: rgba(234, 179, 8, 0.95);
+      color: black;
+    }
+
+    .severity-badge.zombie {
+      background: rgba(234, 179, 8, 0.95);
+      color: black;
     }
 
     .severity-badge.medium {
@@ -811,6 +834,28 @@
       gap: 0.75rem;
       flex-wrap: wrap;
       margin-top: 0.75rem;
+    }
+
+    .fix-checklist {
+      background: var(--surface);
+      border: 1px solid var(--green);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--text);
+      margin: 0.75rem 0;
+    }
+
+    .fix-checklist-line {
+      display: block;
+      margin: 0.25rem 0;
+    }
+
+    .fix-checklist-ok {
+      color: var(--green);
+      font-weight: 700;
+      margin-right: 0.5rem;
     }
 
     .download-zip-btn {
@@ -1564,8 +1609,9 @@ Gemfile.lock, composer.lock</p>
             if (name.indexOf('php') === 0 || name.indexOf('ext-') === 0) return;
             var v = obj[name];
             if (typeof v !== 'string') return;
+            var versionConstraint = v.trim();
             var version = v.replace(/^[\^~>=]+/, '').trim();
-            packages.push({ name: name, version: version, dev: !!dev });
+            packages.push({ name: name, version: version, versionConstraint: versionConstraint, dev: !!dev });
           });
         }
         addFrom(data.require, false);
@@ -2133,6 +2179,17 @@ Gemfile.lock, composer.lock</p>
             // Monthly downloads
             var monthlyDownloads = (dlData && dlData.downloads) ? dlData.downloads : 0;
 
+            // ZOMBIE heuristic: widely used but unmaintained (based on `time.modified`)
+            var zombie = false;
+            var modifiedDate = pkgData && pkgData.time && pkgData.time.modified
+              ? new Date(pkgData.time.modified)
+              : null;
+            if (modifiedDate && !isNaN(modifiedDate.getTime())) {
+              var ageInDaysModified = (Date.now() - modifiedDate) / (1000 * 60 * 60 * 24);
+              var monthsSinceModified = ageInDaysModified / 30;
+              if (monthsSinceModified > 24 && monthlyDownloads > 100000) zombie = true;
+            }
+
             // Has types
             var hasTypes = !!(pkgData.types || pkgData.typings ||
               (pkgData.dependencies && pkgData.dependencies['@types/' + p.name]));
@@ -2153,7 +2210,8 @@ Gemfile.lock, composer.lock</p>
               description: pkgData.description || '',
               newPackage: newPackage,
               packageAgeDays: packageAgeDays,
-              packageAgeHours: packageAgeHours
+              packageAgeHours: packageAgeHours,
+              zombie: zombie
             };
           });
         })).then(function (results) {
@@ -2719,8 +2777,93 @@ Gemfile.lock, composer.lock</p>
           monthlyDownloads: healthData.monthlyDownloads,
           hasTypes: healthData.hasTypes,
           license: healthData.license,
-          isDeprecated: healthData.isDeprecated
+          isDeprecated: healthData.isDeprecated,
+          newPackage: healthData.newPackage,
+          zombie: healthData.zombie
         };
+      }
+
+      // Typosquatting heuristic for dependency confusion / package spoofing.
+      // Flags packages whose Levenshtein distance to a well-known target is exactly 1.
+      var TOP_100 = [
+        'express', 'react', 'lodash', 'axios', 'webpack', 'babel-core',
+        'vue', 'angular', 'jquery', 'typescript', 'next', 'nuxt', 'svelte',
+        'requests', 'flask', 'django', 'numpy', 'pandas', 'scipy', 'pytorch',
+        'rails', 'devise', 'nokogiri', 'puma', 'rack',
+        'laravel', 'symfony', 'guzzlehttp/guzzle', 'monolog/monolog',
+        'serde', 'tokio', 'rand', 'clap', 'log',
+        'org.springframework:spring-core', 'com.google.guava:guava',
+        'github.com/gin-gonic/gin', 'github.com/gorilla/mux'
+      ];
+
+      var TOP_100_SET = (function () {
+        var s = {};
+        TOP_100.forEach(function (x) { if (x) s[String(x).toLowerCase()] = true; });
+        return s;
+      }());
+
+      function levenshteinDistance(a, b) {
+        a = String(a || '').toLowerCase();
+        b = String(b || '').toLowerCase();
+        var m = a.length, n = b.length;
+        if (a === b) return 0;
+        if (m === 0) return n;
+        if (n === 0) return m;
+        if (Math.abs(m - n) > 1) return 2; // can't be 0/1
+
+        var prev = new Array(n + 1);
+        var cur = new Array(n + 1);
+        for (var j = 0; j <= n; j++) prev[j] = j;
+
+        for (var i = 1; i <= m; i++) {
+          cur[0] = i;
+          var rowMin = cur[0];
+          var ai = a.charAt(i - 1);
+          for (var k = 1; k <= n; k++) {
+            var cost = ai === b.charAt(k - 1) ? 0 : 1;
+            var del = prev[k] + 1;
+            var ins = cur[k - 1] + 1;
+            var sub = prev[k - 1] + cost;
+            var v = Math.min(del, ins, sub);
+            cur[k] = v;
+            if (v < rowMin) rowMin = v;
+          }
+          if (rowMin > 1) return 2; // early exit
+          var tmp = prev; prev = cur; cur = tmp;
+        }
+        return prev[n];
+      }
+
+      function computeTyposquatFlags(packages) {
+        var flags = {};
+        if (!Array.isArray(packages)) return flags;
+
+        packages.forEach(function (p) {
+          var name = (p && p.name) ? String(p.name) : '';
+          if (!name) return;
+          var lower = name.toLowerCase();
+
+          // Do not flag known-correct packages.
+          if (TOP_100_SET[lower]) return;
+
+          var bestDist = 2;
+          var bestMatch = null;
+          for (var i = 0; i < TOP_100.length; i++) {
+            var t = TOP_100[i];
+            var dist = levenshteinDistance(lower, t);
+            if (dist < bestDist) {
+              bestDist = dist;
+              bestMatch = t;
+              if (bestDist === 1) break; // can't do better than 1
+            }
+          }
+
+          if (bestDist === 1 && bestMatch) {
+            flags[lower] = { closestMatch: bestMatch };
+          }
+        });
+
+        return flags;
       }
 
       function maxSeverity(vulns) {
@@ -2742,6 +2885,23 @@ Gemfile.lock, composer.lock</p>
         setStep(0, false);
 
         var packages = parseNpmManifest(manifestStr, scanMode);
+        var unpinnedMap = {};
+        var unpinnedCount = 0;
+        packages.forEach(function (p) {
+          var spec = p && p.version ? String(p.version).trim() : '';
+          var lower = spec.toLowerCase();
+          var unpinned = false;
+          if (!spec) unpinned = true;
+          else if (spec === '*' || lower === 'latest' || lower === 'x') unpinned = true;
+          else if (/^>=\s*.+/.test(spec) || /^>\s*.+/.test(spec)) unpinned = true;
+
+          p.unpinnedByPattern = unpinned;
+          p.unpinned = unpinned; // used by some heuristics/rendering
+          if (p && p.name) {
+            unpinnedMap[p.name.toLowerCase()] = unpinned;
+          }
+          if (unpinned) unpinnedCount++;
+        });
         var buildScriptFindings = checkNpmDangerousBuildScripts(manifestStr);
         setStep(0, true);
         setStep(1, false);
@@ -2819,6 +2979,7 @@ Gemfile.lock, composer.lock</p>
                     newPackage: !!pkgHealthMeta.newPackage,
                     packageAgeDays: pkgHealthMeta.packageAgeDays,
                     packageAgeHours: pkgHealthMeta.packageAgeHours,
+                    unpinned: !!unpinnedMap[String(pkgName).toLowerCase()],
                     vulns: vulns.map(function (v) { return { id: v.id, displayId: v.displayId || v.id, severity: v.severity, summary: v.summary || '' }; })
                   });
                 });
@@ -2843,11 +3004,41 @@ Gemfile.lock, composer.lock</p>
                   newPackage: !!(healthDataMap[s.name] || {}).newPackage,
                   packageAgeDays: (healthDataMap[s.name] || {}).packageAgeDays,
                   packageAgeHours: (healthDataMap[s.name] || {}).packageAgeHours,
+                    unpinned: !!unpinnedMap[String(s.name).toLowerCase()],
                     suspicious: true,
                     type: s.type || 'suspicious',
                     warningMessage: s.warningMessage
                   });
                 });
+
+            // Add ZOMBIE-only rows (no CVEs) so we can display the badge/warning.
+            suspiciousList = suspiciousList || [];
+            var zombieAdded = {};
+            packageRows.forEach(function (r) {
+              if (r && r.name) zombieAdded[String(r.name).toLowerCase()] = true;
+            });
+            packages.forEach(function (p) {
+              if (!p || !p.name) return;
+              var lower = String(p.name).toLowerCase();
+              if (zombieAdded[lower]) return;
+              var meta = healthDataMap && healthDataMap[p.name] ? healthDataMap[p.name] : null;
+              if (meta && meta.zombie) {
+                zombieAdded[lower] = true;
+                packageRows.push({
+                  name: p.name,
+                  installed: p.version,
+                  fixVersion: '—',
+                  advisoryId: null,
+                  severity: 'MEDIUM',
+                  cveId: '—',
+                  kev: false,
+                  health: calculatePackageHealth(meta),
+                  unpinned: !!(p && p.unpinnedByPattern),
+                  suspicious: false,
+                  private: false
+                });
+              }
+            });
 
                 skipped.forEach(function (s) {
                   packageRows.push({
@@ -2859,7 +3050,8 @@ Gemfile.lock, composer.lock</p>
                     cveId: 'Not scannable',
                     kev: false,
                     health: null,
-                    private: true
+                    private: true,
+                    unpinned: !!unpinnedMap[String(s.name).toLowerCase()]
                   });
                 });
 
@@ -2878,6 +3070,7 @@ Gemfile.lock, composer.lock</p>
                     packages: packages,
                     manifestStr: manifestStr,
                     ecosystem: 'npm',
+                    unpinnedCount: unpinnedCount,
                     suspiciousCount: suspiciousList.length,
                     skippedCount: skipped.length,
                     scanMode: scanMode,
@@ -2912,8 +3105,22 @@ Gemfile.lock, composer.lock</p>
         setStep(0, false);
 
         var packages = parseRequirementsTxt(manifestStr);
+        var unpinnedMap = {};
+        var unpinnedCount = 0;
+        packages.forEach(function (p) {
+          var vc = p && p.versionConstraint ? String(p.versionConstraint) : '';
+          var unp = false;
+          if (!vc) unp = true;
+          else {
+            var first = vc.split(',')[0].trim();
+            if (/^(>=|>)\s*/.test(first)) unp = true;
+          }
+          p.unpinnedByPattern = unp;
+          if (p && p.name) unpinnedMap[p.name.toLowerCase()] = unp;
+          if (unp) unpinnedCount++;
+        });
+
         var pinnedPackages = packages.filter(function (p) { return !p.unpinned && p.version; });
-        var unpinnedCount = packages.filter(function (p) { return p.unpinned; }).length;
         setStep(0, true);
         setStep(1, false);
 
@@ -2961,6 +3168,7 @@ Gemfile.lock, composer.lock</p>
                   severity: topSev,
                   cveId: topVuln.displayId || topVuln.id,
                   kev: isKev,
+                  unpinned: !!unpinnedMap[String(pkgName).toLowerCase()],
                   vulns: vulns.map(function (v) { return { id: v.id, displayId: v.displayId || v.id, severity: v.severity, summary: v.summary || '' }; })
                 });
               });
@@ -3353,8 +3561,23 @@ Gemfile.lock, composer.lock</p>
         var parsedGem = parseGemfile(manifestStr);
         var packages = parsedGem.packages || [];
         var gemWarnings = parsedGem.warnings || [];
+        var unpinnedMap = {};
+        var unpinnedCount = 0;
+        packages.forEach(function (p) {
+          var unpinnedByPattern = !!p.unpinned; // no version means unpinned
+          var vc = p && p.versionConstraint ? String(p.versionConstraint) : '';
+          if (vc) {
+            var trimmed = vc.trim();
+            var hasLowerBound = (/^\s*>=/.test(trimmed) || /^\s*>/.test(trimmed));
+            var hasUpperBound = trimmed.indexOf('~>') !== -1 || trimmed.indexOf('<=') !== -1 || trimmed.indexOf('<') !== -1;
+            if (hasLowerBound && !hasUpperBound) unpinnedByPattern = true;
+          }
+          p.unpinnedByPattern = unpinnedByPattern;
+          if (p && p.name) unpinnedMap[p.name.toLowerCase()] = unpinnedByPattern;
+          if (unpinnedByPattern) unpinnedCount++;
+        });
+
         var pinnedPackages = packages.filter(function (p) { return !p.unpinned && p.version; });
-        var unpinnedCount = packages.filter(function (p) { return p.unpinned; }).length;
         setStep(0, true);
         setStep(1, false);
 
@@ -3408,6 +3631,7 @@ Gemfile.lock, composer.lock</p>
                   severity: topSev,
                   cveId: topVuln.displayId || topVuln.id,
                   kev: isKev,
+                  unpinned: !!(pkg && pkg.unpinnedByPattern),
                   vulns: vulns.map(function (v) { return { id: v.id, displayId: v.displayId || v.id, severity: v.severity, summary: v.summary || '' }; })
                 });
               });
@@ -3460,6 +3684,21 @@ Gemfile.lock, composer.lock</p>
         setStep(0, false);
 
         var packages = parseComposerJson(manifestStr);
+        var unpinnedMap = {};
+        var unpinnedCount = 0;
+        packages.forEach(function (p) {
+          var spec = p && p.versionConstraint ? String(p.versionConstraint) : '';
+          var trimmed = spec.trim();
+          var normalized = trimmed.replace(/^[\^~]+/, '');
+          var unpinnedByPattern = false;
+          if (!trimmed) unpinnedByPattern = true;
+          else if (trimmed === '*') unpinnedByPattern = true;
+          else if (normalized.indexOf('@dev') !== -1) unpinnedByPattern = true;
+          else if (/^>=\s*/.test(normalized)) unpinnedByPattern = true;
+          p.unpinnedByPattern = unpinnedByPattern;
+          if (p && p.name) unpinnedMap[p.name.toLowerCase()] = unpinnedByPattern;
+          if (unpinnedByPattern) unpinnedCount++;
+        });
         setStep(0, true);
         setStep(1, false);
 
@@ -3513,6 +3752,7 @@ Gemfile.lock, composer.lock</p>
                   severity: topSev,
                   cveId: topVuln.displayId || topVuln.id,
                   kev: isKev,
+                  unpinned: !!unpinnedMap[String(pkgName).toLowerCase()],
                   vulns: vulns.map(function (v) { return { id: v.id, displayId: v.displayId || v.id, severity: v.severity, summary: v.summary || '' }; })
                 });
               });
@@ -3531,7 +3771,8 @@ Gemfile.lock, composer.lock</p>
                   packageRows: packageRows,
                   packages: packages,
                   manifestStr: manifestStr,
-                  ecosystem: 'composer'
+                  ecosystem: 'composer',
+                  unpinnedCount: unpinnedCount
                 });
                 loadingPanel.classList.remove('visible');
                 resultsSection.classList.add('visible');
@@ -3613,6 +3854,60 @@ Gemfile.lock, composer.lock</p>
           return;
         }
 
+        // Typosquatting heuristic for dependency spoofing.
+        if (data && Array.isArray(data.packages)) {
+          var typosquatFlags = computeTyposquatFlags(data.packages);
+          var flagKeys = typosquatFlags && Object.keys(typosquatFlags);
+          if (flagKeys && flagKeys.length > 0) {
+            var existingByLower = {};
+            if (Array.isArray(data.packageRows)) {
+              data.packageRows.forEach(function (r) {
+                if (r && r.name) existingByLower[String(r.name).toLowerCase()] = r;
+              });
+            }
+
+            var typosquatRowsToAdd = [];
+            data.packages.forEach(function (p) {
+              var pkgName = (p && p.name) ? String(p.name) : '';
+              if (!pkgName) return;
+              var lower = pkgName.toLowerCase();
+              if (!typosquatFlags[lower]) return;
+
+              var closest = typosquatFlags[lower].closestMatch;
+              var warnMsg = 'Similar to ' + closest + ' — verify this is the correct package';
+
+              var existing = existingByLower[lower];
+              if (existing) {
+                existing.typosquat = true;
+                existing.typosquatWarningMessage = warnMsg;
+              } else {
+                var installedVal = '—';
+                if (p && p.versionConstraint) installedVal = p.versionConstraint;
+                else if (p && p.version != null && p.version !== '') installedVal = p.version;
+                else if (p && p.unpinned) installedVal = 'unpinned';
+
+                typosquatRowsToAdd.push({
+                  name: pkgName,
+                  installed: installedVal,
+                  fixVersion: null,
+                  advisoryId: null,
+                  severity: 'SUSPICIOUS',
+                  cveId: '—',
+                  kev: false,
+                  suspicious: true,
+                  type: 'typosquat',
+                  warningMessage: warnMsg,
+                  unpinned: !!(p && (p.unpinned || p.unpinnedByPattern))
+                });
+              }
+            });
+
+            if (typosquatRowsToAdd.length > 0) {
+              data.packageRows = (data.packageRows || []).concat(typosquatRowsToAdd);
+            }
+          }
+        }
+
         var hasVulns = data.packageRows && data.packageRows.length > 0;
         if (!hasVulns) {
           var today = new Date();
@@ -3626,6 +3921,40 @@ Gemfile.lock, composer.lock</p>
             '<div class="health-score-label">Health Score: 100 / 100</div>' +
             '<div class="health-score-bar-wrap"><div class="health-score-bar green" style="width:100%"></div></div>' +
             '</div>';
+
+          // Unpinned-only warning: show even when no CVEs are found.
+          if (data.unpinnedCount && data.unpinnedCount > 0 && Array.isArray(data.packages)) {
+            var unpinnedRows = data.packages.filter(function (p) {
+              return p && (p.unpinned || p.unpinnedByPattern);
+            }).map(function (p) {
+              var installed = '—';
+              if (p.versionConstraint) installed = p.versionConstraint;
+              else if (p.version != null && p.version !== '') installed = p.version;
+              else if (p.versionConstraint == null && p.version == null) installed = 'unpinned';
+              else installed = p.version || 'unpinned';
+              return { name: p.name, installed: installed };
+            });
+
+            if (unpinnedRows.length > 0) {
+              resultsContent.innerHTML +=
+                '<div style="margin: 1rem 0 1.25rem 0;">' +
+                '<div style="font-family: JetBrains Mono, monospace; color: var(--orange); font-weight: 700;">⚠ Unpinned Versions Detected</div>' +
+                '<div style="font-family: JetBrains Mono, monospace; color: var(--orange); margin: 0.25rem 0 0.5rem 0;">─────────────────────────────</div>' +
+                '<div class="cve-table-wrap" style="margin-bottom: 0.75rem;">' +
+                '<table class="cve-table"><thead><tr>' +
+                '<th>Package</th><th>Installed</th><th>Severity</th>' +
+                '</tr></thead><tbody>' +
+                unpinnedRows.map(function (r) {
+                  return '<tr><td>' + escapeHtml(r.name) + '</td><td>' + escapeHtml(r.installed) + '</td><td>' +
+                    '<span class="severity-badge unpinned">⚠ UNPINNED</span>' +
+                    '</td></tr>';
+                }).join('') +
+                '</tbody></table></div>' +
+                '<div class="unpinned-warning">Unpinned versions can silently float into vulnerable ranges. Pin to an exact version.</div>' +
+                '</div>';
+            }
+          }
+
           var scanAnotherBtn = document.getElementById('scan-another-btn');
           if (scanAnotherBtn) scanAnotherBtn.addEventListener('click', function () { resetToInputState(); });
           return;
@@ -3645,10 +3974,6 @@ Gemfile.lock, composer.lock</p>
           '<div class="health-score-bar-wrap"><div class="health-score-bar ' + barClass + '" style="width:' + score + '%"></div></div>' +
           '<div class="stat-pills">' + pills + '</div>';
         resultsContent.innerHTML += healthHtml;
-
-        if (data.unpinnedCount > 0) {
-          resultsContent.innerHTML += '<div class="unpinned-warning">⚠ ' + data.unpinnedCount + ' package(s) unpinned — pin versions to enable full scanning</div>';
-        }
 
         if (data.kevPackages && data.kevPackages.length > 0) {
           var kevList = data.kevPackages.map(function (r) { return r.name + ' (' + r.cveId + ')'; }).join(', ');
@@ -3677,6 +4002,7 @@ Gemfile.lock, composer.lock</p>
             var sevLabel = r.private ? 'PRIVATE' :
               (r.suspicious ? (r.type === 'takeover' ? '🚨 TAKEOVER?' :
                 r.type === 'license' ? '⚖ LICENSE' :
+                r.type === 'typosquat' ? '⚠ TYPOSQUAT?' :
                 r.type === 'deprecated' ? '🪦 DEPRECATED' :
                 '⚠ SUSPICIOUS') :
                 (r.severity || 'MEDIUM'));
@@ -3684,6 +4010,7 @@ Gemfile.lock, composer.lock</p>
             var sevClass = r.private ? 'private' :
               (r.suspicious ? (r.type === 'takeover' ? 'takeover' :
                 r.type === 'license' ? 'license' :
+                r.type === 'typosquat' ? 'typosquat' :
                 r.type === 'deprecated' ? 'deprecated' :
                 'suspicious') :
                 (r.severity || 'MEDIUM').toLowerCase());
@@ -3699,6 +4026,21 @@ Gemfile.lock, composer.lock</p>
                   '<span class="severity-badge high">' + escapeHtml(newText) + '</span>' +
                   '</div>';
               }
+            }
+            var typosquatInlineBadge = '';
+            if (r.typosquat && !r.suspicious) {
+              typosquatInlineBadge =
+                '<div style="margin-top:0.25rem;">' +
+                '<span class="severity-badge typosquat">⚠ TYPOSQUAT?</span>' +
+                '</div>';
+            }
+
+            var unpinnedInlineBadge = '';
+            if (r.unpinned) {
+              unpinnedInlineBadge =
+                '<div style="margin-top:0.25rem;">' +
+                '<span class="severity-badge unpinned">⚠ UNPINNED</span>' +
+                '</div>';
             }
             var fixCell = r.private
               ? '—'
@@ -3723,16 +4065,36 @@ Gemfile.lock, composer.lock</p>
                 (r.health.monthlyDownloads ?
                   formatDownloads(r.health.monthlyDownloads) + '/mo' : '') +
                 '</div>';
+
+              if (r.health.zombie) {
+                healthCell +=
+                  '<div style="margin-top:0.25rem;">' +
+                  '<span class="severity-badge zombie">🧟 ZOMBIE</span>' +
+                  '</div>';
+              }
             }
             table += '<tr><td>' + escapeHtml(r.name) + '</td><td>' + escapeHtml(r.installed) + '</td><td>' + fixCell + '</td>' +
-              '<td><span class="severity-badge ' + sevClass + '">' + escapeHtml(sevLabel) + '</span>' + newPackageBadge + '</td>' +
+              '<td><span class="severity-badge ' + sevClass + '">' + escapeHtml(sevLabel) + '</span>' + newPackageBadge + typosquatInlineBadge + unpinnedInlineBadge + '</td>' +
               '<td>' + escapeHtml(cveCell) + '</td><td>' + kevCell + '</td><td>' + healthCell + '</td></tr>';
             if (r.suspicious && r.warningMessage) {
-              table += '<tr><td colspan="7" style="padding:0; border-bottom:1px solid var(--border);"><div class="suspicious-warning">' + escapeHtml(r.warningMessage) + '</div></td></tr>';
+              var warnCls = r.type === 'typosquat' ? 'typosquat-warning' : 'suspicious-warning';
+              table += '<tr><td colspan="7" style="padding:0; border-bottom:1px solid var(--border);"><div class="' + warnCls + '">' + escapeHtml(r.warningMessage) + '</div></td></tr>';
+            } else if (r.typosquatWarningMessage) {
+              table += '<tr><td colspan="7" style="padding:0; border-bottom:1px solid var(--border);"><div class="typosquat-warning">' + escapeHtml(r.typosquatWarningMessage) + '</div></td></tr>';
+            }
+
+            if (r.health && r.health.zombie) {
+              table += '<tr><td colspan="7" style="padding:0; border-bottom:1px solid var(--border);"><div class="suspicious-warning">' +
+                escapeHtml('Widely used but unmaintained for 2+ years. Prime takeover target. Consider a maintained fork.') +
+                '</div></td></tr>';
             }
           });
           table += '</tbody></table></div>';
           resultsContent.innerHTML += table;
+
+          if (data.unpinnedCount > 0) {
+            resultsContent.innerHTML += '<div class="unpinned-warning">Unpinned versions can silently float into vulnerable ranges. Pin to an exact version.</div>';
+          }
         }
 
         if (data.manifestStr && (data.ecosystem === 'pypi' || data.ecosystem === 'gems' || data.ecosystem === 'composer' || (data.packageRows && data.packageRows.length > 0))) {
@@ -4041,11 +4403,76 @@ Gemfile.lock, composer.lock</p>
                 (isRust || isRustLock) ? ('FIXED ' + rustFileName) :
                   isGo ? 'FIXED go.mod' :
                     isJava ? 'FIXED pom.xml' : 'FIXED package.json';
+
+          // "What's in your fix" checklist (shown before download zip)
+          var patchedCvesCount = (data.critical || 0) + (data.high || 0) + (data.medium || 0);
+          var unpinnedHardenedCount = data.unpinnedCount || 0;
+          var supplyChainFlagsCount = 0;
+          if (data.buildScriptFindings && data.buildScriptFindings.length > 0) {
+            supplyChainFlagsCount += data.buildScriptFindings.length;
+          }
+          if (data.packageRows) {
+            data.packageRows.forEach(function (r) {
+              if (!r) return;
+              if (r.type === 'takeover' || r.type === 'typosquat') supplyChainFlagsCount++;
+              if (r.newPackage) supplyChainFlagsCount++;
+              if (r.health && r.health.zombie) supplyChainFlagsCount++;
+            });
+          }
+
+          var directDepsSet = {};
+          if (Array.isArray(data.packages)) {
+            data.packages.forEach(function (p) {
+              if (p && p.name) directDepsSet[String(p.name).toLowerCase()] = true;
+            });
+          }
+
+          var overridesInjectedCount = 0;
+          if (data.packageRows && data.packageRows.length > 0) {
+            data.packageRows.forEach(function (r) {
+              if (!r || !r.fixVersion || r.fixVersion === '—') return;
+              if (r.fixVersion === 'find MIT alternative') return;
+              if (r.fixVersion === 'find replacement') return;
+              if (r.fixVersion === 'verify before upgrading') return;
+              if (r.fixVersion === 'see advisory') return;
+              if (r.severity !== 'CRITICAL' && r.severity !== 'HIGH') return;
+              var nl = r.name ? String(r.name).toLowerCase() : '';
+              var inDirect = nl && directDepsSet[nl];
+              if (!inDirect) overridesInjectedCount++;
+            });
+          }
+
+          var fixChecklistLines = [];
+          if (patchedCvesCount > 0) {
+            fixChecklistLines.push('<span class="fix-checklist-ok">[✓]</span>' + patchedCvesCount + ' CVEs patched');
+          }
+          if (unpinnedHardenedCount > 0) {
+            fixChecklistLines.push('<span class="fix-checklist-ok">[✓]</span>' + unpinnedHardenedCount + ' unpinned versions hardened');
+          }
+          if (supplyChainFlagsCount > 0) {
+            fixChecklistLines.push('<span class="fix-checklist-ok">[✓]</span>' + supplyChainFlagsCount + ' supply chain flags detected');
+          }
+          if (overridesInjectedCount > 0) {
+            fixChecklistLines.push('<span class="fix-checklist-ok">[✓]</span>overrides block injected');
+          }
+
+          // Always include these automation options.
+          fixChecklistLines.push('<span class="fix-checklist-ok">[✓]</span>Renovate config included');
+          fixChecklistLines.push('<span class="fix-checklist-ok">[✓]</span>CI/CD workflow included');
+
+          var fixChecklistHtml = '';
+          if (fixChecklistLines.length > 0) {
+            fixChecklistHtml = '<div class="fix-checklist">' + fixChecklistLines.map(function (l) {
+              return '<span class="fix-checklist-line">' + l + '</span>';
+            }).join('') + '</div>';
+          }
+
           var diffHtml = '<div class="diff-section-title">Recommended Changes</div>' +
             '<div class="diff-toggle-wrap"><button type="button" class="diff-toggle-btn" id="diff-toggle-btn">Show changed only</button></div>' +
             '<div class="diff-panel-wrap">' +
             '<div class="diff-col"><div class="diff-col-header">' + leftHeader + '</div><div id="diff-left"></div></div>' +
             '<div class="diff-col"><div class="diff-col-header">' + rightHeader + '</div><div id="diff-right"></div></div></div>' +
+            fixChecklistHtml +
             '<div class="diff-buttons-wrap">' +
             '<button type="button" class="copy-fixed-btn" id="copy-fixed-btn">Copy fixed manifest</button>' +
             '<button type="button" class="download-zip-btn" id="download-zip-btn">⬇ Download .zip</button></div>' +
