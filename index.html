@@ -2461,7 +2461,7 @@ Gemfile.lock, composer.lock</p>
 
       function fetchPyPiLatestVersions(packages) {
         var withVersion = packages.filter(function (p) { return p.version != null && p.version !== ''; });
-        if (withVersion.length === 0) return Promise.resolve({});
+        if (withVersion.length === 0) return Promise.resolve({ versions: {}, zombieByPackageLower: {} });
         var urls = withVersion.map(function (p) {
           return 'https://pypi.org/pypi/' + encodeURIComponent(p.name) + '/json';
         });
@@ -2469,11 +2469,36 @@ Gemfile.lock, composer.lock</p>
           return fetch(url).then(function (r) { return r.json(); });
         })).then(function (responses) {
           var out = {};
+          var zombieByPackageLower = {};
           withVersion.forEach(function (p, i) {
             var info = responses[i] && responses[i].info;
-            out[p.name] = (info && info.version) ? info.version : p.version;
+            var version = (info && info.version) ? info.version : p.version;
+            out[p.name] = version;
+
+            // PYPI zombie heuristic:
+            // months since last update > 24 (downloads unavailable in JSON)
+            try {
+              var resp = responses[i] || {};
+              var uploadTime = null;
+              if (resp.urls && resp.urls[0] && resp.urls[0].upload_time) {
+                uploadTime = resp.urls[0].upload_time;
+              } else if (resp.releases && resp.releases[(resp.info && resp.info.version) || version] &&
+                         resp.releases[(resp.info && resp.info.version) || version][0] &&
+                         resp.releases[(resp.info && resp.info.version) || version][0].upload_time) {
+                uploadTime = resp.releases[(resp.info && resp.info.version) || version][0].upload_time;
+              }
+              if (uploadTime) {
+                var d = new Date(uploadTime);
+                if (!isNaN(d.getTime())) {
+                  var monthsSince = (Date.now() - d.getTime()) / (1000 * 60 * 60 * 24 * 30);
+                  if (monthsSince > 24) {
+                    zombieByPackageLower[String(p.name).toLowerCase()] = true;
+                  }
+                }
+              }
+            } catch (e) {}
           });
-          return out;
+          return { versions: out, zombieByPackageLower: zombieByPackageLower };
         });
       }
 
@@ -2486,11 +2511,30 @@ Gemfile.lock, composer.lock</p>
           return fetch(url).then(function (r) { return r.json(); }).catch(function () { return null; });
         })).then(function (responses) {
           var out = {};
+          var zombieByPackageLower = {};
           packages.forEach(function (p, i) {
             var info = responses[i];
-            out[p.name] = (info && info.version) ? info.version : (p.version || '');
+            var latestVersion = (info && info.version) ? info.version : (p.version || '');
+            out[p.name] = latestVersion;
+
+            // RUBY zombie heuristic:
+            // months since version_created_at > 24 AND total downloads > 1,000,000
+            try {
+              if (info && info.version_created_at) {
+                var created = new Date(info.version_created_at);
+                var downloadsTotal = 0;
+                if (info.downloads != null) downloadsTotal = Number(info.downloads) || 0;
+                else if (info.downloads_total != null) downloadsTotal = Number(info.downloads_total) || 0;
+                if (!isNaN(created.getTime()) && downloadsTotal > 0) {
+                  var monthsSince = (Date.now() - created.getTime()) / (1000 * 60 * 60 * 24 * 30);
+                  if (monthsSince > 24 && downloadsTotal > 1000000) {
+                    zombieByPackageLower[String(p.name).toLowerCase()] = true;
+                  }
+                }
+              }
+            } catch (e) {}
           });
-          return out;
+          return { versions: out, zombieByPackageLower: zombieByPackageLower };
         });
       }
 
@@ -2562,7 +2606,7 @@ Gemfile.lock, composer.lock</p>
       }
 
       function fetchPackagistLatestVersions(packages) {
-        if (packages.length === 0) return Promise.resolve({ versions: {}, corsBlocked: false });
+        if (packages.length === 0) return Promise.resolve({ versions: {}, corsBlocked: false, zombieByPackageLower: {} });
         var parts = packages.map(function (p) {
           var idx = p.name.indexOf('/');
           return idx !== -1 ? { vendor: p.name.substring(0, idx), package: p.name.substring(idx + 1), name: p.name } : { vendor: p.name, package: p.name, name: p.name };
@@ -2574,6 +2618,7 @@ Gemfile.lock, composer.lock</p>
           return fetch(url).then(function (r) { return r.json(); });
         })).then(function (responses) {
           var out = {};
+          var zombieByPackageLower = {};
           parts.forEach(function (x, i) {
             var data = responses[i];
             var versions = data && data.package && data.package.versions ? data.package.versions : {};
@@ -2587,10 +2632,24 @@ Gemfile.lock, composer.lock</p>
               if (semverCompare(stable[j], best) > 0) best = stable[j];
             }
             out[x.name] = best;
+
+            // PHP zombie heuristic (Packagist):
+            // latest stable version timestamp + total downloads
+            try {
+              var timeVal = versions && versions[best] ? versions[best].time : null;
+              var downloadsTotal = data && data.package && data.package.downloads ? (data.package.downloads.total || 0) : 0;
+              var d = timeVal ? new Date(timeVal) : null;
+              if (d && !isNaN(d.getTime())) {
+                var monthsSince = (Date.now() - d.getTime()) / (1000 * 60 * 60 * 24 * 30);
+                if (monthsSince > 24 && Number(downloadsTotal) > 1000000) {
+                  zombieByPackageLower[String(x.name).toLowerCase()] = true;
+                }
+              }
+            } catch (e) {}
           });
-          return { versions: out, corsBlocked: false };
+          return { versions: out, corsBlocked: false, zombieByPackageLower: zombieByPackageLower };
         }).catch(function () {
-          return { versions: {}, corsBlocked: true };
+          return { versions: {}, corsBlocked: true, zombieByPackageLower: {} };
         });
       }
 
@@ -3124,9 +3183,11 @@ Gemfile.lock, composer.lock</p>
         setStep(0, true);
         setStep(1, false);
 
-        fetchPyPiLatestVersions(packages).then(function (latestVersions) {
+        fetchPyPiLatestVersions(packages).then(function (result) {
           setStep(1, true);
           setStep(2, false);
+          var latestVersions = (result && result.versions) ? result.versions : (result || {});
+          var zombieByPackageLower = (result && result.zombieByPackageLower) ? result.zombieByPackageLower : {};
           return fetchOsvVulns(pinnedPackages, 'PyPI').then(function (osvByPackage) {
             setStep(2, true);
             setStep(3, false);
@@ -3159,6 +3220,7 @@ Gemfile.lock, composer.lock</p>
                 }
                 var resolved = resolveFixVersion(minFix, latestVersions, pkgName, topVuln.id);
                 var pkg = packages.find(function (p) { return p.name === pkgName || (p.name && p.name.toLowerCase() === pkgName.toLowerCase()); });
+                var isZombie = zombieByPackageLower[String(pkgName).toLowerCase()] === true;
                 var installedDisplay = (pkg && (pkg.versionConstraint || pkg.version)) ? (pkg.versionConstraint || pkg.version) : '—';
                 packageRows.push({
                   name: pkgName,
@@ -3169,8 +3231,39 @@ Gemfile.lock, composer.lock</p>
                   cveId: topVuln.displayId || topVuln.id,
                   kev: isKev,
                   unpinned: !!unpinnedMap[String(pkgName).toLowerCase()],
+                  health: isZombie ? { label: 'Zombie', color: 'var(--yellow)', zombie: true } : undefined,
+                  zombie: isZombie,
                   vulns: vulns.map(function (v) { return { id: v.id, displayId: v.displayId || v.id, severity: v.severity, summary: v.summary || '' }; })
                 });
+              });
+
+              // Add zombie-only rows (no CVEs) so the badge shows even with 100/100
+              var existingLower = {};
+              packageRows.forEach(function (r) {
+                if (r && r.name) existingLower[String(r.name).toLowerCase()] = true;
+              });
+              packages.forEach(function (p) {
+                if (!p || !p.name) return;
+                var lower = String(p.name).toLowerCase();
+                if (existingLower[lower]) return;
+                if (zombieByPackageLower[lower]) {
+                  var installedVal = '—';
+                  if (p.versionConstraint) installedVal = p.versionConstraint;
+                  else if (p.version != null && p.version !== '') installedVal = p.version;
+                  packageRows.push({
+                    name: p.name,
+                    installed: installedVal,
+                    fixVersion: null,
+                    advisoryId: null,
+                    severity: 'LOW',
+                    cveId: '—',
+                    kev: false,
+                    health: { label: 'Zombie', color: 'var(--yellow)', zombie: true },
+                    unpinned: !!(p.unpinned || p.unpinnedByPattern),
+                    zombie: true,
+                    suspicious: false
+                  });
+                }
               });
 
               var health = calculateHealthScore(packageRows);
@@ -3581,9 +3674,11 @@ Gemfile.lock, composer.lock</p>
         setStep(0, true);
         setStep(1, false);
 
-        fetchRubyGemsLatestVersions(packages).then(function (latestVersions) {
+        fetchRubyGemsLatestVersions(packages).then(function (result) {
           setStep(1, true);
           setStep(2, false);
+          var latestVersions = (result && result.versions) ? result.versions : (result || {});
+          var zombieByPackageLower = (result && result.zombieByPackageLower) ? result.zombieByPackageLower : {};
           var osvPromise = pinnedPackages.length ? fetchOsvVulns(pinnedPackages, 'RubyGems') : Promise.resolve({});
           return osvPromise.then(function (osvByPackage) {
             setStep(2, true);
@@ -3617,6 +3712,7 @@ Gemfile.lock, composer.lock</p>
                 }
                 var resolved = resolveFixVersion(minFix, latestVersions, pkgName, topVuln.id);
                 var pkg = packages.find(function (p) { return p.name === pkgName || (p.name && p.name.toLowerCase() === pkgName.toLowerCase()); });
+                var isZombie = zombieByPackageLower[String(pkgName).toLowerCase()] === true;
                 var installedDisplay = '—';
                 if (pkg) {
                   if (pkg.versionRange && pkg.versionConstraint) installedDisplay = pkg.versionConstraint;
@@ -3632,8 +3728,40 @@ Gemfile.lock, composer.lock</p>
                   cveId: topVuln.displayId || topVuln.id,
                   kev: isKev,
                   unpinned: !!(pkg && pkg.unpinnedByPattern),
+                  health: isZombie ? { label: 'Zombie', color: 'var(--yellow)', zombie: true } : undefined,
+                  zombie: isZombie,
                   vulns: vulns.map(function (v) { return { id: v.id, displayId: v.displayId || v.id, severity: v.severity, summary: v.summary || '' }; })
                 });
+              });
+
+              // Add zombie-only rows (no CVEs) so the badge shows even with 100/100
+              var existingLower = {};
+              packageRows.forEach(function (r) {
+                if (r && r.name) existingLower[String(r.name).toLowerCase()] = true;
+              });
+              packages.forEach(function (p) {
+                if (!p || !p.name) return;
+                var lower = String(p.name).toLowerCase();
+                if (existingLower[lower]) return;
+                if (zombieByPackageLower[lower]) {
+                  var installedVal = '—';
+                  if (p.versionRange && p.versionConstraint) installedVal = p.versionConstraint;
+                  else if (p.version) installedVal = p.version;
+                  else if (p.unpinned) installedVal = 'unpinned';
+                  packageRows.push({
+                    name: p.name,
+                    installed: installedVal,
+                    fixVersion: null,
+                    advisoryId: null,
+                    severity: 'LOW',
+                    cveId: '—',
+                    kev: false,
+                    health: { label: 'Zombie', color: 'var(--yellow)', zombie: true },
+                    unpinned: !!p.unpinnedByPattern,
+                    zombie: true,
+                    suspicious: false
+                  });
+                }
               });
 
               var health = calculateHealthScore(packageRows);
@@ -3704,6 +3832,7 @@ Gemfile.lock, composer.lock</p>
 
         fetchPackagistLatestVersions(packages).then(function (packagistResult) {
           var latestVersions = packagistResult.versions || {};
+          var zombieByPackageLower = packagistResult.zombieByPackageLower || {};
           var corsBlocked = packagistResult.corsBlocked || false;
           setStep(1, true);
           setStep(2, false);
@@ -3744,6 +3873,7 @@ Gemfile.lock, composer.lock</p>
                   resolved = resolveFixVersion(minFix, latestVersions, pkgName, topVuln.id);
                 }
                 var pkg = packages.find(function (p) { return p.name === pkgName; });
+                var isZombie = zombieByPackageLower[String(pkgName).toLowerCase()] === true;
                 packageRows.push({
                   name: pkgName,
                   installed: (pkg && pkg.version) ? pkg.version : '—',
@@ -3753,8 +3883,39 @@ Gemfile.lock, composer.lock</p>
                   cveId: topVuln.displayId || topVuln.id,
                   kev: isKev,
                   unpinned: !!unpinnedMap[String(pkgName).toLowerCase()],
+                  health: isZombie ? { label: 'Zombie', color: 'var(--yellow)', zombie: true } : undefined,
+                  zombie: isZombie,
                   vulns: vulns.map(function (v) { return { id: v.id, displayId: v.displayId || v.id, severity: v.severity, summary: v.summary || '' }; })
                 });
+              });
+
+              // Add zombie-only rows (no CVEs) so the badge shows even with 100/100
+              var existingLower = {};
+              packageRows.forEach(function (r) {
+                if (r && r.name) existingLower[String(r.name).toLowerCase()] = true;
+              });
+              packages.forEach(function (p) {
+                if (!p || !p.name) return;
+                var lower = String(p.name).toLowerCase();
+                if (existingLower[lower]) return;
+                if (zombieByPackageLower[lower]) {
+                  var installedVal = '—';
+                  if (p.versionConstraint) installedVal = p.versionConstraint;
+                  else if (p.version != null && p.version !== '') installedVal = p.version;
+                  packageRows.push({
+                    name: p.name,
+                    installed: installedVal,
+                    fixVersion: null,
+                    advisoryId: null,
+                    severity: 'LOW',
+                    cveId: '—',
+                    kev: false,
+                    health: { label: 'Zombie', color: 'var(--yellow)', zombie: true },
+                    unpinned: !!p.unpinnedByPattern,
+                    zombie: true,
+                    suspicious: false
+                  });
+                }
               });
 
               var health = calculateHealthScore(packageRows);
