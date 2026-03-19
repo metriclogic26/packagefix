@@ -1626,7 +1626,8 @@ Gemfile.lock, composer.lock</p>
           var block = match[1];
           var groupMatch = block.match(/<groupId>([^<]+)<\/groupId>/);
           var artifactMatch = block.match(/<artifactId>([^<]+)<\/artifactId>/);
-          var versionMatch = block.match(/<version>([^<${}]+)<\/version>/);
+          // Capture ${...} placeholders too so we can resolve them from <properties>
+          var versionMatch = block.match(/<version>([^<]*)<\/version>/);
           if (groupMatch && artifactMatch && versionMatch) {
             var groupId = groupMatch[1].trim();
             var artifactId = artifactMatch[1].trim();
@@ -1639,6 +1640,37 @@ Gemfile.lock, composer.lock</p>
             });
           }
         }
+
+        // Phase 1: extract <properties> block
+        var propMap = {};
+        var propsMatch = (content || '').match(/<properties[^>]*>([\s\S]*?)<\/properties>/);
+        if (propsMatch) {
+          var propContent = propsMatch[1];
+          // Resolve basic <my.prop>value</my.prop> entries
+          var propRegex = /<([a-zA-Z0-9._-]+)>\s*([^<]+)\s*<\/\1>/g;
+          var pm;
+          while ((pm = propRegex.exec(propContent)) !== null) {
+            propMap[pm[1].trim()] = pm[2].trim();
+          }
+        }
+
+        // Phase 2: resolve ${variable} in version strings
+        packages = packages.map(function (dep) {
+          if (dep.version && typeof dep.version === 'string') {
+            var trimmed = dep.version.trim();
+            if (trimmed.indexOf('${') === 0) {
+              var varName = trimmed.slice(2, -1);
+              if (propMap[varName]) {
+                dep.version = propMap[varName];
+              } else {
+                // Phase 3: unresolvable variable — mark for UI hint
+                dep.version = null;
+                dep.unresolvedVar = varName;
+              }
+            }
+          }
+          return dep;
+        });
         return packages;
       }
 
@@ -3012,12 +3044,20 @@ Gemfile.lock, composer.lock</p>
         setStep(0, false);
 
         var packages = parsePomXml(manifestStr);
-        var pinnedPackages = packages.filter(function (p) { return p.version != null && p.version !== ''; });
-        var unpinnedCount = packages.filter(function (p) { return !p.version; }).length;
+        var unresolvedPackages = packages.filter(function (p) { return p.unresolvedVar; });
+        var pinnedPackages = packages.filter(function (p) {
+          return p.version != null && p.version !== '' && !p.unresolvedVar;
+        });
+        // Only count truly-unpinned deps (not deps with unresolved properties)
+        var unpinnedCount = packages.filter(function (p) { return !p.version && !p.unresolvedVar; }).length;
         setStep(0, true);
         setStep(1, false);
 
-        fetchOsvVulns(pinnedPackages, 'Maven').then(function (osvByPackage) {
+        var osvPromise = pinnedPackages.length
+          ? fetchOsvVulns(pinnedPackages, 'Maven')
+          : Promise.resolve({});
+
+        osvPromise.then(function (osvByPackage) {
           setStep(2, true);
           setStep(3, false);
           return fetchKevList().then(function (kevIds) {
@@ -3027,6 +3067,25 @@ Gemfile.lock, composer.lock</p>
             kevIds.forEach(function (id) { kevSet[id.toUpperCase()] = true; });
 
             var packageRows = [];
+
+            // Show a warning row for dependencies whose versions use local ${...} properties
+            // that weren't found in the uploaded pom.xml.
+            unresolvedPackages.forEach(function (dep) {
+              var varName = dep.unresolvedVar;
+              packageRows.push({
+                name: dep.name,
+                installed: '—',
+                fixVersion: '—',
+                advisoryId: null,
+                severity: 'MEDIUM',
+                cveId: '—',
+                kev: false,
+                suspicious: true,
+                type: 'property',
+                warningMessage: 'Property ${' + varName + '} not found in local pom.xml — define it for accurate scanning'
+              });
+            });
+
             Object.keys(osvByPackage).forEach(function (pkgName) {
               var vulns = osvByPackage[pkgName];
               if (vulns.length === 0) return;
@@ -3077,7 +3136,7 @@ Gemfile.lock, composer.lock</p>
                 manifestStr: manifestStr,
                 ecosystem: 'java',
                 unpinnedCount: unpinnedCount,
-                suspiciousCount: 0
+                  suspiciousCount: unresolvedPackages.length
               });
               loadingPanel.classList.remove('visible');
               resultsSection.classList.add('visible');
@@ -3688,6 +3747,33 @@ Gemfile.lock, composer.lock</p>
                 fixedManifest.devDependencies[r.name] = versionForDiff;
               }
             });
+
+            // Auto-inject overrides block for transitive CVEs
+            // (so downloaded fixed package.json already includes them)
+            var npmOverrides = {};
+            data.packageRows.forEach(function (r) {
+              if (!r.fixVersion || r.fixVersion === '—') return;
+              if (r.fixVersion === 'find MIT alternative') return;
+              if (r.fixVersion === 'find replacement') return;
+              if (r.fixVersion === 'see advisory') return;
+              if (r.severity !== 'CRITICAL' && r.severity !== 'HIGH') return;
+
+              // Check if this package is already in direct deps
+              var inDirect = fixedManifest.dependencies &&
+                fixedManifest.dependencies[r.name] !== undefined;
+              var inDev = fixedManifest.devDependencies &&
+                fixedManifest.devDependencies[r.name] !== undefined;
+
+              if (!inDirect && !inDev) {
+                npmOverrides[r.name] = r.fixVersion;
+              }
+            });
+
+            if (Object.keys(npmOverrides).length > 0) {
+              // Preserve any existing overrides block
+              fixedManifest.overrides = Object.assign({}, fixedManifest.overrides || {}, npmOverrides);
+            }
+
             var leftDeps = { dependencies: manifestObj.dependencies || {}, devDependencies: manifestObj.devDependencies || {} };
             var rightDeps = { dependencies: fixedManifest.dependencies || {}, devDependencies: fixedManifest.devDependencies || {} };
             leftStr = JSON.stringify(leftDeps, null, 2);
