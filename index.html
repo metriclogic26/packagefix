@@ -1887,6 +1887,59 @@ Gemfile.lock, composer.lock</p>
         return warnings;
       }
 
+      function checkNpmDangerousBuildScripts(manifestStr) {
+        var findings = [];
+        var json = null;
+        try {
+          json = JSON.parse(manifestStr);
+        } catch (e) {
+          return findings;
+        }
+        if (!json || !json.scripts || typeof json.scripts !== 'object') return findings;
+
+        // Case-insensitive dangerous shell/network patterns.
+        var patterns = [
+          /curl/i,
+          /wget/i,
+          /sh\s*-c/i,
+          /bash\s*-c/i,
+          /\bexec\b/i,
+          /\beval\b/i,
+          /\/bin\/sh/i,
+          /\/bin\/bash/i,
+          /python\s*-c/i,
+          /ruby\s*-e/i
+        ];
+
+        Object.keys(json.scripts).forEach(function (key) {
+          var val = json.scripts[key];
+          if (typeof val !== 'string') return;
+          var matched = patterns.some(function (re) { return re.test(val); });
+          if (matched) {
+            findings.push({
+              label: 'npm scripts.' + key,
+              content: val
+            });
+          }
+        });
+
+        return findings;
+      }
+
+      function checkRustCargoBuildRsCargoToml(manifestStr) {
+        var findings = [];
+        if (!manifestStr || typeof manifestStr !== 'string') return findings;
+        // Flag for manual review; `build.rs` is executed automatically.
+        var matches = manifestStr.match(/(^|\n)\s*build\s*=\s*["']build\.rs["'].*/gim);
+        if (matches && matches.length > 0) {
+          findings.push({
+            label: 'Cargo.toml build = "build.rs"',
+            content: matches.join('\n').trim()
+          });
+        }
+        return findings;
+      }
+
       function handleManifestFile(file) {
         var name = (file && file.name) || '';
         var reader = new FileReader();
@@ -2689,6 +2742,7 @@ Gemfile.lock, composer.lock</p>
         setStep(0, false);
 
         var packages = parseNpmManifest(manifestStr, scanMode);
+        var buildScriptFindings = checkNpmDangerousBuildScripts(manifestStr);
         setStep(0, true);
         setStep(1, false);
 
@@ -2827,7 +2881,8 @@ Gemfile.lock, composer.lock</p>
                     suspiciousCount: suspiciousList.length,
                     skippedCount: skipped.length,
                     scanMode: scanMode,
-                    healthDataMap: healthDataMap
+                    healthDataMap: healthDataMap,
+                    buildScriptFindings: buildScriptFindings
                   });
                 loadingPanel.classList.remove('visible');
                 resultsSection.classList.add('visible');
@@ -3054,6 +3109,7 @@ Gemfile.lock, composer.lock</p>
         var packages = isLockfile
           ? parseCargoLock(manifestStr)
           : parseCargoToml(manifestStr);
+        var buildScriptFindings = isLockfile ? [] : checkRustCargoBuildRsCargoToml(manifestStr);
         setStep(0, true);
         setStep(1, false);
 
@@ -3143,6 +3199,7 @@ Gemfile.lock, composer.lock</p>
                   manifestStr: manifestStr,
                   ecosystem: isLockfile ? 'rust-lock' : 'rust',
                   manifestFileName: manifestFileNameForResult,
+                  buildScriptFindings: buildScriptFindings,
                   unpinnedCount: packages.filter(function(p) { return !p.version; }).length
                 });
                 loadingPanel.classList.remove('visible');
@@ -3515,6 +3572,40 @@ Gemfile.lock, composer.lock</p>
             'cursor: pointer;' +
           '">← Scan another file</button>' +
         '</div>';
+
+        // Build-script warnings: show even when there are no CVEs.
+        if (data && data.buildScriptFindings && data.buildScriptFindings.length > 0) {
+          var isRust = data.ecosystem === 'rust';
+          var isNpm = data.ecosystem === 'npm';
+          var showWarning = isRust || isNpm;
+          if (showWarning) {
+            var scriptDetails = data.buildScriptFindings.map(function (f) {
+              return (f.label ? f.label + ':\n' : '') + (f.content || '');
+            }).join('\n\n');
+
+            resultsContent.innerHTML +=
+              '<div class="suspicious-warning">' +
+              (isRust
+                ? ('⚠ build.rs detected — runs automatically on install.<br>' +
+                   'Contains arbitrary code execution. Review build.rs manually before using this package.') :
+                   '⚠ Build script contains network or shell commands<br>' +
+                   'postinstall/build.rs runs automatically on install.<br>' +
+                   'Review before proceeding:') +
+              '<pre style="' +
+              'margin: 0.5rem 0 0 0;' +
+              'background: var(--bg);' +
+              'border: 1px solid var(--border);' +
+              'border-radius: 6px;' +
+              'padding: 0.5rem;' +
+              'font-family: JetBrains Mono, monospace;' +
+              'font-size: 0.72rem;' +
+              'overflow-x: auto;' +
+              'color: var(--text);' +
+              '">' + escapeHtml(scriptDetails) + '</pre>' +
+              '</div>';
+          }
+        }
+
         if (data.error) {
           resultsContent.innerHTML += '<p style="color: var(--red);">' + escapeHtml(data.error) + '</p>';
           var scanAnotherBtn = document.getElementById('scan-another-btn');
