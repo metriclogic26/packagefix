@@ -1266,6 +1266,21 @@ Gemfile.lock, composer.lock</p>
             policy.
           </div>
         </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            Are Maven ${variable} versions supported?
+            <span class="faq-chevron">+</span>
+          </div>
+          <div class="faq-answer">
+            Yes. PackageFix resolves property variables like 
+            ${spring.version} from the &lt;properties&gt; block 
+            in your pom.xml before scanning. If a variable is 
+            defined in a parent POM rather than locally, it cannot 
+            be resolved in a browser-only tool — add the property 
+            directly to your pom.xml for an accurate scan.
+          </div>
+        </div>
       </div>
     </section>
   </main>
@@ -1281,6 +1296,8 @@ Gemfile.lock, composer.lock</p>
       PackageFix is not a substitute for professional security advice.
       License risk information is informational only — verify with
       qualified legal counsel before making licensing decisions.
+      Maven property variables (${...}) are resolved from the local
+      pom.xml only — parent POM properties are not fetched.
     </div>
     <div class="footer-bar">
       <span>
