@@ -1036,7 +1036,7 @@
       </div>
 
       <div id="panel-paste" class="panel active">
-        <input type="file" id="manifest-file-input" accept=".json,.txt,.xml,Gemfile,composer.json,go.mod,Cargo.toml" style="display: none">
+        <input type="file" id="manifest-file-input" accept=".json,.txt,.xml,Gemfile,composer.json,go.mod,Cargo.toml,Cargo.lock" style="display: none">
         <input type="file" id="lockfile-file-input" accept=".json,.lock" style="display: none">
         <div class="drop-zones">
           <div class="drop-zone-manifest-wrap">
@@ -1045,7 +1045,7 @@
                 <div class="drop-zone-default">
                   <span class="drop-zone-label">Drop manifest here or click to upload</span>
                   <p class="drop-zone-accept">package.json · requirements.txt · 
-Gemfile · composer.json<br>go.mod · Cargo.toml · pom.xml</p>
+Gemfile · composer.json<br>go.mod · Cargo.toml · Cargo.lock · pom.xml</p>
                 </div>
                 <div class="drop-zone-loaded" style="display: none;"></div>
                 <div class="drop-zone-error-msg" style="display: none;"></div>
@@ -1058,6 +1058,7 @@ Gemfile · composer.json<br>go.mod · Cargo.toml · pom.xml</p>
               <button type="button" class="eco-pick-btn" data-ecosystem="composer">PHP</button>
               <button type="button" class="eco-pick-btn" data-ecosystem="go">Go</button>
               <button type="button" class="eco-pick-btn" data-ecosystem="rust">Rust</button>
+              <button type="button" class="eco-pick-btn" data-ecosystem="rust-lock">Rust (lock)</button>
               <button type="button" class="eco-pick-btn" data-ecosystem="java">Java</button>
             </div>
           </div>
@@ -1592,6 +1593,23 @@ Gemfile.lock, composer.lock</p>
         return packages;
       }
 
+      function parseCargoLock(content) {
+        var packages = [];
+        var blocks = (content || '').split(/\[\[package\]\]/g);
+        for (var i = 1; i < blocks.length; i++) {
+          var block = blocks[i];
+          var nameMatch = block.match(/name\s*=\s*"([^"]+)"/);
+          var versionMatch = block.match(/version\s*=\s*"([^"]+)"/);
+          if (nameMatch && versionMatch) {
+            packages.push({
+              name: nameMatch[1].trim(),
+              version: versionMatch[1].trim()
+            });
+          }
+        }
+        return packages;
+      }
+
       function parsePomXml(content) {
         var packages = [];
         var depRegex = /<dependency>([\s\S]*?)<\/dependency>/g;
@@ -1649,6 +1667,8 @@ Gemfile.lock, composer.lock</p>
             if (line.indexOf("gem '") === 0) return 'gems';
           }
         }
+
+        if (n === 'cargo.lock' || n.endsWith('cargo.lock')) return 'rust-lock';
 
         if (n.endsWith('cargo.toml') || n === 'cargo.toml') return 'rust';
 
@@ -1722,8 +1742,19 @@ Gemfile.lock, composer.lock</p>
         }
         var lockHint = document.getElementById('lockfile-hint');
         if (lockHint) {
-          lockHint.style.display =
-            (detectedEcosystem === 'gems') ? 'block' : 'none';
+          if (detectedEcosystem === 'gems') {
+            lockHint.textContent =
+              '💡 Ruby detected — drop your Gemfile.lock above ' +
+              'for full transitive dependency analysis';
+            lockHint.style.display = 'block';
+          } else if (detectedEcosystem === 'rust') {
+            lockHint.textContent =
+              '💡 Cargo.toml detected — drop your Cargo.lock ' +
+              'for more accurate transitive dependency analysis';
+            lockHint.style.display = 'block';
+          } else {
+            lockHint.style.display = 'none';
+          }
         }
         var picker = document.getElementById('manifest-ecosystem-picker');
         if (picker) picker.style.display = detectedEcosystem ? 'none' : 'flex';
@@ -2843,7 +2874,7 @@ Gemfile.lock, composer.lock</p>
         });
       }
 
-      function runRustScan(manifestStr) {
+      function runRustScan(manifestStr, isLockfile) {
         manifestStr = manifestStr || exampleManifests.rust;
         inputSection.classList.add('hidden');
         if (faqSection) faqSection.classList.add('hidden');
@@ -2851,7 +2882,9 @@ Gemfile.lock, composer.lock</p>
         resultsSection.classList.remove('visible');
         setStep(0, false);
 
-        var packages = parseCargoToml(manifestStr);
+        var packages = isLockfile
+          ? parseCargoLock(manifestStr)
+          : parseCargoToml(manifestStr);
         setStep(0, true);
         setStep(1, false);
 
@@ -2924,6 +2957,10 @@ Gemfile.lock, composer.lock</p>
               var health = calculateHealthScore(packageRows);
               setStep(4, true);
 
+              var manifestFileNameForResult = isLockfile
+                ? (manifestFilename || 'Cargo.lock')
+                : (manifestFilename || 'Cargo.toml');
+
               setTimeout(function() {
                 renderResults({
                   score: health.score,
@@ -2935,7 +2972,8 @@ Gemfile.lock, composer.lock</p>
                   packageRows: packageRows,
                   packages: packages,
                   manifestStr: manifestStr,
-                  ecosystem: 'rust',
+                  ecosystem: isLockfile ? 'rust-lock' : 'rust',
+                  manifestFileName: manifestFileNameForResult,
                   unpinnedCount: packages.filter(function(p) { return !p.version; }).length
                 });
                 loadingPanel.classList.remove('visible');
@@ -3395,7 +3433,10 @@ Gemfile.lock, composer.lock</p>
           var isComposer = data.ecosystem === 'composer';
           var isGo = data.ecosystem === 'go';
           var isRust = data.ecosystem === 'rust';
+          var isRustLock = data.ecosystem === 'rust-lock';
           var isJava = data.ecosystem === 'java';
+          var rustFileName = data.manifestFileName ||
+            (isRustLock ? 'Cargo.lock' : 'Cargo.toml');
           var diffLines = [];
           var leftStr = '';
           var rightStr = '';
@@ -3545,6 +3586,40 @@ Gemfile.lock, composer.lock</p>
               diffLines.push({ left: cline, right: rightLine, changed: cline !== rightLine });
             }
             fixedRustStr = diffLines.map(function (d) { return d.right; }).join('\n');
+          } else if (isRustLock) {
+            // Update only the `version = "..."` lines for matching package `name = "..."` blocks.
+            var fixMapRust = {};
+            data.packageRows.forEach(function (r) {
+              if (r.fixVersion && r.fixVersion !== 'see advisory') {
+                fixMapRust[r.name] = r.fixVersion;
+              }
+            });
+            var cargoLines = data.manifestStr.split('\n');
+            var curPkgName = null;
+            for (var rli = 0; rli < cargoLines.length; rli++) {
+              var cl = cargoLines[rli];
+              var clTrim = cl.trim();
+              var rightLine = cl;
+
+              if (clTrim === '[[package]]') {
+                curPkgName = null;
+              }
+
+              var nm = cl.match(/^\s*name\s*=\s*"([^"]+)"/);
+              if (nm) {
+                curPkgName = nm[1].trim();
+              }
+
+              var vm = cl.match(/^\s*version\s*=\s*"([^"]+)"/);
+              if (vm && curPkgName && fixMapRust[curPkgName]) {
+                var indentMatch = cl.match(/^(\s*)/);
+                var indent = indentMatch ? indentMatch[1] : '';
+                rightLine = indent + 'version = "' + fixMapRust[curPkgName] + '"';
+              }
+
+              diffLines.push({ left: cl, right: rightLine, changed: cl !== rightLine });
+            }
+            fixedRustStr = diffLines.map(function (d) { return d.right; }).join('\n');
           } else if (isJava) {
             var fixMapJava = {};
             data.packageRows.forEach(function (r) {
@@ -3622,13 +3697,13 @@ Gemfile.lock, composer.lock</p>
           var leftHeader = isComposer ? 'YOUR composer.json' :
             isGems ? 'YOUR Gemfile' :
               isPypi ? 'YOUR requirements.txt' :
-                isRust ? 'YOUR Cargo.toml' :
+                (isRust || isRustLock) ? ('YOUR ' + rustFileName) :
                   isGo ? 'YOUR go.mod' :
                     isJava ? 'YOUR pom.xml' : 'YOUR package.json';
           var rightHeader = isComposer ? 'FIXED composer.json' :
             isGems ? 'FIXED Gemfile' :
               isPypi ? 'FIXED requirements.txt' :
-                isRust ? 'FIXED Cargo.toml' :
+                (isRust || isRustLock) ? ('FIXED ' + rustFileName) :
                   isGo ? 'FIXED go.mod' :
                     isJava ? 'FIXED pom.xml' : 'FIXED package.json';
           var diffHtml = '<div class="diff-section-title">Recommended Changes</div>' +
@@ -3732,7 +3807,7 @@ Gemfile.lock, composer.lock</p>
             renderDiff();
           });
           document.getElementById('copy-fixed-btn').addEventListener('click', function () {
-            var text = isComposer ? JSON.stringify(fixedComposer, null, 2) : isGems ? fixedGemfileStr : isPypi ? fixedRequirementsStr : isGo ? fixedGoModStr : isRust ? fixedRustStr : isJava ? fixedJavaPomStr : JSON.stringify(fixedManifest, null, 2);
+            var text = isComposer ? JSON.stringify(fixedComposer, null, 2) : isGems ? fixedGemfileStr : isPypi ? fixedRequirementsStr : isGo ? fixedGoModStr : (isRust || isRustLock) ? fixedRustStr : isJava ? fixedJavaPomStr : JSON.stringify(fixedManifest, null, 2);
             if (navigator.clipboard && navigator.clipboard.writeText) {
               navigator.clipboard.writeText(text).then(function () {
                 var btn = document.getElementById('copy-fixed-btn');
@@ -3753,8 +3828,8 @@ Gemfile.lock, composer.lock</p>
               zip.file('requirements.txt', fixedRequirementsStr);
             } else if (isGo) {
               zip.file('go.mod', fixedGoModStr);
-            } else if (isRust) {
-              zip.file('Cargo.toml', fixedRustStr);
+            } else if (isRust || isRustLock) {
+              zip.file(rustFileName, fixedRustStr);
             } else if (isJava) {
               zip.file('pom.xml', fixedJavaPomStr);
             } else {
@@ -3863,7 +3938,8 @@ Gemfile.lock, composer.lock</p>
           else if (detectedEcosystem === 'gems') runRubyScan(manifestContent);
           else if (detectedEcosystem === 'composer') runComposerScan(manifestContent);
           else if (detectedEcosystem === 'go') runGoScan(manifestContent);
-          else if (detectedEcosystem === 'rust') runRustScan(manifestContent);
+          else if (detectedEcosystem === 'rust') runRustScan(manifestContent, false);
+          else if (detectedEcosystem === 'rust-lock') runRustScan(manifestContent, true);
           else if (detectedEcosystem === 'java') runJavaScan(manifestContent);
           else runFakeScan();
         } else if (!pasteActive && selectedEcosystem === 'npm') {
@@ -3877,7 +3953,9 @@ Gemfile.lock, composer.lock</p>
         } else if (!pasteActive && selectedEcosystem === 'go') {
           runGoScan(exampleManifests.go);
         } else if (!pasteActive && selectedEcosystem === 'rust') {
-          runRustScan(exampleManifests.rust);
+          runRustScan(exampleManifests.rust, false);
+        } else if (!pasteActive && selectedEcosystem === 'rust-lock') {
+          runRustScan(exampleManifests.rust, false);
         } else if (!pasteActive && selectedEcosystem === 'java') {
           runJavaScan(exampleManifests.java);
         } else {
@@ -4045,10 +4123,6 @@ Gemfile.lock, composer.lock</p>
           selectedEcosystem = eco;
           updateManifestZoneUI();
           scanBtn.disabled = false;
-          var lockHint = document.getElementById('lockfile-hint');
-          if (lockHint) {
-            lockHint.style.display = eco === 'gems' ? 'block' : 'none';
-          }
         }
       });
     })();
