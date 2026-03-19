@@ -1152,6 +1152,16 @@ Gemfile.lock, composer.lock</p>
         ">Dev only</button>
       </div>
     </div>
+    <div id="manifest-safety-warning" style="
+      display: none;
+      background: rgba(239,68,68,0.15);
+      border: 1px solid var(--red);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      margin-bottom: 0.75rem;
+      font-size: 0.8rem;
+      color: var(--red);
+    "></div>
     <button type="button" class="scan-btn" disabled>Scan Dependencies →</button>
     <div id="cta-hint" style="
       text-align: center;
@@ -1529,7 +1539,20 @@ Gemfile.lock, composer.lock</p>
           if (!name) continue;
           packages.push({ name: name, version: version, versionConstraint: versionConstraint, versionRange: versionRange, unpinned: unpinned, rawLine: line });
         }
-        return packages;
+        var result = { packages: packages, warnings: [] };
+
+        var sourceMatches = (content || '').match(/^source\s+/gm);
+        if (sourceMatches && sourceMatches.length > 1) {
+          result.warnings = result.warnings || [];
+          result.warnings.push({
+            type: 'MULTI_SOURCE',
+            message: 'Multiple global source declarations detected in Gemfile. ' +
+              'This can enable dependency confusion attacks. ' +
+              'Use a single source declaration and per-gem source blocks instead.'
+          });
+        }
+
+        return result;
       }
 
       function parseComposerJson(content) {
@@ -1834,6 +1857,36 @@ Gemfile.lock, composer.lock</p>
         zone.classList.add('has-file');
       }
 
+      function checkManifestSafety(content) {
+        var warnings = [];
+
+        // Check for non-ASCII characters in manifest
+        var nonAscii = content.match(/[^\x00-\x7F]/g);
+        if (nonAscii && nonAscii.length > 0) {
+          warnings.push({
+            type: 'UNICODE',
+            message: 'Non-ASCII characters detected in manifest (' +
+              nonAscii.length + ' found). ' +
+              'This may indicate a Glassworm/Unicode injection attack. ' +
+              'Inspect your file in a hex editor before using.'
+          });
+        }
+
+        // Check for invisible Unicode variation selectors
+        var invisibleChars = content.match(/[\uFE00-\uFE0F\u200B-\u200F\u2028-\u202F]/g);
+        if (invisibleChars && invisibleChars.length > 0) {
+          warnings.push({
+            type: 'INVISIBLE',
+            message: 'Invisible Unicode characters detected (' +
+              invisibleChars.length + ' found). ' +
+              'This is a strong indicator of a supply chain attack. ' +
+              'Do not use this manifest.'
+          });
+        }
+
+        return warnings;
+      }
+
       function handleManifestFile(file) {
         var name = (file && file.name) || '';
         var reader = new FileReader();
@@ -1846,6 +1899,11 @@ Gemfile.lock, composer.lock</p>
             var errEl = document.getElementById('drop-zone-manifest').querySelector('.drop-zone-error-msg');
             errEl.setAttribute('data-msg', 'File appears to be empty');
             updateManifestZoneUI();
+            var safetyBanner = document.getElementById('manifest-safety-warning');
+            if (safetyBanner) {
+              safetyBanner.style.display = 'none';
+              safetyBanner.innerHTML = '';
+            }
             scanBtn.disabled = true;
             return;
           }
@@ -1859,6 +1917,11 @@ Gemfile.lock, composer.lock</p>
               var errEl2 = document.getElementById('drop-zone-manifest').querySelector('.drop-zone-error-msg');
               errEl2.setAttribute('data-msg', 'Invalid JSON — check your file');
               updateManifestZoneUI();
+              var safetyBanner2 = document.getElementById('manifest-safety-warning');
+              if (safetyBanner2) {
+                safetyBanner2.style.display = 'none';
+                safetyBanner2.innerHTML = '';
+              }
               scanBtn.disabled = true;
               return;
             }
@@ -1869,6 +1932,22 @@ Gemfile.lock, composer.lock</p>
           selectedEcosystem = detectedEcosystem;
           document.getElementById('drop-zone-manifest').querySelector('.drop-zone-error-msg').removeAttribute('data-msg');
           updateManifestZoneUI();
+
+          // Manifest safety check: show highly visible warnings, never block scanning.
+          var safetyBanner3 = document.getElementById('manifest-safety-warning');
+          if (safetyBanner3) {
+            var warnings = checkManifestSafety(text || '');
+            if (warnings && warnings.length > 0) {
+              safetyBanner3.innerHTML = warnings.map(function (w) {
+                return '<div>' + escapeHtml(w.message) + '</div>';
+              }).join('');
+              safetyBanner3.style.display = 'block';
+            } else {
+              safetyBanner3.style.display = 'none';
+              safetyBanner3.innerHTML = '';
+            }
+          }
+
           var hint = document.getElementById('cta-hint');
           if (hint) hint.style.display = 'none';
           var pasteActive = document.getElementById('panel-paste').classList.contains('active');
@@ -1897,6 +1976,13 @@ Gemfile.lock, composer.lock</p>
         document.getElementById('drop-zone-manifest').querySelector('.drop-zone-error-msg').removeAttribute('data-msg');
         updateManifestZoneUI();
         updateLockfileZoneUI();
+
+        var safetyBanner = document.getElementById('manifest-safety-warning');
+        if (safetyBanner) {
+          safetyBanner.style.display = 'none';
+          safetyBanner.innerHTML = '';
+        }
+
         var pasteActive = document.getElementById('panel-paste').classList.contains('active');
         if (pasteActive) scanBtn.disabled = true;
       }
@@ -1975,6 +2061,22 @@ Gemfile.lock, composer.lock</p>
               lastPublish = pkgData.time;
             }
 
+            // NEW_PACKAGE heuristic: packages registered very recently
+            // Uses registry time.created from `registry.npmjs.org/{package}` response.
+            var newPackage = false;
+            var packageAgeDays = null;
+            var packageAgeHours = null;
+            var createdDate = new Date(pkgData && pkgData.time && pkgData.time.created);
+            if (createdDate && !isNaN(createdDate.getTime())) {
+              var ageInDays = (Date.now() - createdDate) / (1000 * 60 * 60 * 24);
+              if (ageInDays >= 0) {
+                packageAgeDays = Math.floor(ageInDays);
+                packageAgeHours = Math.floor(ageInDays * 24);
+                // "Last 48 hours" threshold
+                if (ageInDays < 2) newPackage = true;
+              }
+            }
+
             // Monthly downloads
             var monthlyDownloads = (dlData && dlData.downloads) ? dlData.downloads : 0;
 
@@ -1995,7 +2097,10 @@ Gemfile.lock, composer.lock</p>
               hasTypes: hasTypes,
               isDeprecated: isDeprecated,
               license: license,
-              description: pkgData.description || ''
+              description: pkgData.description || '',
+              newPackage: newPackage,
+              packageAgeDays: packageAgeDays,
+              packageAgeHours: packageAgeHours
             };
           });
         })).then(function (results) {
@@ -2647,6 +2752,7 @@ Gemfile.lock, composer.lock</p>
                     }
                   }
                   var resolved = resolveFixVersion(minFix, latestVersions, pkgName, topVuln.id);
+                  var pkgHealthMeta = healthDataMap[pkgName] || {};
                   packageRows.push({
                     name: pkgName,
                     installed: (packages.find(function (p) { return p.name === pkgName; }) || {}).version,
@@ -2656,6 +2762,9 @@ Gemfile.lock, composer.lock</p>
                     cveId: topVuln.displayId || topVuln.id,
                     kev: isKev,
                     health: calculatePackageHealth(healthDataMap[pkgName]),
+                    newPackage: !!pkgHealthMeta.newPackage,
+                    packageAgeDays: pkgHealthMeta.packageAgeDays,
+                    packageAgeHours: pkgHealthMeta.packageAgeHours,
                     vulns: vulns.map(function (v) { return { id: v.id, displayId: v.displayId || v.id, severity: v.severity, summary: v.summary || '' }; })
                   });
                 });
@@ -2677,6 +2786,9 @@ Gemfile.lock, composer.lock</p>
                     cveId: s.type === 'license' ? (s.license || '—') : '—',
                     kev: false,
                     health: calculatePackageHealth(healthDataMap[s.name]),
+                  newPackage: !!(healthDataMap[s.name] || {}).newPackage,
+                  packageAgeDays: (healthDataMap[s.name] || {}).packageAgeDays,
+                  packageAgeHours: (healthDataMap[s.name] || {}).packageAgeHours,
                     suspicious: true,
                     type: s.type || 'suspicious',
                     warningMessage: s.warningMessage
@@ -3181,7 +3293,9 @@ Gemfile.lock, composer.lock</p>
         resultsSection.classList.remove('visible');
         setStep(0, false);
 
-        var packages = parseGemfile(manifestStr);
+        var parsedGem = parseGemfile(manifestStr);
+        var packages = parsedGem.packages || [];
+        var gemWarnings = parsedGem.warnings || [];
         var pinnedPackages = packages.filter(function (p) { return !p.unpinned && p.version; });
         var unpinnedCount = packages.filter(function (p) { return p.unpinned; }).length;
         setStep(0, true);
@@ -3258,7 +3372,8 @@ Gemfile.lock, composer.lock</p>
                   manifestStr: manifestStr,
                   ecosystem: 'gems',
                   unpinnedCount: unpinnedCount,
-                  gemVersionRanges: gemVersionRanges
+                  gemVersionRanges: gemVersionRanges,
+                  gemSafetyWarnings: gemWarnings
                 });
                 loadingPanel.classList.remove('visible');
                 resultsSection.classList.add('visible');
@@ -3457,6 +3572,11 @@ Gemfile.lock, composer.lock</p>
           if (data.ecosystem === 'gems' && data.gemVersionRanges) {
             resultsContent.innerHTML += '<div class="gem-version-range-note">⚠ Version ranges detected. Upload Gemfile.lock for exact installed versions and more accurate results.</div>';
           }
+          if (data.ecosystem === 'gems' && data.gemSafetyWarnings && data.gemSafetyWarnings.length > 0) {
+            data.gemSafetyWarnings.forEach(function (w) {
+              resultsContent.innerHTML += '<div class="suspicious-warning">' + escapeHtml(w.message) + '</div>';
+            });
+          }
           if (data.ecosystem === 'npm' && data.skippedCount > 0) {
             resultsContent.innerHTML += '<div class="private-skipped-note">' + data.skippedCount + ' private/internal package(s) were skipped — PackageFix can only scan public registry packages.</div>';
           }
@@ -3476,6 +3596,19 @@ Gemfile.lock, composer.lock</p>
                 r.type === 'deprecated' ? 'deprecated' :
                 'suspicious') :
                 (r.severity || 'MEDIUM').toLowerCase());
+
+            var newPackageBadge = '';
+            if (r.newPackage) {
+              var ageHours = (r.packageAgeHours != null) ? r.packageAgeHours :
+                (r.packageAgeDays != null) ? (r.packageAgeDays * 24) : null;
+              if (ageHours != null) {
+                var newText = '⚠️ NEW (' + ageHours + ' hours old) — verify before using';
+                newPackageBadge =
+                  '<div style="margin-top:0.25rem;">' +
+                  '<span class="severity-badge high">' + escapeHtml(newText) + '</span>' +
+                  '</div>';
+              }
+            }
             var fixCell = r.private
               ? '—'
               : (r.suspicious
@@ -3501,7 +3634,7 @@ Gemfile.lock, composer.lock</p>
                 '</div>';
             }
             table += '<tr><td>' + escapeHtml(r.name) + '</td><td>' + escapeHtml(r.installed) + '</td><td>' + fixCell + '</td>' +
-              '<td><span class="severity-badge ' + sevClass + '">' + escapeHtml(sevLabel) + '</span></td>' +
+              '<td><span class="severity-badge ' + sevClass + '">' + escapeHtml(sevLabel) + '</span>' + newPackageBadge + '</td>' +
               '<td>' + escapeHtml(cveCell) + '</td><td>' + kevCell + '</td><td>' + healthCell + '</td></tr>';
             if (r.suspicious && r.warningMessage) {
               table += '<tr><td colspan="7" style="padding:0; border-bottom:1px solid var(--border);"><div class="suspicious-warning">' + escapeHtml(r.warningMessage) + '</div></td></tr>';
