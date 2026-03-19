@@ -1201,7 +1201,15 @@ Gemfile.lock, composer.lock</p>
         </div>
         <div class="faq-item">
           <div class="faq-question">How current is the vulnerability data?<span class="faq-chevron">+</span></div>
-          <div class="faq-answer">The OSV database updates continuously — vulnerabilities published yesterday, zero-days from this morning, and safe fix versions released last week are all reflected. This is data no AI model can give you from training alone.</div>
+          <div class="faq-answer">
+            PackageFix queries the OSV database live on every scan.
+            OSV aggregates from GitHub Advisory Database, RustSec,
+            PyPA, Go vulnerability database, RubyGems Security,
+            and FriendsOfPHP — updated continuously.
+            New advisories typically appear within 24 hours of
+            publication. CISA KEV data is checked on every scan
+            to flag actively exploited vulnerabilities.
+          </div>
         </div>
         <div class="faq-item">
           <div class="faq-question">What is the CISA KEV catalog?<span class="faq-chevron">+</span></div>
