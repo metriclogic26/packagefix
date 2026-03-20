@@ -1050,6 +1050,43 @@
       max-height: 1500px;
       padding: 0 0 1rem 0;
     }
+
+    .manifest-paste-wrap {
+      margin-top: 1rem;
+    }
+
+    .manifest-paste-label {
+      display: block;
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .manifest-paste-textarea {
+      width: 100%;
+      min-height: 10rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      line-height: 1.45;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      resize: vertical;
+      box-sizing: border-box;
+    }
+
+    .manifest-paste-textarea:focus {
+      outline: none;
+      border-color: var(--purple);
+      box-shadow: 0 0 0 1px var(--purple);
+    }
+
+    .manifest-paste-textarea::placeholder {
+      color: var(--muted);
+      opacity: 0.85;
+    }
   </style>
   <script defer src="https://cloud.umami.is/script.js" data-website-id="eb5afbfd-786f-42e4-b6d3-1ad5a5ee0696"></script>
 </head>
@@ -1134,6 +1171,10 @@ Gemfile.lock, composer.lock</p>
               text-align: center;
             ">💡 Drop your Gemfile.lock here for full transitive analysis</p>
           </div>
+        </div>
+        <div class="manifest-paste-wrap">
+          <label for="manifest-paste-textarea" class="manifest-paste-label">Or paste / edit manifest</label>
+          <textarea id="manifest-paste-textarea" class="manifest-paste-textarea" spellcheck="false" rows="8" placeholder="Paste manifest contents here, or use ?file=… from a terminal (see FAQ)."></textarea>
         </div>
       </div>
 
@@ -1341,6 +1382,30 @@ Gemfile.lock, composer.lock</p>
             defined in a parent POM rather than locally, it cannot 
             be resolved in a browser-only tool — add the property 
             directly to your pom.xml for an accurate scan.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            Can I use PackageFix from the terminal?
+            <span class="faq-chevron">+</span>
+          </div>
+          <div class="faq-answer">
+            Yes — pipe any manifest directly into PackageFix
+            from your terminal:
+
+            npm / Node.js:
+            <pre style="background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 0.5rem 0.75rem; font-size: 0.75rem; display: block; margin: 0.5rem 0; overflow-x: auto;">B64=$(base64 -i package.json) && open "https://packagefix.dev/?file=$B64"</pre>
+
+            Python:
+            <pre style="background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 0.5rem 0.75rem; font-size: 0.75rem; display: block; margin: 0.5rem 0; overflow-x: auto;">B64=$(base64 -i requirements.txt) && open "https://packagefix.dev/?file=$B64"</pre>
+
+            Ruby:
+            <pre style="background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 0.5rem 0.75rem; font-size: 0.75rem; display: block; margin: 0.5rem 0; overflow-x: auto;">B64=$(base64 -i Gemfile) && open "https://packagefix.dev/?file=$B64"</pre>
+
+            On Linux, replace 'open' with 'xdg-open'.
+            The file is decoded entirely in your browser —
+            nothing is sent to a server.
           </div>
         </div>
       </div>
@@ -1785,6 +1850,12 @@ Gemfile.lock, composer.lock</p>
         }
 
         if (c) {
+          // Cargo.lock (no filename): URL/paste loads without a path.
+          if (c.indexOf('[[package]]') !== -1 &&
+              /name\s*=\s*"/.test(c) &&
+              /version\s*=\s*"/.test(c)) {
+            return 'rust-lock';
+          }
           if (c.indexOf('module ') === 0 && c.indexOf('require') !== -1) return 'go';
           try {
             var json = JSON.parse(c);
@@ -1817,6 +1888,115 @@ Gemfile.lock, composer.lock</p>
       function firstThreeLines(text) {
         if (!text || !text.trim()) return '';
         return text.trim().split('\n').slice(0, 3).join('\n');
+      }
+
+      /** Guess filename for ecosystem detection when pasting or using ?file= (no path). */
+      function inferSyntheticFilename(content) {
+        var c = (content || '').trim();
+        if (!c) return 'manifest.txt';
+        if (/^\s*\{/.test(c)) {
+          try {
+            var j = JSON.parse(c);
+            if (j && typeof j === 'object' &&
+                ('require' in j || 'require-dev' in j) &&
+                !('dependencies' in j) && !('devDependencies' in j)) {
+              return 'composer.json';
+            }
+          } catch (jErr) { /* fall through */ }
+          return 'package.json';
+        }
+        if (c.indexOf('<project') !== -1 || c.indexOf('<groupId>') !== -1) return 'pom.xml';
+        if (c.indexOf('module ') === 0) return 'go.mod';
+        if (c.indexOf('[[package]]') !== -1) return 'Cargo.lock';
+        if (c.indexOf('[package]') !== -1 && c.indexOf('[dependencies]') !== -1) return 'Cargo.toml';
+        if (/^gem\s+['"]/m.test(c)) return 'Gemfile';
+        var lines = c.split('\n');
+        for (var i = 0; i < lines.length; i++) {
+          var line = lines[i].trim();
+          if (line.indexOf('==') !== -1 || /^[A-Za-z0-9_.-]+\s*(>=|>)/.test(line)) return 'requirements.txt';
+        }
+        return 'manifest.txt';
+      }
+
+      function decodeBase64QueryParam(b64) {
+        var raw = (b64 || '').trim();
+        if (!raw) return '';
+        var bin = atob(raw);
+        if (typeof TextDecoder !== 'undefined') {
+          var u8 = new Uint8Array(bin.length);
+          for (var i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
+          return new TextDecoder('utf-8').decode(u8);
+        }
+        return bin;
+      }
+
+      function applyLoadedManifest(text, name) {
+        name = name || '';
+        var pasteTa = document.getElementById('manifest-paste-textarea');
+        if (!text.trim()) {
+          manifestFilename = name || null;
+          manifestContent = null;
+          detectedEcosystem = null;
+          if (pasteTa) pasteTa.value = '';
+          var errElEmpty = document.getElementById('drop-zone-manifest').querySelector('.drop-zone-error-msg');
+          errElEmpty.setAttribute('data-msg', 'File appears to be empty');
+          updateManifestZoneUI();
+          var safetyEmpty = document.getElementById('manifest-safety-warning');
+          if (safetyEmpty) {
+            safetyEmpty.style.display = 'none';
+            safetyEmpty.innerHTML = '';
+          }
+          scanBtn.disabled = true;
+          return;
+        }
+        var lowerName = name.toLowerCase();
+        var looksJson = /^\s*\{/.test(text);
+        if (lowerName.endsWith('.json') || looksJson) {
+          try {
+            JSON.parse(text);
+          } catch (e) {
+            manifestFilename = name;
+            manifestContent = null;
+            detectedEcosystem = null;
+            var errElJson = document.getElementById('drop-zone-manifest').querySelector('.drop-zone-error-msg');
+            errElJson.setAttribute('data-msg', 'Invalid JSON — check your file');
+            updateManifestZoneUI();
+            var safetyJson = document.getElementById('manifest-safety-warning');
+            if (safetyJson) {
+              safetyJson.style.display = 'none';
+              safetyJson.innerHTML = '';
+            }
+            scanBtn.disabled = true;
+            if (pasteTa) pasteTa.value = text;
+            return;
+          }
+        }
+        manifestFilename = name;
+        manifestContent = text;
+        detectedEcosystem = detectEcosystem(name, text);
+        selectedEcosystem = detectedEcosystem;
+        document.getElementById('drop-zone-manifest').querySelector('.drop-zone-error-msg').removeAttribute('data-msg');
+        if (pasteTa) pasteTa.value = text;
+        updateManifestZoneUI();
+
+        var safetyBanner3 = document.getElementById('manifest-safety-warning');
+        if (safetyBanner3) {
+          var warnings = checkManifestSafety(text || '');
+          if (warnings && warnings.length > 0) {
+            safetyBanner3.innerHTML = warnings.map(function (w) {
+              return '<div>' + escapeHtml(w.message) + '</div>';
+            }).join('');
+            safetyBanner3.style.display = 'block';
+          } else {
+            safetyBanner3.style.display = 'none';
+            safetyBanner3.innerHTML = '';
+          }
+        }
+
+        var hint = document.getElementById('cta-hint');
+        if (hint) hint.style.display = 'none';
+        var pasteActive = document.getElementById('panel-paste').classList.contains('active');
+        if (pasteActive) scanBtn.disabled = (detectedEcosystem === null);
       }
 
       function updateManifestZoneUI() {
@@ -1859,6 +2039,7 @@ Gemfile.lock, composer.lock</p>
               : detectedEcosystem === 'pypi' ? 'PyPI'
                 : detectedEcosystem === 'go' ? 'Go'
                   : detectedEcosystem === 'rust' ? 'Rust'
+                    : detectedEcosystem === 'rust-lock' ? 'Rust (lock)'
                   : detectedEcosystem;
           ecoBadge = '<span class="ecosystem-badge ' + detectedEcosystem + '">' + escapeHtml(ecoLabel) + ' detected</span>';
         } else {
@@ -1998,66 +2179,7 @@ Gemfile.lock, composer.lock</p>
         var reader = new FileReader();
         reader.onload = function () {
           var text = (reader.result != null && typeof reader.result === 'string') ? reader.result : '';
-          if (!text.trim()) {
-            manifestFilename = name;
-            manifestContent = null;
-            detectedEcosystem = null;
-            var errEl = document.getElementById('drop-zone-manifest').querySelector('.drop-zone-error-msg');
-            errEl.setAttribute('data-msg', 'File appears to be empty');
-            updateManifestZoneUI();
-            var safetyBanner = document.getElementById('manifest-safety-warning');
-            if (safetyBanner) {
-              safetyBanner.style.display = 'none';
-              safetyBanner.innerHTML = '';
-            }
-            scanBtn.disabled = true;
-            return;
-          }
-          if (name.toLowerCase().endsWith('.json')) {
-            try {
-              JSON.parse(text);
-            } catch (e) {
-              manifestFilename = name;
-              manifestContent = null;
-              detectedEcosystem = null;
-              var errEl2 = document.getElementById('drop-zone-manifest').querySelector('.drop-zone-error-msg');
-              errEl2.setAttribute('data-msg', 'Invalid JSON — check your file');
-              updateManifestZoneUI();
-              var safetyBanner2 = document.getElementById('manifest-safety-warning');
-              if (safetyBanner2) {
-                safetyBanner2.style.display = 'none';
-                safetyBanner2.innerHTML = '';
-              }
-              scanBtn.disabled = true;
-              return;
-            }
-          }
-          manifestFilename = name;
-          manifestContent = text;
-          detectedEcosystem = detectEcosystem(name, text);
-          selectedEcosystem = detectedEcosystem;
-          document.getElementById('drop-zone-manifest').querySelector('.drop-zone-error-msg').removeAttribute('data-msg');
-          updateManifestZoneUI();
-
-          // Manifest safety check: show highly visible warnings, never block scanning.
-          var safetyBanner3 = document.getElementById('manifest-safety-warning');
-          if (safetyBanner3) {
-            var warnings = checkManifestSafety(text || '');
-            if (warnings && warnings.length > 0) {
-              safetyBanner3.innerHTML = warnings.map(function (w) {
-                return '<div>' + escapeHtml(w.message) + '</div>';
-              }).join('');
-              safetyBanner3.style.display = 'block';
-            } else {
-              safetyBanner3.style.display = 'none';
-              safetyBanner3.innerHTML = '';
-            }
-          }
-
-          var hint = document.getElementById('cta-hint');
-          if (hint) hint.style.display = 'none';
-          var pasteActive = document.getElementById('panel-paste').classList.contains('active');
-          if (pasteActive) scanBtn.disabled = (detectedEcosystem === null);
+          applyLoadedManifest(text, name);
         };
         reader.readAsText(file, 'UTF-8');
       }
@@ -2079,6 +2201,8 @@ Gemfile.lock, composer.lock</p>
         detectedEcosystem = null;
         lockfileFilename = null;
         lockfileContent = null;
+        var pasteTaReset = document.getElementById('manifest-paste-textarea');
+        if (pasteTaReset) pasteTaReset.value = '';
         document.getElementById('drop-zone-manifest').querySelector('.drop-zone-error-msg').removeAttribute('data-msg');
         updateManifestZoneUI();
         updateLockfileZoneUI();
@@ -5055,6 +5179,54 @@ Gemfile.lock, composer.lock</p>
           scanBtn.disabled = false;
         }
       });
+
+      var manifestPasteTextarea = document.getElementById('manifest-paste-textarea');
+      if (manifestPasteTextarea) {
+        manifestPasteTextarea.addEventListener('input', function () {
+          var t = manifestPasteTextarea.value;
+          if (!t.trim()) {
+            manifestFilename = null;
+            manifestContent = null;
+            detectedEcosystem = null;
+            selectedEcosystem = null;
+            document.getElementById('drop-zone-manifest').querySelector('.drop-zone-error-msg').removeAttribute('data-msg');
+            var sbClear = document.getElementById('manifest-safety-warning');
+            if (sbClear) {
+              sbClear.style.display = 'none';
+              sbClear.innerHTML = '';
+            }
+            updateManifestZoneUI();
+            var pasteActiveClr = document.getElementById('panel-paste').classList.contains('active');
+            if (pasteActiveClr) scanBtn.disabled = true;
+            return;
+          }
+          var fnamePaste = inferSyntheticFilename(t);
+          applyLoadedManifest(t, fnamePaste);
+        });
+      }
+
+      (function tryLoadManifestFromQuery() {
+        var params = new URLSearchParams(window.location.search);
+        var fileParam = params.get('file');
+        if (!fileParam || !String(fileParam).trim()) return;
+        var content;
+        try {
+          content = decodeBase64QueryParam(fileParam);
+        } catch (err) {
+          var errQ = document.getElementById('drop-zone-manifest').querySelector('.drop-zone-error-msg');
+          errQ.setAttribute('data-msg', 'Invalid ?file= parameter — could not decode base64');
+          manifestFilename = 'URL (?file=…)';
+          manifestContent = null;
+          detectedEcosystem = null;
+          selectedEcosystem = null;
+          if (manifestPasteTextarea) manifestPasteTextarea.value = '';
+          updateManifestZoneUI();
+          scanBtn.disabled = true;
+          return;
+        }
+        var fnameQ = inferSyntheticFilename(content);
+        applyLoadedManifest(content, fnameQ);
+      })();
     })();
   </script>
 </body>
