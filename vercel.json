@@ -591,6 +591,566 @@
     {
       "source": "/error/",
       "destination": "/seo/error/index.html"
+    },
+    {
+      "source": "/fix/npm/express",
+      "destination": "/seo/fix/npm/express/index.html"
+    },
+    {
+      "source": "/fix/npm/express/",
+      "destination": "/seo/fix/npm/express/index.html"
+    },
+    {
+      "source": "/fix/npm/lodash",
+      "destination": "/seo/fix/npm/lodash/index.html"
+    },
+    {
+      "source": "/fix/npm/lodash/",
+      "destination": "/seo/fix/npm/lodash/index.html"
+    },
+    {
+      "source": "/fix/npm/axios",
+      "destination": "/seo/fix/npm/axios/index.html"
+    },
+    {
+      "source": "/fix/npm/axios/",
+      "destination": "/seo/fix/npm/axios/index.html"
+    },
+    {
+      "source": "/fix/npm/jsonwebtoken",
+      "destination": "/seo/fix/npm/jsonwebtoken/index.html"
+    },
+    {
+      "source": "/fix/npm/jsonwebtoken/",
+      "destination": "/seo/fix/npm/jsonwebtoken/index.html"
+    },
+    {
+      "source": "/fix/npm/minimist",
+      "destination": "/seo/fix/npm/minimist/index.html"
+    },
+    {
+      "source": "/fix/npm/minimist/",
+      "destination": "/seo/fix/npm/minimist/index.html"
+    },
+    {
+      "source": "/fix/npm/moment",
+      "destination": "/seo/fix/npm/moment/index.html"
+    },
+    {
+      "source": "/fix/npm/moment/",
+      "destination": "/seo/fix/npm/moment/index.html"
+    },
+    {
+      "source": "/fix/npm/webpack",
+      "destination": "/seo/fix/npm/webpack/index.html"
+    },
+    {
+      "source": "/fix/npm/webpack/",
+      "destination": "/seo/fix/npm/webpack/index.html"
+    },
+    {
+      "source": "/fix/npm/node-fetch",
+      "destination": "/seo/fix/npm/node-fetch/index.html"
+    },
+    {
+      "source": "/fix/npm/node-fetch/",
+      "destination": "/seo/fix/npm/node-fetch/index.html"
+    },
+    {
+      "source": "/fix/npm/tar",
+      "destination": "/seo/fix/npm/tar/index.html"
+    },
+    {
+      "source": "/fix/npm/tar/",
+      "destination": "/seo/fix/npm/tar/index.html"
+    },
+    {
+      "source": "/fix/npm/semver",
+      "destination": "/seo/fix/npm/semver/index.html"
+    },
+    {
+      "source": "/fix/npm/semver/",
+      "destination": "/seo/fix/npm/semver/index.html"
+    },
+    {
+      "source": "/fix/npm/qs",
+      "destination": "/seo/fix/npm/qs/index.html"
+    },
+    {
+      "source": "/fix/npm/qs/",
+      "destination": "/seo/fix/npm/qs/index.html"
+    },
+    {
+      "source": "/fix/npm/tough-cookie",
+      "destination": "/seo/fix/npm/tough-cookie/index.html"
+    },
+    {
+      "source": "/fix/npm/tough-cookie/",
+      "destination": "/seo/fix/npm/tough-cookie/index.html"
+    },
+    {
+      "source": "/fix/npm/word-wrap",
+      "destination": "/seo/fix/npm/word-wrap/index.html"
+    },
+    {
+      "source": "/fix/npm/word-wrap/",
+      "destination": "/seo/fix/npm/word-wrap/index.html"
+    },
+    {
+      "source": "/fix/npm/cross-fetch",
+      "destination": "/seo/fix/npm/cross-fetch/index.html"
+    },
+    {
+      "source": "/fix/npm/cross-fetch/",
+      "destination": "/seo/fix/npm/cross-fetch/index.html"
+    },
+    {
+      "source": "/fix/npm/vm2",
+      "destination": "/seo/fix/npm/vm2/index.html"
+    },
+    {
+      "source": "/fix/npm/vm2/",
+      "destination": "/seo/fix/npm/vm2/index.html"
+    },
+    {
+      "source": "/fix/npm/marked",
+      "destination": "/seo/fix/npm/marked/index.html"
+    },
+    {
+      "source": "/fix/npm/marked/",
+      "destination": "/seo/fix/npm/marked/index.html"
+    },
+    {
+      "source": "/fix/npm/got",
+      "destination": "/seo/fix/npm/got/index.html"
+    },
+    {
+      "source": "/fix/npm/got/",
+      "destination": "/seo/fix/npm/got/index.html"
+    },
+    {
+      "source": "/fix/npm/validator",
+      "destination": "/seo/fix/npm/validator/index.html"
+    },
+    {
+      "source": "/fix/npm/validator/",
+      "destination": "/seo/fix/npm/validator/index.html"
+    },
+    {
+      "source": "/fix/npm/passport",
+      "destination": "/seo/fix/npm/passport/index.html"
+    },
+    {
+      "source": "/fix/npm/passport/",
+      "destination": "/seo/fix/npm/passport/index.html"
+    },
+    {
+      "source": "/fix/npm/follow-redirects",
+      "destination": "/seo/fix/npm/follow-redirects/index.html"
+    },
+    {
+      "source": "/fix/npm/follow-redirects/",
+      "destination": "/seo/fix/npm/follow-redirects/index.html"
+    },
+    {
+      "source": "/fix/npm/multer",
+      "destination": "/seo/fix/npm/multer/index.html"
+    },
+    {
+      "source": "/fix/npm/multer/",
+      "destination": "/seo/fix/npm/multer/index.html"
+    },
+    {
+      "source": "/fix/npm/sharp",
+      "destination": "/seo/fix/npm/sharp/index.html"
+    },
+    {
+      "source": "/fix/npm/sharp/",
+      "destination": "/seo/fix/npm/sharp/index.html"
+    },
+    {
+      "source": "/fix/npm/socket.io",
+      "destination": "/seo/fix/npm/socket.io/index.html"
+    },
+    {
+      "source": "/fix/npm/socket.io/",
+      "destination": "/seo/fix/npm/socket.io/index.html"
+    },
+    {
+      "source": "/fix/npm/mysql2",
+      "destination": "/seo/fix/npm/mysql2/index.html"
+    },
+    {
+      "source": "/fix/npm/mysql2/",
+      "destination": "/seo/fix/npm/mysql2/index.html"
+    },
+    {
+      "source": "/fix/npm/mongoose",
+      "destination": "/seo/fix/npm/mongoose/index.html"
+    },
+    {
+      "source": "/fix/npm/mongoose/",
+      "destination": "/seo/fix/npm/mongoose/index.html"
+    },
+    {
+      "source": "/fix/pypi/django",
+      "destination": "/seo/fix/pypi/django/index.html"
+    },
+    {
+      "source": "/fix/pypi/django/",
+      "destination": "/seo/fix/pypi/django/index.html"
+    },
+    {
+      "source": "/fix/pypi/flask",
+      "destination": "/seo/fix/pypi/flask/index.html"
+    },
+    {
+      "source": "/fix/pypi/flask/",
+      "destination": "/seo/fix/pypi/flask/index.html"
+    },
+    {
+      "source": "/fix/pypi/requests",
+      "destination": "/seo/fix/pypi/requests/index.html"
+    },
+    {
+      "source": "/fix/pypi/requests/",
+      "destination": "/seo/fix/pypi/requests/index.html"
+    },
+    {
+      "source": "/fix/pypi/pillow",
+      "destination": "/seo/fix/pypi/pillow/index.html"
+    },
+    {
+      "source": "/fix/pypi/pillow/",
+      "destination": "/seo/fix/pypi/pillow/index.html"
+    },
+    {
+      "source": "/fix/pypi/cryptography",
+      "destination": "/seo/fix/pypi/cryptography/index.html"
+    },
+    {
+      "source": "/fix/pypi/cryptography/",
+      "destination": "/seo/fix/pypi/cryptography/index.html"
+    },
+    {
+      "source": "/fix/pypi/urllib3",
+      "destination": "/seo/fix/pypi/urllib3/index.html"
+    },
+    {
+      "source": "/fix/pypi/urllib3/",
+      "destination": "/seo/fix/pypi/urllib3/index.html"
+    },
+    {
+      "source": "/fix/pypi/paramiko",
+      "destination": "/seo/fix/pypi/paramiko/index.html"
+    },
+    {
+      "source": "/fix/pypi/paramiko/",
+      "destination": "/seo/fix/pypi/paramiko/index.html"
+    },
+    {
+      "source": "/fix/pypi/fastapi",
+      "destination": "/seo/fix/pypi/fastapi/index.html"
+    },
+    {
+      "source": "/fix/pypi/fastapi/",
+      "destination": "/seo/fix/pypi/fastapi/index.html"
+    },
+    {
+      "source": "/fix/pypi/pydantic",
+      "destination": "/seo/fix/pypi/pydantic/index.html"
+    },
+    {
+      "source": "/fix/pypi/pydantic/",
+      "destination": "/seo/fix/pypi/pydantic/index.html"
+    },
+    {
+      "source": "/fix/pypi/sqlalchemy",
+      "destination": "/seo/fix/pypi/sqlalchemy/index.html"
+    },
+    {
+      "source": "/fix/pypi/sqlalchemy/",
+      "destination": "/seo/fix/pypi/sqlalchemy/index.html"
+    },
+    {
+      "source": "/fix/pypi/celery",
+      "destination": "/seo/fix/pypi/celery/index.html"
+    },
+    {
+      "source": "/fix/pypi/celery/",
+      "destination": "/seo/fix/pypi/celery/index.html"
+    },
+    {
+      "source": "/fix/pypi/aiohttp",
+      "destination": "/seo/fix/pypi/aiohttp/index.html"
+    },
+    {
+      "source": "/fix/pypi/aiohttp/",
+      "destination": "/seo/fix/pypi/aiohttp/index.html"
+    },
+    {
+      "source": "/fix/pypi/werkzeug",
+      "destination": "/seo/fix/pypi/werkzeug/index.html"
+    },
+    {
+      "source": "/fix/pypi/werkzeug/",
+      "destination": "/seo/fix/pypi/werkzeug/index.html"
+    },
+    {
+      "source": "/fix/pypi/jinja2",
+      "destination": "/seo/fix/pypi/jinja2/index.html"
+    },
+    {
+      "source": "/fix/pypi/jinja2/",
+      "destination": "/seo/fix/pypi/jinja2/index.html"
+    },
+    {
+      "source": "/fix/pypi/pyopenssl",
+      "destination": "/seo/fix/pypi/pyopenssl/index.html"
+    },
+    {
+      "source": "/fix/pypi/pyopenssl/",
+      "destination": "/seo/fix/pypi/pyopenssl/index.html"
+    },
+    {
+      "source": "/fix/pypi/gunicorn",
+      "destination": "/seo/fix/pypi/gunicorn/index.html"
+    },
+    {
+      "source": "/fix/pypi/gunicorn/",
+      "destination": "/seo/fix/pypi/gunicorn/index.html"
+    },
+    {
+      "source": "/fix/pypi/httpx",
+      "destination": "/seo/fix/pypi/httpx/index.html"
+    },
+    {
+      "source": "/fix/pypi/httpx/",
+      "destination": "/seo/fix/pypi/httpx/index.html"
+    },
+    {
+      "source": "/fix/pypi/numpy",
+      "destination": "/seo/fix/pypi/numpy/index.html"
+    },
+    {
+      "source": "/fix/pypi/numpy/",
+      "destination": "/seo/fix/pypi/numpy/index.html"
+    },
+    {
+      "source": "/fix/pypi/scipy",
+      "destination": "/seo/fix/pypi/scipy/index.html"
+    },
+    {
+      "source": "/fix/pypi/scipy/",
+      "destination": "/seo/fix/pypi/scipy/index.html"
+    },
+    {
+      "source": "/fix/pypi/parameterized",
+      "destination": "/seo/fix/pypi/parameterized/index.html"
+    },
+    {
+      "source": "/fix/pypi/parameterized/",
+      "destination": "/seo/fix/pypi/parameterized/index.html"
+    },
+    {
+      "source": "/fix/pypi/starlette",
+      "destination": "/seo/fix/pypi/starlette/index.html"
+    },
+    {
+      "source": "/fix/pypi/starlette/",
+      "destination": "/seo/fix/pypi/starlette/index.html"
+    },
+    {
+      "source": "/fix/pypi/twisted",
+      "destination": "/seo/fix/pypi/twisted/index.html"
+    },
+    {
+      "source": "/fix/pypi/twisted/",
+      "destination": "/seo/fix/pypi/twisted/index.html"
+    },
+    {
+      "source": "/fix/pypi/boto3",
+      "destination": "/seo/fix/pypi/boto3/index.html"
+    },
+    {
+      "source": "/fix/pypi/boto3/",
+      "destination": "/seo/fix/pypi/boto3/index.html"
+    },
+    {
+      "source": "/fix/pypi/PyYAML",
+      "destination": "/seo/fix/pypi/PyYAML/index.html"
+    },
+    {
+      "source": "/fix/pypi/PyYAML/",
+      "destination": "/seo/fix/pypi/PyYAML/index.html"
+    },
+    {
+      "source": "/fix/pypi/lxml",
+      "destination": "/seo/fix/pypi/lxml/index.html"
+    },
+    {
+      "source": "/fix/pypi/lxml/",
+      "destination": "/seo/fix/pypi/lxml/index.html"
+    },
+    {
+      "source": "/fix/ruby/rails",
+      "destination": "/seo/fix/ruby/rails/index.html"
+    },
+    {
+      "source": "/fix/ruby/rails/",
+      "destination": "/seo/fix/ruby/rails/index.html"
+    },
+    {
+      "source": "/fix/ruby/nokogiri",
+      "destination": "/seo/fix/ruby/nokogiri/index.html"
+    },
+    {
+      "source": "/fix/ruby/nokogiri/",
+      "destination": "/seo/fix/ruby/nokogiri/index.html"
+    },
+    {
+      "source": "/fix/ruby/devise",
+      "destination": "/seo/fix/ruby/devise/index.html"
+    },
+    {
+      "source": "/fix/ruby/devise/",
+      "destination": "/seo/fix/ruby/devise/index.html"
+    },
+    {
+      "source": "/fix/ruby/puma",
+      "destination": "/seo/fix/ruby/puma/index.html"
+    },
+    {
+      "source": "/fix/ruby/puma/",
+      "destination": "/seo/fix/ruby/puma/index.html"
+    },
+    {
+      "source": "/fix/ruby/rack",
+      "destination": "/seo/fix/ruby/rack/index.html"
+    },
+    {
+      "source": "/fix/ruby/rack/",
+      "destination": "/seo/fix/ruby/rack/index.html"
+    },
+    {
+      "source": "/fix/ruby/actionpack",
+      "destination": "/seo/fix/ruby/actionpack/index.html"
+    },
+    {
+      "source": "/fix/ruby/actionpack/",
+      "destination": "/seo/fix/ruby/actionpack/index.html"
+    },
+    {
+      "source": "/fix/ruby/activerecord",
+      "destination": "/seo/fix/ruby/activerecord/index.html"
+    },
+    {
+      "source": "/fix/ruby/activerecord/",
+      "destination": "/seo/fix/ruby/activerecord/index.html"
+    },
+    {
+      "source": "/fix/ruby/jwt",
+      "destination": "/seo/fix/ruby/jwt/index.html"
+    },
+    {
+      "source": "/fix/ruby/jwt/",
+      "destination": "/seo/fix/ruby/jwt/index.html"
+    },
+    {
+      "source": "/fix/ruby/omniauth",
+      "destination": "/seo/fix/ruby/omniauth/index.html"
+    },
+    {
+      "source": "/fix/ruby/omniauth/",
+      "destination": "/seo/fix/ruby/omniauth/index.html"
+    },
+    {
+      "source": "/fix/ruby/carrierwave",
+      "destination": "/seo/fix/ruby/carrierwave/index.html"
+    },
+    {
+      "source": "/fix/ruby/carrierwave/",
+      "destination": "/seo/fix/ruby/carrierwave/index.html"
+    },
+    {
+      "source": "/fix/ruby/sidekiq",
+      "destination": "/seo/fix/ruby/sidekiq/index.html"
+    },
+    {
+      "source": "/fix/ruby/sidekiq/",
+      "destination": "/seo/fix/ruby/sidekiq/index.html"
+    },
+    {
+      "source": "/fix/ruby/bcrypt",
+      "destination": "/seo/fix/ruby/bcrypt/index.html"
+    },
+    {
+      "source": "/fix/ruby/bcrypt/",
+      "destination": "/seo/fix/ruby/bcrypt/index.html"
+    },
+    {
+      "source": "/fix/ruby/httparty",
+      "destination": "/seo/fix/ruby/httparty/index.html"
+    },
+    {
+      "source": "/fix/ruby/httparty/",
+      "destination": "/seo/fix/ruby/httparty/index.html"
+    },
+    {
+      "source": "/fix/ruby/faraday",
+      "destination": "/seo/fix/ruby/faraday/index.html"
+    },
+    {
+      "source": "/fix/ruby/faraday/",
+      "destination": "/seo/fix/ruby/faraday/index.html"
+    },
+    {
+      "source": "/fix/ruby/rexml",
+      "destination": "/seo/fix/ruby/rexml/index.html"
+    },
+    {
+      "source": "/fix/ruby/rexml/",
+      "destination": "/seo/fix/ruby/rexml/index.html"
+    },
+    {
+      "source": "/fix/ruby/activeadmin",
+      "destination": "/seo/fix/ruby/activeadmin/index.html"
+    },
+    {
+      "source": "/fix/ruby/activeadmin/",
+      "destination": "/seo/fix/ruby/activeadmin/index.html"
+    },
+    {
+      "source": "/fix/ruby/sprockets",
+      "destination": "/seo/fix/ruby/sprockets/index.html"
+    },
+    {
+      "source": "/fix/ruby/sprockets/",
+      "destination": "/seo/fix/ruby/sprockets/index.html"
+    },
+    {
+      "source": "/fix/ruby/actionview",
+      "destination": "/seo/fix/ruby/actionview/index.html"
+    },
+    {
+      "source": "/fix/ruby/actionview/",
+      "destination": "/seo/fix/ruby/actionview/index.html"
+    },
+    {
+      "source": "/fix/ruby/ransack",
+      "destination": "/seo/fix/ruby/ransack/index.html"
+    },
+    {
+      "source": "/fix/ruby/ransack/",
+      "destination": "/seo/fix/ruby/ransack/index.html"
+    },
+    {
+      "source": "/fix/ruby/mechanize",
+      "destination": "/seo/fix/ruby/mechanize/index.html"
+    },
+    {
+      "source": "/fix/ruby/mechanize/",
+      "destination": "/seo/fix/ruby/mechanize/index.html"
     }
   ]
 }
