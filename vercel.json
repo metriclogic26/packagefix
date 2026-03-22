@@ -1151,6 +1151,550 @@
     {
       "source": "/fix/ruby/mechanize/",
       "destination": "/seo/fix/ruby/mechanize/index.html"
+    },
+    {
+      "source": "/fix/php/laravel",
+      "destination": "/seo/fix/php/laravel/index.html"
+    },
+    {
+      "source": "/fix/php/laravel/",
+      "destination": "/seo/fix/php/laravel/index.html"
+    },
+    {
+      "source": "/fix/php/symfony",
+      "destination": "/seo/fix/php/symfony/index.html"
+    },
+    {
+      "source": "/fix/php/symfony/",
+      "destination": "/seo/fix/php/symfony/index.html"
+    },
+    {
+      "source": "/fix/php/guzzle",
+      "destination": "/seo/fix/php/guzzle/index.html"
+    },
+    {
+      "source": "/fix/php/guzzle/",
+      "destination": "/seo/fix/php/guzzle/index.html"
+    },
+    {
+      "source": "/fix/php/monolog",
+      "destination": "/seo/fix/php/monolog/index.html"
+    },
+    {
+      "source": "/fix/php/monolog/",
+      "destination": "/seo/fix/php/monolog/index.html"
+    },
+    {
+      "source": "/fix/php/phpmailer",
+      "destination": "/seo/fix/php/phpmailer/index.html"
+    },
+    {
+      "source": "/fix/php/phpmailer/",
+      "destination": "/seo/fix/php/phpmailer/index.html"
+    },
+    {
+      "source": "/fix/php/intervention-image",
+      "destination": "/seo/fix/php/intervention-image/index.html"
+    },
+    {
+      "source": "/fix/php/intervention-image/",
+      "destination": "/seo/fix/php/intervention-image/index.html"
+    },
+    {
+      "source": "/fix/php/dompdf",
+      "destination": "/seo/fix/php/dompdf/index.html"
+    },
+    {
+      "source": "/fix/php/dompdf/",
+      "destination": "/seo/fix/php/dompdf/index.html"
+    },
+    {
+      "source": "/fix/php/jwt-auth",
+      "destination": "/seo/fix/php/jwt-auth/index.html"
+    },
+    {
+      "source": "/fix/php/jwt-auth/",
+      "destination": "/seo/fix/php/jwt-auth/index.html"
+    },
+    {
+      "source": "/fix/php/spatie-permission",
+      "destination": "/seo/fix/php/spatie-permission/index.html"
+    },
+    {
+      "source": "/fix/php/spatie-permission/",
+      "destination": "/seo/fix/php/spatie-permission/index.html"
+    },
+    {
+      "source": "/fix/php/predis",
+      "destination": "/seo/fix/php/predis/index.html"
+    },
+    {
+      "source": "/fix/php/predis/",
+      "destination": "/seo/fix/php/predis/index.html"
+    },
+    {
+      "source": "/fix/php/php-jwt",
+      "destination": "/seo/fix/php/php-jwt/index.html"
+    },
+    {
+      "source": "/fix/php/php-jwt/",
+      "destination": "/seo/fix/php/php-jwt/index.html"
+    },
+    {
+      "source": "/fix/php/carbon",
+      "destination": "/seo/fix/php/carbon/index.html"
+    },
+    {
+      "source": "/fix/php/carbon/",
+      "destination": "/seo/fix/php/carbon/index.html"
+    },
+    {
+      "source": "/fix/php/aws-sdk-php",
+      "destination": "/seo/fix/php/aws-sdk-php/index.html"
+    },
+    {
+      "source": "/fix/php/aws-sdk-php/",
+      "destination": "/seo/fix/php/aws-sdk-php/index.html"
+    },
+    {
+      "source": "/fix/php/league-oauth2",
+      "destination": "/seo/fix/php/league-oauth2/index.html"
+    },
+    {
+      "source": "/fix/php/league-oauth2/",
+      "destination": "/seo/fix/php/league-oauth2/index.html"
+    },
+    {
+      "source": "/fix/php/flysystem",
+      "destination": "/seo/fix/php/flysystem/index.html"
+    },
+    {
+      "source": "/fix/php/flysystem/",
+      "destination": "/seo/fix/php/flysystem/index.html"
+    },
+    {
+      "source": "/fix/go/gin",
+      "destination": "/seo/fix/go/gin/index.html"
+    },
+    {
+      "source": "/fix/go/gin/",
+      "destination": "/seo/fix/go/gin/index.html"
+    },
+    {
+      "source": "/fix/go/grpc",
+      "destination": "/seo/fix/go/grpc/index.html"
+    },
+    {
+      "source": "/fix/go/grpc/",
+      "destination": "/seo/fix/go/grpc/index.html"
+    },
+    {
+      "source": "/fix/go/net",
+      "destination": "/seo/fix/go/net/index.html"
+    },
+    {
+      "source": "/fix/go/net/",
+      "destination": "/seo/fix/go/net/index.html"
+    },
+    {
+      "source": "/fix/go/crypto",
+      "destination": "/seo/fix/go/crypto/index.html"
+    },
+    {
+      "source": "/fix/go/crypto/",
+      "destination": "/seo/fix/go/crypto/index.html"
+    },
+    {
+      "source": "/fix/go/echo",
+      "destination": "/seo/fix/go/echo/index.html"
+    },
+    {
+      "source": "/fix/go/echo/",
+      "destination": "/seo/fix/go/echo/index.html"
+    },
+    {
+      "source": "/fix/go/fiber",
+      "destination": "/seo/fix/go/fiber/index.html"
+    },
+    {
+      "source": "/fix/go/fiber/",
+      "destination": "/seo/fix/go/fiber/index.html"
+    },
+    {
+      "source": "/fix/go/jwt-go",
+      "destination": "/seo/fix/go/jwt-go/index.html"
+    },
+    {
+      "source": "/fix/go/jwt-go/",
+      "destination": "/seo/fix/go/jwt-go/index.html"
+    },
+    {
+      "source": "/fix/go/gorm",
+      "destination": "/seo/fix/go/gorm/index.html"
+    },
+    {
+      "source": "/fix/go/gorm/",
+      "destination": "/seo/fix/go/gorm/index.html"
+    },
+    {
+      "source": "/fix/go/yaml",
+      "destination": "/seo/fix/go/yaml/index.html"
+    },
+    {
+      "source": "/fix/go/yaml/",
+      "destination": "/seo/fix/go/yaml/index.html"
+    },
+    {
+      "source": "/fix/go/resty",
+      "destination": "/seo/fix/go/resty/index.html"
+    },
+    {
+      "source": "/fix/go/resty/",
+      "destination": "/seo/fix/go/resty/index.html"
+    },
+    {
+      "source": "/fix/go/cobra",
+      "destination": "/seo/fix/go/cobra/index.html"
+    },
+    {
+      "source": "/fix/go/cobra/",
+      "destination": "/seo/fix/go/cobra/index.html"
+    },
+    {
+      "source": "/fix/go/viper",
+      "destination": "/seo/fix/go/viper/index.html"
+    },
+    {
+      "source": "/fix/go/viper/",
+      "destination": "/seo/fix/go/viper/index.html"
+    },
+    {
+      "source": "/fix/go/prometheus",
+      "destination": "/seo/fix/go/prometheus/index.html"
+    },
+    {
+      "source": "/fix/go/prometheus/",
+      "destination": "/seo/fix/go/prometheus/index.html"
+    },
+    {
+      "source": "/fix/go/mux",
+      "destination": "/seo/fix/go/mux/index.html"
+    },
+    {
+      "source": "/fix/go/mux/",
+      "destination": "/seo/fix/go/mux/index.html"
+    },
+    {
+      "source": "/fix/go/redis",
+      "destination": "/seo/fix/go/redis/index.html"
+    },
+    {
+      "source": "/fix/go/redis/",
+      "destination": "/seo/fix/go/redis/index.html"
+    },
+    {
+      "source": "/fix/rust/actix-web",
+      "destination": "/seo/fix/rust/actix-web/index.html"
+    },
+    {
+      "source": "/fix/rust/actix-web/",
+      "destination": "/seo/fix/rust/actix-web/index.html"
+    },
+    {
+      "source": "/fix/rust/openssl",
+      "destination": "/seo/fix/rust/openssl/index.html"
+    },
+    {
+      "source": "/fix/rust/openssl/",
+      "destination": "/seo/fix/rust/openssl/index.html"
+    },
+    {
+      "source": "/fix/rust/hyper",
+      "destination": "/seo/fix/rust/hyper/index.html"
+    },
+    {
+      "source": "/fix/rust/hyper/",
+      "destination": "/seo/fix/rust/hyper/index.html"
+    },
+    {
+      "source": "/fix/rust/tokio",
+      "destination": "/seo/fix/rust/tokio/index.html"
+    },
+    {
+      "source": "/fix/rust/tokio/",
+      "destination": "/seo/fix/rust/tokio/index.html"
+    },
+    {
+      "source": "/fix/rust/serde",
+      "destination": "/seo/fix/rust/serde/index.html"
+    },
+    {
+      "source": "/fix/rust/serde/",
+      "destination": "/seo/fix/rust/serde/index.html"
+    },
+    {
+      "source": "/fix/rust/reqwest",
+      "destination": "/seo/fix/rust/reqwest/index.html"
+    },
+    {
+      "source": "/fix/rust/reqwest/",
+      "destination": "/seo/fix/rust/reqwest/index.html"
+    },
+    {
+      "source": "/fix/rust/axum",
+      "destination": "/seo/fix/rust/axum/index.html"
+    },
+    {
+      "source": "/fix/rust/axum/",
+      "destination": "/seo/fix/rust/axum/index.html"
+    },
+    {
+      "source": "/fix/rust/sqlx",
+      "destination": "/seo/fix/rust/sqlx/index.html"
+    },
+    {
+      "source": "/fix/rust/sqlx/",
+      "destination": "/seo/fix/rust/sqlx/index.html"
+    },
+    {
+      "source": "/fix/rust/ring",
+      "destination": "/seo/fix/rust/ring/index.html"
+    },
+    {
+      "source": "/fix/rust/ring/",
+      "destination": "/seo/fix/rust/ring/index.html"
+    },
+    {
+      "source": "/fix/rust/rustls",
+      "destination": "/seo/fix/rust/rustls/index.html"
+    },
+    {
+      "source": "/fix/rust/rustls/",
+      "destination": "/seo/fix/rust/rustls/index.html"
+    },
+    {
+      "source": "/fix/rust/regex",
+      "destination": "/seo/fix/rust/regex/index.html"
+    },
+    {
+      "source": "/fix/rust/regex/",
+      "destination": "/seo/fix/rust/regex/index.html"
+    },
+    {
+      "source": "/fix/rust/chrono",
+      "destination": "/seo/fix/rust/chrono/index.html"
+    },
+    {
+      "source": "/fix/rust/chrono/",
+      "destination": "/seo/fix/rust/chrono/index.html"
+    },
+    {
+      "source": "/fix/rust/yaml-rust",
+      "destination": "/seo/fix/rust/yaml-rust/index.html"
+    },
+    {
+      "source": "/fix/rust/yaml-rust/",
+      "destination": "/seo/fix/rust/yaml-rust/index.html"
+    },
+    {
+      "source": "/fix/rust/jsonwebtoken",
+      "destination": "/seo/fix/rust/jsonwebtoken/index.html"
+    },
+    {
+      "source": "/fix/rust/jsonwebtoken/",
+      "destination": "/seo/fix/rust/jsonwebtoken/index.html"
+    },
+    {
+      "source": "/fix/rust/diesel",
+      "destination": "/seo/fix/rust/diesel/index.html"
+    },
+    {
+      "source": "/fix/rust/diesel/",
+      "destination": "/seo/fix/rust/diesel/index.html"
+    },
+    {
+      "source": "/fix/java/log4j",
+      "destination": "/seo/fix/java/log4j/index.html"
+    },
+    {
+      "source": "/fix/java/log4j/",
+      "destination": "/seo/fix/java/log4j/index.html"
+    },
+    {
+      "source": "/fix/java/spring-core",
+      "destination": "/seo/fix/java/spring-core/index.html"
+    },
+    {
+      "source": "/fix/java/spring-core/",
+      "destination": "/seo/fix/java/spring-core/index.html"
+    },
+    {
+      "source": "/fix/java/jackson-databind",
+      "destination": "/seo/fix/java/jackson-databind/index.html"
+    },
+    {
+      "source": "/fix/java/jackson-databind/",
+      "destination": "/seo/fix/java/jackson-databind/index.html"
+    },
+    {
+      "source": "/fix/java/commons-text",
+      "destination": "/seo/fix/java/commons-text/index.html"
+    },
+    {
+      "source": "/fix/java/commons-text/",
+      "destination": "/seo/fix/java/commons-text/index.html"
+    },
+    {
+      "source": "/fix/java/netty",
+      "destination": "/seo/fix/java/netty/index.html"
+    },
+    {
+      "source": "/fix/java/netty/",
+      "destination": "/seo/fix/java/netty/index.html"
+    },
+    {
+      "source": "/fix/java/guava",
+      "destination": "/seo/fix/java/guava/index.html"
+    },
+    {
+      "source": "/fix/java/guava/",
+      "destination": "/seo/fix/java/guava/index.html"
+    },
+    {
+      "source": "/fix/java/snakeyaml",
+      "destination": "/seo/fix/java/snakeyaml/index.html"
+    },
+    {
+      "source": "/fix/java/snakeyaml/",
+      "destination": "/seo/fix/java/snakeyaml/index.html"
+    },
+    {
+      "source": "/fix/java/okhttp",
+      "destination": "/seo/fix/java/okhttp/index.html"
+    },
+    {
+      "source": "/fix/java/okhttp/",
+      "destination": "/seo/fix/java/okhttp/index.html"
+    },
+    {
+      "source": "/fix/java/h2",
+      "destination": "/seo/fix/java/h2/index.html"
+    },
+    {
+      "source": "/fix/java/h2/",
+      "destination": "/seo/fix/java/h2/index.html"
+    },
+    {
+      "source": "/fix/java/xstream",
+      "destination": "/seo/fix/java/xstream/index.html"
+    },
+    {
+      "source": "/fix/java/xstream/",
+      "destination": "/seo/fix/java/xstream/index.html"
+    },
+    {
+      "source": "/fix/java/commons-collections",
+      "destination": "/seo/fix/java/commons-collections/index.html"
+    },
+    {
+      "source": "/fix/java/commons-collections/",
+      "destination": "/seo/fix/java/commons-collections/index.html"
+    },
+    {
+      "source": "/fix/java/shiro",
+      "destination": "/seo/fix/java/shiro/index.html"
+    },
+    {
+      "source": "/fix/java/shiro/",
+      "destination": "/seo/fix/java/shiro/index.html"
+    },
+    {
+      "source": "/fix/java/jjwt",
+      "destination": "/seo/fix/java/jjwt/index.html"
+    },
+    {
+      "source": "/fix/java/jjwt/",
+      "destination": "/seo/fix/java/jjwt/index.html"
+    },
+    {
+      "source": "/fix/java/hibernate",
+      "destination": "/seo/fix/java/hibernate/index.html"
+    },
+    {
+      "source": "/fix/java/hibernate/",
+      "destination": "/seo/fix/java/hibernate/index.html"
+    },
+    {
+      "source": "/fix/java/bouncycastle",
+      "destination": "/seo/fix/java/bouncycastle/index.html"
+    },
+    {
+      "source": "/fix/java/bouncycastle/",
+      "destination": "/seo/fix/java/bouncycastle/index.html"
+    },
+    {
+      "source": "/compare/npm-vs-pypi",
+      "destination": "/seo/compare/npm-vs-pypi/index.html"
+    },
+    {
+      "source": "/compare/npm-vs-pypi/",
+      "destination": "/seo/compare/npm-vs-pypi/index.html"
+    },
+    {
+      "source": "/compare/snyk-vs-dependabot",
+      "destination": "/seo/compare/snyk-vs-dependabot/index.html"
+    },
+    {
+      "source": "/compare/snyk-vs-dependabot/",
+      "destination": "/seo/compare/snyk-vs-dependabot/index.html"
+    },
+    {
+      "source": "/compare/npm-audit-vs-pip-audit",
+      "destination": "/seo/compare/npm-audit-vs-pip-audit/index.html"
+    },
+    {
+      "source": "/compare/npm-audit-vs-pip-audit/",
+      "destination": "/seo/compare/npm-audit-vs-pip-audit/index.html"
+    },
+    {
+      "source": "/compare/cargo-audit-vs-bundle-audit",
+      "destination": "/seo/compare/cargo-audit-vs-bundle-audit/index.html"
+    },
+    {
+      "source": "/compare/cargo-audit-vs-bundle-audit/",
+      "destination": "/seo/compare/cargo-audit-vs-bundle-audit/index.html"
+    },
+    {
+      "source": "/compare/owasp-vs-snyk",
+      "destination": "/seo/compare/owasp-vs-snyk/index.html"
+    },
+    {
+      "source": "/compare/owasp-vs-snyk/",
+      "destination": "/seo/compare/owasp-vs-snyk/index.html"
+    },
+    {
+      "source": "/compare/pip-audit-vs-safety",
+      "destination": "/seo/compare/pip-audit-vs-safety/index.html"
+    },
+    {
+      "source": "/compare/pip-audit-vs-safety/",
+      "destination": "/seo/compare/pip-audit-vs-safety/index.html"
+    },
+    {
+      "source": "/compare/govulncheck-vs-nancy",
+      "destination": "/seo/compare/govulncheck-vs-nancy/index.html"
+    },
+    {
+      "source": "/compare/govulncheck-vs-nancy/",
+      "destination": "/seo/compare/govulncheck-vs-nancy/index.html"
+    },
+    {
+      "source": "/compare/bundler-audit-vs-gemnasium",
+      "destination": "/seo/compare/bundler-audit-vs-gemnasium/index.html"
+    },
+    {
+      "source": "/compare/bundler-audit-vs-gemnasium/",
+      "destination": "/seo/compare/bundler-audit-vs-gemnasium/index.html"
     }
   ]
 }

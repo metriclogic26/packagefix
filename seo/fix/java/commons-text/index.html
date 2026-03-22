@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Fix Apache Commons Text CVE-2022-42889 — Java/Maven Vulnerability | PackageFix</title>
+<meta name="description" content="Fix CVE-2022-42889 (CRITICAL) in Apache Commons Text for Java/Maven. Paste your pom.xml into PackageFix and get a patched version — no CLI, no signup. Remote code execution via variable interpolation (text4shell).">
+<link rel="canonical" href="https://packagefix.dev/fix/java/commons-text">
+<meta property="og:title" content="Fix Apache Commons Text CVE-2022-42889 — Java/Maven Vulnerability | PackageFix">
+<meta property="og:description" content="Fix CVE-2022-42889 (CRITICAL) in Apache Commons Text for Java/Maven. Paste your pom.xml into PackageFix and get a patched version — no CLI, no signup. Remote code execution via variable interpolation (text4shell).">
+<meta property="og:url" content="https://packagefix.dev/fix/java/commons-text">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/svg+xml" href="/icon.svg">
+<link rel="icon" type="image/png" sizes="512x512" href="/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "HowTo",
+      "name": "Fix Apache Commons Text CVE-2022-42889",
+      "description": "Fix CVE-2022-42889 (CRITICAL) in Apache Commons Text for Java/Maven. Paste your pom.xml into PackageFix and get a patched version \u2014 no CLI, no signup. Remote code execution via variable interpolation (text4shell).",
+      "estimatedCost": {
+        "@type": "MonetaryAmount",
+        "currency": "USD",
+        "value": "0"
+      },
+      "supply": {
+        "@type": "HowToSupply",
+        "name": "pom.xml"
+      },
+      "tool": {
+        "@type": "HowToTool",
+        "name": "PackageFix",
+        "url": "https://packagefix.dev"
+      },
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Paste manifest",
+          "text": "Paste your pom.xml into PackageFix"
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Find CVE",
+          "text": "Locate CVE-2022-42889 in the CVE table"
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Download fix",
+          "text": "Download patched pom.xml and run mvn dependency:resolve"
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "PackageFix",
+          "item": "https://packagefix.dev/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Fix Guides",
+          "item": "https://packagefix.dev/fix"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Java/Maven",
+          "item": "https://packagefix.dev/java"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "Apache Commons Text",
+          "item": "https://packagefix.dev/fix/java/commons-text"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is CVE-2022-42889?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "CVE-2022-42889 is a CRITICAL severity vulnerability in Apache Commons Text (Java/Maven) that allows remote code execution via variable interpolation (Text4Shell). Update to 1.12.0 or later."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I fix CVE-2022-42889 in Apache Commons Text?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Update Apache Commons Text to version 1.12.0 in your pom.xml and run mvn dependency:resolve."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is CVE-2022-42889 being actively exploited?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes \u2014 it appears on the CISA KEV catalog. Fix immediately."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I verify the fix for CVE-2022-42889?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "After updating, paste your pom.xml into PackageFix again. If CVE-2022-42889 no longer appears in the CVE table, the fix is applied."
+          }
+        }
+      ]
+    }
+  ]
+}</script>
+<style>
+:root {
+  --bg:#0B0D14; --surface:#12151F; --surface2:#1A1D2E;
+  --border:#252836; --purple:#6C63FF; --green:#22C55E;
+  --orange:#F97316; --red:#EF4444; --yellow:#EAB308;
+  --text:#E2E4F0; --muted:#6B7280;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.6;min-height:100vh}
+a{color:var(--purple);text-decoration:none}
+a:hover{text-decoration:underline}
+.site-header{border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:15px;font-weight:700;color:var(--text)}
+.logo span{color:var(--purple)}
+.nav-links{display:flex;gap:20px;font-size:12px}
+.nav-links a{color:var(--muted)}
+.nav-links a:hover{color:var(--text);text-decoration:none}
+.container{max-width:860px;margin:0 auto;padding:48px 24px}
+.breadcrumb{font-size:11px;color:var(--muted);margin-bottom:24px;display:flex;gap:6px;flex-wrap:wrap}
+.breadcrumb a{color:var(--muted)}
+h1{font-size:clamp(18px,3vw,26px);font-weight:700;margin-bottom:12px;line-height:1.3}
+h2{font-size:14px;font-weight:600;margin:32px 0 12px}
+p{color:var(--muted);margin-bottom:12px;font-size:12px;line-height:1.7}
+.lead{color:var(--text);font-size:13px;margin-bottom:24px;line-height:1.7}
+.problem-box{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3);border-left:3px solid var(--red);border-radius:8px;padding:16px 20px;margin:20px 0}
+.problem-box .label{font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.fix-box{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.3);border-left:3px solid var(--green);border-radius:8px;padding:16px 20px;margin:20px 0}
+.fix-box .label{font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.kev-box{background:rgba(239,68,68,.12);border:1px solid var(--red);border-radius:8px;padding:12px 16px;margin:16px 0;font-size:11px;color:var(--red)}
+pre{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px 16px;overflow-x:auto;font-size:11px;line-height:1.6;margin:8px 0;white-space:pre-wrap}
+code{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:1px 5px;font-size:11px}
+.cta-box{background:var(--surface);border:1px solid var(--purple);border-radius:10px;padding:24px;margin:32px 0;text-align:center}
+.cta-box p{color:var(--text);font-size:13px;margin-bottom:16px}
+.cta-btn{display:inline-block;background:var(--purple);color:#fff;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;padding:12px 28px;border-radius:7px;text-decoration:none}
+.cta-btn:hover{opacity:.9;text-decoration:none}
+.badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em}
+.badge-red{background:rgba(239,68,68,.2);color:var(--red);border:1px solid var(--red)}
+.badge-orange{background:rgba(249,115,22,.2);color:var(--orange);border:1px solid var(--orange)}
+.badge-green{background:rgba(34,197,94,.2);color:var(--green);border:1px solid var(--green)}
+.badge-purple{background:rgba(108,99,255,.2);color:var(--purple);border:1px solid var(--purple)}
+.faq{margin:40px 0}
+.faq-item{border-bottom:1px solid var(--border);padding:16px 0}
+.faq-item:last-child{border-bottom:none}
+.faq-q{font-size:12px;font-weight:600;color:var(--text);margin-bottom:8px}
+.faq-a{font-size:12px;color:var(--muted);line-height:1.7}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:12px}
+.related-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
+.related-card a{color:var(--text);font-size:12px;font-weight:500}
+.related-card p{font-size:11px;color:var(--muted);margin:4px 0 0}
+.cve-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:12px}
+.cve-table th{text-align:left;padding:8px 12px;border-bottom:1px solid var(--border);color:var(--muted);font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.08em}
+.cve-table td{padding:8px 12px;border-bottom:1px solid var(--border)}
+.cve-table tr:last-child td{border-bottom:none}
+.vs-table td:first-child{font-weight:600;color:var(--text)}
+.site-footer{border-top:1px solid var(--border);padding:24px;text-align:center;font-size:11px;color:var(--muted);margin-top:60px}
+.site-footer a{color:var(--muted)}
+@media(max-width:640px){.nav-links{display:none}.related-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <a href="https://packagefix.dev" class="logo">Package<span>Fix</span></a>
+  <nav class="nav-links">
+    <a href="https://packagefix.dev">Tool</a>
+    <a href="https://packagefix.dev/alternatives">Alternatives</a>
+    <a href="https://packagefix.dev/error">Error Fixes</a>
+    <a href="https://github.com/metriclogic26/packagefix">GitHub</a>
+  </nav>
+</header>
+<main class="container">
+  <div class="breadcrumb"><a href="/">PackageFix</a> <span style='color:var(--border)'>/</span> <a href="/fix">Fix Guides</a> <span style='color:var(--border)'>/</span> <a href="/java">Java/Maven</a> <span style='color:var(--border)'>/</span> <span style="color:var(--text)">Apache Commons Text</span></div>
+  
+<h1>Fix Apache Commons Text — CVE-2022-42889 <span class="badge badge-red">CRITICAL</span></h1>
+<p class="lead">Fix CVE-2022-42889 (CRITICAL) in Apache Commons Text for Java/Maven. Paste your pom.xml into PackageFix and get a patched version — no CLI, no signup. Remote code execution via variable interpolation (text4shell).</p>
+<div class="kev-box">🔴 <strong>CISA KEV</strong> — Apache Commons Text appears on the CISA Known Exploited Vulnerabilities catalog. Actively exploited in the wild. Fix immediately.</div>
+<div class="problem-box">
+  <div class="label">⚠ Vulnerability</div>
+  <p style="margin:0"><strong>CVE-2022-42889</strong> (CRITICAL) — remote code execution via variable interpolation (Text4Shell) in Apache Commons Text below <code>1.12.0</code>.</p>
+</div>
+<h2>Vulnerable — pom.xml</h2>
+<pre><commons-text.version>1.9</commons-text.version></pre>
+<h2>Fixed — pom.xml</h2>
+<pre><commons-text.version>1.12.0</commons-text.version></pre>
+<div class="fix-box">
+  <div class="label">✓ Fix</div>
+  <p style="margin:0">Update Apache Commons Text to <code>1.12.0</code> and run <code>mvn dependency:resolve</code>.</p>
+</div>
+<div class="cta-box">
+  <p>Paste your manifest — get back a fixed version with all CVEs patched in seconds.</p>
+  <a href="https://packagefix.dev" class="cta-btn">Open PackageFix →</a>
+  <p style="margin-top:12px;font-size:11px;color:var(--muted)">No signup · No CLI · No GitHub connection · Runs 100% in your browser</p>
+</div>
+<h2>CVE Details</h2>
+<table class="cve-table">
+  <thead><tr><th>Field</th><th>Value</th></tr></thead>
+  <tbody>
+    <tr><td>CVE ID</td><td><a href="https://osv.dev/vulnerability/CVE-2022-42889" target="_blank" rel="noopener">CVE-2022-42889</a></td></tr>
+    <tr><td>Severity</td><td><span class="badge badge-red">CRITICAL</span></td></tr>
+    <tr><td>Package</td><td>Apache Commons Text (Java/Maven)</td></tr>
+    <tr><td>Safe version</td><td>1.12.0</td></tr>
+    <tr><td>CISA KEV</td><td>🔴 Yes</td></tr>
+    <tr><td>Description</td><td>Remote code execution via variable interpolation (text4shell)</td></tr>
+  </tbody>
+</table>
+<div class="faq"><h2>Frequently Asked Questions</h2><div class="faq-item"><div class="faq-q">What is CVE-2022-42889?</div><div class="faq-a">CVE-2022-42889 is a CRITICAL severity vulnerability in Apache Commons Text (Java/Maven) that allows remote code execution via variable interpolation (Text4Shell). Update to 1.12.0 or later.</div></div><div class="faq-item"><div class="faq-q">How do I fix CVE-2022-42889 in Apache Commons Text?</div><div class="faq-a">Update Apache Commons Text to version 1.12.0 in your pom.xml and run mvn dependency:resolve.</div></div><div class="faq-item"><div class="faq-q">Is CVE-2022-42889 being actively exploited?</div><div class="faq-a">Yes — it appears on the CISA KEV catalog. Fix immediately.</div></div><div class="faq-item"><div class="faq-q">How do I verify the fix for CVE-2022-42889?</div><div class="faq-a">After updating, paste your pom.xml into PackageFix again. If CVE-2022-42889 no longer appears in the CVE table, the fix is applied.</div></div></div>
+<div style="margin:40px 0"><h2>Related Guides</h2><div class="related-grid"><div class="related-card"><a href="/java">Java/Maven Security Overview</a><p>All Java/Maven vulnerability guides</p></div><div class="related-card"><a href="/fix/java/outdated-dependencies">Fix Outdated Java/Maven Dependencies</a><p>General dependency updates</p></div><div class="related-card"><a href="https://packagefix.dev">Open PackageFix Tool</a><p>Scan your manifest live</p></div><div class="related-card"><a href="/vs/snyk-advisor">PackageFix vs Snyk Advisor</a><p>Free browser alternative</p></div></div></div>
+</main>
+<footer class="site-footer">
+  <p>PackageFix · <a href="https://packagefix.dev">packagefix.dev</a> · MIT Licensed · Open Source</p>
+  <p style="margin-top:6px">Part of the MetricLogic network ·
+  <a href="https://configclarity.dev">ConfigClarity</a> ·
+  <a href="https://domainpreflight.dev">DomainPreflight</a></p>
+  <p style="margin-top:6px">Vulnerability data: <a href="https://osv.dev">OSV Database</a> · <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog">CISA KEV Catalog</a></p>
+  <p style="margin-top:6px">Always test dependency updates in a staging environment before deploying to production.</p>
+</footer>
+</body>
+</html>
