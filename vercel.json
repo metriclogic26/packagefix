@@ -1719,6 +1719,62 @@
     {
       "source": "/blog/supply-chain-attacks-package-json/",
       "destination": "/seo/blog/supply-chain-attacks-package-json/index.html"
+    },
+    {
+      "source": "/blog",
+      "destination": "/seo/blog/index.html"
+    },
+    {
+      "source": "/blog/",
+      "destination": "/seo/blog/index.html"
+    },
+    {
+      "source": "/blog/weekly-cve-march-2026",
+      "destination": "/seo/blog/weekly-cve-march-2026/index.html"
+    },
+    {
+      "source": "/blog/weekly-cve-march-2026/",
+      "destination": "/seo/blog/weekly-cve-march-2026/index.html"
+    },
+    {
+      "source": "/kev/CVE-2021-44228",
+      "destination": "/seo/kev/CVE-2021-44228/index.html"
+    },
+    {
+      "source": "/kev/CVE-2021-44228/",
+      "destination": "/seo/kev/CVE-2021-44228/index.html"
+    },
+    {
+      "source": "/kev/CVE-2022-22965",
+      "destination": "/seo/kev/CVE-2022-22965/index.html"
+    },
+    {
+      "source": "/kev/CVE-2022-22965/",
+      "destination": "/seo/kev/CVE-2022-22965/index.html"
+    },
+    {
+      "source": "/kev/CVE-2022-42889",
+      "destination": "/seo/kev/CVE-2022-42889/index.html"
+    },
+    {
+      "source": "/kev/CVE-2022-42889/",
+      "destination": "/seo/kev/CVE-2022-42889/index.html"
+    },
+    {
+      "source": "/kev/CVE-2023-44487",
+      "destination": "/seo/kev/CVE-2023-44487/index.html"
+    },
+    {
+      "source": "/kev/CVE-2023-44487/",
+      "destination": "/seo/kev/CVE-2023-44487/index.html"
+    },
+    {
+      "source": "/kev/CVE-2022-1471",
+      "destination": "/seo/kev/CVE-2022-1471/index.html"
+    },
+    {
+      "source": "/kev/CVE-2022-1471/",
+      "destination": "/seo/kev/CVE-2022-1471/index.html"
     }
   ]
 }

@@ -245,3 +245,12 @@ https://packagefix.dev/compare/bundler-audit-vs-gemnasium
 https://packagefix.dev/cisa-kev
 https://packagefix.dev/snyk-advisor-alternative
 https://packagefix.dev/blog/supply-chain-attacks-package-json
+
+## Phase 5 — Blog + KEV Pages
+https://packagefix.dev/blog
+https://packagefix.dev/blog/weekly-cve-march-2026
+https://packagefix.dev/kev/CVE-2021-44228
+https://packagefix.dev/kev/CVE-2022-22965
+https://packagefix.dev/kev/CVE-2022-42889
+https://packagefix.dev/kev/CVE-2023-44487
+https://packagefix.dev/kev/CVE-2022-1471
