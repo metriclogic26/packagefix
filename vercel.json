@@ -1,0 +1,588 @@
+{
+  "rewrites": [
+    {
+      "source": "/fix/npm/outdated-dependencies",
+      "destination": "/seo/fix/npm/outdated-dependencies/index.html"
+    },
+    {
+      "source": "/fix/npm/outdated-dependencies/",
+      "destination": "/seo/fix/npm/outdated-dependencies/index.html"
+    },
+    {
+      "source": "/fix/npm/critical-cve",
+      "destination": "/seo/fix/npm/critical-cve/index.html"
+    },
+    {
+      "source": "/fix/npm/critical-cve/",
+      "destination": "/seo/fix/npm/critical-cve/index.html"
+    },
+    {
+      "source": "/fix/npm/transitive-vulnerability",
+      "destination": "/seo/fix/npm/transitive-vulnerability/index.html"
+    },
+    {
+      "source": "/fix/npm/transitive-vulnerability/",
+      "destination": "/seo/fix/npm/transitive-vulnerability/index.html"
+    },
+    {
+      "source": "/fix/npm/lockfile-mismatch",
+      "destination": "/seo/fix/npm/lockfile-mismatch/index.html"
+    },
+    {
+      "source": "/fix/npm/lockfile-mismatch/",
+      "destination": "/seo/fix/npm/lockfile-mismatch/index.html"
+    },
+    {
+      "source": "/fix/pypi/outdated-dependencies",
+      "destination": "/seo/fix/pypi/outdated-dependencies/index.html"
+    },
+    {
+      "source": "/fix/pypi/outdated-dependencies/",
+      "destination": "/seo/fix/pypi/outdated-dependencies/index.html"
+    },
+    {
+      "source": "/fix/pypi/critical-cve",
+      "destination": "/seo/fix/pypi/critical-cve/index.html"
+    },
+    {
+      "source": "/fix/pypi/critical-cve/",
+      "destination": "/seo/fix/pypi/critical-cve/index.html"
+    },
+    {
+      "source": "/fix/pypi/transitive-vulnerability",
+      "destination": "/seo/fix/pypi/transitive-vulnerability/index.html"
+    },
+    {
+      "source": "/fix/pypi/transitive-vulnerability/",
+      "destination": "/seo/fix/pypi/transitive-vulnerability/index.html"
+    },
+    {
+      "source": "/fix/ruby/outdated-dependencies",
+      "destination": "/seo/fix/ruby/outdated-dependencies/index.html"
+    },
+    {
+      "source": "/fix/ruby/outdated-dependencies/",
+      "destination": "/seo/fix/ruby/outdated-dependencies/index.html"
+    },
+    {
+      "source": "/fix/ruby/critical-cve",
+      "destination": "/seo/fix/ruby/critical-cve/index.html"
+    },
+    {
+      "source": "/fix/ruby/critical-cve/",
+      "destination": "/seo/fix/ruby/critical-cve/index.html"
+    },
+    {
+      "source": "/fix/php/outdated-dependencies",
+      "destination": "/seo/fix/php/outdated-dependencies/index.html"
+    },
+    {
+      "source": "/fix/php/outdated-dependencies/",
+      "destination": "/seo/fix/php/outdated-dependencies/index.html"
+    },
+    {
+      "source": "/fix/php/critical-cve",
+      "destination": "/seo/fix/php/critical-cve/index.html"
+    },
+    {
+      "source": "/fix/php/critical-cve/",
+      "destination": "/seo/fix/php/critical-cve/index.html"
+    },
+    {
+      "source": "/fix/go/outdated-dependencies",
+      "destination": "/seo/fix/go/outdated-dependencies/index.html"
+    },
+    {
+      "source": "/fix/go/outdated-dependencies/",
+      "destination": "/seo/fix/go/outdated-dependencies/index.html"
+    },
+    {
+      "source": "/fix/rust/outdated-dependencies",
+      "destination": "/seo/fix/rust/outdated-dependencies/index.html"
+    },
+    {
+      "source": "/fix/rust/outdated-dependencies/",
+      "destination": "/seo/fix/rust/outdated-dependencies/index.html"
+    },
+    {
+      "source": "/fix/npm/critical-cve/express",
+      "destination": "/seo/fix/npm/critical-cve/express/index.html"
+    },
+    {
+      "source": "/fix/npm/critical-cve/express/",
+      "destination": "/seo/fix/npm/critical-cve/express/index.html"
+    },
+    {
+      "source": "/fix/npm/critical-cve/nextjs",
+      "destination": "/seo/fix/npm/critical-cve/nextjs/index.html"
+    },
+    {
+      "source": "/fix/npm/critical-cve/nextjs/",
+      "destination": "/seo/fix/npm/critical-cve/nextjs/index.html"
+    },
+    {
+      "source": "/fix/npm/critical-cve/react",
+      "destination": "/seo/fix/npm/critical-cve/react/index.html"
+    },
+    {
+      "source": "/fix/npm/critical-cve/react/",
+      "destination": "/seo/fix/npm/critical-cve/react/index.html"
+    },
+    {
+      "source": "/fix/npm/critical-cve/lodash",
+      "destination": "/seo/fix/npm/critical-cve/lodash/index.html"
+    },
+    {
+      "source": "/fix/npm/critical-cve/lodash/",
+      "destination": "/seo/fix/npm/critical-cve/lodash/index.html"
+    },
+    {
+      "source": "/fix/npm/critical-cve/axios",
+      "destination": "/seo/fix/npm/critical-cve/axios/index.html"
+    },
+    {
+      "source": "/fix/npm/critical-cve/axios/",
+      "destination": "/seo/fix/npm/critical-cve/axios/index.html"
+    },
+    {
+      "source": "/fix/npm/critical-cve/jsonwebtoken",
+      "destination": "/seo/fix/npm/critical-cve/jsonwebtoken/index.html"
+    },
+    {
+      "source": "/fix/npm/critical-cve/jsonwebtoken/",
+      "destination": "/seo/fix/npm/critical-cve/jsonwebtoken/index.html"
+    },
+    {
+      "source": "/fix/npm/critical-cve/webpack",
+      "destination": "/seo/fix/npm/critical-cve/webpack/index.html"
+    },
+    {
+      "source": "/fix/npm/critical-cve/webpack/",
+      "destination": "/seo/fix/npm/critical-cve/webpack/index.html"
+    },
+    {
+      "source": "/fix/npm/critical-cve/minimist",
+      "destination": "/seo/fix/npm/critical-cve/minimist/index.html"
+    },
+    {
+      "source": "/fix/npm/critical-cve/minimist/",
+      "destination": "/seo/fix/npm/critical-cve/minimist/index.html"
+    },
+    {
+      "source": "/fix/pypi/critical-cve/django",
+      "destination": "/seo/fix/pypi/critical-cve/django/index.html"
+    },
+    {
+      "source": "/fix/pypi/critical-cve/django/",
+      "destination": "/seo/fix/pypi/critical-cve/django/index.html"
+    },
+    {
+      "source": "/fix/pypi/critical-cve/flask",
+      "destination": "/seo/fix/pypi/critical-cve/flask/index.html"
+    },
+    {
+      "source": "/fix/pypi/critical-cve/flask/",
+      "destination": "/seo/fix/pypi/critical-cve/flask/index.html"
+    },
+    {
+      "source": "/fix/pypi/critical-cve/fastapi",
+      "destination": "/seo/fix/pypi/critical-cve/fastapi/index.html"
+    },
+    {
+      "source": "/fix/pypi/critical-cve/fastapi/",
+      "destination": "/seo/fix/pypi/critical-cve/fastapi/index.html"
+    },
+    {
+      "source": "/fix/pypi/critical-cve/requests",
+      "destination": "/seo/fix/pypi/critical-cve/requests/index.html"
+    },
+    {
+      "source": "/fix/pypi/critical-cve/requests/",
+      "destination": "/seo/fix/pypi/critical-cve/requests/index.html"
+    },
+    {
+      "source": "/fix/pypi/critical-cve/pillow",
+      "destination": "/seo/fix/pypi/critical-cve/pillow/index.html"
+    },
+    {
+      "source": "/fix/pypi/critical-cve/pillow/",
+      "destination": "/seo/fix/pypi/critical-cve/pillow/index.html"
+    },
+    {
+      "source": "/fix/pypi/critical-cve/cryptography",
+      "destination": "/seo/fix/pypi/critical-cve/cryptography/index.html"
+    },
+    {
+      "source": "/fix/pypi/critical-cve/cryptography/",
+      "destination": "/seo/fix/pypi/critical-cve/cryptography/index.html"
+    },
+    {
+      "source": "/fix/ruby/critical-cve/rails",
+      "destination": "/seo/fix/ruby/critical-cve/rails/index.html"
+    },
+    {
+      "source": "/fix/ruby/critical-cve/rails/",
+      "destination": "/seo/fix/ruby/critical-cve/rails/index.html"
+    },
+    {
+      "source": "/fix/ruby/critical-cve/nokogiri",
+      "destination": "/seo/fix/ruby/critical-cve/nokogiri/index.html"
+    },
+    {
+      "source": "/fix/ruby/critical-cve/nokogiri/",
+      "destination": "/seo/fix/ruby/critical-cve/nokogiri/index.html"
+    },
+    {
+      "source": "/fix/ruby/critical-cve/devise",
+      "destination": "/seo/fix/ruby/critical-cve/devise/index.html"
+    },
+    {
+      "source": "/fix/ruby/critical-cve/devise/",
+      "destination": "/seo/fix/ruby/critical-cve/devise/index.html"
+    },
+    {
+      "source": "/fix/php/critical-cve/laravel",
+      "destination": "/seo/fix/php/critical-cve/laravel/index.html"
+    },
+    {
+      "source": "/fix/php/critical-cve/laravel/",
+      "destination": "/seo/fix/php/critical-cve/laravel/index.html"
+    },
+    {
+      "source": "/fix/php/critical-cve/symfony",
+      "destination": "/seo/fix/php/critical-cve/symfony/index.html"
+    },
+    {
+      "source": "/fix/php/critical-cve/symfony/",
+      "destination": "/seo/fix/php/critical-cve/symfony/index.html"
+    },
+    {
+      "source": "/fix/php/critical-cve/guzzle",
+      "destination": "/seo/fix/php/critical-cve/guzzle/index.html"
+    },
+    {
+      "source": "/fix/php/critical-cve/guzzle/",
+      "destination": "/seo/fix/php/critical-cve/guzzle/index.html"
+    },
+    {
+      "source": "/fix/php/critical-cve/monolog",
+      "destination": "/seo/fix/php/critical-cve/monolog/index.html"
+    },
+    {
+      "source": "/fix/php/critical-cve/monolog/",
+      "destination": "/seo/fix/php/critical-cve/monolog/index.html"
+    },
+    {
+      "source": "/fix/go/critical-cve/gin",
+      "destination": "/seo/fix/go/critical-cve/gin/index.html"
+    },
+    {
+      "source": "/fix/go/critical-cve/gin/",
+      "destination": "/seo/fix/go/critical-cve/gin/index.html"
+    },
+    {
+      "source": "/fix/go/critical-cve/grpc",
+      "destination": "/seo/fix/go/critical-cve/grpc/index.html"
+    },
+    {
+      "source": "/fix/go/critical-cve/grpc/",
+      "destination": "/seo/fix/go/critical-cve/grpc/index.html"
+    },
+    {
+      "source": "/fix/go/critical-cve/net",
+      "destination": "/seo/fix/go/critical-cve/net/index.html"
+    },
+    {
+      "source": "/fix/go/critical-cve/net/",
+      "destination": "/seo/fix/go/critical-cve/net/index.html"
+    },
+    {
+      "source": "/error/npm-audit-high-severity",
+      "destination": "/seo/error/npm-audit-high-severity/index.html"
+    },
+    {
+      "source": "/error/npm-audit-high-severity/",
+      "destination": "/seo/error/npm-audit-high-severity/index.html"
+    },
+    {
+      "source": "/error/pip-dependency-conflict",
+      "destination": "/seo/error/pip-dependency-conflict/index.html"
+    },
+    {
+      "source": "/error/pip-dependency-conflict/",
+      "destination": "/seo/error/pip-dependency-conflict/index.html"
+    },
+    {
+      "source": "/error/bundler-version-conflict",
+      "destination": "/seo/error/bundler-version-conflict/index.html"
+    },
+    {
+      "source": "/error/bundler-version-conflict/",
+      "destination": "/seo/error/bundler-version-conflict/index.html"
+    },
+    {
+      "source": "/error/composer-memory-limit",
+      "destination": "/seo/error/composer-memory-limit/index.html"
+    },
+    {
+      "source": "/error/composer-memory-limit/",
+      "destination": "/seo/error/composer-memory-limit/index.html"
+    },
+    {
+      "source": "/error/package-json-missing-lockfile",
+      "destination": "/seo/error/package-json-missing-lockfile/index.html"
+    },
+    {
+      "source": "/error/package-json-missing-lockfile/",
+      "destination": "/seo/error/package-json-missing-lockfile/index.html"
+    },
+    {
+      "source": "/vs/snyk-advisor",
+      "destination": "/seo/vs/snyk-advisor/index.html"
+    },
+    {
+      "source": "/vs/snyk-advisor/",
+      "destination": "/seo/vs/snyk-advisor/index.html"
+    },
+    {
+      "source": "/vs/dependabot",
+      "destination": "/seo/vs/dependabot/index.html"
+    },
+    {
+      "source": "/vs/dependabot/",
+      "destination": "/seo/vs/dependabot/index.html"
+    },
+    {
+      "source": "/vs/npm-audit",
+      "destination": "/seo/vs/npm-audit/index.html"
+    },
+    {
+      "source": "/vs/npm-audit/",
+      "destination": "/seo/vs/npm-audit/index.html"
+    },
+    {
+      "source": "/vs/pip-audit",
+      "destination": "/seo/vs/pip-audit/index.html"
+    },
+    {
+      "source": "/vs/pip-audit/",
+      "destination": "/seo/vs/pip-audit/index.html"
+    },
+    {
+      "source": "/vs/owasp-dependency-check",
+      "destination": "/seo/vs/owasp-dependency-check/index.html"
+    },
+    {
+      "source": "/vs/owasp-dependency-check/",
+      "destination": "/seo/vs/owasp-dependency-check/index.html"
+    },
+    {
+      "source": "/providers/github-actions/npm-audit",
+      "destination": "/seo/providers/github-actions/npm-audit/index.html"
+    },
+    {
+      "source": "/providers/github-actions/npm-audit/",
+      "destination": "/seo/providers/github-actions/npm-audit/index.html"
+    },
+    {
+      "source": "/providers/github-actions/python-audit",
+      "destination": "/seo/providers/github-actions/python-audit/index.html"
+    },
+    {
+      "source": "/providers/github-actions/python-audit/",
+      "destination": "/seo/providers/github-actions/python-audit/index.html"
+    },
+    {
+      "source": "/providers/gitlab-ci/dependency-scan",
+      "destination": "/seo/providers/gitlab-ci/dependency-scan/index.html"
+    },
+    {
+      "source": "/providers/gitlab-ci/dependency-scan/",
+      "destination": "/seo/providers/gitlab-ci/dependency-scan/index.html"
+    },
+    {
+      "source": "/providers/gitlab-ci/python-scan",
+      "destination": "/seo/providers/gitlab-ci/python-scan/index.html"
+    },
+    {
+      "source": "/providers/gitlab-ci/python-scan/",
+      "destination": "/seo/providers/gitlab-ci/python-scan/index.html"
+    },
+    {
+      "source": "/providers/circleci/dependency-scan",
+      "destination": "/seo/providers/circleci/dependency-scan/index.html"
+    },
+    {
+      "source": "/providers/circleci/dependency-scan/",
+      "destination": "/seo/providers/circleci/dependency-scan/index.html"
+    },
+    {
+      "source": "/providers/circleci/python-scan",
+      "destination": "/seo/providers/circleci/python-scan/index.html"
+    },
+    {
+      "source": "/providers/circleci/python-scan/",
+      "destination": "/seo/providers/circleci/python-scan/index.html"
+    },
+    {
+      "source": "/providers/hetzner/nodejs-security",
+      "destination": "/seo/providers/hetzner/nodejs-security/index.html"
+    },
+    {
+      "source": "/providers/hetzner/nodejs-security/",
+      "destination": "/seo/providers/hetzner/nodejs-security/index.html"
+    },
+    {
+      "source": "/providers/hetzner/python-security",
+      "destination": "/seo/providers/hetzner/python-security/index.html"
+    },
+    {
+      "source": "/providers/hetzner/python-security/",
+      "destination": "/seo/providers/hetzner/python-security/index.html"
+    },
+    {
+      "source": "/providers/digitalocean/python-security",
+      "destination": "/seo/providers/digitalocean/python-security/index.html"
+    },
+    {
+      "source": "/providers/digitalocean/python-security/",
+      "destination": "/seo/providers/digitalocean/python-security/index.html"
+    },
+    {
+      "source": "/providers/digitalocean/nodejs-security",
+      "destination": "/seo/providers/digitalocean/nodejs-security/index.html"
+    },
+    {
+      "source": "/providers/digitalocean/nodejs-security/",
+      "destination": "/seo/providers/digitalocean/nodejs-security/index.html"
+    },
+    {
+      "source": "/providers/vercel/nodejs-security",
+      "destination": "/seo/providers/vercel/nodejs-security/index.html"
+    },
+    {
+      "source": "/providers/vercel/nodejs-security/",
+      "destination": "/seo/providers/vercel/nodejs-security/index.html"
+    },
+    {
+      "source": "/providers/vercel/python-security",
+      "destination": "/seo/providers/vercel/python-security/index.html"
+    },
+    {
+      "source": "/providers/vercel/python-security/",
+      "destination": "/seo/providers/vercel/python-security/index.html"
+    },
+    {
+      "source": "/providers/aws/lambda-nodejs-security",
+      "destination": "/seo/providers/aws/lambda-nodejs-security/index.html"
+    },
+    {
+      "source": "/providers/aws/lambda-nodejs-security/",
+      "destination": "/seo/providers/aws/lambda-nodejs-security/index.html"
+    },
+    {
+      "source": "/providers/aws/lambda-python-security",
+      "destination": "/seo/providers/aws/lambda-python-security/index.html"
+    },
+    {
+      "source": "/providers/aws/lambda-python-security/",
+      "destination": "/seo/providers/aws/lambda-python-security/index.html"
+    },
+    {
+      "source": "/providers/netlify/nodejs-security",
+      "destination": "/seo/providers/netlify/nodejs-security/index.html"
+    },
+    {
+      "source": "/providers/netlify/nodejs-security/",
+      "destination": "/seo/providers/netlify/nodejs-security/index.html"
+    },
+    {
+      "source": "/providers/railway/nodejs-security",
+      "destination": "/seo/providers/railway/nodejs-security/index.html"
+    },
+    {
+      "source": "/providers/railway/nodejs-security/",
+      "destination": "/seo/providers/railway/nodejs-security/index.html"
+    },
+    {
+      "source": "/providers/fly/nodejs-security",
+      "destination": "/seo/providers/fly/nodejs-security/index.html"
+    },
+    {
+      "source": "/providers/fly/nodejs-security/",
+      "destination": "/seo/providers/fly/nodejs-security/index.html"
+    },
+    {
+      "source": "/providers/render/nodejs-security",
+      "destination": "/seo/providers/render/nodejs-security/index.html"
+    },
+    {
+      "source": "/providers/render/nodejs-security/",
+      "destination": "/seo/providers/render/nodejs-security/index.html"
+    },
+    {
+      "source": "/npm",
+      "destination": "/seo/npm/index.html"
+    },
+    {
+      "source": "/npm/",
+      "destination": "/seo/npm/index.html"
+    },
+    {
+      "source": "/python",
+      "destination": "/seo/python/index.html"
+    },
+    {
+      "source": "/python/",
+      "destination": "/seo/python/index.html"
+    },
+    {
+      "source": "/pypi",
+      "destination": "/seo/pypi/index.html"
+    },
+    {
+      "source": "/pypi/",
+      "destination": "/seo/pypi/index.html"
+    },
+    {
+      "source": "/ruby",
+      "destination": "/seo/ruby/index.html"
+    },
+    {
+      "source": "/ruby/",
+      "destination": "/seo/ruby/index.html"
+    },
+    {
+      "source": "/php",
+      "destination": "/seo/php/index.html"
+    },
+    {
+      "source": "/php/",
+      "destination": "/seo/php/index.html"
+    },
+    {
+      "source": "/go",
+      "destination": "/seo/go/index.html"
+    },
+    {
+      "source": "/go/",
+      "destination": "/seo/go/index.html"
+    },
+    {
+      "source": "/rust",
+      "destination": "/seo/rust/index.html"
+    },
+    {
+      "source": "/rust/",
+      "destination": "/seo/rust/index.html"
+    },
+    {
+      "source": "/java",
+      "destination": "/seo/java/index.html"
+    },
+    {
+      "source": "/java/",
+      "destination": "/seo/java/index.html"
+    }
+  ]
+}
