@@ -240,3 +240,8 @@ https://packagefix.dev/compare/owasp-vs-snyk
 https://packagefix.dev/compare/pip-audit-vs-safety
 https://packagefix.dev/compare/govulncheck-vs-nancy
 https://packagefix.dev/compare/bundler-audit-vs-gemnasium
+
+## Phase 4 — High-Value Pages
+https://packagefix.dev/cisa-kev
+https://packagefix.dev/snyk-advisor-alternative
+https://packagefix.dev/blog/supply-chain-attacks-package-json

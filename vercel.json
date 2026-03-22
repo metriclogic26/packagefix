@@ -1695,6 +1695,30 @@
     {
       "source": "/compare/bundler-audit-vs-gemnasium/",
       "destination": "/seo/compare/bundler-audit-vs-gemnasium/index.html"
+    },
+    {
+      "source": "/cisa-kev",
+      "destination": "/seo/cisa-kev/index.html"
+    },
+    {
+      "source": "/cisa-kev/",
+      "destination": "/seo/cisa-kev/index.html"
+    },
+    {
+      "source": "/snyk-advisor-alternative",
+      "destination": "/seo/snyk-advisor-alternative/index.html"
+    },
+    {
+      "source": "/snyk-advisor-alternative/",
+      "destination": "/seo/snyk-advisor-alternative/index.html"
+    },
+    {
+      "source": "/blog/supply-chain-attacks-package-json",
+      "destination": "/seo/blog/supply-chain-attacks-package-json/index.html"
+    },
+    {
+      "source": "/blog/supply-chain-attacks-package-json/",
+      "destination": "/seo/blog/supply-chain-attacks-package-json/index.html"
     }
   ]
 }

