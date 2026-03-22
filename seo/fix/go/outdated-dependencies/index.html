@@ -187,6 +187,7 @@ tr:last-child td{border-bottom:none}
   <nav class="nav-links">
     <a href="https://packagefix.dev">Tool</a>
     <a href="https://packagefix.dev/alternatives">Alternatives</a>
+    <a href="https://packagefix.dev/error">Error Fixes</a>
     <a href="https://github.com/metriclogic26/packagefix">GitHub</a>
     <a href="https://metriclogic.dev">MetricLogic</a>
   </nav>
@@ -228,7 +229,7 @@ require (
   <p style="margin-top:12px;font-size:11px;color:var(--muted)">No signup · No CLI · No GitHub connection · Runs 100% in your browser</p>
 </div>
 <div class="faq"><h2>Frequently Asked Questions</h2><div class="faq-item"><div class="faq-q">How do I scan go.mod for CVEs without govulncheck?</div><div class="faq-a">Paste your go.mod into PackageFix. It queries the OSV Go advisory database live.</div></div><div class="faq-item"><div class="faq-q">What are Go pseudo-versions and are they safe?</div><div class="faq-a">Pseudo-versions (v0.0.0-20210405180319-...) reference specific commits. They can be vulnerable if the commit predates a security fix. PackageFix flags these.</div></div><div class="faq-item"><div class="faq-q">How do I update a specific Go module?</div><div class="faq-a">Run go get github.com/module@v1.2.3, then go mod tidy to clean up.</div></div><div class="faq-item"><div class="faq-q">Does PackageFix support go.sum?</div><div class="faq-a">go.sum is a checksum file, not a version manifest. PackageFix scans go.mod for CVEs — go.sum scanning is not needed for vulnerability detection.</div></div></div>
-<div style="margin:40px 0"><h2>Related Guides</h2><div class="related-grid"><div class="related-card"><a href="/fix/go/critical-cve">Fix Critical Go CVEs</a><p>HIGH and CRITICAL severity</p></div><div class="related-card"><a href="https://packagefix.dev">Open PackageFix Tool</a><p>Scan your manifest live</p></div><div class="related-card"><a href="/go">Go Security Overview</a><p>All Go vulnerability guides</p></div></div></div>
+<div style="margin:40px 0"><h2>Related Guides</h2><div class="related-grid"><div class="related-card"><a href="/fix/go/critical-cve">Fix Critical Go CVEs</a><p>HIGH and CRITICAL severity</p></div><div class="related-card"><a href="https://packagefix.dev">Open PackageFix Tool</a><p>Scan your manifest live</p></div><div class="related-card"><a href="/go">Go Security Overview</a><p>All Go vulnerability guides</p></div><div class="related-card"><a href="/error/package-json-missing-lockfile">Common Error Fixes</a><p>Exact error message solutions</p></div></div></div>
 
 </main>
 <footer class="site-footer">

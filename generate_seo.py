@@ -101,6 +101,7 @@ def render_page(title, desc, canonical_path, breadcrumbs, body_html, schemas):
   <nav class="nav-links">
     <a href="https://packagefix.dev">Tool</a>
     <a href="https://packagefix.dev/alternatives">Alternatives</a>
+    <a href="https://packagefix.dev/error">Error Fixes</a>
     <a href="https://github.com/metriclogic26/packagefix">GitHub</a>
     <a href="https://metriclogic.dev">MetricLogic</a>
   </nav>
@@ -481,6 +482,16 @@ ERROR_PAGES = [
      ]},
 ]
 
+# Map fix-guide ecosystem → most relevant error page (java defaults via .get → /error)
+FIX_TO_ERROR = {
+    "npm": "/error/npm-audit-high-severity",
+    "pypi": "/error/pip-dependency-conflict",
+    "ruby": "/error/bundler-version-conflict",
+    "php": "/error/composer-memory-limit",
+    "go": "/error/package-json-missing-lockfile",
+    "rust": "/error/package-json-missing-lockfile",
+}
+
 # ── Comparison pages ───────────────────────────────────────────────────────────
 COMPARISON_PAGES = [
     {"slug":"vs/snyk-advisor","competitor":"Snyk Advisor","status":"shut down January 2026",
@@ -814,6 +825,7 @@ def generate_fix_page(p):
     {"url":"/"+p["slug"].replace("outdated-dependencies","critical-cve").replace("transitive-vulnerability","critical-cve").replace("lockfile-mismatch","critical-cve"), "title":f"Fix Critical {eco['label']} CVEs","desc":"HIGH and CRITICAL severity"},
     {"url":"https://packagefix.dev","title":"Open PackageFix Tool","desc":"Scan your manifest live"},
     {"url":f"/{p['eco']}","title":f"{eco['label']} Security Overview","desc":f"All {eco['label']} vulnerability guides"},
+    {"url":FIX_TO_ERROR.get(p["eco"], "/error"), "title":"Common Error Fixes", "desc":"Exact error message solutions"},
 ])}
 """
     schemas = howto_schema(
@@ -1030,6 +1042,27 @@ for combo in STACK_COMBOS:
 print("\n⚠ Generating error pages...")
 for p in ERROR_PAGES:
     write(p["slug"], generate_error_page(p))
+
+error_index_body = """
+<h1>Dependency Error Fixes</h1>
+<p class="lead">Exact error message fixes for npm, PyPI, Ruby, and PHP dependency issues.</p>
+<div class="related-grid">
+""" + "".join(
+    f'<div class="related-card"><a href="/{p["slug"]}">{p["h1"]}</a><p>{p["desc"][:80]}...</p></div>'
+    for p in ERROR_PAGES
+) + """</div>"""
+
+write("error", render_page(
+    "Dependency Error Fixes | PackageFix",
+    "Fix npm, PyPI, Ruby and PHP dependency errors. Exact error message match pages with step-by-step fixes.",
+    "/error",
+    [("PackageFix", "/"), ("Error Fixes", None)],
+    error_index_body,
+    [{"@type": "BreadcrumbList", "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "PackageFix", "item": "https://packagefix.dev"},
+        {"@type": "ListItem", "position": 2, "name": "Error Fixes", "item": "https://packagefix.dev/error"}
+    ]}]
+))
 
 print("\n⚔ Generating comparison pages...")
 for p in COMPARISON_PAGES:

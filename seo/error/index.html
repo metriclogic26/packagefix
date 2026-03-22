@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Composer memory limit exhausted — Fix PHP dependency install | PackageFix</title>
-<meta name="description" content="Fix 'PHP Fatal error: Allowed memory size exhausted' during composer install. Update vulnerable PHP packages without memory issues.">
-<link rel="canonical" href="https://packagefix.dev/error/composer-memory-limit">
-<meta property="og:title" content="Composer memory limit exhausted — Fix PHP dependency install | PackageFix">
-<meta property="og:description" content="Fix 'PHP Fatal error: Allowed memory size exhausted' during composer install. Update vulnerable PHP packages without memory issues.">
-<meta property="og:url" content="https://packagefix.dev/error/composer-memory-limit">
+<title>Dependency Error Fixes | PackageFix</title>
+<meta name="description" content="Fix npm, PyPI, Ruby and PHP dependency errors. Exact error message match pages with step-by-step fixes.">
+<link rel="canonical" href="https://packagefix.dev/error">
+<meta property="og:title" content="Dependency Error Fixes | PackageFix">
+<meta property="og:description" content="Fix npm, PyPI, Ruby and PHP dependency errors. Exact error message match pages with step-by-step fixes.">
+<meta property="og:url" content="https://packagefix.dev/error">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
 <link rel="icon" type="image/svg+xml" href="/icon.svg">
@@ -18,43 +18,6 @@
 <script type="application/ld+json">{
   "@context": "https://schema.org",
   "@graph": [
-    {
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "How do I fix Composer memory exhausted on CI?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Set COMPOSER_MEMORY_LIMIT=-1 in your CI environment variables. Most CI systems allow this as an env var."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Why does Composer use so much memory?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Composer loads all package metadata into memory during dependency resolution. Large projects with many packages and conflicts require more memory."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How do I update only security-critical PHP packages?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Use composer update <vendor/package> to update a specific package. PackageFix shows which packages have CVEs so you can target updates precisely."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Does this error mean my packages are vulnerable?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Not necessarily \u2014 it's a resource error, not a security error. But run PackageFix on your composer.json to check for CVEs independently."
-          }
-        }
-      ]
-    },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
@@ -69,12 +32,6 @@
           "position": 2,
           "name": "Error Fixes",
           "item": "https://packagefix.dev/error"
-        },
-        {
-          "@type": "ListItem",
-          "position": 3,
-          "name": "Composer memory limit exhausted",
-          "item": "https://packagefix.dev/error/composer-memory-limit"
         }
       ]
     }
@@ -151,25 +108,12 @@ tr:last-child td{border-bottom:none}
   </nav>
 </header>
 <main class="container">
-  <div class="breadcrumb"><a href="/">PackageFix</a> <span>/</span> <a href="/error">Error Fixes</a> <span>/</span> Composer memory limit exhausted</div>
+  <div class="breadcrumb"><a href="/">PackageFix</a> <span>/</span> Error Fixes</div>
   
-<h1>Composer memory limit exhausted</h1>
-<p class="lead">Fix 'PHP Fatal error: Allowed memory size exhausted' during composer install. Update vulnerable PHP packages without memory issues.</p>
-<div class="problem-box">
-  <div class="label">⚠ Error Message</div>
-  <pre style="margin:0;background:transparent;border:none;padding:0;font-size:11px">PHP Fatal error: Allowed memory size of 1610612736 bytes exhausted (tried to allocate 4096 bytes)</pre>
-</div>
-<h2>Root Cause</h2>
-<p>Composer's dependency resolver requires large amounts of memory for complex dependency graphs, especially when resolving conflicts across many packages.</p>
-<h2>How to Fix</h2>
-<ol style="padding-left:20px;margin:12px 0"><li style='margin-bottom:8px;color:var(--muted);font-size:12px'>Run COMPOSER_MEMORY_LIMIT=-1 composer install to remove the memory limit.</li><li style='margin-bottom:8px;color:var(--muted);font-size:12px'>Or increase PHP memory: php -d memory_limit=2G /usr/local/bin/composer install</li><li style='margin-bottom:8px;color:var(--muted);font-size:12px'>Paste your composer.json into PackageFix to identify CVEs first — then update only vulnerable packages.</li><li style='margin-bottom:8px;color:var(--muted);font-size:12px'>Use composer update --no-scripts to skip resource-intensive post-install scripts.</li></ol>
-<div class="cta-box">
-  <p>Scan your dependencies now — paste your manifest, get a fixed version back in seconds.</p>
-  <a href="https://packagefix.dev" class="cta-btn">Open PackageFix →</a>
-  <p style="margin-top:12px;font-size:11px;color:var(--muted)">No signup · No CLI · No GitHub connection · Runs 100% in your browser</p>
-</div>
-<div class="faq"><h2>Frequently Asked Questions</h2><div class="faq-item"><div class="faq-q">How do I fix Composer memory exhausted on CI?</div><div class="faq-a">Set COMPOSER_MEMORY_LIMIT=-1 in your CI environment variables. Most CI systems allow this as an env var.</div></div><div class="faq-item"><div class="faq-q">Why does Composer use so much memory?</div><div class="faq-a">Composer loads all package metadata into memory during dependency resolution. Large projects with many packages and conflicts require more memory.</div></div><div class="faq-item"><div class="faq-q">How do I update only security-critical PHP packages?</div><div class="faq-a">Use composer update <vendor/package> to update a specific package. PackageFix shows which packages have CVEs so you can target updates precisely.</div></div><div class="faq-item"><div class="faq-q">Does this error mean my packages are vulnerable?</div><div class="faq-a">Not necessarily — it's a resource error, not a security error. But run PackageFix on your composer.json to check for CVEs independently.</div></div></div>
-
+<h1>Dependency Error Fixes</h1>
+<p class="lead">Exact error message fixes for npm, PyPI, Ruby, and PHP dependency issues.</p>
+<div class="related-grid">
+<div class="related-card"><a href="/error/npm-audit-high-severity">npm audit found high severity vulnerabilities</a><p>Fix 'npm audit found N vulnerabilities (M high severity)'. Get a patched package...</p></div><div class="related-card"><a href="/error/pip-dependency-conflict">pip dependency conflict — ResolutionImpossible</a><p>Fix pip ResolutionImpossible and dependency conflict errors. Resolve incompatibl...</p></div><div class="related-card"><a href="/error/bundler-version-conflict">Bundler version conflict — Gemfile.lock out of date</a><p>Fix Bundler version conflicts and Gemfile.lock errors. Resolve incompatible gem ...</p></div><div class="related-card"><a href="/error/composer-memory-limit">Composer memory limit exhausted</a><p>Fix 'PHP Fatal error: Allowed memory size exhausted' during composer install. Up...</p></div><div class="related-card"><a href="/error/package-json-missing-lockfile">package-lock.json missing or out of sync</a><p>Fix 'npm ci can only install packages when your package.json and package-lock.js...</p></div></div>
 </main>
 <footer class="site-footer">
   <p>PackageFix · <a href="https://packagefix.dev">packagefix.dev</a> · MIT Licensed · Open Source</p>
