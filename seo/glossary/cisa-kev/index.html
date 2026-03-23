@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>CISA KEV — Known Exploited Vulnerabilities — Definition | PackageFix Glossary</title>
+<meta name="description" content="A list of vulnerabilities that the US government has confirmed are being actively used in real attacks right now. The CISA KEV (Known Exploited Vulnerabilities) catalog is a list maintained by the US Cybersecurity ...">
+<link rel="canonical" href="https://packagefix.dev/glossary/cisa-kev">
+<meta property="og:title" content="CISA KEV — Known Exploited Vulnerabilities — Definition | PackageFix Glossary">
+<meta property="og:description" content="A list of vulnerabilities that the US government has confirmed are being actively used in real attacks right now. The CISA KEV (Known Exploited Vulnerabilities) catalog is a list maintained by the US Cybersecurity ...">
+<meta property="og:url" content="https://packagefix.dev/glossary/cisa-kev">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/svg+xml" href="/icon.svg">
+<link rel="icon" type="image/png" sizes="512x512" href="/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "DefinedTerm",
+      "name": "CISA KEV \u2014 Known Exploited Vulnerabilities",
+      "description": "The CISA KEV (Known Exploited Vulnerabilities) catalog is a list maintained by the US Cybersecurity and Infrastructure Security Agency of vulnerabilities that have been confirmed to be actively exploited in real-world attacks. Unlike the full CVE database which contains tens of thousands of theoretical vulnerabilities, the KEV catalog only includes ones where exploitation has been observed in the wild.",
+      "url": "https://packagefix.dev/glossary/cisa-kev",
+      "inDefinedTermSet": {
+        "@type": "DefinedTermSet",
+        "name": "PackageFix Dependency Security Glossary",
+        "url": "https://packagefix.dev/glossary"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "PackageFix",
+          "item": "https://packagefix.dev"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Glossary",
+          "item": "https://packagefix.dev/glossary"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "CISA KEV \u2014 Known Exploited Vulnerabilities",
+          "item": "https://packagefix.dev/glossary/cisa-kev"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How often does the CISA KEV catalog update?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Daily. CISA adds new entries whenever exploitation of a vulnerability is confirmed. This is why PackageFix checks the live catalog rather than a cached version \u2014 a CVE added yesterday needs to be flagged today."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does CISA KEV only apply to US government systems?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The remediation mandate applies to US federal civilian agencies. But the catalog itself is public and valuable for any organization. If a vulnerability is being actively exploited, it's relevant regardless of what country you're in."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is a CISA KEV entry more serious than a CVSS 10.0?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "They measure different things. CVSS 10.0 means theoretically the worst possible vulnerability. CISA KEV means it's confirmed being exploited right now. In practice, a KEV entry with CVSS 7.5 is often more urgent than a non-KEV CVSS 9.0 \u2014 because the 7.5 is actively being used."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where can I see the full CISA KEV catalog?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The full catalog is at cisa.gov/known-exploited-vulnerabilities-catalog. PackageFix checks the live catalog at scan time. The /cisa-kev page on PackageFix shows the subset relevant to open source package managers."
+          }
+        }
+      ]
+    }
+  ]
+}</script>
+<style>
+:root {
+  --bg:#0B0D14; --surface:#12151F; --surface2:#1A1D2E;
+  --border:#252836; --purple:#6C63FF; --green:#22C55E;
+  --orange:#F97316; --red:#EF4444; --yellow:#EAB308;
+  --text:#E2E4F0; --muted:#6B7280;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.6;min-height:100vh}
+a{color:var(--purple);text-decoration:none}
+a:hover{text-decoration:underline}
+.site-header{border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:15px;font-weight:700;color:var(--text)}
+.logo span{color:var(--purple)}
+.nav-links{display:flex;gap:20px;font-size:12px}
+.nav-links a{color:var(--muted)}
+.nav-links a:hover{color:var(--text);text-decoration:none}
+.container{max-width:860px;margin:0 auto;padding:48px 24px}
+.breadcrumb{font-size:11px;color:var(--muted);margin-bottom:24px;display:flex;gap:6px;flex-wrap:wrap}
+.breadcrumb a{color:var(--muted)}
+.definition-box{background:var(--surface);border:1px solid var(--purple);border-left:4px solid var(--purple);border-radius:8px;padding:20px 24px;margin:0 0 32px}
+.definition-box .def-label{font-size:10px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.definition-box p{color:var(--text);font-size:13px;line-height:1.7;margin:0}
+h1{font-size:clamp(18px,3vw,28px);font-weight:700;margin-bottom:16px;line-height:1.3}
+h2{font-size:15px;font-weight:600;margin:36px 0 12px}
+h3{font-size:13px;font-weight:600;margin:20px 0 8px}
+p{color:var(--muted);margin-bottom:12px;font-size:12px;line-height:1.7}
+.lead{color:var(--text);font-size:13px;margin-bottom:0;line-height:1.7}
+pre{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px 16px;overflow-x:auto;font-size:11px;line-height:1.6;margin:12px 0;white-space:pre-wrap}
+code{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:1px 5px;font-size:11px}
+.example-box{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:16px 20px;margin:20px 0}
+.example-box .label{font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.fix-box{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);border-left:3px solid var(--green);border-radius:8px;padding:16px 20px;margin:20px 0}
+.fix-box .label{font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.cta-box{background:var(--surface);border:1px solid var(--purple);border-radius:10px;padding:24px;margin:32px 0;text-align:center}
+.cta-box p{color:var(--text);font-size:13px;margin-bottom:16px}
+.cta-btn{display:inline-block;background:var(--purple);color:#fff;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;padding:12px 28px;border-radius:7px;text-decoration:none}
+.cta-btn:hover{opacity:.9;text-decoration:none}
+.badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em}
+.badge-purple{background:rgba(108,99,255,.2);color:var(--purple);border:1px solid var(--purple)}
+.badge-red{background:rgba(239,68,68,.2);color:var(--red);border:1px solid var(--red)}
+.badge-orange{background:rgba(249,115,22,.2);color:var(--orange);border:1px solid var(--orange)}
+.faq{margin:40px 0}
+.faq-item{border-bottom:1px solid var(--border);padding:16px 0}
+.faq-item:last-child{border-bottom:none}
+.faq-q{font-size:12px;font-weight:600;color:var(--text);margin-bottom:8px}
+.faq-a{font-size:12px;color:var(--muted);line-height:1.7}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:12px}
+.related-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
+.related-card a{color:var(--text);font-size:12px;font-weight:500}
+.related-card p{font-size:11px;color:var(--muted);margin:4px 0 0}
+.glossary-index{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:16px}
+.glossary-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
+.glossary-card a{color:var(--text);font-size:12px;font-weight:500}
+.glossary-card p{font-size:11px;color:var(--muted);margin:4px 0 0;line-height:1.5}
+.site-footer{border-top:1px solid var(--border);padding:24px;text-align:center;font-size:11px;color:var(--muted);margin-top:60px}
+.site-footer a{color:var(--muted)}
+@media(max-width:640px){.nav-links{display:none}.related-grid{grid-template-columns:1fr}.glossary-index{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <a href="https://packagefix.dev" class="logo">Package<span>Fix</span></a>
+  <nav class="nav-links">
+    <a href="https://packagefix.dev">Tool</a>
+    <a href="https://packagefix.dev/glossary">Glossary</a>
+    <a href="https://packagefix.dev/blog">Blog</a>
+    <a href="https://packagefix.dev/cisa-kev">CISA KEV</a>
+    <a href="https://github.com/metriclogic26/packagefix">GitHub</a>
+  </nav>
+</header>
+<main class="container">
+  <div class="breadcrumb"><a href="/">PackageFix</a> <span style='color:var(--border)'>/</span> <a href="/glossary">Glossary</a> <span style='color:var(--border)'>/</span> <span style="color:var(--text)">CISA KEV — Known Exploited Vulnerabilities</span></div>
+  
+<h1>CISA KEV — Known Exploited Vulnerabilities</h1>
+<div style="margin-bottom:24px"><span class="badge badge-purple">CISA · US Federal</span></div>
+
+<div class="definition-box">
+  <div class="def-label">Definition</div>
+  <p class="lead">The CISA KEV (Known Exploited Vulnerabilities) catalog is a list maintained by the US Cybersecurity and Infrastructure Security Agency of vulnerabilities that have been confirmed to be actively exploited in real-world attacks. Unlike the full CVE database which contains tens of thousands of theoretical vulnerabilities, the KEV catalog only includes ones where exploitation has been observed in the wild.</p>
+</div>
+
+
+<h2>Why KEV is more useful than raw CVE counts</h2>
+<p>There are over 200,000 CVEs in the NVD. The vast majority will never be exploited against most organizations. Trying to fix everything is impossible — and not necessary. The CISA KEV catalog cuts through the noise: if a CVE is on this list, it's being used in attacks right now. Fix these first.</p>
+<p>US federal civilian agencies are legally required to remediate KEV entries within defined timeframes (usually 2 weeks for internet-facing systems). But the list is valuable for any organization — it's the clearest signal available for prioritization.</p>
+
+<h2>Open source packages on CISA KEV</h2>
+<p>The KEV catalog isn't just for government systems — it includes vulnerabilities in widely-used open source packages. Some notable entries relevant to developers:</p>
+<ul style="padding-left:20px;margin:12px 0;color:var(--muted);font-size:12px;line-height:2">
+  <li>Log4j (Log4Shell) — CVE-2021-44228</li>
+  <li>Spring Framework (Spring4Shell) — CVE-2022-22965</li>
+  <li>Apache Commons Text (Text4Shell) — CVE-2022-42889</li>
+  <li>lodash, qs, minimist, jsonwebtoken, vm2 — all npm packages</li>
+  <li>SnakeYAML, Netty, Commons Collections — Java packages</li>
+</ul>
+
+<h2>How PackageFix uses CISA KEV</h2>
+<p>PackageFix checks every scanned package against the live CISA KEV catalog, which updates daily. Packages on the KEV list get a red <span class="badge badge-red">🔴 CISA KEV</span> badge and appear in the ACTIVELY EXPLOITED banner at the top of scan results — separate from the regular CVE table.</p>
+
+<div class="cta-box">
+  <p>Check your dependencies for CVEs, CISA KEV entries, and supply chain risks.</p>
+  <a href="https://packagefix.dev" class="cta-btn">Open PackageFix →</a>
+  <p style="margin-top:12px;font-size:11px;color:var(--muted)">Free · No signup · No CLI · Runs in your browser</p>
+</div>
+<div class="faq"><h2>Common questions</h2><div class="faq-item"><div class="faq-q">How often does the CISA KEV catalog update?</div><div class="faq-a">Daily. CISA adds new entries whenever exploitation of a vulnerability is confirmed. This is why PackageFix checks the live catalog rather than a cached version — a CVE added yesterday needs to be flagged today.</div></div><div class="faq-item"><div class="faq-q">Does CISA KEV only apply to US government systems?</div><div class="faq-a">The remediation mandate applies to US federal civilian agencies. But the catalog itself is public and valuable for any organization. If a vulnerability is being actively exploited, it's relevant regardless of what country you're in.</div></div><div class="faq-item"><div class="faq-q">Is a CISA KEV entry more serious than a CVSS 10.0?</div><div class="faq-a">They measure different things. CVSS 10.0 means theoretically the worst possible vulnerability. CISA KEV means it's confirmed being exploited right now. In practice, a KEV entry with CVSS 7.5 is often more urgent than a non-KEV CVSS 9.0 — because the 7.5 is actively being used.</div></div><div class="faq-item"><div class="faq-q">Where can I see the full CISA KEV catalog?</div><div class="faq-a">The full catalog is at cisa.gov/known-exploited-vulnerabilities-catalog. PackageFix checks the live catalog at scan time. The /cisa-kev page on PackageFix shows the subset relevant to open source package managers.</div></div></div>
+<div style="margin:40px 0"><h2>Related guides</h2><div class="related-grid"><div class="related-card"><a href="/cisa-kev">CISA KEV Package List</a><p>Full exploited packages list</p></div><div class="related-card"><a href="/kev/CVE-2021-44228">Log4Shell CVE-2021-44228</a><p>CVSS 10.0 — Java RCE</p></div><div class="related-card"><a href="/kev/CVE-2022-22965">Spring4Shell CVE-2022-22965</a><p>CVSS 9.8 — Spring RCE</p></div><div class="related-card"><a href="/glossary/cvss">CVSS Score</a><p>How severity is measured</p></div></div></div>
+
+</main>
+<footer class="site-footer">
+  <p>PackageFix · <a href="https://packagefix.dev">packagefix.dev</a> · MIT Licensed · Open Source</p>
+  <p style="margin-top:6px">Part of the MetricLogic network ·
+  <a href="https://configclarity.dev">ConfigClarity</a> ·
+  <a href="https://domainpreflight.dev">DomainPreflight</a></p>
+  <p style="margin-top:6px">Vulnerability data: <a href="https://osv.dev">OSV Database</a> · <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog">CISA KEV Catalog</a></p>
+</footer>
+</body>
+</html>

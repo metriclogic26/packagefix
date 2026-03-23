@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>CVE — Common Vulnerabilities and Exposures — Definition | PackageFix Glossary</title>
+<meta name="description" content="A standardized ID number assigned to a publicly known security vulnerability. A CVE (Common Vulnerabilities and Exposures) is a unique identifier assigned to a publicly known sec...">
+<link rel="canonical" href="https://packagefix.dev/glossary/cve">
+<meta property="og:title" content="CVE — Common Vulnerabilities and Exposures — Definition | PackageFix Glossary">
+<meta property="og:description" content="A standardized ID number assigned to a publicly known security vulnerability. A CVE (Common Vulnerabilities and Exposures) is a unique identifier assigned to a publicly known sec...">
+<meta property="og:url" content="https://packagefix.dev/glossary/cve">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/svg+xml" href="/icon.svg">
+<link rel="icon" type="image/png" sizes="512x512" href="/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "DefinedTerm",
+      "name": "CVE \u2014 Common Vulnerabilities and Exposures",
+      "description": "A CVE (Common Vulnerabilities and Exposures) is a unique identifier assigned to a publicly known security vulnerability. When a security researcher discovers a vulnerability in a piece of software, they can request a CVE ID from MITRE. The ID (like CVE-2021-44228 for Log4Shell) becomes the universal reference for that vulnerability across all security tools, databases, and documentation.",
+      "url": "https://packagefix.dev/glossary/cve",
+      "inDefinedTermSet": {
+        "@type": "DefinedTermSet",
+        "name": "PackageFix Dependency Security Glossary",
+        "url": "https://packagefix.dev/glossary"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "PackageFix",
+          "item": "https://packagefix.dev"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Glossary",
+          "item": "https://packagefix.dev/glossary"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "CVE \u2014 Common Vulnerabilities and Exposures",
+          "item": "https://packagefix.dev/glossary/cve"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Who assigns CVE IDs?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "MITRE Corporation manages the CVE program under contract with CISA. Large organizations (like Microsoft, Google, Red Hat) are authorized CVE Numbering Authorities (CNAs) and can assign CVEs for vulnerabilities in their own products. For open source packages without a CNA, researchers submit to MITRE directly."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What's the difference between a CVE and a CVSS score?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A CVE is the identifier \u2014 the name. CVSS (Common Vulnerability Scoring System) is the severity score assigned to that CVE, from 0.0 to 10.0. Critical = 9.0-10.0, High = 7.0-8.9, Medium = 4.0-6.9, Low = 0.1-3.9. The CVE and its CVSS score are separate pieces of information."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does PackageFix use CVE IDs?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes \u2014 every vulnerability PackageFix detects is linked to its CVE ID (when one exists) via osv.dev. For vulnerabilities without a CVE, PackageFix shows the OSV ID (GHSA-XXXX format from GitHub Advisory Database)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is a zero-day CVE?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A zero-day vulnerability is one being exploited in the wild before it has a public fix or even a CVE assignment. The Log4Shell vulnerability was being actively exploited for days before the CVE was assigned and a patch released."
+          }
+        }
+      ]
+    }
+  ]
+}</script>
+<style>
+:root {
+  --bg:#0B0D14; --surface:#12151F; --surface2:#1A1D2E;
+  --border:#252836; --purple:#6C63FF; --green:#22C55E;
+  --orange:#F97316; --red:#EF4444; --yellow:#EAB308;
+  --text:#E2E4F0; --muted:#6B7280;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.6;min-height:100vh}
+a{color:var(--purple);text-decoration:none}
+a:hover{text-decoration:underline}
+.site-header{border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:15px;font-weight:700;color:var(--text)}
+.logo span{color:var(--purple)}
+.nav-links{display:flex;gap:20px;font-size:12px}
+.nav-links a{color:var(--muted)}
+.nav-links a:hover{color:var(--text);text-decoration:none}
+.container{max-width:860px;margin:0 auto;padding:48px 24px}
+.breadcrumb{font-size:11px;color:var(--muted);margin-bottom:24px;display:flex;gap:6px;flex-wrap:wrap}
+.breadcrumb a{color:var(--muted)}
+.definition-box{background:var(--surface);border:1px solid var(--purple);border-left:4px solid var(--purple);border-radius:8px;padding:20px 24px;margin:0 0 32px}
+.definition-box .def-label{font-size:10px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.definition-box p{color:var(--text);font-size:13px;line-height:1.7;margin:0}
+h1{font-size:clamp(18px,3vw,28px);font-weight:700;margin-bottom:16px;line-height:1.3}
+h2{font-size:15px;font-weight:600;margin:36px 0 12px}
+h3{font-size:13px;font-weight:600;margin:20px 0 8px}
+p{color:var(--muted);margin-bottom:12px;font-size:12px;line-height:1.7}
+.lead{color:var(--text);font-size:13px;margin-bottom:0;line-height:1.7}
+pre{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px 16px;overflow-x:auto;font-size:11px;line-height:1.6;margin:12px 0;white-space:pre-wrap}
+code{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:1px 5px;font-size:11px}
+.example-box{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:16px 20px;margin:20px 0}
+.example-box .label{font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.fix-box{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);border-left:3px solid var(--green);border-radius:8px;padding:16px 20px;margin:20px 0}
+.fix-box .label{font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.cta-box{background:var(--surface);border:1px solid var(--purple);border-radius:10px;padding:24px;margin:32px 0;text-align:center}
+.cta-box p{color:var(--text);font-size:13px;margin-bottom:16px}
+.cta-btn{display:inline-block;background:var(--purple);color:#fff;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;padding:12px 28px;border-radius:7px;text-decoration:none}
+.cta-btn:hover{opacity:.9;text-decoration:none}
+.badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em}
+.badge-purple{background:rgba(108,99,255,.2);color:var(--purple);border:1px solid var(--purple)}
+.badge-red{background:rgba(239,68,68,.2);color:var(--red);border:1px solid var(--red)}
+.badge-orange{background:rgba(249,115,22,.2);color:var(--orange);border:1px solid var(--orange)}
+.faq{margin:40px 0}
+.faq-item{border-bottom:1px solid var(--border);padding:16px 0}
+.faq-item:last-child{border-bottom:none}
+.faq-q{font-size:12px;font-weight:600;color:var(--text);margin-bottom:8px}
+.faq-a{font-size:12px;color:var(--muted);line-height:1.7}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:12px}
+.related-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
+.related-card a{color:var(--text);font-size:12px;font-weight:500}
+.related-card p{font-size:11px;color:var(--muted);margin:4px 0 0}
+.glossary-index{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:16px}
+.glossary-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
+.glossary-card a{color:var(--text);font-size:12px;font-weight:500}
+.glossary-card p{font-size:11px;color:var(--muted);margin:4px 0 0;line-height:1.5}
+.site-footer{border-top:1px solid var(--border);padding:24px;text-align:center;font-size:11px;color:var(--muted);margin-top:60px}
+.site-footer a{color:var(--muted)}
+@media(max-width:640px){.nav-links{display:none}.related-grid{grid-template-columns:1fr}.glossary-index{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <a href="https://packagefix.dev" class="logo">Package<span>Fix</span></a>
+  <nav class="nav-links">
+    <a href="https://packagefix.dev">Tool</a>
+    <a href="https://packagefix.dev/glossary">Glossary</a>
+    <a href="https://packagefix.dev/blog">Blog</a>
+    <a href="https://packagefix.dev/cisa-kev">CISA KEV</a>
+    <a href="https://github.com/metriclogic26/packagefix">GitHub</a>
+  </nav>
+</header>
+<main class="container">
+  <div class="breadcrumb"><a href="/">PackageFix</a> <span style='color:var(--border)'>/</span> <a href="/glossary">Glossary</a> <span style='color:var(--border)'>/</span> <span style="color:var(--text)">CVE — Common Vulnerabilities and Exposures</span></div>
+  
+<h1>CVE — Common Vulnerabilities and Exposures</h1>
+<div style="margin-bottom:24px"><span class="badge badge-purple">Industry standard</span></div>
+
+<div class="definition-box">
+  <div class="def-label">Definition</div>
+  <p class="lead">A CVE (Common Vulnerabilities and Exposures) is a unique identifier assigned to a publicly known security vulnerability. When a security researcher discovers a vulnerability in a piece of software, they can request a CVE ID from MITRE. The ID (like CVE-2021-44228 for Log4Shell) becomes the universal reference for that vulnerability across all security tools, databases, and documentation.</p>
+</div>
+
+
+<h2>What a CVE ID tells you</h2>
+<p>A CVE ID has a simple structure: <code>CVE-[year]-[number]</code>. The year is when the CVE was assigned (not necessarily when the vulnerability was discovered or fixed). The number is a sequential ID within that year.</p>
+<p>CVE-2021-44228 is Log4Shell — discovered and assigned a CVE in December 2021. CVE-2022-22965 is Spring4Shell — 2022. The year in the ID is a rough indicator of when the vulnerability became publicly known.</p>
+
+<h2>CVE vs NVD vs OSV — what's the difference</h2>
+<p>These are related but separate things that confuse a lot of people:</p>
+<ul style="padding-left:20px;margin:12px 0;color:var(--muted);font-size:12px;line-height:2">
+  <li><strong>CVE</strong> — just the ID number. Assigned by MITRE. No scoring, no detail beyond a brief description.</li>
+  <li><strong>NVD (National Vulnerability Database)</strong> — the US government database that enriches CVEs with CVSS scores, affected versions, and references. Often lags behind CVE assignment by days to weeks.</li>
+  <li><strong>OSV (Open Source Vulnerabilities)</strong> — Google's database focused on open source packages. Much faster than NVD, maps vulnerabilities directly to package versions. What PackageFix uses.</li>
+  <li><strong>GHSA (GitHub Security Advisory)</strong> — GitHub's advisory database, often the first place a CVE gets detailed package-version information.</li>
+</ul>
+
+<h2>Why some vulnerabilities don't have CVE IDs</h2>
+<p>Getting a CVE assigned takes time — sometimes weeks or months after a fix is released. Aikido's research found that 67% of open source vulnerability patches were released without ever receiving a CVE. This is a real blind spot: npm audit only checks CVE databases, so it misses the majority of patched vulnerabilities that were never formally disclosed.</p>
+
+<div class="cta-box">
+  <p>Check your dependencies for CVEs, CISA KEV entries, and supply chain risks.</p>
+  <a href="https://packagefix.dev" class="cta-btn">Open PackageFix →</a>
+  <p style="margin-top:12px;font-size:11px;color:var(--muted)">Free · No signup · No CLI · Runs in your browser</p>
+</div>
+<div class="faq"><h2>Common questions</h2><div class="faq-item"><div class="faq-q">Who assigns CVE IDs?</div><div class="faq-a">MITRE Corporation manages the CVE program under contract with CISA. Large organizations (like Microsoft, Google, Red Hat) are authorized CVE Numbering Authorities (CNAs) and can assign CVEs for vulnerabilities in their own products. For open source packages without a CNA, researchers submit to MITRE directly.</div></div><div class="faq-item"><div class="faq-q">What's the difference between a CVE and a CVSS score?</div><div class="faq-a">A CVE is the identifier — the name. CVSS (Common Vulnerability Scoring System) is the severity score assigned to that CVE, from 0.0 to 10.0. Critical = 9.0-10.0, High = 7.0-8.9, Medium = 4.0-6.9, Low = 0.1-3.9. The CVE and its CVSS score are separate pieces of information.</div></div><div class="faq-item"><div class="faq-q">Does PackageFix use CVE IDs?</div><div class="faq-a">Yes — every vulnerability PackageFix detects is linked to its CVE ID (when one exists) via osv.dev. For vulnerabilities without a CVE, PackageFix shows the OSV ID (GHSA-XXXX format from GitHub Advisory Database).</div></div><div class="faq-item"><div class="faq-q">What is a zero-day CVE?</div><div class="faq-a">A zero-day vulnerability is one being exploited in the wild before it has a public fix or even a CVE assignment. The Log4Shell vulnerability was being actively exploited for days before the CVE was assigned and a patch released.</div></div></div>
+<div style="margin:40px 0"><h2>Related guides</h2><div class="related-grid"><div class="related-card"><a href="/glossary/cvss">CVSS Score</a><p>How vulnerabilities are rated</p></div><div class="related-card"><a href="/glossary/cisa-kev">CISA KEV</a><p>CVEs being actively exploited</p></div><div class="related-card"><a href="/cisa-kev">CISA KEV Package List</a><p>Exploited open source packages</p></div><div class="related-card"><a href="/kev/CVE-2021-44228">CVE-2021-44228 (Log4Shell)</a><p>Most severe Java CVE ever</p></div></div></div>
+
+</main>
+<footer class="site-footer">
+  <p>PackageFix · <a href="https://packagefix.dev">packagefix.dev</a> · MIT Licensed · Open Source</p>
+  <p style="margin-top:6px">Part of the MetricLogic network ·
+  <a href="https://configclarity.dev">ConfigClarity</a> ·
+  <a href="https://domainpreflight.dev">DomainPreflight</a></p>
+  <p style="margin-top:6px">Vulnerability data: <a href="https://osv.dev">OSV Database</a> · <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog">CISA KEV Catalog</a></p>
+</footer>
+</body>
+</html>

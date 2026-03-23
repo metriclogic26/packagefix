@@ -1919,6 +1919,134 @@
     {
       "source": "/guides/pre-commit/",
       "destination": "/seo/guides/pre-commit/index.html"
+    },
+    {
+      "source": "/glossary/prototype-pollution",
+      "destination": "/seo/glossary/prototype-pollution/index.html"
+    },
+    {
+      "source": "/glossary/prototype-pollution/",
+      "destination": "/seo/glossary/prototype-pollution/index.html"
+    },
+    {
+      "source": "/glossary/supply-chain-attack",
+      "destination": "/seo/glossary/supply-chain-attack/index.html"
+    },
+    {
+      "source": "/glossary/supply-chain-attack/",
+      "destination": "/seo/glossary/supply-chain-attack/index.html"
+    },
+    {
+      "source": "/glossary/dependency-confusion",
+      "destination": "/seo/glossary/dependency-confusion/index.html"
+    },
+    {
+      "source": "/glossary/dependency-confusion/",
+      "destination": "/seo/glossary/dependency-confusion/index.html"
+    },
+    {
+      "source": "/glossary/typosquatting",
+      "destination": "/seo/glossary/typosquatting/index.html"
+    },
+    {
+      "source": "/glossary/typosquatting/",
+      "destination": "/seo/glossary/typosquatting/index.html"
+    },
+    {
+      "source": "/glossary/transitive-dependency",
+      "destination": "/seo/glossary/transitive-dependency/index.html"
+    },
+    {
+      "source": "/glossary/transitive-dependency/",
+      "destination": "/seo/glossary/transitive-dependency/index.html"
+    },
+    {
+      "source": "/glossary/cve",
+      "destination": "/seo/glossary/cve/index.html"
+    },
+    {
+      "source": "/glossary/cve/",
+      "destination": "/seo/glossary/cve/index.html"
+    },
+    {
+      "source": "/glossary/cvss",
+      "destination": "/seo/glossary/cvss/index.html"
+    },
+    {
+      "source": "/glossary/cvss/",
+      "destination": "/seo/glossary/cvss/index.html"
+    },
+    {
+      "source": "/glossary/cisa-kev",
+      "destination": "/seo/glossary/cisa-kev/index.html"
+    },
+    {
+      "source": "/glossary/cisa-kev/",
+      "destination": "/seo/glossary/cisa-kev/index.html"
+    },
+    {
+      "source": "/glossary/lockfile",
+      "destination": "/seo/glossary/lockfile/index.html"
+    },
+    {
+      "source": "/glossary/lockfile/",
+      "destination": "/seo/glossary/lockfile/index.html"
+    },
+    {
+      "source": "/glossary/sbom",
+      "destination": "/seo/glossary/sbom/index.html"
+    },
+    {
+      "source": "/glossary/sbom/",
+      "destination": "/seo/glossary/sbom/index.html"
+    },
+    {
+      "source": "/glossary/zombie-package",
+      "destination": "/seo/glossary/zombie-package/index.html"
+    },
+    {
+      "source": "/glossary/zombie-package/",
+      "destination": "/seo/glossary/zombie-package/index.html"
+    },
+    {
+      "source": "/glossary/glassworm",
+      "destination": "/seo/glossary/glassworm/index.html"
+    },
+    {
+      "source": "/glossary/glassworm/",
+      "destination": "/seo/glossary/glassworm/index.html"
+    },
+    {
+      "source": "/glossary/dependency-scanning",
+      "destination": "/seo/glossary/dependency-scanning/index.html"
+    },
+    {
+      "source": "/glossary/dependency-scanning/",
+      "destination": "/seo/glossary/dependency-scanning/index.html"
+    },
+    {
+      "source": "/glossary/software-composition-analysis",
+      "destination": "/seo/glossary/software-composition-analysis/index.html"
+    },
+    {
+      "source": "/glossary/software-composition-analysis/",
+      "destination": "/seo/glossary/software-composition-analysis/index.html"
+    },
+    {
+      "source": "/glossary/open-source-vulnerability",
+      "destination": "/seo/glossary/open-source-vulnerability/index.html"
+    },
+    {
+      "source": "/glossary/open-source-vulnerability/",
+      "destination": "/seo/glossary/open-source-vulnerability/index.html"
+    },
+    {
+      "source": "/glossary",
+      "destination": "/seo/glossary/index.html"
+    },
+    {
+      "source": "/glossary/",
+      "destination": "/seo/glossary/index.html"
     }
   ]
 }

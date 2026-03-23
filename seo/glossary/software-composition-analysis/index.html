@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Software Composition Analysis (SCA) — Definition | PackageFix Glossary</title>
+<meta name="description" content="The category of tools that identify and assess the open source components in your software. Software Composition Analysis (SCA) is the category name for tools that automatically identify all o...">
+<link rel="canonical" href="https://packagefix.dev/glossary/software-composition-analysis">
+<meta property="og:title" content="Software Composition Analysis (SCA) — Definition | PackageFix Glossary">
+<meta property="og:description" content="The category of tools that identify and assess the open source components in your software. Software Composition Analysis (SCA) is the category name for tools that automatically identify all o...">
+<meta property="og:url" content="https://packagefix.dev/glossary/software-composition-analysis">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/svg+xml" href="/icon.svg">
+<link rel="icon" type="image/png" sizes="512x512" href="/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "DefinedTerm",
+      "name": "Software Composition Analysis (SCA)",
+      "description": "Software Composition Analysis (SCA) is the category name for tools that automatically identify all open source and third-party components in a codebase and assess their security, license compliance, and maintenance status. SCA tools scan your dependencies, map them to vulnerability databases, and report on risk. PackageFix is an SCA tool.",
+      "url": "https://packagefix.dev/glossary/software-composition-analysis",
+      "inDefinedTermSet": {
+        "@type": "DefinedTermSet",
+        "name": "PackageFix Dependency Security Glossary",
+        "url": "https://packagefix.dev/glossary"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "PackageFix",
+          "item": "https://packagefix.dev"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Glossary",
+          "item": "https://packagefix.dev/glossary"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Software Composition Analysis (SCA)",
+          "item": "https://packagefix.dev/glossary/software-composition-analysis"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is PackageFix an SCA tool?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes \u2014 PackageFix is a browser-based SCA tool. It identifies open source components in your manifest, maps them to vulnerabilities (OSV database + CISA KEV), and generates a fixed manifest. The main differentiator is that it's browser-based with no account required, and it outputs the fixed file rather than just reporting."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I need an enterprise SCA tool or will free tools work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For most small teams and individual developers, free tools (npm audit, pip-audit, PackageFix, OSV Scanner) cover the essentials. Enterprise SCA tools add value at scale \u2014 when you're managing hundreds of projects, need audit trails, or require integration with ticketing systems. Start free and upgrade when you outgrow it."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What's the difference between Snyk and PackageFix?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Snyk requires GitHub integration and an account. PackageFix requires neither \u2014 paste a manifest file, get results. Snyk is automated (monitors continuously); PackageFix is manual (you run it when you want). Snyk is more comprehensive for teams; PackageFix is faster for one-off checks. See the full comparison at /vs/snyk-advisor."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does SCA relate to SBOM compliance?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Generating an SBOM is essentially running an SCA scan and outputting the results in a standardized format (CycloneDX or SPDX). SCA is the process; SBOM is one of the outputs. Most enterprise SCA tools can generate SBOMs directly."
+          }
+        }
+      ]
+    }
+  ]
+}</script>
+<style>
+:root {
+  --bg:#0B0D14; --surface:#12151F; --surface2:#1A1D2E;
+  --border:#252836; --purple:#6C63FF; --green:#22C55E;
+  --orange:#F97316; --red:#EF4444; --yellow:#EAB308;
+  --text:#E2E4F0; --muted:#6B7280;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.6;min-height:100vh}
+a{color:var(--purple);text-decoration:none}
+a:hover{text-decoration:underline}
+.site-header{border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:15px;font-weight:700;color:var(--text)}
+.logo span{color:var(--purple)}
+.nav-links{display:flex;gap:20px;font-size:12px}
+.nav-links a{color:var(--muted)}
+.nav-links a:hover{color:var(--text);text-decoration:none}
+.container{max-width:860px;margin:0 auto;padding:48px 24px}
+.breadcrumb{font-size:11px;color:var(--muted);margin-bottom:24px;display:flex;gap:6px;flex-wrap:wrap}
+.breadcrumb a{color:var(--muted)}
+.definition-box{background:var(--surface);border:1px solid var(--purple);border-left:4px solid var(--purple);border-radius:8px;padding:20px 24px;margin:0 0 32px}
+.definition-box .def-label{font-size:10px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.definition-box p{color:var(--text);font-size:13px;line-height:1.7;margin:0}
+h1{font-size:clamp(18px,3vw,28px);font-weight:700;margin-bottom:16px;line-height:1.3}
+h2{font-size:15px;font-weight:600;margin:36px 0 12px}
+h3{font-size:13px;font-weight:600;margin:20px 0 8px}
+p{color:var(--muted);margin-bottom:12px;font-size:12px;line-height:1.7}
+.lead{color:var(--text);font-size:13px;margin-bottom:0;line-height:1.7}
+pre{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px 16px;overflow-x:auto;font-size:11px;line-height:1.6;margin:12px 0;white-space:pre-wrap}
+code{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:1px 5px;font-size:11px}
+.example-box{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:16px 20px;margin:20px 0}
+.example-box .label{font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.fix-box{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);border-left:3px solid var(--green);border-radius:8px;padding:16px 20px;margin:20px 0}
+.fix-box .label{font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.cta-box{background:var(--surface);border:1px solid var(--purple);border-radius:10px;padding:24px;margin:32px 0;text-align:center}
+.cta-box p{color:var(--text);font-size:13px;margin-bottom:16px}
+.cta-btn{display:inline-block;background:var(--purple);color:#fff;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;padding:12px 28px;border-radius:7px;text-decoration:none}
+.cta-btn:hover{opacity:.9;text-decoration:none}
+.badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em}
+.badge-purple{background:rgba(108,99,255,.2);color:var(--purple);border:1px solid var(--purple)}
+.badge-red{background:rgba(239,68,68,.2);color:var(--red);border:1px solid var(--red)}
+.badge-orange{background:rgba(249,115,22,.2);color:var(--orange);border:1px solid var(--orange)}
+.faq{margin:40px 0}
+.faq-item{border-bottom:1px solid var(--border);padding:16px 0}
+.faq-item:last-child{border-bottom:none}
+.faq-q{font-size:12px;font-weight:600;color:var(--text);margin-bottom:8px}
+.faq-a{font-size:12px;color:var(--muted);line-height:1.7}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:12px}
+.related-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
+.related-card a{color:var(--text);font-size:12px;font-weight:500}
+.related-card p{font-size:11px;color:var(--muted);margin:4px 0 0}
+.glossary-index{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:16px}
+.glossary-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
+.glossary-card a{color:var(--text);font-size:12px;font-weight:500}
+.glossary-card p{font-size:11px;color:var(--muted);margin:4px 0 0;line-height:1.5}
+.site-footer{border-top:1px solid var(--border);padding:24px;text-align:center;font-size:11px;color:var(--muted);margin-top:60px}
+.site-footer a{color:var(--muted)}
+@media(max-width:640px){.nav-links{display:none}.related-grid{grid-template-columns:1fr}.glossary-index{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <a href="https://packagefix.dev" class="logo">Package<span>Fix</span></a>
+  <nav class="nav-links">
+    <a href="https://packagefix.dev">Tool</a>
+    <a href="https://packagefix.dev/glossary">Glossary</a>
+    <a href="https://packagefix.dev/blog">Blog</a>
+    <a href="https://packagefix.dev/cisa-kev">CISA KEV</a>
+    <a href="https://github.com/metriclogic26/packagefix">GitHub</a>
+  </nav>
+</header>
+<main class="container">
+  <div class="breadcrumb"><a href="/">PackageFix</a> <span style='color:var(--border)'>/</span> <a href="/glossary">Glossary</a> <span style='color:var(--border)'>/</span> <span style="color:var(--text)">Software Composition Analysis (SCA)</span></div>
+  
+<h1>Software Composition Analysis (SCA)</h1>
+<div style="margin-bottom:24px"><span class="badge badge-purple">Enterprise · DevSecOps</span></div>
+
+<div class="definition-box">
+  <div class="def-label">Definition</div>
+  <p class="lead">Software Composition Analysis (SCA) is the category name for tools that automatically identify all open source and third-party components in a codebase and assess their security, license compliance, and maintenance status. SCA tools scan your dependencies, map them to vulnerability databases, and report on risk. PackageFix is an SCA tool.</p>
+</div>
+
+
+<h2>What SCA tools typically do</h2>
+<ul style="padding-left:20px;margin:12px 0;color:var(--muted);font-size:12px;line-height:2">
+  <li>Identify all open source components (direct and transitive)</li>
+  <li>Map components to known vulnerabilities (CVEs, OSV, GHSA)</li>
+  <li>Report CVSS severity scores</li>
+  <li>Flag licenses that may conflict with your project's license</li>
+  <li>Generate SBOMs (Software Bills of Materials)</li>
+  <li>Integrate with CI/CD to block deploys on critical findings</li>
+</ul>
+
+<h2>SCA vs SAST vs DAST</h2>
+<p>These three categories together form the foundation of application security testing:</p>
+<ul style="padding-left:20px;margin:12px 0;color:var(--muted);font-size:12px;line-height:2">
+  <li><strong>SCA</strong> — checks what you use (open source components)</li>
+  <li><strong>SAST (Static Analysis)</strong> — checks what you write (your source code, statically)</li>
+  <li><strong>DAST (Dynamic Analysis)</strong> — checks how your app behaves when running (runtime testing)</li>
+</ul>
+
+<h2>The SCA tool landscape</h2>
+<p>SCA tools range from free CLI tools to enterprise platforms:</p>
+<ul style="padding-left:20px;margin:12px 0;color:var(--muted);font-size:12px;line-height:2">
+  <li><strong>Free / CLI</strong> — npm audit, pip-audit, OSV Scanner, bundle-audit</li>
+  <li><strong>Free / browser</strong> — PackageFix (also generates fixed manifests)</li>
+  <li><strong>Automated / GitHub</strong> — Dependabot, GitHub Dependency Review</li>
+  <li><strong>Paid / enterprise</strong> — Snyk, Mend, Black Duck, Sonatype Nexus IQ</li>
+</ul>
+<p>The right choice depends on your needs. For individual developers and small teams, free tools cover most cases. PackageFix fills the gap between "run npm audit in CLI" and "pay for an enterprise SCA platform" — browser-based, no account, with fix output.</p>
+
+<div class="cta-box">
+  <p>Check your dependencies for CVEs, CISA KEV entries, and supply chain risks.</p>
+  <a href="https://packagefix.dev" class="cta-btn">Open PackageFix →</a>
+  <p style="margin-top:12px;font-size:11px;color:var(--muted)">Free · No signup · No CLI · Runs in your browser</p>
+</div>
+<div class="faq"><h2>Common questions</h2><div class="faq-item"><div class="faq-q">Is PackageFix an SCA tool?</div><div class="faq-a">Yes — PackageFix is a browser-based SCA tool. It identifies open source components in your manifest, maps them to vulnerabilities (OSV database + CISA KEV), and generates a fixed manifest. The main differentiator is that it's browser-based with no account required, and it outputs the fixed file rather than just reporting.</div></div><div class="faq-item"><div class="faq-q">Do I need an enterprise SCA tool or will free tools work?</div><div class="faq-a">For most small teams and individual developers, free tools (npm audit, pip-audit, PackageFix, OSV Scanner) cover the essentials. Enterprise SCA tools add value at scale — when you're managing hundreds of projects, need audit trails, or require integration with ticketing systems. Start free and upgrade when you outgrow it.</div></div><div class="faq-item"><div class="faq-q">What's the difference between Snyk and PackageFix?</div><div class="faq-a">Snyk requires GitHub integration and an account. PackageFix requires neither — paste a manifest file, get results. Snyk is automated (monitors continuously); PackageFix is manual (you run it when you want). Snyk is more comprehensive for teams; PackageFix is faster for one-off checks. See the full comparison at /vs/snyk-advisor.</div></div><div class="faq-item"><div class="faq-q">How does SCA relate to SBOM compliance?</div><div class="faq-a">Generating an SBOM is essentially running an SCA scan and outputting the results in a standardized format (CycloneDX or SPDX). SCA is the process; SBOM is one of the outputs. Most enterprise SCA tools can generate SBOMs directly.</div></div></div>
+<div style="margin:40px 0"><h2>Related guides</h2><div class="related-grid"><div class="related-card"><a href="/glossary/dependency-scanning">Dependency Scanning</a><p>The same concept, different name</p></div><div class="related-card"><a href="/glossary/sbom">SBOM</a><p>SCA output format</p></div><div class="related-card"><a href="/vs/snyk-advisor">PackageFix vs Snyk</a><p>Full comparison</p></div><div class="related-card"><a href="/alternatives">All Alternatives</a><p>Complete SCA tool comparison</p></div></div></div>
+
+</main>
+<footer class="site-footer">
+  <p>PackageFix · <a href="https://packagefix.dev">packagefix.dev</a> · MIT Licensed · Open Source</p>
+  <p style="margin-top:6px">Part of the MetricLogic network ·
+  <a href="https://configclarity.dev">ConfigClarity</a> ·
+  <a href="https://domainpreflight.dev">DomainPreflight</a></p>
+  <p style="margin-top:6px">Vulnerability data: <a href="https://osv.dev">OSV Database</a> · <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog">CISA KEV Catalog</a></p>
+</footer>
+</body>
+</html>

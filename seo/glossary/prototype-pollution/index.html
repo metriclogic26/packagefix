@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Prototype Pollution — Definition | PackageFix Glossary</title>
+<meta name="description" content="An attack where malicious input modifies the base template that JavaScript uses to create all objects. Prototype pollution is a JavaScript vulnerability where an attacker can modify Object.prototype — th...">
+<link rel="canonical" href="https://packagefix.dev/glossary/prototype-pollution">
+<meta property="og:title" content="Prototype Pollution — Definition | PackageFix Glossary">
+<meta property="og:description" content="An attack where malicious input modifies the base template that JavaScript uses to create all objects. Prototype pollution is a JavaScript vulnerability where an attacker can modify Object.prototype — th...">
+<meta property="og:url" content="https://packagefix.dev/glossary/prototype-pollution">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/svg+xml" href="/icon.svg">
+<link rel="icon" type="image/png" sizes="512x512" href="/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "DefinedTerm",
+      "name": "Prototype Pollution",
+      "description": "Prototype pollution is a JavaScript vulnerability where an attacker can modify Object.prototype \u2014 the base blueprint that every JavaScript object inherits from. Once polluted, the malicious properties show up in every object in the application, which can lead to unexpected behavior, authentication bypasses, or remote code execution.",
+      "url": "https://packagefix.dev/glossary/prototype-pollution",
+      "inDefinedTermSet": {
+        "@type": "DefinedTermSet",
+        "name": "PackageFix Dependency Security Glossary",
+        "url": "https://packagefix.dev/glossary"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "PackageFix",
+          "item": "https://packagefix.dev"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Glossary",
+          "item": "https://packagefix.dev/glossary"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Prototype Pollution",
+          "item": "https://packagefix.dev/glossary/prototype-pollution"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is prototype pollution the same as prototype hijacking?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "They describe the same class of vulnerability. Prototype pollution is the more common term in CVE descriptions and security tooling. Both refer to modifying Object.prototype via crafted input."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can prototype pollution lead to remote code execution?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes \u2014 in some cases. If the polluted prototype property ends up in a code path that calls eval(), executes shell commands, or deserializes data, prototype pollution can escalate to RCE. Most commonly it leads to authentication bypass or DoS."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does TypeScript protect against prototype pollution?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. TypeScript is a compile-time tool. Prototype pollution happens at runtime \u2014 TypeScript types are erased by then. You still need to update affected packages and sanitize input."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does PackageFix detect prototype pollution CVEs?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "PackageFix queries the OSV database for every package in your manifest and flags any version with a known prototype pollution CVE. Affected packages get a HIGH or CRITICAL badge with the specific CVE ID and safe version to upgrade to."
+          }
+        }
+      ]
+    }
+  ]
+}</script>
+<style>
+:root {
+  --bg:#0B0D14; --surface:#12151F; --surface2:#1A1D2E;
+  --border:#252836; --purple:#6C63FF; --green:#22C55E;
+  --orange:#F97316; --red:#EF4444; --yellow:#EAB308;
+  --text:#E2E4F0; --muted:#6B7280;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.6;min-height:100vh}
+a{color:var(--purple);text-decoration:none}
+a:hover{text-decoration:underline}
+.site-header{border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:15px;font-weight:700;color:var(--text)}
+.logo span{color:var(--purple)}
+.nav-links{display:flex;gap:20px;font-size:12px}
+.nav-links a{color:var(--muted)}
+.nav-links a:hover{color:var(--text);text-decoration:none}
+.container{max-width:860px;margin:0 auto;padding:48px 24px}
+.breadcrumb{font-size:11px;color:var(--muted);margin-bottom:24px;display:flex;gap:6px;flex-wrap:wrap}
+.breadcrumb a{color:var(--muted)}
+.definition-box{background:var(--surface);border:1px solid var(--purple);border-left:4px solid var(--purple);border-radius:8px;padding:20px 24px;margin:0 0 32px}
+.definition-box .def-label{font-size:10px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.definition-box p{color:var(--text);font-size:13px;line-height:1.7;margin:0}
+h1{font-size:clamp(18px,3vw,28px);font-weight:700;margin-bottom:16px;line-height:1.3}
+h2{font-size:15px;font-weight:600;margin:36px 0 12px}
+h3{font-size:13px;font-weight:600;margin:20px 0 8px}
+p{color:var(--muted);margin-bottom:12px;font-size:12px;line-height:1.7}
+.lead{color:var(--text);font-size:13px;margin-bottom:0;line-height:1.7}
+pre{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px 16px;overflow-x:auto;font-size:11px;line-height:1.6;margin:12px 0;white-space:pre-wrap}
+code{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:1px 5px;font-size:11px}
+.example-box{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:16px 20px;margin:20px 0}
+.example-box .label{font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.fix-box{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);border-left:3px solid var(--green);border-radius:8px;padding:16px 20px;margin:20px 0}
+.fix-box .label{font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.cta-box{background:var(--surface);border:1px solid var(--purple);border-radius:10px;padding:24px;margin:32px 0;text-align:center}
+.cta-box p{color:var(--text);font-size:13px;margin-bottom:16px}
+.cta-btn{display:inline-block;background:var(--purple);color:#fff;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;padding:12px 28px;border-radius:7px;text-decoration:none}
+.cta-btn:hover{opacity:.9;text-decoration:none}
+.badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em}
+.badge-purple{background:rgba(108,99,255,.2);color:var(--purple);border:1px solid var(--purple)}
+.badge-red{background:rgba(239,68,68,.2);color:var(--red);border:1px solid var(--red)}
+.badge-orange{background:rgba(249,115,22,.2);color:var(--orange);border:1px solid var(--orange)}
+.faq{margin:40px 0}
+.faq-item{border-bottom:1px solid var(--border);padding:16px 0}
+.faq-item:last-child{border-bottom:none}
+.faq-q{font-size:12px;font-weight:600;color:var(--text);margin-bottom:8px}
+.faq-a{font-size:12px;color:var(--muted);line-height:1.7}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:12px}
+.related-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
+.related-card a{color:var(--text);font-size:12px;font-weight:500}
+.related-card p{font-size:11px;color:var(--muted);margin:4px 0 0}
+.glossary-index{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:16px}
+.glossary-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
+.glossary-card a{color:var(--text);font-size:12px;font-weight:500}
+.glossary-card p{font-size:11px;color:var(--muted);margin:4px 0 0;line-height:1.5}
+.site-footer{border-top:1px solid var(--border);padding:24px;text-align:center;font-size:11px;color:var(--muted);margin-top:60px}
+.site-footer a{color:var(--muted)}
+@media(max-width:640px){.nav-links{display:none}.related-grid{grid-template-columns:1fr}.glossary-index{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <a href="https://packagefix.dev" class="logo">Package<span>Fix</span></a>
+  <nav class="nav-links">
+    <a href="https://packagefix.dev">Tool</a>
+    <a href="https://packagefix.dev/glossary">Glossary</a>
+    <a href="https://packagefix.dev/blog">Blog</a>
+    <a href="https://packagefix.dev/cisa-kev">CISA KEV</a>
+    <a href="https://github.com/metriclogic26/packagefix">GitHub</a>
+  </nav>
+</header>
+<main class="container">
+  <div class="breadcrumb"><a href="/">PackageFix</a> <span style='color:var(--border)'>/</span> <a href="/glossary">Glossary</a> <span style='color:var(--border)'>/</span> <span style="color:var(--text)">Prototype Pollution</span></div>
+  
+<h1>Prototype Pollution</h1>
+<div style="margin-bottom:24px"><span class="badge badge-purple">JavaScript · npm</span></div>
+
+<div class="definition-box">
+  <div class="def-label">Definition</div>
+  <p class="lead">Prototype pollution is a JavaScript vulnerability where an attacker can modify Object.prototype — the base blueprint that every JavaScript object inherits from. Once polluted, the malicious properties show up in every object in the application, which can lead to unexpected behavior, authentication bypasses, or remote code execution.</p>
+</div>
+
+
+<h2>What actually happens</h2>
+<p>In JavaScript, every object inherits from Object.prototype. Think of it as a base template — when you create any object, it automatically gets properties from this template. Prototype pollution lets an attacker write to that template through crafted input.</p>
+<p>The attack usually comes through a function that merges or deep-copies objects — lodash's merge(), qs's query string parser, and similar utilities. If the function doesn't filter out keys like <code>__proto__</code> or <code>constructor.prototype</code>, an attacker can slip in a payload that modifies the global template.</p>
+
+<h2>What a payload looks like</h2>
+<div class="example-box">
+  <div class="label">Attack payload in a query string</div>
+  <pre>?__proto__[isAdmin]=true</pre>
+</div>
+<p>If your application parses this with a vulnerable version of qs or lodash, and later checks <code>user.isAdmin</code> somewhere, every user might suddenly be an admin — including unauthenticated requests.</p>
+
+<h2>Which packages have had prototype pollution CVEs</h2>
+<p>It's a recurring problem in JavaScript utility libraries. Packages that do deep object manipulation are the most common source:</p>
+<ul style="padding-left:20px;margin:12px 0;color:var(--muted);font-size:12px;line-height:2">
+  <li><strong>lodash</strong> — CVE-2020-8203, CVE-2021-23337 (fixed in 4.17.21)</li>
+  <li><strong>qs</strong> — CVE-2022-24999 (fixed in 6.11.0)</li>
+  <li><strong>minimist</strong> — CVE-2021-44906 (fixed in 1.2.6)</li>
+  <li><strong>tough-cookie</strong> — CVE-2023-26136 (fixed in 4.1.3)</li>
+</ul>
+
+<h2>How to protect against it</h2>
+<div class="fix-box">
+  <div class="label">Prevention</div>
+  <p style="margin:0">Keep utility libraries up to date — most prototype pollution CVEs are fixed within weeks of discovery. Use <code>Object.freeze(Object.prototype)</code> in security-sensitive contexts. Validate and sanitize any object keys that come from user input before merging.</p>
+</div>
+
+<div class="cta-box">
+  <p>Check your dependencies for CVEs, CISA KEV entries, and supply chain risks.</p>
+  <a href="https://packagefix.dev" class="cta-btn">Open PackageFix →</a>
+  <p style="margin-top:12px;font-size:11px;color:var(--muted)">Free · No signup · No CLI · Runs in your browser</p>
+</div>
+<div class="faq"><h2>Common questions</h2><div class="faq-item"><div class="faq-q">Is prototype pollution the same as prototype hijacking?</div><div class="faq-a">They describe the same class of vulnerability. Prototype pollution is the more common term in CVE descriptions and security tooling. Both refer to modifying Object.prototype via crafted input.</div></div><div class="faq-item"><div class="faq-q">Can prototype pollution lead to remote code execution?</div><div class="faq-a">Yes — in some cases. If the polluted prototype property ends up in a code path that calls eval(), executes shell commands, or deserializes data, prototype pollution can escalate to RCE. Most commonly it leads to authentication bypass or DoS.</div></div><div class="faq-item"><div class="faq-q">Does TypeScript protect against prototype pollution?</div><div class="faq-a">No. TypeScript is a compile-time tool. Prototype pollution happens at runtime — TypeScript types are erased by then. You still need to update affected packages and sanitize input.</div></div><div class="faq-item"><div class="faq-q">How does PackageFix detect prototype pollution CVEs?</div><div class="faq-a">PackageFix queries the OSV database for every package in your manifest and flags any version with a known prototype pollution CVE. Affected packages get a HIGH or CRITICAL badge with the specific CVE ID and safe version to upgrade to.</div></div></div>
+<div style="margin:40px 0"><h2>Related guides</h2><div class="related-grid"><div class="related-card"><a href="/fix/npm/lodash">Fix Lodash CVE-2020-8203</a><p>Prototype pollution fix</p></div><div class="related-card"><a href="/fix/npm/qs">Fix qs CVE-2022-24999</a><p>Query string pollution fix</p></div><div class="related-card"><a href="/fix/npm/minimist">Fix minimist CVE-2021-44906</a><p>Arg parser pollution fix</p></div><div class="related-card"><a href="/glossary/supply-chain-attack">Supply Chain Attack</a><p>How dependencies get compromised</p></div></div></div>
+
+</main>
+<footer class="site-footer">
+  <p>PackageFix · <a href="https://packagefix.dev">packagefix.dev</a> · MIT Licensed · Open Source</p>
+  <p style="margin-top:6px">Part of the MetricLogic network ·
+  <a href="https://configclarity.dev">ConfigClarity</a> ·
+  <a href="https://domainpreflight.dev">DomainPreflight</a></p>
+  <p style="margin-top:6px">Vulnerability data: <a href="https://osv.dev">OSV Database</a> · <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog">CISA KEV Catalog</a></p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Dependency Confusion — Definition | PackageFix Glossary</title>
+<meta name="description" content="When a package manager fetches the wrong version of a package because an attacker registered the same name on a public registry. Dependency confusion (also called namespace confusion) is a supply chain attack where an attacker re...">
+<link rel="canonical" href="https://packagefix.dev/glossary/dependency-confusion">
+<meta property="og:title" content="Dependency Confusion — Definition | PackageFix Glossary">
+<meta property="og:description" content="When a package manager fetches the wrong version of a package because an attacker registered the same name on a public registry. Dependency confusion (also called namespace confusion) is a supply chain attack where an attacker re...">
+<meta property="og:url" content="https://packagefix.dev/glossary/dependency-confusion">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/svg+xml" href="/icon.svg">
+<link rel="icon" type="image/png" sizes="512x512" href="/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "DefinedTerm",
+      "name": "Dependency Confusion",
+      "description": "Dependency confusion (also called namespace confusion) is a supply chain attack where an attacker registers a package on a public registry with the same name as a private internal package your company uses. Some package managers, by default, will fetch the public version instead of the private one \u2014 silently installing the attacker's code.",
+      "url": "https://packagefix.dev/glossary/dependency-confusion",
+      "inDefinedTermSet": {
+        "@type": "DefinedTermSet",
+        "name": "PackageFix Dependency Security Glossary",
+        "url": "https://packagefix.dev/glossary"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "PackageFix",
+          "item": "https://packagefix.dev"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Glossary",
+          "item": "https://packagefix.dev/glossary"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Dependency Confusion",
+          "item": "https://packagefix.dev/glossary/dependency-confusion"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is dependency confusion the same as typosquatting?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No \u2014 they're related but different. Typosquatting uses a similar-sounding name to catch typos. Dependency confusion uses the exact same name as a private internal package, exploiting how package managers resolve naming conflicts between public and private registries."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I know if my internal packages are at risk?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Check if any of your internal package names exist on the public registry (npm, PyPI, etc.). If an attacker has already registered them with a high version number, you're at risk. Scope all internal packages under a verified org namespace as the permanent fix."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Did dependency confusion affect real companies?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes \u2014 Alex Birsan's 2021 research demonstrated it against Apple, Microsoft, Tesla, PayPal, Shopify, Netflix, Yelp, and others. All were fixed after responsible disclosure."
+          }
+        }
+      ]
+    }
+  ]
+}</script>
+<style>
+:root {
+  --bg:#0B0D14; --surface:#12151F; --surface2:#1A1D2E;
+  --border:#252836; --purple:#6C63FF; --green:#22C55E;
+  --orange:#F97316; --red:#EF4444; --yellow:#EAB308;
+  --text:#E2E4F0; --muted:#6B7280;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.6;min-height:100vh}
+a{color:var(--purple);text-decoration:none}
+a:hover{text-decoration:underline}
+.site-header{border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:15px;font-weight:700;color:var(--text)}
+.logo span{color:var(--purple)}
+.nav-links{display:flex;gap:20px;font-size:12px}
+.nav-links a{color:var(--muted)}
+.nav-links a:hover{color:var(--text);text-decoration:none}
+.container{max-width:860px;margin:0 auto;padding:48px 24px}
+.breadcrumb{font-size:11px;color:var(--muted);margin-bottom:24px;display:flex;gap:6px;flex-wrap:wrap}
+.breadcrumb a{color:var(--muted)}
+.definition-box{background:var(--surface);border:1px solid var(--purple);border-left:4px solid var(--purple);border-radius:8px;padding:20px 24px;margin:0 0 32px}
+.definition-box .def-label{font-size:10px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.definition-box p{color:var(--text);font-size:13px;line-height:1.7;margin:0}
+h1{font-size:clamp(18px,3vw,28px);font-weight:700;margin-bottom:16px;line-height:1.3}
+h2{font-size:15px;font-weight:600;margin:36px 0 12px}
+h3{font-size:13px;font-weight:600;margin:20px 0 8px}
+p{color:var(--muted);margin-bottom:12px;font-size:12px;line-height:1.7}
+.lead{color:var(--text);font-size:13px;margin-bottom:0;line-height:1.7}
+pre{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px 16px;overflow-x:auto;font-size:11px;line-height:1.6;margin:12px 0;white-space:pre-wrap}
+code{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:1px 5px;font-size:11px}
+.example-box{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:16px 20px;margin:20px 0}
+.example-box .label{font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.fix-box{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);border-left:3px solid var(--green);border-radius:8px;padding:16px 20px;margin:20px 0}
+.fix-box .label{font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.cta-box{background:var(--surface);border:1px solid var(--purple);border-radius:10px;padding:24px;margin:32px 0;text-align:center}
+.cta-box p{color:var(--text);font-size:13px;margin-bottom:16px}
+.cta-btn{display:inline-block;background:var(--purple);color:#fff;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;padding:12px 28px;border-radius:7px;text-decoration:none}
+.cta-btn:hover{opacity:.9;text-decoration:none}
+.badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em}
+.badge-purple{background:rgba(108,99,255,.2);color:var(--purple);border:1px solid var(--purple)}
+.badge-red{background:rgba(239,68,68,.2);color:var(--red);border:1px solid var(--red)}
+.badge-orange{background:rgba(249,115,22,.2);color:var(--orange);border:1px solid var(--orange)}
+.faq{margin:40px 0}
+.faq-item{border-bottom:1px solid var(--border);padding:16px 0}
+.faq-item:last-child{border-bottom:none}
+.faq-q{font-size:12px;font-weight:600;color:var(--text);margin-bottom:8px}
+.faq-a{font-size:12px;color:var(--muted);line-height:1.7}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:12px}
+.related-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
+.related-card a{color:var(--text);font-size:12px;font-weight:500}
+.related-card p{font-size:11px;color:var(--muted);margin:4px 0 0}
+.glossary-index{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:16px}
+.glossary-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
+.glossary-card a{color:var(--text);font-size:12px;font-weight:500}
+.glossary-card p{font-size:11px;color:var(--muted);margin:4px 0 0;line-height:1.5}
+.site-footer{border-top:1px solid var(--border);padding:24px;text-align:center;font-size:11px;color:var(--muted);margin-top:60px}
+.site-footer a{color:var(--muted)}
+@media(max-width:640px){.nav-links{display:none}.related-grid{grid-template-columns:1fr}.glossary-index{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <a href="https://packagefix.dev" class="logo">Package<span>Fix</span></a>
+  <nav class="nav-links">
+    <a href="https://packagefix.dev">Tool</a>
+    <a href="https://packagefix.dev/glossary">Glossary</a>
+    <a href="https://packagefix.dev/blog">Blog</a>
+    <a href="https://packagefix.dev/cisa-kev">CISA KEV</a>
+    <a href="https://github.com/metriclogic26/packagefix">GitHub</a>
+  </nav>
+</header>
+<main class="container">
+  <div class="breadcrumb"><a href="/">PackageFix</a> <span style='color:var(--border)'>/</span> <a href="/glossary">Glossary</a> <span style='color:var(--border)'>/</span> <span style="color:var(--text)">Dependency Confusion</span></div>
+  
+<h1>Dependency Confusion</h1>
+<div style="margin-bottom:24px"><span class="badge badge-purple">npm · PyPI · all registries</span></div>
+
+<div class="definition-box">
+  <div class="def-label">Definition</div>
+  <p class="lead">Dependency confusion (also called namespace confusion) is a supply chain attack where an attacker registers a package on a public registry with the same name as a private internal package your company uses. Some package managers, by default, will fetch the public version instead of the private one — silently installing the attacker's code.</p>
+</div>
+
+
+<h2>How it works in practice</h2>
+<p>Say your company has an internal npm package called <code>acme-auth</code> hosted on a private registry. An attacker registers <code>acme-auth</code> on the public npm registry with a higher version number (e.g., 99.0.0). When a developer runs <code>npm install</code>, the package manager sees the public version is newer and fetches it instead of the private one.</p>
+<p>Security researcher Alex Birsan demonstrated this attack in 2021 against Apple, Microsoft, Tesla, Uber, and 30 other companies — all without any malicious intent, just to prove the attack worked. He reported the vulnerabilities and received over $130,000 in bug bounties.</p>
+
+<h2>Which package managers are affected</h2>
+<ul style="padding-left:20px;margin:12px 0;color:var(--muted);font-size:12px;line-height:2">
+  <li><strong>npm</strong> — default behavior prefers public registry unless explicitly configured</li>
+  <li><strong>pip</strong> — same issue with PyPI vs private indexes</li>
+  <li><strong>gem</strong> — RubyGems vs private Gemfury or Nexus</li>
+  <li><strong>composer</strong> — Packagist vs private repositories</li>
+</ul>
+
+<h2>How to prevent it</h2>
+<div class="fix-box">
+  <div class="label">Prevention</div>
+  <p style="margin:0">Scope all internal npm packages under your organization (<code>@acme/auth</code> instead of <code>acme-auth</code>) — scoped packages can't be squatted on public npm without your org's verification. For pip, use <code>--index-url</code> to specify your private index and <code>--no-index</code> to prevent fallback to PyPI.</p>
+</div>
+
+<div class="cta-box">
+  <p>Check your dependencies for CVEs, CISA KEV entries, and supply chain risks.</p>
+  <a href="https://packagefix.dev" class="cta-btn">Open PackageFix →</a>
+  <p style="margin-top:12px;font-size:11px;color:var(--muted)">Free · No signup · No CLI · Runs in your browser</p>
+</div>
+<div class="faq"><h2>Common questions</h2><div class="faq-item"><div class="faq-q">Is dependency confusion the same as typosquatting?</div><div class="faq-a">No — they're related but different. Typosquatting uses a similar-sounding name to catch typos. Dependency confusion uses the exact same name as a private internal package, exploiting how package managers resolve naming conflicts between public and private registries.</div></div><div class="faq-item"><div class="faq-q">How do I know if my internal packages are at risk?</div><div class="faq-a">Check if any of your internal package names exist on the public registry (npm, PyPI, etc.). If an attacker has already registered them with a high version number, you're at risk. Scope all internal packages under a verified org namespace as the permanent fix.</div></div><div class="faq-item"><div class="faq-q">Did dependency confusion affect real companies?</div><div class="faq-a">Yes — Alex Birsan's 2021 research demonstrated it against Apple, Microsoft, Tesla, PayPal, Shopify, Netflix, Yelp, and others. All were fixed after responsible disclosure.</div></div></div>
+<div style="margin:40px 0"><h2>Related guides</h2><div class="related-grid"><div class="related-card"><a href="/glossary/supply-chain-attack">Supply Chain Attack</a><p>The broader attack category</p></div><div class="related-card"><a href="/glossary/typosquatting">Typosquatting</a><p>Similar name attacks</p></div><div class="related-card"><a href="/blog/supply-chain-attacks-package-json">Supply Chain Attack Guide</a><p>5 attacks npm audit misses</p></div><div class="related-card"><a href="/npm">npm Security Guide</a><p>All npm vulnerability guides</p></div></div></div>
+
+</main>
+<footer class="site-footer">
+  <p>PackageFix · <a href="https://packagefix.dev">packagefix.dev</a> · MIT Licensed · Open Source</p>
+  <p style="margin-top:6px">Part of the MetricLogic network ·
+  <a href="https://configclarity.dev">ConfigClarity</a> ·
+  <a href="https://domainpreflight.dev">DomainPreflight</a></p>
+  <p style="margin-top:6px">Vulnerability data: <a href="https://osv.dev">OSV Database</a> · <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog">CISA KEV Catalog</a></p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Lockfile — Definition | PackageFix Glossary</title>
+<meta name="description" content="A file that records the exact version of every dependency your project installed, so every machine gets identical results. A lockfile is an automatically generated file that records the exact resolved versions of every dire...">
+<link rel="canonical" href="https://packagefix.dev/glossary/lockfile">
+<meta property="og:title" content="Lockfile — Definition | PackageFix Glossary">
+<meta property="og:description" content="A file that records the exact version of every dependency your project installed, so every machine gets identical results. A lockfile is an automatically generated file that records the exact resolved versions of every dire...">
+<meta property="og:url" content="https://packagefix.dev/glossary/lockfile">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/svg+xml" href="/icon.svg">
+<link rel="icon" type="image/png" sizes="512x512" href="/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "DefinedTerm",
+      "name": "Lockfile",
+      "description": "A lockfile is an automatically generated file that records the exact resolved versions of every direct and transitive dependency in your project. When you run npm install for the first time, npm picks the latest compatible version of every package and writes those choices to package-lock.json. The next time anyone installs \u2014 on a different machine or in CI \u2014 npm reads the lockfile and installs those exact same versions.",
+      "url": "https://packagefix.dev/glossary/lockfile",
+      "inDefinedTermSet": {
+        "@type": "DefinedTermSet",
+        "name": "PackageFix Dependency Security Glossary",
+        "url": "https://packagefix.dev/glossary"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "PackageFix",
+          "item": "https://packagefix.dev"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Glossary",
+          "item": "https://packagefix.dev/glossary"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Lockfile",
+          "item": "https://packagefix.dev/glossary/lockfile"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Should I commit my lockfile to git?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, always \u2014 for applications. The lockfile ensures everyone on your team and your CI environment get identical dependency versions. Not committing it is a common mistake that leads to 'works on my machine' problems and security scanning gaps."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What's the difference between package.json and package-lock.json?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "package.json lists what you want \u2014 ranges like ^4.17.0. package-lock.json records what you actually got \u2014 the exact version that resolved, like 4.17.21. The lockfile is the source of truth for what's actually running."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does PackageFix use the lockfile?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Drop your lockfile alongside your manifest into PackageFix for transitive dependency scanning. Without the lockfile, PackageFix only scans direct dependencies. With it, every transitive package is checked against OSV and CISA KEV."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What happens if my lockfile and package.json are out of sync?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "npm will warn you and refuse to run npm ci. Run npm install to regenerate the lockfile, review the diff, then commit. PackageFix's /error/package-json-missing-lockfile page covers this specific error."
+          }
+        }
+      ]
+    }
+  ]
+}</script>
+<style>
+:root {
+  --bg:#0B0D14; --surface:#12151F; --surface2:#1A1D2E;
+  --border:#252836; --purple:#6C63FF; --green:#22C55E;
+  --orange:#F97316; --red:#EF4444; --yellow:#EAB308;
+  --text:#E2E4F0; --muted:#6B7280;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.6;min-height:100vh}
+a{color:var(--purple);text-decoration:none}
+a:hover{text-decoration:underline}
+.site-header{border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:15px;font-weight:700;color:var(--text)}
+.logo span{color:var(--purple)}
+.nav-links{display:flex;gap:20px;font-size:12px}
+.nav-links a{color:var(--muted)}
+.nav-links a:hover{color:var(--text);text-decoration:none}
+.container{max-width:860px;margin:0 auto;padding:48px 24px}
+.breadcrumb{font-size:11px;color:var(--muted);margin-bottom:24px;display:flex;gap:6px;flex-wrap:wrap}
+.breadcrumb a{color:var(--muted)}
+.definition-box{background:var(--surface);border:1px solid var(--purple);border-left:4px solid var(--purple);border-radius:8px;padding:20px 24px;margin:0 0 32px}
+.definition-box .def-label{font-size:10px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.definition-box p{color:var(--text);font-size:13px;line-height:1.7;margin:0}
+h1{font-size:clamp(18px,3vw,28px);font-weight:700;margin-bottom:16px;line-height:1.3}
+h2{font-size:15px;font-weight:600;margin:36px 0 12px}
+h3{font-size:13px;font-weight:600;margin:20px 0 8px}
+p{color:var(--muted);margin-bottom:12px;font-size:12px;line-height:1.7}
+.lead{color:var(--text);font-size:13px;margin-bottom:0;line-height:1.7}
+pre{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px 16px;overflow-x:auto;font-size:11px;line-height:1.6;margin:12px 0;white-space:pre-wrap}
+code{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:1px 5px;font-size:11px}
+.example-box{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:16px 20px;margin:20px 0}
+.example-box .label{font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.fix-box{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);border-left:3px solid var(--green);border-radius:8px;padding:16px 20px;margin:20px 0}
+.fix-box .label{font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.cta-box{background:var(--surface);border:1px solid var(--purple);border-radius:10px;padding:24px;margin:32px 0;text-align:center}
+.cta-box p{color:var(--text);font-size:13px;margin-bottom:16px}
+.cta-btn{display:inline-block;background:var(--purple);color:#fff;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;padding:12px 28px;border-radius:7px;text-decoration:none}
+.cta-btn:hover{opacity:.9;text-decoration:none}
+.badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em}
+.badge-purple{background:rgba(108,99,255,.2);color:var(--purple);border:1px solid var(--purple)}
+.badge-red{background:rgba(239,68,68,.2);color:var(--red);border:1px solid var(--red)}
+.badge-orange{background:rgba(249,115,22,.2);color:var(--orange);border:1px solid var(--orange)}
+.faq{margin:40px 0}
+.faq-item{border-bottom:1px solid var(--border);padding:16px 0}
+.faq-item:last-child{border-bottom:none}
+.faq-q{font-size:12px;font-weight:600;color:var(--text);margin-bottom:8px}
+.faq-a{font-size:12px;color:var(--muted);line-height:1.7}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:12px}
+.related-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
+.related-card a{color:var(--text);font-size:12px;font-weight:500}
+.related-card p{font-size:11px;color:var(--muted);margin:4px 0 0}
+.glossary-index{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:16px}
+.glossary-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
+.glossary-card a{color:var(--text);font-size:12px;font-weight:500}
+.glossary-card p{font-size:11px;color:var(--muted);margin:4px 0 0;line-height:1.5}
+.site-footer{border-top:1px solid var(--border);padding:24px;text-align:center;font-size:11px;color:var(--muted);margin-top:60px}
+.site-footer a{color:var(--muted)}
+@media(max-width:640px){.nav-links{display:none}.related-grid{grid-template-columns:1fr}.glossary-index{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <a href="https://packagefix.dev" class="logo">Package<span>Fix</span></a>
+  <nav class="nav-links">
+    <a href="https://packagefix.dev">Tool</a>
+    <a href="https://packagefix.dev/glossary">Glossary</a>
+    <a href="https://packagefix.dev/blog">Blog</a>
+    <a href="https://packagefix.dev/cisa-kev">CISA KEV</a>
+    <a href="https://github.com/metriclogic26/packagefix">GitHub</a>
+  </nav>
+</header>
+<main class="container">
+  <div class="breadcrumb"><a href="/">PackageFix</a> <span style='color:var(--border)'>/</span> <a href="/glossary">Glossary</a> <span style='color:var(--border)'>/</span> <span style="color:var(--text)">Lockfile</span></div>
+  
+<h1>Lockfile</h1>
+<div style="margin-bottom:24px"><span class="badge badge-purple">All ecosystems</span></div>
+
+<div class="definition-box">
+  <div class="def-label">Definition</div>
+  <p class="lead">A lockfile is an automatically generated file that records the exact resolved versions of every direct and transitive dependency in your project. When you run npm install for the first time, npm picks the latest compatible version of every package and writes those choices to package-lock.json. The next time anyone installs — on a different machine or in CI — npm reads the lockfile and installs those exact same versions.</p>
+</div>
+
+
+<h2>Why lockfiles matter for security</h2>
+<p>Without a lockfile, two developers running npm install on the same project on different days might get different transitive dependency versions — because a new version of a transitive package was published between the two installs. One version might be vulnerable, the other not.</p>
+<p>With a lockfile committed to your repo, everyone gets the same versions. Your CI environment and your local machine match. Dependency changes are explicit and reviewable in git diffs.</p>
+
+<h2>Lockfiles by ecosystem</h2>
+<ul style="padding-left:20px;margin:12px 0;color:var(--muted);font-size:12px;line-height:2">
+  <li><strong>npm</strong> — package-lock.json</li>
+  <li><strong>yarn</strong> — yarn.lock</li>
+  <li><strong>Python/pip</strong> — no official lockfile from pip; use poetry.lock (Poetry) or pip freeze > requirements.txt</li>
+  <li><strong>Python/Poetry</strong> — poetry.lock</li>
+  <li><strong>Ruby</strong> — Gemfile.lock</li>
+  <li><strong>PHP</strong> — composer.lock</li>
+  <li><strong>Go</strong> — go.sum</li>
+  <li><strong>Rust</strong> — Cargo.lock</li>
+  <li><strong>Java/Maven</strong> — no standard lockfile; effective POM + dependency tree</li>
+</ul>
+
+<h2>Always commit your lockfile</h2>
+<p>Some projects have .gitignore entries that exclude lockfiles — this is almost always a mistake. The lockfile is critical for reproducible builds and security scanning. PackageFix can scan transitive dependencies when you provide the lockfile alongside your manifest — drop both files into the scanner for the most complete vulnerability coverage.</p>
+
+<div class="cta-box">
+  <p>Check your dependencies for CVEs, CISA KEV entries, and supply chain risks.</p>
+  <a href="https://packagefix.dev" class="cta-btn">Open PackageFix →</a>
+  <p style="margin-top:12px;font-size:11px;color:var(--muted)">Free · No signup · No CLI · Runs in your browser</p>
+</div>
+<div class="faq"><h2>Common questions</h2><div class="faq-item"><div class="faq-q">Should I commit my lockfile to git?</div><div class="faq-a">Yes, always — for applications. The lockfile ensures everyone on your team and your CI environment get identical dependency versions. Not committing it is a common mistake that leads to 'works on my machine' problems and security scanning gaps.</div></div><div class="faq-item"><div class="faq-q">What's the difference between package.json and package-lock.json?</div><div class="faq-a">package.json lists what you want — ranges like ^4.17.0. package-lock.json records what you actually got — the exact version that resolved, like 4.17.21. The lockfile is the source of truth for what's actually running.</div></div><div class="faq-item"><div class="faq-q">Does PackageFix use the lockfile?</div><div class="faq-a">Yes. Drop your lockfile alongside your manifest into PackageFix for transitive dependency scanning. Without the lockfile, PackageFix only scans direct dependencies. With it, every transitive package is checked against OSV and CISA KEV.</div></div><div class="faq-item"><div class="faq-q">What happens if my lockfile and package.json are out of sync?</div><div class="faq-a">npm will warn you and refuse to run npm ci. Run npm install to regenerate the lockfile, review the diff, then commit. PackageFix's /error/package-json-missing-lockfile page covers this specific error.</div></div></div>
+<div style="margin:40px 0"><h2>Related guides</h2><div class="related-grid"><div class="related-card"><a href="/glossary/transitive-dependency">Transitive Dependency</a><p>What lockfiles track</p></div><div class="related-card"><a href="/fix/npm/lockfile-mismatch">Fix Lockfile Mismatch</a><p>npm ci error fix</p></div><div class="related-card"><a href="/error/package-json-missing-lockfile">package-lock.json Missing</a><p>Error fix guide</p></div><div class="related-card"><a href="/glossary/dependency-scanning">Dependency Scanning</a><p>How to scan with lockfiles</p></div></div></div>
+
+</main>
+<footer class="site-footer">
+  <p>PackageFix · <a href="https://packagefix.dev">packagefix.dev</a> · MIT Licensed · Open Source</p>
+  <p style="margin-top:6px">Part of the MetricLogic network ·
+  <a href="https://configclarity.dev">ConfigClarity</a> ·
+  <a href="https://domainpreflight.dev">DomainPreflight</a></p>
+  <p style="margin-top:6px">Vulnerability data: <a href="https://osv.dev">OSV Database</a> · <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog">CISA KEV Catalog</a></p>
+</footer>
+</body>
+</html>

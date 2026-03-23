@@ -293,3 +293,21 @@ https://packagefix.dev/kev/CVE-2023-27530
 https://packagefix.dev/terminal
 https://packagefix.dev/guides/github-actions
 https://packagefix.dev/guides/pre-commit
+
+## Glossary Pages
+https://packagefix.dev/glossary/prototype-pollution
+https://packagefix.dev/glossary/supply-chain-attack
+https://packagefix.dev/glossary/dependency-confusion
+https://packagefix.dev/glossary/typosquatting
+https://packagefix.dev/glossary/transitive-dependency
+https://packagefix.dev/glossary/cve
+https://packagefix.dev/glossary/cvss
+https://packagefix.dev/glossary/cisa-kev
+https://packagefix.dev/glossary/lockfile
+https://packagefix.dev/glossary/sbom
+https://packagefix.dev/glossary/zombie-package
+https://packagefix.dev/glossary/glassworm
+https://packagefix.dev/glossary/dependency-scanning
+https://packagefix.dev/glossary/software-composition-analysis
+https://packagefix.dev/glossary/open-source-vulnerability
+https://packagefix.dev/glossary
