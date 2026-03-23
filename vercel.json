@@ -2215,6 +2215,22 @@
     {
       "source": "/compare/bytesafe/",
       "destination": "/seo/compare/bytesafe/index.html"
+    },
+    {
+      "source": "/fix/npm/moment/migrate",
+      "destination": "/seo/fix/npm/moment/migrate/index.html"
+    },
+    {
+      "source": "/fix/npm/moment/migrate/",
+      "destination": "/seo/fix/npm/moment/migrate/index.html"
+    },
+    {
+      "source": "/fix/npm/request/migrate",
+      "destination": "/seo/fix/npm/request/migrate/index.html"
+    },
+    {
+      "source": "/fix/npm/request/migrate/",
+      "destination": "/seo/fix/npm/request/migrate/index.html"
     }
   ]
 }

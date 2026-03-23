@@ -420,3 +420,7 @@ https://packagefix.dev/compare/osv-scanner
 https://packagefix.dev/compare/mend
 https://packagefix.dev/compare/sonatype
 https://packagefix.dev/compare/bytesafe
+
+## Migration Guides
+https://packagefix.dev/fix/npm/moment/migrate
+https://packagefix.dev/fix/npm/request/migrate

@@ -1,0 +1,246 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Migrating from moment.js to dayjs or date-fns - Complete Guide | PackageFix</title><meta name="description" content="moment.js is in maintenance mode. Migrate to dayjs (near drop-in) or date-fns (modern). Side-by-side code examples for every common operation."><link rel="canonical" href="https://packagefix.dev/fix/npm/moment/migrate"><meta property="og:title" content="Migrating from moment.js to dayjs or date-fns - Complete Guide | PackageFix"><meta property="og:description" content="moment.js is in maintenance mode. Migrate to dayjs (near drop-in) or date-fns (modern). Side-by-side code examples for every common operation."><meta property="og:url" content="https://packagefix.dev/fix/npm/moment/migrate"><meta property="og:type" content="article"><link rel="icon" type="image/svg+xml" href="/icon.svg"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "HowTo",
+      "name": "Migrate from moment.js to dayjs",
+      "description": "Step-by-step guide to replace moment.js with dayjs or date-fns",
+      "estimatedCost": {
+        "@type": "MonetaryAmount",
+        "currency": "USD",
+        "value": "0"
+      },
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Install dayjs",
+          "text": "Run: npm install dayjs && npm uninstall moment"
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Replace imports",
+          "text": "Change import moment to import dayjs"
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Enable plugins",
+          "text": "Add relativeTime, timezone, duration plugins"
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Test",
+          "text": "Run your test suite"
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "PackageFix",
+          "item": "https://packagefix.dev/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Fix Guides",
+          "item": "https://packagefix.dev/fix"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "npm",
+          "item": "https://packagefix.dev/npm"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "moment.js",
+          "item": "https://packagefix.dev/fix/npm/moment"
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "name": "Migration Guide",
+          "item": "https://packagefix.dev"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is moment.js broken?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Not broken - moment.js 2.29.4 works and has no unpatched CVEs. The issue is maintenance-only mode. The team will not add features or fix non-security bugs. Future CVEs may not get patches. For long-lived projects, migrating before you have to is easier than migrating under pressure."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which replacement is easiest to migrate to?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "dayjs has an almost identical API to moment.js. Most moment.js code works with dayjs after changing the import. date-fns uses a completely different functional API and requires rewriting your date logic."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I run moment.js and dayjs side by side?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes - both can be installed simultaneously. Migrate file by file, testing as you go. Remove moment.js when the last import is gone."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does dayjs support all moment.js plugins?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "dayjs has its own plugin ecosystem covering most moment.js plugin functionality. Check the dayjs plugin docs before migrating - duration, timezone, and relative time all have equivalents."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is date-fns tree-shakeable?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes - this is one of date-fns's main advantages over moment.js. Only the functions you import get bundled. Typical date-fns usage adds 5-10KB vs moment's 67KB minimum."
+          }
+        }
+      ]
+    }
+  ]
+}</script><style>
+:root{--bg:#0B0D14;--surface:#12151F;--surface2:#1A1D2E;--border:#252836;--purple:#6C63FF;--green:#22C55E;--orange:#F97316;--red:#EF4444;--text:#E2E4F0;--muted:#6B7280}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.6;min-height:100vh}
+a{color:var(--purple);text-decoration:none}a:hover{text-decoration:underline}
+.site-header{border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:15px;font-weight:700;color:var(--text)}.logo span{color:var(--purple)}
+.nav-links{display:flex;gap:20px;font-size:12px}.nav-links a{color:var(--muted)}
+.nav-links a:hover{color:var(--text);text-decoration:none}
+.container{max-width:860px;margin:0 auto;padding:48px 24px}
+.breadcrumb{font-size:11px;color:var(--muted);margin-bottom:24px;display:flex;gap:6px;flex-wrap:wrap}
+.breadcrumb a{color:var(--muted)}
+h1{font-size:clamp(18px,3vw,26px);font-weight:700;margin-bottom:12px;line-height:1.3}
+h2{font-size:14px;font-weight:600;margin:36px 0 12px}
+h3{font-size:13px;font-weight:600;margin:24px 0 8px;color:var(--text)}
+p{color:var(--muted);margin-bottom:12px;font-size:12px;line-height:1.7}
+.lead{color:var(--text);font-size:13px;margin-bottom:24px;line-height:1.7}
+.warning-box{background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.3);border-left:3px solid var(--orange);border-radius:8px;padding:16px 20px;margin:20px 0}
+.warning-box .label{font-size:10px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.fix-box{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.3);border-left:3px solid var(--green);border-radius:8px;padding:16px 20px;margin:20px 0}
+pre{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px 16px;overflow-x:auto;font-size:11px;line-height:1.6;margin:8px 0;white-space:pre-wrap}
+code{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:1px 5px;font-size:11px}
+.cta-box{background:var(--surface);border:1px solid var(--purple);border-radius:10px;padding:24px;margin:32px 0;text-align:center}
+.cta-box p{color:var(--text);font-size:13px;margin-bottom:16px}
+.cta-btn{display:inline-block;background:var(--purple);color:#fff;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;padding:12px 28px;border-radius:7px;text-decoration:none}
+.badge-orange{background:rgba(249,115,22,.2);color:var(--orange);border:1px solid var(--orange);display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase}
+.option-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin:16px 0}
+.option-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px}
+.option-card h3{font-size:13px;font-weight:600;margin:0 0 8px;color:var(--text)}
+.option-card .tag{font-size:10px;color:var(--purple);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;display:block}
+.option-card p{font-size:11px;margin:0;line-height:1.6}
+.diff-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+.col-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;padding:4px 8px;border-radius:4px}
+.col-label.before{background:rgba(239,68,68,.15);color:#EF4444}
+.col-label.after{background:rgba(34,197,94,.15);color:#22C55E}
+.faq{margin:40px 0}.faq-item{border-bottom:1px solid var(--border);padding:16px 0}
+.faq-item:last-child{border-bottom:none}
+.faq-q{font-size:12px;font-weight:600;color:var(--text);margin-bottom:8px}
+.faq-a{font-size:12px;color:var(--muted);line-height:1.7}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:12px}
+.related-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
+.related-card a{color:var(--text);font-size:12px;font-weight:500}
+.related-card p{font-size:11px;color:var(--muted);margin:4px 0 0}
+.site-footer{border-top:1px solid var(--border);padding:24px;text-align:center;font-size:11px;color:var(--muted);margin-top:60px}
+.site-footer a{color:var(--muted)}
+@media(max-width:640px){.nav-links{display:none}.related-grid,.option-grid{grid-template-columns:1fr}.diff-row{grid-template-columns:1fr}}
+</style></head><body><header class="site-header"><a href="/" class="logo">Package<span>Fix</span></a><nav class="nav-links"><a href="/">Tool</a><a href="/glossary">Glossary</a><a href="/cisa-kev">CISA KEV</a><a href="/blog">Blog</a><a href="https://github.com/metriclogic26/packagefix">GitHub</a></nav></header><main class="container"><div class="breadcrumb"><a href="/">PackageFix</a> <span style='color:var(--border)'>/</span> <a href="/fix">Fix Guides</a> <span style='color:var(--border)'>/</span> <a href="/npm">npm</a> <span style='color:var(--border)'>/</span> <a href="/fix/npm/moment">moment.js</a> <span style='color:var(--border)'>/</span> <span style="color:var(--text)">Migration Guide</span></div><h1>Migrating from moment.js - Complete Guide</h1><p class="lead">moment.js is in maintenance mode. It still works and 2.29.4 has no unpatched CVEs, but new features will not be added and future security fixes are not guaranteed. This guide covers migrating to dayjs (near drop-in) or date-fns (more modern, tree-shakeable).</p><div class="warning-box"><div class="label">moment.js Status</div><p>moment.js has been in maintenance-only mode since September 2020. No new features, no non-security bug fixes. It has 4 known CVEs - all fixed in 2.29.4. Future CVEs may not receive patches.</p></div><h2>Choose your replacement</h2><div class="option-grid"><div class="option-card"><span class="tag">Easiest migration</span><h3>dayjs</h3><p>Near-identical API to moment.js. 2KB gzipped vs moment 67KB. Most moment.js code works after changing the import.</p><p style="margin-top:8px"><code>npm install dayjs</code></p></div><div class="option-card"><span class="tag">Most modern</span><h3>date-fns</h3><p>Functional API - completely different from moment. Tree-shakeable, TypeScript-first. Better for new code than migration.</p><p style="margin-top:8px"><code>npm install date-fns</code></p></div><div class="option-card"><span class="tag">Full featured</span><h3>Luxon</h3><p>Built by a moment.js author. Wraps the native Intl API. Immutable by default. Best for serious timezone and locale support.</p><p style="margin-top:8px"><code>npm install luxon</code></p></div><div class="option-card"><span class="tag">No dependency (Node 18+)</span><h3>Temporal API</h3><p>Upcoming native JavaScript date API. Currently a TC39 proposal with polyfill available.</p><p style="margin-top:8px"><code>npm install @js-temporal/polyfill</code></p></div></div><h2>Option A - Migrate to dayjs (recommended for existing codebases)</h2><h3>Step 1 - Install dayjs and remove moment</h3><pre>npm install dayjs
+npm uninstall moment</pre><h3>Step 2 - Replace imports</h3><div class="diff-row"><div><div class="col-label before">moment.js</div><pre>import moment from 'moment';</pre></div><div><div class="col-label after">dayjs</div><pre>import dayjs from 'dayjs';</pre></div></div><h3>Step 3 - Basic usage</h3><div class="diff-row"><div><div class="col-label before">moment.js</div><pre>// Parse
+moment('2024-01-15')
+moment('2024-01-15', 'YYYY-MM-DD')
+
+// Format
+moment().format('YYYY-MM-DD')
+moment().format('MMMM Do YYYY')
+
+// Manipulate
+moment().add(7, 'days')
+moment().subtract(1, 'month')
+
+// Compare
+moment('2024-01-15').isBefore('2024-06-01')
+moment('2024-01-15').isAfter(moment())
+
+// Display
+moment().fromNow()
+moment().toDate()</pre></div><div><div class="col-label after">dayjs</div><pre>// Parse
+dayjs('2024-01-15')
+dayjs('2024-01-15', 'YYYY-MM-DD')  // needs customParseFormat plugin
+
+// Format
+dayjs().format('YYYY-MM-DD')
+dayjs().format('MMMM Do YYYY')     // needs advancedFormat plugin
+
+// Manipulate
+dayjs().add(7, 'day')
+dayjs().subtract(1, 'month')
+
+// Compare
+dayjs('2024-01-15').isBefore('2024-06-01')
+dayjs('2024-01-15').isAfter(dayjs())
+
+// Display
+dayjs().fromNow()  // needs relativeTime plugin
+dayjs().toDate()</pre></div></div><h3>Step 4 - Enable plugins you need</h3><pre>import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import advancedFormat from 'dayjs/plugin/advancedFormat'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
+import timezone from 'dayjs/plugin/timezone'
+import utc from 'dayjs/plugin/utc'
+import duration from 'dayjs/plugin/duration'
+
+dayjs.extend(relativeTime)
+dayjs.extend(advancedFormat)
+dayjs.extend(customParseFormat)
+dayjs.extend(utc)
+dayjs.extend(timezone)</pre><h3>Step 5 - Timezone handling</h3><div class="diff-row"><div><div class="col-label before">moment-timezone</div><pre>import moment from 'moment-timezone'
+
+moment.tz('2024-01-15 12:00', 'America/New_York')
+moment().tz('Europe/London').format()</pre></div><div><div class="col-label after">dayjs timezone</div><pre>import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone'
+dayjs.extend(utc)
+dayjs.extend(timezone)
+
+dayjs.tz('2024-01-15 12:00', 'America/New_York')
+dayjs().tz('Europe/London').format()</pre></div></div><h3>Key differences to watch for</h3><ul style="padding-left:20px;margin:12px 0;color:var(--muted);font-size:12px;line-height:2"><li>dayjs objects are <strong>immutable</strong> - manipulations return new objects</li><li>add() uses singular units: 'day' not 'days'</li><li>moment.duration() requires dayjs/plugin/duration</li><li>moment.utc() requires dayjs/plugin/utc</li><li>fromNow() requires dayjs/plugin/relativeTime</li></ul><h2>Option B - Migrate to date-fns</h2><p>date-fns uses a functional API - every operation is a standalone function. Better for greenfield code than migration.</p><div class="diff-row"><div><div class="col-label before">moment.js</div><pre>import moment from 'moment'
+
+// Format
+moment().format('yyyy-MM-dd')
+
+// Add days
+moment().add(7, 'days').toDate()
+
+// Check if before
+moment('2024-01-15').isBefore('2024-06-01')
+
+// From now
+moment().fromNow()</pre></div><div><div class="col-label after">date-fns</div><pre>import { format, addDays, isBefore, formatDistanceToNow } from 'date-fns'
+
+// Format
+format(new Date(), 'yyyy-MM-dd')
+
+// Add days
+addDays(new Date(), 7)
+
+// Check if before
+isBefore(new Date('2024-01-15'), new Date('2024-06-01'))
+
+// From now
+formatDistanceToNow(new Date(), { addSuffix: true })</pre></div></div><h2>Check your CVE status first</h2><p>If you are on moment.js 2.29.4 you have no unpatched CVEs. The migration is about future-proofing, not an emergency.</p><div class="cta-box"><p>Check your current dependencies for CVEs before migrating.</p><a href="/" class="cta-btn">Scan with PackageFix &rarr;</a><p style="margin-top:12px;font-size:11px;color:var(--muted)">Free &middot; No signup &middot; No CLI &middot; Runs in your browser</p></div><div class="faq"><h2>Common questions</h2><div class="faq-item"><div class="faq-q">Is moment.js broken?</div><div class="faq-a">Not broken - moment.js 2.29.4 works and has no unpatched CVEs. The issue is maintenance-only mode. The team will not add features or fix non-security bugs. Future CVEs may not get patches. For long-lived projects, migrating before you have to is easier than migrating under pressure.</div></div><div class="faq-item"><div class="faq-q">Which replacement is easiest to migrate to?</div><div class="faq-a">dayjs has an almost identical API to moment.js. Most moment.js code works with dayjs after changing the import. date-fns uses a completely different functional API and requires rewriting your date logic.</div></div><div class="faq-item"><div class="faq-q">Can I run moment.js and dayjs side by side?</div><div class="faq-a">Yes - both can be installed simultaneously. Migrate file by file, testing as you go. Remove moment.js when the last import is gone.</div></div><div class="faq-item"><div class="faq-q">Does dayjs support all moment.js plugins?</div><div class="faq-a">dayjs has its own plugin ecosystem covering most moment.js plugin functionality. Check the dayjs plugin docs before migrating - duration, timezone, and relative time all have equivalents.</div></div><div class="faq-item"><div class="faq-q">Is date-fns tree-shakeable?</div><div class="faq-a">Yes - this is one of date-fns's main advantages over moment.js. Only the functions you import get bundled. Typical date-fns usage adds 5-10KB vs moment's 67KB minimum.</div></div></div><div style="margin:40px 0"><h2>Related</h2><div class="related-grid"><div class="related-card"><a href="/fix/npm/moment">moment.js CVE History</a><p>All 4 known CVEs</p></div><div class="related-card"><a href="/npm">npm Security Overview</a><p>All npm CVE guides</p></div><div class="related-card"><a href="/glossary/remediation">Remediation</a><p>Fix strategies</p></div><div class="related-card"><a href="/fix/npm/request/migrate">request Migration Guide</a><p>Another deprecated package</p></div></div></div></main><footer class="site-footer"><p>PackageFix &middot; <a href="/">packagefix.dev</a> &middot; MIT Licensed &middot; Open Source</p><p style="margin-top:6px">Vulnerability data: <a href="https://osv.dev">OSV</a> &middot; <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog">CISA KEV</a></p></footer></body></html>
