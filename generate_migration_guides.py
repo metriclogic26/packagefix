@@ -495,7 +495,7 @@ console.log(data)""")}
   console.log(data)
 } catch (err) {
   if (err.response) {
-    // HTTP error response (non-2xx)
+    // HTTP error response 
     console.error('HTTP error:', err.response.status)
   } else {
     // Network error
