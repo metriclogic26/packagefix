@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Fix Netty CVE-2023-44487 — Java/Maven Vulnerability | PackageFix</title>
-<meta name="description" content="Fix CVE-2023-44487 (HIGH) in Netty for Java/Maven. Paste your pom.xml into PackageFix and get a patched version — no CLI, no signup. Http/2 rapid reset denial of service attack.">
+<title>All Netty CVEs — Complete Java/Maven Vulnerability History | PackageFix</title>
+<meta name="description" content="Netty has 5 known CVEs. Includes CISA KEV — actively exploited. Safe version: 4.1.108.Final. Full history with fix guide.">
 <link rel="canonical" href="https://packagefix.dev/fix/java/netty">
-<meta property="og:title" content="Fix Netty CVE-2023-44487 — Java/Maven Vulnerability | PackageFix">
-<meta property="og:description" content="Fix CVE-2023-44487 (HIGH) in Netty for Java/Maven. Paste your pom.xml into PackageFix and get a patched version — no CLI, no signup. Http/2 rapid reset denial of service attack.">
+<meta property="og:title" content="All Netty CVEs — Complete Java/Maven Vulnerability History | PackageFix">
+<meta property="og:description" content="Netty has 5 known CVEs. Includes CISA KEV — actively exploited. Safe version: 4.1.108.Final. Full history with fix guide.">
 <meta property="og:url" content="https://packagefix.dev/fix/java/netty">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
@@ -19,38 +19,40 @@
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "HowTo",
-      "name": "Fix Netty CVE-2023-44487",
-      "description": "Fix CVE-2023-44487 (HIGH) in Netty for Java/Maven. Paste your pom.xml into PackageFix and get a patched version \u2014 no CLI, no signup. Http/2 rapid reset denial of service attack.",
-      "estimatedCost": {
-        "@type": "MonetaryAmount",
-        "currency": "USD",
-        "value": "0"
-      },
-      "supply": {
-        "@type": "HowToSupply",
-        "name": "pom.xml"
-      },
-      "tool": {
-        "@type": "HowToTool",
-        "name": "PackageFix",
-        "url": "https://packagefix.dev"
-      },
-      "step": [
+      "@type": "ItemList",
+      "name": "All Netty CVEs",
+      "description": "Complete CVE history for Netty \u2014 5 known vulnerabilities",
+      "numberOfItems": 5,
+      "itemListElement": [
         {
-          "@type": "HowToStep",
-          "name": "Paste manifest",
-          "text": "Paste your pom.xml into PackageFix"
+          "@type": "ListItem",
+          "position": 1,
+          "name": "CVE-2019-20444",
+          "url": "https://osv.dev/vulnerability/CVE-2019-20444"
         },
         {
-          "@type": "HowToStep",
-          "name": "Find CVE",
-          "text": "Locate CVE-2023-44487 in the CVE table"
+          "@type": "ListItem",
+          "position": 2,
+          "name": "CVE-2021-37136",
+          "url": "https://osv.dev/vulnerability/CVE-2021-37136"
         },
         {
-          "@type": "HowToStep",
-          "name": "Download fix",
-          "text": "Download patched pom.xml and run mvn dependency:resolve"
+          "@type": "ListItem",
+          "position": 3,
+          "name": "CVE-2021-37137",
+          "url": "https://osv.dev/vulnerability/CVE-2021-37137"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "CVE-2022-41881",
+          "url": "https://osv.dev/vulnerability/CVE-2022-41881"
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "name": "CVE-2023-44487",
+          "url": "https://osv.dev/vulnerability/CVE-2023-44487"
         }
       ]
     },
@@ -61,7 +63,7 @@
           "@type": "ListItem",
           "position": 1,
           "name": "PackageFix",
-          "item": "https://packagefix.dev/"
+          "item": "https://packagefix.dev"
         },
         {
           "@type": "ListItem",
@@ -88,34 +90,18 @@
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "What is CVE-2023-44487?",
+          "name": "Do Spring Boot apps use Netty?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "CVE-2023-44487 is a HIGH severity vulnerability in Netty (Java/Maven) that allows HTTP/2 rapid reset denial of service attack. Update to 4.1.108.Final or later."
+            "text": "Spring Boot uses Netty when you use the reactive web stack (spring-boot-starter-webflux). Traditional Spring MVC uses embedded Tomcat instead. Check your spring-boot-starter dependency."
           }
         },
         {
           "@type": "Question",
-          "name": "How do I fix CVE-2023-44487 in Netty?",
+          "name": "How do I know what Netty version I'm using?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Update Netty to version 4.1.108.Final in your pom.xml and run mvn dependency:resolve."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Is CVE-2023-44487 being actively exploited?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes \u2014 it appears on the CISA KEV catalog. Fix immediately."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How do I verify the fix for CVE-2023-44487?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "After updating, paste your pom.xml into PackageFix again. If CVE-2023-44487 no longer appears in the CVE table, the fix is applied."
+            "text": "Run mvn dependency:tree | grep netty to see all Netty artifacts and their resolved versions. Or paste your pom.xml into PackageFix."
           }
         }
       ]
@@ -144,24 +130,35 @@ a:hover{text-decoration:underline}
 .breadcrumb a{color:var(--muted)}
 h1{font-size:clamp(18px,3vw,26px);font-weight:700;margin-bottom:12px;line-height:1.3}
 h2{font-size:14px;font-weight:600;margin:32px 0 12px}
+h3{font-size:13px;font-weight:600;margin:20px 0 8px}
 p{color:var(--muted);margin-bottom:12px;font-size:12px;line-height:1.7}
 .lead{color:var(--text);font-size:13px;margin-bottom:24px;line-height:1.7}
-.problem-box{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3);border-left:3px solid var(--red);border-radius:8px;padding:16px 20px;margin:20px 0}
-.problem-box .label{font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.definition-box{background:var(--surface);border:1px solid var(--purple);border-left:4px solid var(--purple);border-radius:8px;padding:20px 24px;margin:0 0 32px}
+.definition-box .def-label{font-size:10px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.definition-box p{color:var(--text);font-size:13px;line-height:1.7;margin:0}
 .fix-box{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.3);border-left:3px solid var(--green);border-radius:8px;padding:16px 20px;margin:20px 0}
 .fix-box .label{font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
-.kev-box{background:rgba(239,68,68,.12);border:1px solid var(--red);border-radius:8px;padding:12px 16px;margin:16px 0;font-size:11px;color:var(--red)}
 pre{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px 16px;overflow-x:auto;font-size:11px;line-height:1.6;margin:8px 0;white-space:pre-wrap}
 code{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:1px 5px;font-size:11px}
 .cta-box{background:var(--surface);border:1px solid var(--purple);border-radius:10px;padding:24px;margin:32px 0;text-align:center}
 .cta-box p{color:var(--text);font-size:13px;margin-bottom:16px}
 .cta-btn{display:inline-block;background:var(--purple);color:#fff;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;padding:12px 28px;border-radius:7px;text-decoration:none}
-.cta-btn:hover{opacity:.9;text-decoration:none}
 .badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em}
 .badge-red{background:rgba(239,68,68,.2);color:var(--red);border:1px solid var(--red)}
 .badge-orange{background:rgba(249,115,22,.2);color:var(--orange);border:1px solid var(--orange)}
 .badge-green{background:rgba(34,197,94,.2);color:var(--green);border:1px solid var(--green)}
 .badge-purple{background:rgba(108,99,255,.2);color:var(--purple);border:1px solid var(--purple)}
+.badge-muted{background:rgba(107,114,128,.15);color:var(--muted);border:1px solid var(--border)}
+.cve-history{width:100%;border-collapse:collapse;margin:16px 0;font-size:12px}
+.cve-history th{text-align:left;padding:10px 12px;border-bottom:2px solid var(--border);color:var(--muted);font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.08em}
+.cve-history td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+.cve-history tr:last-child td{border-bottom:none}
+.cve-history tr:hover td{background:var(--surface2)}
+.compare-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-top:16px}
+.compare-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px}
+.compare-card h3{font-size:12px;font-weight:600;margin:0 0 6px}
+.compare-card h3 a{color:var(--text)}
+.compare-card p{font-size:11px;color:var(--muted);margin:0}
 .faq{margin:40px 0}
 .faq-item{border-bottom:1px solid var(--border);padding:16px 0}
 .faq-item:last-child{border-bottom:none}
@@ -171,14 +168,9 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
 .related-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
 .related-card a{color:var(--text);font-size:12px;font-weight:500}
 .related-card p{font-size:11px;color:var(--muted);margin:4px 0 0}
-.cve-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:12px}
-.cve-table th{text-align:left;padding:8px 12px;border-bottom:1px solid var(--border);color:var(--muted);font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.08em}
-.cve-table td{padding:8px 12px;border-bottom:1px solid var(--border)}
-.cve-table tr:last-child td{border-bottom:none}
-.vs-table td:first-child{font-weight:600;color:var(--text)}
 .site-footer{border-top:1px solid var(--border);padding:24px;text-align:center;font-size:11px;color:var(--muted);margin-top:60px}
 .site-footer a{color:var(--muted)}
-@media(max-width:640px){.nav-links{display:none}.related-grid{grid-template-columns:1fr}}
+@media(max-width:640px){.nav-links{display:none}.related-grid{grid-template-columns:1fr}.compare-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -186,48 +178,43 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
   <a href="https://packagefix.dev" class="logo">Package<span>Fix</span></a>
   <nav class="nav-links">
     <a href="https://packagefix.dev">Tool</a>
-    <a href="https://packagefix.dev/alternatives">Alternatives</a>
-    <a href="https://packagefix.dev/error">Error Fixes</a>
+    <a href="https://packagefix.dev/glossary">Glossary</a>
+    <a href="https://packagefix.dev/cisa-kev">CISA KEV</a>
+    <a href="https://packagefix.dev/blog">Blog</a>
     <a href="https://github.com/metriclogic26/packagefix">GitHub</a>
   </nav>
 </header>
 <main class="container">
   <div class="breadcrumb"><a href="/">PackageFix</a> <span style='color:var(--border)'>/</span> <a href="/fix">Fix Guides</a> <span style='color:var(--border)'>/</span> <a href="/java">Java/Maven</a> <span style='color:var(--border)'>/</span> <span style="color:var(--text)">Netty</span></div>
   
-<h1>Fix Netty — CVE-2023-44487 <span class="badge badge-orange">HIGH</span></h1>
-<p class="lead">Fix CVE-2023-44487 (HIGH) in Netty for Java/Maven. Paste your pom.xml into PackageFix and get a patched version — no CLI, no signup. Http/2 rapid reset denial of service attack.</p>
-<div class="kev-box">🔴 <strong>CISA KEV</strong> — Netty appears on the CISA Known Exploited Vulnerabilities catalog. Actively exploited in the wild. Fix immediately.</div>
-<div class="problem-box">
-  <div class="label">⚠ Vulnerability</div>
-  <p style="margin:0"><strong>CVE-2023-44487</strong> (HIGH) — HTTP/2 rapid reset denial of service attack in Netty below <code>4.1.108.Final</code>.</p>
+<h1>All Netty CVEs — Complete Vulnerability History</h1>
+<p class="lead">Netty is the most widely-used Java async networking framework — underlying Spring WebFlux, gRPC, Cassandra, and Elasticsearch. CVE-2023-44487 (HTTP/2 Rapid Reset) is on CISA KEV.</p>
+<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px">
+  <span class="badge badge-purple">Java/Maven</span>
+  <span class="badge badge-muted">Millions weekly downloads</span>
+  <span class="badge badge-muted">5 CVEs total</span>
+  <span class="badge badge-red">1 CRITICAL</span>
+  <span class="badge badge-red">🔴 CISA KEV</span>
 </div>
-<h2>Vulnerable — pom.xml</h2>
-<pre><netty.version>4.1.77.Final</netty.version></pre>
-<h2>Fixed — pom.xml</h2>
-<pre><netty.version>4.1.108.Final</netty.version></pre>
-<div class="fix-box">
-  <div class="label">✓ Fix</div>
-  <p style="margin:0">Update Netty to <code>4.1.108.Final</code> and run <code>mvn dependency:resolve</code>.</p>
-</div>
+<h2>Full CVE history</h2>
+<p style="margin:8px 0 0;font-size:11px;color:var(--red)">🔴 1 CVE on CISA KEV — actively exploited in real attacks</p>
+<table class="cve-history">
+<thead><tr><th>CVE</th><th>Year</th><th>Severity</th><th>Description</th><th>Fix</th></tr></thead>
+<tbody><tr><td><a href='https://osv.dev/vulnerability/CVE-2019-20444' target='_blank' rel='noopener'>CVE-2019-20444</a></td><td>2019</td><td><span class="badge badge-red">CRITICAL</span></td><td style='color:var(--muted)'>HTTP request smuggling via whitespace</td><td><span class="badge badge-green">Fixed 4.1.44.Final</span></td></tr><tr><td><a href='https://osv.dev/vulnerability/CVE-2021-37136' target='_blank' rel='noopener'>CVE-2021-37136</a></td><td>2021</td><td><span class="badge badge-orange">HIGH</span></td><td style='color:var(--muted)'>DoS via compression bomb in Brotli decompressor</td><td><span class="badge badge-green">Fixed 4.1.68.Final</span></td></tr><tr><td><a href='https://osv.dev/vulnerability/CVE-2021-37137' target='_blank' rel='noopener'>CVE-2021-37137</a></td><td>2021</td><td><span class="badge badge-orange">HIGH</span></td><td style='color:var(--muted)'>DoS via compression bomb in Snappy decompressor</td><td><span class="badge badge-green">Fixed 4.1.68.Final</span></td></tr><tr><td><a href='https://osv.dev/vulnerability/CVE-2022-41881' target='_blank' rel='noopener'>CVE-2022-41881</a></td><td>2022</td><td><span class="badge badge-orange">HIGH</span></td><td style='color:var(--muted)'>DoS via StackOverflow in HaProxyMessageDecoder</td><td><span class="badge badge-green">Fixed 4.1.86.Final</span></td></tr><tr><td><a href='https://osv.dev/vulnerability/CVE-2023-44487' target='_blank' rel='noopener'>CVE-2023-44487</a></td><td>2023</td><td><span style="color:var(--red);margin-right:4px" title="CISA KEV">🔴</span><span class="badge badge-orange">HIGH</span></td><td style='color:var(--muted)'>HTTP/2 Rapid Reset DoS — CISA KEV</td><td><span class="badge badge-green">Fixed 4.1.100.Final</span></td></tr></tbody></table>
+<h2>Current safe version: 4.1.108.Final</h2>
+<pre style="margin-bottom:4px"># Before</pre>
+<pre>"netty.version>4.1.77.Final</netty.version"</pre>
+<pre style="margin-bottom:4px"># After</pre>
+<pre>"netty.version>4.1.108.Final</netty.version"</pre>
+<p style="margin-top:8px">Then run: <code>mvn dependency:resolve</code></p>
 <div class="cta-box">
-  <p>Paste your manifest — get back a fixed version with all CVEs patched in seconds.</p>
-  <a href="https://packagefix.dev" class="cta-btn">Open PackageFix →</a>
-  <p style="margin-top:12px;font-size:11px;color:var(--muted)">No signup · No CLI · No GitHub connection · Runs 100% in your browser</p>
+  <p>Paste your manifest — see your exact versions against the full CVE history.</p>
+  <a href="https://packagefix.dev" class="cta-btn">Scan with PackageFix →</a>
+  <p style="margin-top:12px;font-size:11px;color:var(--muted)">Free · No signup · No CLI · Runs in your browser</p>
 </div>
-<h2>CVE Details</h2>
-<table class="cve-table">
-  <thead><tr><th>Field</th><th>Value</th></tr></thead>
-  <tbody>
-    <tr><td>CVE ID</td><td><a href="https://osv.dev/vulnerability/CVE-2023-44487" target="_blank" rel="noopener">CVE-2023-44487</a></td></tr>
-    <tr><td>Severity</td><td><span class="badge badge-orange">HIGH</span></td></tr>
-    <tr><td>Package</td><td>Netty (Java/Maven)</td></tr>
-    <tr><td>Safe version</td><td>4.1.108.Final</td></tr>
-    <tr><td>CISA KEV</td><td>🔴 Yes</td></tr>
-    <tr><td>Description</td><td>Http/2 rapid reset denial of service attack</td></tr>
-  </tbody>
-</table>
-<div class="faq"><h2>Frequently Asked Questions</h2><div class="faq-item"><div class="faq-q">What is CVE-2023-44487?</div><div class="faq-a">CVE-2023-44487 is a HIGH severity vulnerability in Netty (Java/Maven) that allows HTTP/2 rapid reset denial of service attack. Update to 4.1.108.Final or later.</div></div><div class="faq-item"><div class="faq-q">How do I fix CVE-2023-44487 in Netty?</div><div class="faq-a">Update Netty to version 4.1.108.Final in your pom.xml and run mvn dependency:resolve.</div></div><div class="faq-item"><div class="faq-q">Is CVE-2023-44487 being actively exploited?</div><div class="faq-a">Yes — it appears on the CISA KEV catalog. Fix immediately.</div></div><div class="faq-item"><div class="faq-q">How do I verify the fix for CVE-2023-44487?</div><div class="faq-a">After updating, paste your pom.xml into PackageFix again. If CVE-2023-44487 no longer appears in the CVE table, the fix is applied.</div></div></div>
-<div style="margin:40px 0"><h2>Related Guides</h2><div class="related-grid"><div class="related-card"><a href="/java">Java/Maven Security Overview</a><p>All Java/Maven vulnerability guides</p></div><div class="related-card"><a href="/fix/java/outdated-dependencies">Fix Outdated Java/Maven Dependencies</a><p>General dependency updates</p></div><div class="related-card"><a href="https://packagefix.dev">Open PackageFix Tool</a><p>Scan your manifest live</p></div><div class="related-card"><a href="/vs/snyk-advisor">PackageFix vs Snyk Advisor</a><p>Free browser alternative</p></div></div></div>
+<div class="faq"><h2>Common questions</h2><div class="faq-item"><div class="faq-q">Do Spring Boot apps use Netty?</div><div class="faq-a">Spring Boot uses Netty when you use the reactive web stack (spring-boot-starter-webflux). Traditional Spring MVC uses embedded Tomcat instead. Check your spring-boot-starter dependency.</div></div><div class="faq-item"><div class="faq-q">How do I know what Netty version I'm using?</div><div class="faq-a">Run mvn dependency:tree | grep netty to see all Netty artifacts and their resolved versions. Or paste your pom.xml into PackageFix.</div></div></div>
+<div style="margin:40px 0"><h2>Related</h2><div class="related-grid"><div class="related-card"><a href="/kev/CVE-2023-44487">KEV: HTTP/2 Rapid Reset</a><p>Full CVE detail</p></div><div class="related-card"><a href="/fix/java/spring-core">Fix Spring</a><p>Uses Netty in reactive mode</p></div><div class="related-card"><a href="/java">Java Security</a><p>All Java guides</p></div></div></div>
+
 </main>
 <footer class="site-footer">
   <p>PackageFix · <a href="https://packagefix.dev">packagefix.dev</a> · MIT Licensed · Open Source</p>
@@ -235,7 +222,7 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
   <a href="https://configclarity.dev">ConfigClarity</a> ·
   <a href="https://domainpreflight.dev">DomainPreflight</a></p>
   <p style="margin-top:6px">Vulnerability data: <a href="https://osv.dev">OSV Database</a> · <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog">CISA KEV Catalog</a></p>
-  <p style="margin-top:6px">Always test dependency updates in a staging environment before deploying to production.</p>
+  <p style="margin-top:6px">Always test dependency updates in staging before deploying to production.</p>
 </footer>
 </body>
 </html>

@@ -2047,6 +2047,38 @@
     {
       "source": "/glossary/",
       "destination": "/seo/glossary/index.html"
+    },
+    {
+      "source": "/compare",
+      "destination": "/seo/compare/index.html"
+    },
+    {
+      "source": "/compare/",
+      "destination": "/seo/compare/index.html"
+    },
+    {
+      "source": "/glossary/reachability-analysis",
+      "destination": "/seo/glossary/reachability-analysis/index.html"
+    },
+    {
+      "source": "/glossary/reachability-analysis/",
+      "destination": "/seo/glossary/reachability-analysis/index.html"
+    },
+    {
+      "source": "/glossary/remediation",
+      "destination": "/seo/glossary/remediation/index.html"
+    },
+    {
+      "source": "/glossary/remediation/",
+      "destination": "/seo/glossary/remediation/index.html"
+    },
+    {
+      "source": "/fix/pypi/pyyaml",
+      "destination": "/seo/fix/pypi/pyyaml/index.html"
+    },
+    {
+      "source": "/fix/pypi/pyyaml/",
+      "destination": "/seo/fix/pypi/pyyaml/index.html"
     }
   ]
 }

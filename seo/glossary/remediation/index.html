@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Remediation — Definition | PackageFix Glossary</title>
+<meta name="description" content="The process of fixing a security vulnerability — updating a package, applying a patch, or changing configuration to remove the risk. Remediation in dependency security means taking action to eliminate or reduce a known vulnerability. The most common for...">
+<link rel="canonical" href="https://packagefix.dev/glossary/remediation">
+<meta property="og:title" content="Remediation — Definition | PackageFix Glossary">
+<meta property="og:description" content="The process of fixing a security vulnerability — updating a package, applying a patch, or changing configuration to remove the risk. Remediation in dependency security means taking action to eliminate or reduce a known vulnerability. The most common for...">
+<meta property="og:url" content="https://packagefix.dev/glossary/remediation">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/svg+xml" href="/icon.svg">
+<link rel="icon" type="image/png" sizes="512x512" href="/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "DefinedTerm",
+      "name": "Remediation",
+      "description": "Remediation in dependency security means taking action to eliminate or reduce a known vulnerability. The most common form is updating a vulnerable package to a version that contains the fix. Other forms include applying a vendor patch, using an npm override to force a safe transitive version, or \u2014 as a last resort \u2014 removing the vulnerable dependency entirely.",
+      "url": "https://packagefix.dev/glossary/remediation",
+      "inDefinedTermSet": {
+        "@type": "DefinedTermSet",
+        "name": "PackageFix Dependency Security Glossary",
+        "url": "https://packagefix.dev/glossary"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "PackageFix",
+          "item": "https://packagefix.dev"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Glossary",
+          "item": "https://packagefix.dev/glossary"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Remediation",
+          "item": "https://packagefix.dev/glossary/remediation"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What's the difference between remediation and mitigation?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Remediation eliminates the vulnerability \u2014 you update the package and the vulnerable code is gone. Mitigation reduces the risk without eliminating it \u2014 for example, blocking certain input patterns at your firewall while you wait to update. Remediation is the goal; mitigation is a temporary measure."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What if the safe version has breaking changes?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Check the package's CHANGELOG and migration guide. Many security patches are released as patch versions (1.2.3 \u2192 1.2.4) with no breaking changes. When they are breaking (major version bumps), the fix is larger but still necessary. Start in a branch, run your test suite, fix the breaking changes."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does PackageFix help with remediation?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "PackageFix generates the fixed manifest file \u2014 your package.json, requirements.txt, or Gemfile with all CVEs patched to safe versions. Download it, replace your existing manifest, run npm install or bundle install, and you're done. For transitive vulnerabilities, it also generates the npm overrides block."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is mean time to remediate (MTTR)?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "MTTR is a security metric measuring how long it takes from when a vulnerability is discovered to when it's fixed in production. Industry benchmarks suggest under 30 days for Critical CVEs, under 60 days for High. CISA KEV entries should be under 2 weeks."
+          }
+        }
+      ]
+    }
+  ]
+}</script>
+<style>
+:root {
+  --bg:#0B0D14; --surface:#12151F; --surface2:#1A1D2E;
+  --border:#252836; --purple:#6C63FF; --green:#22C55E;
+  --orange:#F97316; --red:#EF4444; --yellow:#EAB308;
+  --text:#E2E4F0; --muted:#6B7280;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.6;min-height:100vh}
+a{color:var(--purple);text-decoration:none}
+a:hover{text-decoration:underline}
+.site-header{border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:15px;font-weight:700;color:var(--text)}
+.logo span{color:var(--purple)}
+.nav-links{display:flex;gap:20px;font-size:12px}
+.nav-links a{color:var(--muted)}
+.nav-links a:hover{color:var(--text);text-decoration:none}
+.container{max-width:860px;margin:0 auto;padding:48px 24px}
+.breadcrumb{font-size:11px;color:var(--muted);margin-bottom:24px;display:flex;gap:6px;flex-wrap:wrap}
+.breadcrumb a{color:var(--muted)}
+h1{font-size:clamp(18px,3vw,26px);font-weight:700;margin-bottom:12px;line-height:1.3}
+h2{font-size:14px;font-weight:600;margin:32px 0 12px}
+h3{font-size:13px;font-weight:600;margin:20px 0 8px}
+p{color:var(--muted);margin-bottom:12px;font-size:12px;line-height:1.7}
+.lead{color:var(--text);font-size:13px;margin-bottom:24px;line-height:1.7}
+.definition-box{background:var(--surface);border:1px solid var(--purple);border-left:4px solid var(--purple);border-radius:8px;padding:20px 24px;margin:0 0 32px}
+.definition-box .def-label{font-size:10px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.definition-box p{color:var(--text);font-size:13px;line-height:1.7;margin:0}
+.fix-box{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.3);border-left:3px solid var(--green);border-radius:8px;padding:16px 20px;margin:20px 0}
+.fix-box .label{font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+pre{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px 16px;overflow-x:auto;font-size:11px;line-height:1.6;margin:8px 0;white-space:pre-wrap}
+code{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:1px 5px;font-size:11px}
+.cta-box{background:var(--surface);border:1px solid var(--purple);border-radius:10px;padding:24px;margin:32px 0;text-align:center}
+.cta-box p{color:var(--text);font-size:13px;margin-bottom:16px}
+.cta-btn{display:inline-block;background:var(--purple);color:#fff;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;padding:12px 28px;border-radius:7px;text-decoration:none}
+.badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em}
+.badge-red{background:rgba(239,68,68,.2);color:var(--red);border:1px solid var(--red)}
+.badge-orange{background:rgba(249,115,22,.2);color:var(--orange);border:1px solid var(--orange)}
+.badge-green{background:rgba(34,197,94,.2);color:var(--green);border:1px solid var(--green)}
+.badge-purple{background:rgba(108,99,255,.2);color:var(--purple);border:1px solid var(--purple)}
+.badge-muted{background:rgba(107,114,128,.15);color:var(--muted);border:1px solid var(--border)}
+.cve-history{width:100%;border-collapse:collapse;margin:16px 0;font-size:12px}
+.cve-history th{text-align:left;padding:10px 12px;border-bottom:2px solid var(--border);color:var(--muted);font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.08em}
+.cve-history td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+.cve-history tr:last-child td{border-bottom:none}
+.cve-history tr:hover td{background:var(--surface2)}
+.compare-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-top:16px}
+.compare-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px}
+.compare-card h3{font-size:12px;font-weight:600;margin:0 0 6px}
+.compare-card h3 a{color:var(--text)}
+.compare-card p{font-size:11px;color:var(--muted);margin:0}
+.faq{margin:40px 0}
+.faq-item{border-bottom:1px solid var(--border);padding:16px 0}
+.faq-item:last-child{border-bottom:none}
+.faq-q{font-size:12px;font-weight:600;color:var(--text);margin-bottom:8px}
+.faq-a{font-size:12px;color:var(--muted);line-height:1.7}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:12px}
+.related-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
+.related-card a{color:var(--text);font-size:12px;font-weight:500}
+.related-card p{font-size:11px;color:var(--muted);margin:4px 0 0}
+.site-footer{border-top:1px solid var(--border);padding:24px;text-align:center;font-size:11px;color:var(--muted);margin-top:60px}
+.site-footer a{color:var(--muted)}
+@media(max-width:640px){.nav-links{display:none}.related-grid{grid-template-columns:1fr}.compare-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <a href="https://packagefix.dev" class="logo">Package<span>Fix</span></a>
+  <nav class="nav-links">
+    <a href="https://packagefix.dev">Tool</a>
+    <a href="https://packagefix.dev/glossary">Glossary</a>
+    <a href="https://packagefix.dev/cisa-kev">CISA KEV</a>
+    <a href="https://packagefix.dev/blog">Blog</a>
+    <a href="https://github.com/metriclogic26/packagefix">GitHub</a>
+  </nav>
+</header>
+<main class="container">
+  <div class="breadcrumb"><a href="/">PackageFix</a> <span style='color:var(--border)'>/</span> <a href="/glossary">Glossary</a> <span style='color:var(--border)'>/</span> <span style="color:var(--text)">Remediation</span></div>
+  
+<h1>Remediation</h1>
+<div style="margin-bottom:24px"><span class="badge badge-purple">Security · DevSecOps</span></div>
+<div class="definition-box">
+  <div class="def-label">Definition</div>
+  <p class="lead">Remediation in dependency security means taking action to eliminate or reduce a known vulnerability. The most common form is updating a vulnerable package to a version that contains the fix. Other forms include applying a vendor patch, using an npm override to force a safe transitive version, or — as a last resort — removing the vulnerable dependency entirely.</p>
+</div>
+
+<h2>Types of remediation</h2>
+
+<h3>Direct version update</h3>
+<p>The cleanest fix — bump the vulnerable package to the safe version in your manifest and run your package manager. This works when you control the direct dependency.</p>
+<pre># npm
+npm install lodash@4.17.21
+
+# pip
+pip install Django==4.2.13
+
+# Ruby
+bundle update nokogiri</pre>
+
+<h3>Override / forced resolution</h3>
+<p>When the vulnerability is in a transitive dependency you don't control directly, you can force the package manager to use a safe version. PackageFix generates this block automatically.</p>
+<pre>// package.json — npm overrides
+{
+  "overrides": {
+    "qs": "6.11.0"
+  }
+}</pre>
+
+<h3>Virtual patch</h3>
+<p>When you can't update the package immediately (integration risk, breaking changes), you can add controls to reduce the attack surface. For example, blocking the specific input pattern that triggers the CVE at your WAF or API gateway. This is a temporary measure — not a substitute for updating.</p>
+
+<h2>Remediation priority</h2>
+<p>Not all CVEs need the same urgency. A practical order:</p>
+<ul style="padding-left:20px;margin:12px 0;color:var(--muted);font-size:12px;line-height:2">
+  <li><strong>CISA KEV entries</strong> — fix today. Being exploited right now.</li>
+  <li><strong>CRITICAL CVEs in direct dependencies</strong> — fix this sprint.</li>
+  <li><strong>HIGH CVEs in direct dependencies</strong> — fix this sprint.</li>
+  <li><strong>CRITICAL/HIGH in transitive dependencies</strong> — next sprint, use overrides.</li>
+  <li><strong>MEDIUM CVEs</strong> — scheduled update cycle.</li>
+  <li><strong>LOW CVEs</strong> — backlog, address in bulk.</li>
+</ul>
+
+<div class="fix-box">
+  <div class="label">PackageFix speeds up remediation</div>
+  <p style="margin:0">PackageFix generates the fixed manifest with safe versions already applied — download it, run your install command, done. No manually hunting for which version fixed which CVE.</p>
+</div>
+<div class="cta-box">
+  <p>Paste your manifest — see your exact versions against the full CVE history.</p>
+  <a href="https://packagefix.dev" class="cta-btn">Scan with PackageFix →</a>
+  <p style="margin-top:12px;font-size:11px;color:var(--muted)">Free · No signup · No CLI · Runs in your browser</p>
+</div>
+<div class="faq"><h2>Common questions</h2><div class="faq-item"><div class="faq-q">What's the difference between remediation and mitigation?</div><div class="faq-a">Remediation eliminates the vulnerability — you update the package and the vulnerable code is gone. Mitigation reduces the risk without eliminating it — for example, blocking certain input patterns at your firewall while you wait to update. Remediation is the goal; mitigation is a temporary measure.</div></div><div class="faq-item"><div class="faq-q">What if the safe version has breaking changes?</div><div class="faq-a">Check the package's CHANGELOG and migration guide. Many security patches are released as patch versions (1.2.3 → 1.2.4) with no breaking changes. When they are breaking (major version bumps), the fix is larger but still necessary. Start in a branch, run your test suite, fix the breaking changes.</div></div><div class="faq-item"><div class="faq-q">How does PackageFix help with remediation?</div><div class="faq-a">PackageFix generates the fixed manifest file — your package.json, requirements.txt, or Gemfile with all CVEs patched to safe versions. Download it, replace your existing manifest, run npm install or bundle install, and you're done. For transitive vulnerabilities, it also generates the npm overrides block.</div></div><div class="faq-item"><div class="faq-q">What is mean time to remediate (MTTR)?</div><div class="faq-a">MTTR is a security metric measuring how long it takes from when a vulnerability is discovered to when it's fixed in production. Industry benchmarks suggest under 30 days for Critical CVEs, under 60 days for High. CISA KEV entries should be under 2 weeks.</div></div></div>
+<div style="margin:40px 0"><h2>Related</h2><div class="related-grid"><div class="related-card"><a href="/glossary/dependency-scanning">Dependency Scanning</a><p>Finding what to remediate</p></div><div class="related-card"><a href="/glossary/cisa-kev">CISA KEV</a><p>Highest remediation priority</p></div><div class="related-card"><a href="/glossary/transitive-dependency">Transitive Dependencies</a><p>Harder to remediate</p></div><div class="related-card"><a href="/guides/github-actions">Automate in CI</a><p>Catch CVEs before they ship</p></div></div></div>
+
+</main>
+<footer class="site-footer">
+  <p>PackageFix · <a href="https://packagefix.dev">packagefix.dev</a> · MIT Licensed · Open Source</p>
+  <p style="margin-top:6px">Part of the MetricLogic network ·
+  <a href="https://configclarity.dev">ConfigClarity</a> ·
+  <a href="https://domainpreflight.dev">DomainPreflight</a></p>
+  <p style="margin-top:6px">Vulnerability data: <a href="https://osv.dev">OSV Database</a> · <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog">CISA KEV Catalog</a></p>
+  <p style="margin-top:6px">Always test dependency updates in staging before deploying to production.</p>
+</footer>
+</body>
+</html>

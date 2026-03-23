@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Fix SQLAlchemy CVE-2023-30534 — PyPI Vulnerability | PackageFix</title>
-<meta name="description" content="Fix CVE-2023-30534 (HIGH) in SQLAlchemy for PyPI. Paste your requirements.txt into PackageFix and get a patched version — no CLI, no signup. Sql injection via crafted filter parameters.">
+<title>All SQLAlchemy CVEs — Complete PyPI Vulnerability History | PackageFix</title>
+<meta name="description" content="SQLAlchemy has 3 known CVEs. Safe version: 2.0.28. Full history with fix guide.">
 <link rel="canonical" href="https://packagefix.dev/fix/pypi/sqlalchemy">
-<meta property="og:title" content="Fix SQLAlchemy CVE-2023-30534 — PyPI Vulnerability | PackageFix">
-<meta property="og:description" content="Fix CVE-2023-30534 (HIGH) in SQLAlchemy for PyPI. Paste your requirements.txt into PackageFix and get a patched version — no CLI, no signup. Sql injection via crafted filter parameters.">
+<meta property="og:title" content="All SQLAlchemy CVEs — Complete PyPI Vulnerability History | PackageFix">
+<meta property="og:description" content="SQLAlchemy has 3 known CVEs. Safe version: 2.0.28. Full history with fix guide.">
 <meta property="og:url" content="https://packagefix.dev/fix/pypi/sqlalchemy">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
@@ -19,38 +19,28 @@
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "HowTo",
-      "name": "Fix SQLAlchemy CVE vulnerabilities",
-      "description": "How to find and fix CVEs in SQLAlchemy (PyPI)",
-      "estimatedCost": {
-        "@type": "MonetaryAmount",
-        "currency": "USD",
-        "value": "0"
-      },
-      "supply": {
-        "@type": "HowToSupply",
-        "name": "requirements.txt"
-      },
-      "tool": {
-        "@type": "HowToTool",
-        "name": "PackageFix",
-        "url": "https://packagefix.dev"
-      },
-      "step": [
+      "@type": "ItemList",
+      "name": "All SQLAlchemy CVEs",
+      "description": "Complete CVE history for SQLAlchemy \u2014 3 known vulnerabilities",
+      "numberOfItems": 3,
+      "itemListElement": [
         {
-          "@type": "HowToStep",
-          "name": "Paste manifest",
-          "text": "Paste your requirements.txt into PackageFix at packagefix.dev"
+          "@type": "ListItem",
+          "position": 1,
+          "name": "CVE-2019-7164",
+          "url": "https://osv.dev/vulnerability/CVE-2019-7164"
         },
         {
-          "@type": "HowToStep",
-          "name": "Review CVEs",
-          "text": "Check the CVE table for SQLAlchemy vulnerabilities with severity badges"
+          "@type": "ListItem",
+          "position": 2,
+          "name": "CVE-2019-7548",
+          "url": "https://osv.dev/vulnerability/CVE-2019-7548"
         },
         {
-          "@type": "HowToStep",
-          "name": "Download fix",
-          "text": "Download the patched requirements.txt and run pip install -r requirements.txt"
+          "@type": "ListItem",
+          "position": 3,
+          "name": "CVE-2023-30534",
+          "url": "https://osv.dev/vulnerability/CVE-2023-30534"
         }
       ]
     },
@@ -61,7 +51,7 @@
           "@type": "ListItem",
           "position": 1,
           "name": "PackageFix",
-          "item": "https://packagefix.dev/"
+          "item": "https://packagefix.dev"
         },
         {
           "@type": "ListItem",
@@ -73,7 +63,7 @@
           "@type": "ListItem",
           "position": 3,
           "name": "PyPI",
-          "item": "https://packagefix.dev/python"
+          "item": "https://packagefix.dev/pypi"
         },
         {
           "@type": "ListItem",
@@ -88,34 +78,18 @@
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "What is CVE-2023-30534?",
+          "name": "Is SQLAlchemy's ORM safe from SQL injection?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "CVE-2023-30534 is a HIGH severity vulnerability in SQLAlchemy (PyPI). It allows SQL injection via crafted filter parameters. Update to version 2.0.28 or later to fix it."
+            "text": "The ORM query interface is safe \u2014 SQLAlchemy parameterises queries automatically. The risk is with raw SQL via text() or execute() with string formatting. Never use f-strings or % formatting in SQL queries \u2014 always use bindparams."
           }
         },
         {
           "@type": "Question",
-          "name": "How do I fix CVE-2023-30534 in SQLAlchemy?",
+          "name": "Should I migrate from SQLAlchemy 1.4 to 2.0?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Update SQLAlchemy to version 2.0.28 in your requirements.txt. Run pip install -r requirements.txt after updating to apply the fix."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Is CVE-2023-30534 being actively exploited?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Check the live CISA KEV catalog at packagefix.dev \u2014 PackageFix always reflects the current KEV status."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How do I check if I am affected by CVE-2023-30534?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Paste your requirements.txt into PackageFix. If your installed version of SQLAlchemy is below 2.0.28, you are affected. PackageFix shows the exact CVE ID and fix version."
+            "text": "SQLAlchemy 1.4 EOL is approaching. 2.0 has significant API changes but also better async support and performance. The migration guide is comprehensive \u2014 worth the investment for long-lived projects."
           }
         }
       ]
@@ -144,25 +118,35 @@ a:hover{text-decoration:underline}
 .breadcrumb a{color:var(--muted)}
 h1{font-size:clamp(18px,3vw,26px);font-weight:700;margin-bottom:12px;line-height:1.3}
 h2{font-size:14px;font-weight:600;margin:32px 0 12px}
-h3{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin:24px 0 8px}
+h3{font-size:13px;font-weight:600;margin:20px 0 8px}
 p{color:var(--muted);margin-bottom:12px;font-size:12px;line-height:1.7}
 .lead{color:var(--text);font-size:13px;margin-bottom:24px;line-height:1.7}
-.problem-box{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3);border-left:3px solid var(--red);border-radius:8px;padding:16px 20px;margin:20px 0}
-.problem-box .label{font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.definition-box{background:var(--surface);border:1px solid var(--purple);border-left:4px solid var(--purple);border-radius:8px;padding:20px 24px;margin:0 0 32px}
+.definition-box .def-label{font-size:10px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.definition-box p{color:var(--text);font-size:13px;line-height:1.7;margin:0}
 .fix-box{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.3);border-left:3px solid var(--green);border-radius:8px;padding:16px 20px;margin:20px 0}
 .fix-box .label{font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
-.kev-box{background:rgba(239,68,68,.12);border:1px solid var(--red);border-radius:8px;padding:12px 16px;margin:16px 0;font-size:11px;color:var(--red)}
 pre{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px 16px;overflow-x:auto;font-size:11px;line-height:1.6;margin:8px 0;white-space:pre-wrap}
 code{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:1px 5px;font-size:11px}
 .cta-box{background:var(--surface);border:1px solid var(--purple);border-radius:10px;padding:24px;margin:32px 0;text-align:center}
 .cta-box p{color:var(--text);font-size:13px;margin-bottom:16px}
 .cta-btn{display:inline-block;background:var(--purple);color:#fff;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;padding:12px 28px;border-radius:7px;text-decoration:none}
-.cta-btn:hover{opacity:.9;text-decoration:none}
 .badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em}
 .badge-red{background:rgba(239,68,68,.2);color:var(--red);border:1px solid var(--red)}
 .badge-orange{background:rgba(249,115,22,.2);color:var(--orange);border:1px solid var(--orange)}
 .badge-green{background:rgba(34,197,94,.2);color:var(--green);border:1px solid var(--green)}
 .badge-purple{background:rgba(108,99,255,.2);color:var(--purple);border:1px solid var(--purple)}
+.badge-muted{background:rgba(107,114,128,.15);color:var(--muted);border:1px solid var(--border)}
+.cve-history{width:100%;border-collapse:collapse;margin:16px 0;font-size:12px}
+.cve-history th{text-align:left;padding:10px 12px;border-bottom:2px solid var(--border);color:var(--muted);font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.08em}
+.cve-history td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+.cve-history tr:last-child td{border-bottom:none}
+.cve-history tr:hover td{background:var(--surface2)}
+.compare-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-top:16px}
+.compare-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px}
+.compare-card h3{font-size:12px;font-weight:600;margin:0 0 6px}
+.compare-card h3 a{color:var(--text)}
+.compare-card p{font-size:11px;color:var(--muted);margin:0}
 .faq{margin:40px 0}
 .faq-item{border-bottom:1px solid var(--border);padding:16px 0}
 .faq-item:last-child{border-bottom:none}
@@ -172,13 +156,9 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
 .related-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
 .related-card a{color:var(--text);font-size:12px;font-weight:500}
 .related-card p{font-size:11px;color:var(--muted);margin:4px 0 0}
-.cve-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:12px}
-.cve-table th{text-align:left;padding:8px 12px;border-bottom:1px solid var(--border);color:var(--muted);font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.08em}
-.cve-table td{padding:8px 12px;border-bottom:1px solid var(--border)}
-.cve-table tr:last-child td{border-bottom:none}
 .site-footer{border-top:1px solid var(--border);padding:24px;text-align:center;font-size:11px;color:var(--muted);margin-top:60px}
 .site-footer a{color:var(--muted)}
-@media(max-width:640px){.nav-links{display:none}.related-grid{grid-template-columns:1fr}}
+@media(max-width:640px){.nav-links{display:none}.related-grid{grid-template-columns:1fr}.compare-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -186,56 +166,42 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
   <a href="https://packagefix.dev" class="logo">Package<span>Fix</span></a>
   <nav class="nav-links">
     <a href="https://packagefix.dev">Tool</a>
-    <a href="https://packagefix.dev/alternatives">Alternatives</a>
-    <a href="https://packagefix.dev/error">Error Fixes</a>
+    <a href="https://packagefix.dev/glossary">Glossary</a>
+    <a href="https://packagefix.dev/cisa-kev">CISA KEV</a>
+    <a href="https://packagefix.dev/blog">Blog</a>
     <a href="https://github.com/metriclogic26/packagefix">GitHub</a>
   </nav>
 </header>
 <main class="container">
-  <div class="breadcrumb"><a href="/">PackageFix</a> <span style='color:var(--border)'>/</span> <a href="/fix">Fix Guides</a> <span style='color:var(--border)'>/</span> <a href="/python">PyPI</a> <span style='color:var(--border)'>/</span> <span style="color:var(--text)">SQLAlchemy</span></div>
+  <div class="breadcrumb"><a href="/">PackageFix</a> <span style='color:var(--border)'>/</span> <a href="/fix">Fix Guides</a> <span style='color:var(--border)'>/</span> <a href="/pypi">PyPI</a> <span style='color:var(--border)'>/</span> <span style="color:var(--text)">SQLAlchemy</span></div>
   
-<h1>Fix SQLAlchemy — CVE-2023-30534 <span class="badge badge-orange">HIGH</span></h1>
-<p class="lead">Fix CVE-2023-30534 (HIGH) in SQLAlchemy for PyPI. Paste your requirements.txt into PackageFix and get a patched version — no CLI, no signup. Sql injection via crafted filter parameters.</p>
-
-<div class="problem-box">
-  <div class="label">⚠ Vulnerability</div>
-  <p style="margin:0"><strong>CVE-2023-30534</strong> (HIGH) — SQL injection via crafted filter parameters in SQLAlchemy versions below <code>2.0.28</code>.</p>
+<h1>All SQLAlchemy CVEs — Complete Vulnerability History</h1>
+<p class="lead">SQLAlchemy is Python's most popular ORM. CVEs here are rare — the team is security-conscious. The main risk is SQL injection via raw query methods, which are discouraged in the documentation.</p>
+<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px">
+  <span class="badge badge-purple">PyPI</span>
+  <span class="badge badge-muted">30M+ weekly downloads</span>
+  <span class="badge badge-muted">3 CVEs total</span>
+  
+  
 </div>
+<h2>Full CVE history</h2>
 
-<h2>Vulnerable Version — requirements.txt</h2>
-<pre>SQLAlchemy==1.4.46</pre>
-
-<h2>Fixed Version — requirements.txt</h2>
-<pre>SQLAlchemy==2.0.28</pre>
-
-<div class="fix-box">
-  <div class="label">✓ Fix</div>
-  <p style="margin:0">Update SQLAlchemy to <code>2.0.28</code> or later. Run <code>pip install -r requirements.txt</code> to apply. Verify with your ecosystem's audit tool after updating.</p>
-</div>
-
+<table class="cve-history">
+<thead><tr><th>CVE</th><th>Year</th><th>Severity</th><th>Description</th><th>Fix</th></tr></thead>
+<tbody><tr><td><a href='https://osv.dev/vulnerability/CVE-2019-7164' target='_blank' rel='noopener'>CVE-2019-7164</a></td><td>2019</td><td><span class="badge badge-orange">HIGH</span></td><td style='color:var(--muted)'>SQL injection via order_by in certain backends</td><td><span class="badge badge-green">Fixed 1.3.0</span></td></tr><tr><td><a href='https://osv.dev/vulnerability/CVE-2019-7548' target='_blank' rel='noopener'>CVE-2019-7548</a></td><td>2019</td><td><span class="badge badge-orange">HIGH</span></td><td style='color:var(--muted)'>SQL injection via group_by in certain backends</td><td><span class="badge badge-green">Fixed 1.3.0</span></td></tr><tr><td><a href='https://osv.dev/vulnerability/CVE-2023-30534' target='_blank' rel='noopener'>CVE-2023-30534</a></td><td>2023</td><td><span class="badge badge-orange">HIGH</span></td><td style='color:var(--muted)'>SQL injection via crafted filter parameters in raw queries</td><td><span class="badge badge-green">Fixed 2.0.28</span></td></tr></tbody></table>
+<h2>Current safe version: 2.0.28</h2>
+<pre style="margin-bottom:4px"># Before</pre>
+<pre>"SQLAlchemy==1.4.46"</pre>
+<pre style="margin-bottom:4px"># After</pre>
+<pre>"SQLAlchemy==2.0.28"</pre>
+<p style="margin-top:8px">Then run: <code>pip install -r requirements.txt</code></p>
 <div class="cta-box">
-  <p>Paste your manifest — get back a fixed version with all CVEs patched in seconds.</p>
-  <a href="https://packagefix.dev" class="cta-btn">Open PackageFix →</a>
-  <p style="margin-top:12px;font-size:11px;color:var(--muted)">No signup · No CLI · No GitHub connection · Runs 100% in your browser</p>
+  <p>Paste your manifest — see your exact versions against the full CVE history.</p>
+  <a href="https://packagefix.dev" class="cta-btn">Scan with PackageFix →</a>
+  <p style="margin-top:12px;font-size:11px;color:var(--muted)">Free · No signup · No CLI · Runs in your browser</p>
 </div>
-
-<h2>CVE Details</h2>
-<table class="cve-table">
-  <thead><tr><th>Field</th><th>Value</th></tr></thead>
-  <tbody>
-    <tr><td>CVE ID</td><td><a href="https://osv.dev/vulnerability/CVE-2023-30534" target="_blank" rel="noopener">CVE-2023-30534</a></td></tr>
-    <tr><td>Severity</td><td><span class="badge badge-orange">HIGH</span></td></tr>
-    <tr><td>Package</td><td>SQLAlchemy (PyPI)</td></tr>
-    <tr><td>Vulnerable versions</td><td>Below 2.0.28</td></tr>
-    <tr><td>Safe version</td><td>2.0.28</td></tr>
-    <tr><td>CISA KEV</td><td>—</td></tr>
-    <tr><td>Description</td><td>Sql injection via crafted filter parameters</td></tr>
-  </tbody>
-</table>
-
-<div class="faq"><h2>Frequently Asked Questions</h2><div class="faq-item"><div class="faq-q">What is CVE-2023-30534?</div><div class="faq-a">CVE-2023-30534 is a HIGH severity vulnerability in SQLAlchemy (PyPI). It allows SQL injection via crafted filter parameters. Update to version 2.0.28 or later to fix it.</div></div><div class="faq-item"><div class="faq-q">How do I fix CVE-2023-30534 in SQLAlchemy?</div><div class="faq-a">Update SQLAlchemy to version 2.0.28 in your requirements.txt. Run pip install -r requirements.txt after updating to apply the fix.</div></div><div class="faq-item"><div class="faq-q">Is CVE-2023-30534 being actively exploited?</div><div class="faq-a">Check the live CISA KEV catalog at packagefix.dev — PackageFix always reflects the current KEV status.</div></div><div class="faq-item"><div class="faq-q">How do I check if I am affected by CVE-2023-30534?</div><div class="faq-a">Paste your requirements.txt into PackageFix. If your installed version of SQLAlchemy is below 2.0.28, you are affected. PackageFix shows the exact CVE ID and fix version.</div></div><div class="faq-item"><div class="faq-q">What search queries does this page target?</div><div class="faq-a">This page covers: SQLAlchemy CVE, SQLAlchemy SQL injection, SQLAlchemy security.</div></div></div>
-
-<div style="margin:40px 0"><h2>Related Guides</h2><div class="related-grid"><div class="related-card"><a href="/pypi">PyPI Security Overview</a><p>All PyPI vulnerability guides</p></div><div class="related-card"><a href="/fix/pypi/outdated-dependencies">Fix Outdated PyPI Dependencies</a><p>General dependency updates</p></div><div class="related-card"><a href="/fix/pypi/critical-cve">Fix Critical PyPI CVEs</a><p>HIGH and CRITICAL severity</p></div><div class="related-card"><a href="https://packagefix.dev">Open PackageFix Tool</a><p>Scan your manifest live</p></div></div></div>
+<div class="faq"><h2>Common questions</h2><div class="faq-item"><div class="faq-q">Is SQLAlchemy's ORM safe from SQL injection?</div><div class="faq-a">The ORM query interface is safe — SQLAlchemy parameterises queries automatically. The risk is with raw SQL via text() or execute() with string formatting. Never use f-strings or % formatting in SQL queries — always use bindparams.</div></div><div class="faq-item"><div class="faq-q">Should I migrate from SQLAlchemy 1.4 to 2.0?</div><div class="faq-a">SQLAlchemy 1.4 EOL is approaching. 2.0 has significant API changes but also better async support and performance. The migration guide is comprehensive — worth the investment for long-lived projects.</div></div></div>
+<div style="margin:40px 0"><h2>Related</h2><div class="related-grid"><div class="related-card"><a href="/python">PyPI Security</a><p>All Python guides</p></div></div></div>
 
 </main>
 <footer class="site-footer">
@@ -244,7 +210,7 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
   <a href="https://configclarity.dev">ConfigClarity</a> ·
   <a href="https://domainpreflight.dev">DomainPreflight</a></p>
   <p style="margin-top:6px">Vulnerability data: <a href="https://osv.dev">OSV Database</a> · <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog">CISA KEV Catalog</a></p>
-  <p style="margin-top:6px">Always test dependency updates in a staging environment before deploying to production.</p>
+  <p style="margin-top:6px">Always test dependency updates in staging before deploying to production.</p>
 </footer>
 </body>
 </html>

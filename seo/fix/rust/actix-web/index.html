@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Fix actix-web CVE-2022-24977 — Rust Vulnerability | PackageFix</title>
-<meta name="description" content="Fix CVE-2022-24977 (HIGH) in actix-web for Rust. Paste your Cargo.toml into PackageFix and get a patched version — no CLI, no signup. Denial of service via http/1.1 pipelining with malformed requests.">
+<title>All actix-web CVEs — Complete Rust Vulnerability History | PackageFix</title>
+<meta name="description" content="actix-web has 2 known CVEs. Safe version: 4.5.1. Full history with fix guide.">
 <link rel="canonical" href="https://packagefix.dev/fix/rust/actix-web">
-<meta property="og:title" content="Fix actix-web CVE-2022-24977 — Rust Vulnerability | PackageFix">
-<meta property="og:description" content="Fix CVE-2022-24977 (HIGH) in actix-web for Rust. Paste your Cargo.toml into PackageFix and get a patched version — no CLI, no signup. Denial of service via http/1.1 pipelining with malformed requests.">
+<meta property="og:title" content="All actix-web CVEs — Complete Rust Vulnerability History | PackageFix">
+<meta property="og:description" content="actix-web has 2 known CVEs. Safe version: 4.5.1. Full history with fix guide.">
 <meta property="og:url" content="https://packagefix.dev/fix/rust/actix-web">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
@@ -19,38 +19,22 @@
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "HowTo",
-      "name": "Fix actix-web CVE-2022-24977",
-      "description": "Fix CVE-2022-24977 (HIGH) in actix-web for Rust. Paste your Cargo.toml into PackageFix and get a patched version \u2014 no CLI, no signup. Denial of service via http/1.1 pipelining with malformed requests.",
-      "estimatedCost": {
-        "@type": "MonetaryAmount",
-        "currency": "USD",
-        "value": "0"
-      },
-      "supply": {
-        "@type": "HowToSupply",
-        "name": "Cargo.toml"
-      },
-      "tool": {
-        "@type": "HowToTool",
-        "name": "PackageFix",
-        "url": "https://packagefix.dev"
-      },
-      "step": [
+      "@type": "ItemList",
+      "name": "All actix-web CVEs",
+      "description": "Complete CVE history for actix-web \u2014 2 known vulnerabilities",
+      "numberOfItems": 2,
+      "itemListElement": [
         {
-          "@type": "HowToStep",
-          "name": "Paste manifest",
-          "text": "Paste your Cargo.toml into PackageFix"
+          "@type": "ListItem",
+          "position": 1,
+          "name": "CVE-2020-35901",
+          "url": "https://osv.dev/vulnerability/CVE-2020-35901"
         },
         {
-          "@type": "HowToStep",
-          "name": "Find CVE",
-          "text": "Locate CVE-2022-24977 in the CVE table"
-        },
-        {
-          "@type": "HowToStep",
-          "name": "Download fix",
-          "text": "Download patched Cargo.toml and run cargo update"
+          "@type": "ListItem",
+          "position": 2,
+          "name": "CVE-2022-24977",
+          "url": "https://osv.dev/vulnerability/CVE-2022-24977"
         }
       ]
     },
@@ -61,7 +45,7 @@
           "@type": "ListItem",
           "position": 1,
           "name": "PackageFix",
-          "item": "https://packagefix.dev/"
+          "item": "https://packagefix.dev"
         },
         {
           "@type": "ListItem",
@@ -88,34 +72,18 @@
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "What is CVE-2022-24977?",
+          "name": "Does Rust memory safety prevent all CVEs?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "CVE-2022-24977 is a HIGH severity vulnerability in actix-web (Rust) that allows denial of service via HTTP/1.1 pipelining with malformed requests. Update to 4.5.1 or later."
+            "text": "No \u2014 Rust prevents memory corruption CVEs (buffer overflows, use-after-free, etc.) but logic bugs, DoS via resource exhaustion, and authentication bypass vulnerabilities can still occur. Rust's CVE rate is much lower than C/C++ frameworks but not zero."
           }
         },
         {
           "@type": "Question",
-          "name": "How do I fix CVE-2022-24977 in actix-web?",
+          "name": "Is actix-web 4.x stable?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Update actix-web to version 4.5.1 in your Cargo.toml and run cargo update."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Is CVE-2022-24977 being actively exploited?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Check packagefix.dev \u2014 the CISA KEV catalog updates daily."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How do I verify the fix for CVE-2022-24977?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "After updating, paste your Cargo.toml into PackageFix again. If CVE-2022-24977 no longer appears in the CVE table, the fix is applied."
+            "text": "Yes \u2014 actix-web 4.0 was released in January 2022 and is the stable long-term branch. It requires Rust 1.57+."
           }
         }
       ]
@@ -144,24 +112,35 @@ a:hover{text-decoration:underline}
 .breadcrumb a{color:var(--muted)}
 h1{font-size:clamp(18px,3vw,26px);font-weight:700;margin-bottom:12px;line-height:1.3}
 h2{font-size:14px;font-weight:600;margin:32px 0 12px}
+h3{font-size:13px;font-weight:600;margin:20px 0 8px}
 p{color:var(--muted);margin-bottom:12px;font-size:12px;line-height:1.7}
 .lead{color:var(--text);font-size:13px;margin-bottom:24px;line-height:1.7}
-.problem-box{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3);border-left:3px solid var(--red);border-radius:8px;padding:16px 20px;margin:20px 0}
-.problem-box .label{font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.definition-box{background:var(--surface);border:1px solid var(--purple);border-left:4px solid var(--purple);border-radius:8px;padding:20px 24px;margin:0 0 32px}
+.definition-box .def-label{font-size:10px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.definition-box p{color:var(--text);font-size:13px;line-height:1.7;margin:0}
 .fix-box{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.3);border-left:3px solid var(--green);border-radius:8px;padding:16px 20px;margin:20px 0}
 .fix-box .label{font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
-.kev-box{background:rgba(239,68,68,.12);border:1px solid var(--red);border-radius:8px;padding:12px 16px;margin:16px 0;font-size:11px;color:var(--red)}
 pre{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px 16px;overflow-x:auto;font-size:11px;line-height:1.6;margin:8px 0;white-space:pre-wrap}
 code{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:1px 5px;font-size:11px}
 .cta-box{background:var(--surface);border:1px solid var(--purple);border-radius:10px;padding:24px;margin:32px 0;text-align:center}
 .cta-box p{color:var(--text);font-size:13px;margin-bottom:16px}
 .cta-btn{display:inline-block;background:var(--purple);color:#fff;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;padding:12px 28px;border-radius:7px;text-decoration:none}
-.cta-btn:hover{opacity:.9;text-decoration:none}
 .badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em}
 .badge-red{background:rgba(239,68,68,.2);color:var(--red);border:1px solid var(--red)}
 .badge-orange{background:rgba(249,115,22,.2);color:var(--orange);border:1px solid var(--orange)}
 .badge-green{background:rgba(34,197,94,.2);color:var(--green);border:1px solid var(--green)}
 .badge-purple{background:rgba(108,99,255,.2);color:var(--purple);border:1px solid var(--purple)}
+.badge-muted{background:rgba(107,114,128,.15);color:var(--muted);border:1px solid var(--border)}
+.cve-history{width:100%;border-collapse:collapse;margin:16px 0;font-size:12px}
+.cve-history th{text-align:left;padding:10px 12px;border-bottom:2px solid var(--border);color:var(--muted);font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.08em}
+.cve-history td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+.cve-history tr:last-child td{border-bottom:none}
+.cve-history tr:hover td{background:var(--surface2)}
+.compare-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-top:16px}
+.compare-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px}
+.compare-card h3{font-size:12px;font-weight:600;margin:0 0 6px}
+.compare-card h3 a{color:var(--text)}
+.compare-card p{font-size:11px;color:var(--muted);margin:0}
 .faq{margin:40px 0}
 .faq-item{border-bottom:1px solid var(--border);padding:16px 0}
 .faq-item:last-child{border-bottom:none}
@@ -171,14 +150,9 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
 .related-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
 .related-card a{color:var(--text);font-size:12px;font-weight:500}
 .related-card p{font-size:11px;color:var(--muted);margin:4px 0 0}
-.cve-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:12px}
-.cve-table th{text-align:left;padding:8px 12px;border-bottom:1px solid var(--border);color:var(--muted);font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.08em}
-.cve-table td{padding:8px 12px;border-bottom:1px solid var(--border)}
-.cve-table tr:last-child td{border-bottom:none}
-.vs-table td:first-child{font-weight:600;color:var(--text)}
 .site-footer{border-top:1px solid var(--border);padding:24px;text-align:center;font-size:11px;color:var(--muted);margin-top:60px}
 .site-footer a{color:var(--muted)}
-@media(max-width:640px){.nav-links{display:none}.related-grid{grid-template-columns:1fr}}
+@media(max-width:640px){.nav-links{display:none}.related-grid{grid-template-columns:1fr}.compare-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -186,48 +160,43 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
   <a href="https://packagefix.dev" class="logo">Package<span>Fix</span></a>
   <nav class="nav-links">
     <a href="https://packagefix.dev">Tool</a>
-    <a href="https://packagefix.dev/alternatives">Alternatives</a>
-    <a href="https://packagefix.dev/error">Error Fixes</a>
+    <a href="https://packagefix.dev/glossary">Glossary</a>
+    <a href="https://packagefix.dev/cisa-kev">CISA KEV</a>
+    <a href="https://packagefix.dev/blog">Blog</a>
     <a href="https://github.com/metriclogic26/packagefix">GitHub</a>
   </nav>
 </header>
 <main class="container">
   <div class="breadcrumb"><a href="/">PackageFix</a> <span style='color:var(--border)'>/</span> <a href="/fix">Fix Guides</a> <span style='color:var(--border)'>/</span> <a href="/rust">Rust</a> <span style='color:var(--border)'>/</span> <span style="color:var(--text)">actix-web</span></div>
   
-<h1>Fix actix-web — CVE-2022-24977 <span class="badge badge-orange">HIGH</span></h1>
-<p class="lead">Fix CVE-2022-24977 (HIGH) in actix-web for Rust. Paste your Cargo.toml into PackageFix and get a patched version — no CLI, no signup. Denial of service via http/1.1 pipelining with malformed requests.</p>
+<h1>All actix-web CVEs — Complete Vulnerability History</h1>
+<p class="lead">actix-web is Rust's most popular HTTP framework. Rust's memory safety eliminates whole classes of CVEs that affect C/C++ frameworks. The main CVEs are logic-level DoS issues.</p>
+<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px">
+  <span class="badge badge-purple">Rust</span>
+  <span class="badge badge-muted">N/A weekly downloads</span>
+  <span class="badge badge-muted">2 CVEs total</span>
+  
+  
+</div>
+<h2>Full CVE history</h2>
 
-<div class="problem-box">
-  <div class="label">⚠ Vulnerability</div>
-  <p style="margin:0"><strong>CVE-2022-24977</strong> (HIGH) — denial of service via HTTP/1.1 pipelining with malformed requests in actix-web below <code>4.5.1</code>.</p>
-</div>
-<h2>Vulnerable — Cargo.toml</h2>
-<pre>actix-web = "3.3.2"</pre>
-<h2>Fixed — Cargo.toml</h2>
-<pre>actix-web = "4.5.1"</pre>
-<div class="fix-box">
-  <div class="label">✓ Fix</div>
-  <p style="margin:0">Update actix-web to <code>4.5.1</code> and run <code>cargo update</code>.</p>
-</div>
+<table class="cve-history">
+<thead><tr><th>CVE</th><th>Year</th><th>Severity</th><th>Description</th><th>Fix</th></tr></thead>
+<tbody><tr><td><a href='https://osv.dev/vulnerability/CVE-2020-35901' target='_blank' rel='noopener'>CVE-2020-35901</a></td><td>2020</td><td><span class="badge badge-orange">HIGH</span></td><td style='color:var(--muted)'>DoS via HTTP/1.1 pipeline parsing</td><td><span class="badge badge-green">Fixed 3.0.0</span></td></tr><tr><td><a href='https://osv.dev/vulnerability/CVE-2022-24977' target='_blank' rel='noopener'>CVE-2022-24977</a></td><td>2022</td><td><span class="badge badge-orange">HIGH</span></td><td style='color:var(--muted)'>DoS via crafted HTTP request in pipelining</td><td><span class="badge badge-green">Fixed 4.0.0</span></td></tr></tbody></table>
+<h2>Current safe version: 4.5.1</h2>
+<pre style="margin-bottom:4px"># Before</pre>
+<pre>"actix-web = "3.3.2"</pre>
+<pre style="margin-bottom:4px"># After</pre>
+<pre>"actix-web = "4.5.1"</pre>
+<p style="margin-top:8px">Then run: <code>cargo update</code></p>
 <div class="cta-box">
-  <p>Paste your manifest — get back a fixed version with all CVEs patched in seconds.</p>
-  <a href="https://packagefix.dev" class="cta-btn">Open PackageFix →</a>
-  <p style="margin-top:12px;font-size:11px;color:var(--muted)">No signup · No CLI · No GitHub connection · Runs 100% in your browser</p>
+  <p>Paste your manifest — see your exact versions against the full CVE history.</p>
+  <a href="https://packagefix.dev" class="cta-btn">Scan with PackageFix →</a>
+  <p style="margin-top:12px;font-size:11px;color:var(--muted)">Free · No signup · No CLI · Runs in your browser</p>
 </div>
-<h2>CVE Details</h2>
-<table class="cve-table">
-  <thead><tr><th>Field</th><th>Value</th></tr></thead>
-  <tbody>
-    <tr><td>CVE ID</td><td><a href="https://osv.dev/vulnerability/CVE-2022-24977" target="_blank" rel="noopener">CVE-2022-24977</a></td></tr>
-    <tr><td>Severity</td><td><span class="badge badge-orange">HIGH</span></td></tr>
-    <tr><td>Package</td><td>actix-web (Rust)</td></tr>
-    <tr><td>Safe version</td><td>4.5.1</td></tr>
-    <tr><td>CISA KEV</td><td>—</td></tr>
-    <tr><td>Description</td><td>Denial of service via http/1.1 pipelining with malformed requests</td></tr>
-  </tbody>
-</table>
-<div class="faq"><h2>Frequently Asked Questions</h2><div class="faq-item"><div class="faq-q">What is CVE-2022-24977?</div><div class="faq-a">CVE-2022-24977 is a HIGH severity vulnerability in actix-web (Rust) that allows denial of service via HTTP/1.1 pipelining with malformed requests. Update to 4.5.1 or later.</div></div><div class="faq-item"><div class="faq-q">How do I fix CVE-2022-24977 in actix-web?</div><div class="faq-a">Update actix-web to version 4.5.1 in your Cargo.toml and run cargo update.</div></div><div class="faq-item"><div class="faq-q">Is CVE-2022-24977 being actively exploited?</div><div class="faq-a">Check packagefix.dev — the CISA KEV catalog updates daily.</div></div><div class="faq-item"><div class="faq-q">How do I verify the fix for CVE-2022-24977?</div><div class="faq-a">After updating, paste your Cargo.toml into PackageFix again. If CVE-2022-24977 no longer appears in the CVE table, the fix is applied.</div></div></div>
-<div style="margin:40px 0"><h2>Related Guides</h2><div class="related-grid"><div class="related-card"><a href="/rust">Rust Security Overview</a><p>All Rust vulnerability guides</p></div><div class="related-card"><a href="/fix/rust/outdated-dependencies">Fix Outdated Rust Dependencies</a><p>General dependency updates</p></div><div class="related-card"><a href="https://packagefix.dev">Open PackageFix Tool</a><p>Scan your manifest live</p></div><div class="related-card"><a href="/vs/snyk-advisor">PackageFix vs Snyk Advisor</a><p>Free browser alternative</p></div></div></div>
+<div class="faq"><h2>Common questions</h2><div class="faq-item"><div class="faq-q">Does Rust memory safety prevent all CVEs?</div><div class="faq-a">No — Rust prevents memory corruption CVEs (buffer overflows, use-after-free, etc.) but logic bugs, DoS via resource exhaustion, and authentication bypass vulnerabilities can still occur. Rust's CVE rate is much lower than C/C++ frameworks but not zero.</div></div><div class="faq-item"><div class="faq-q">Is actix-web 4.x stable?</div><div class="faq-a">Yes — actix-web 4.0 was released in January 2022 and is the stable long-term branch. It requires Rust 1.57+.</div></div></div>
+<div style="margin:40px 0"><h2>Related</h2><div class="related-grid"><div class="related-card"><a href="/fix/rust/axum">Fix axum</a><p>Alternative Rust framework</p></div><div class="related-card"><a href="/rust">Rust Security</a><p>All Rust guides</p></div></div></div>
+
 </main>
 <footer class="site-footer">
   <p>PackageFix · <a href="https://packagefix.dev">packagefix.dev</a> · MIT Licensed · Open Source</p>
@@ -235,7 +204,7 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
   <a href="https://configclarity.dev">ConfigClarity</a> ·
   <a href="https://domainpreflight.dev">DomainPreflight</a></p>
   <p style="margin-top:6px">Vulnerability data: <a href="https://osv.dev">OSV Database</a> · <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog">CISA KEV Catalog</a></p>
-  <p style="margin-top:6px">Always test dependency updates in a staging environment before deploying to production.</p>
+  <p style="margin-top:6px">Always test dependency updates in staging before deploying to production.</p>
 </footer>
 </body>
 </html>

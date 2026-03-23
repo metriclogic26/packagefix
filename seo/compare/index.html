@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>All moment.js CVEs — Complete npm Vulnerability History | PackageFix</title>
-<meta name="description" content="moment.js has 4 known CVEs. Safe version: 2.29.4. Full history with fix guide.">
-<link rel="canonical" href="https://packagefix.dev/fix/npm/moment">
-<meta property="og:title" content="All moment.js CVEs — Complete npm Vulnerability History | PackageFix">
-<meta property="og:description" content="moment.js has 4 known CVEs. Safe version: 2.29.4. Full history with fix guide.">
-<meta property="og:url" content="https://packagefix.dev/fix/npm/moment">
+<title>Dependency Security Tool Comparisons | PackageFix</title>
+<meta name="description" content="How PackageFix compares to npm audit, pip-audit, Snyk, Dependabot, OWASP Dependency-Check, cargo-audit, bundle-audit, and more.">
+<link rel="canonical" href="https://packagefix.dev/compare">
+<meta property="og:title" content="Dependency Security Tool Comparisons | PackageFix">
+<meta property="og:description" content="How PackageFix compares to npm audit, pip-audit, Snyk, Dependabot, OWASP Dependency-Check, cargo-audit, bundle-audit, and more.">
+<meta property="og:url" content="https://packagefix.dev/compare">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
 <link rel="icon" type="image/svg+xml" href="/icon.svg">
@@ -18,38 +18,6 @@
 <script type="application/ld+json">{
   "@context": "https://schema.org",
   "@graph": [
-    {
-      "@type": "ItemList",
-      "name": "All moment.js CVEs",
-      "description": "Complete CVE history for moment.js \u2014 4 known vulnerabilities",
-      "numberOfItems": 4,
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "CVE-2016-4055",
-          "url": "https://osv.dev/vulnerability/CVE-2016-4055"
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "name": "CVE-2017-18214",
-          "url": "https://osv.dev/vulnerability/CVE-2017-18214"
-        },
-        {
-          "@type": "ListItem",
-          "position": 3,
-          "name": "CVE-2022-24785",
-          "url": "https://osv.dev/vulnerability/CVE-2022-24785"
-        },
-        {
-          "@type": "ListItem",
-          "position": 4,
-          "name": "CVE-2022-31129",
-          "url": "https://osv.dev/vulnerability/CVE-2022-31129"
-        }
-      ]
-    },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
@@ -62,49 +30,62 @@
         {
           "@type": "ListItem",
           "position": 2,
-          "name": "Fix Guides",
-          "item": "https://packagefix.dev/fix"
-        },
-        {
-          "@type": "ListItem",
-          "position": 3,
-          "name": "npm",
-          "item": "https://packagefix.dev/npm"
-        },
-        {
-          "@type": "ListItem",
-          "position": 4,
-          "name": "moment.js",
-          "item": "https://packagefix.dev/fix/npm/moment"
+          "name": "Comparisons",
+          "item": "https://packagefix.dev/compare"
         }
       ]
     },
     {
-      "@type": "FAQPage",
-      "mainEntity": [
+      "@type": "ItemList",
+      "name": "Dependency Security Tool Comparisons",
+      "itemListElement": [
         {
-          "@type": "Question",
-          "name": "Should I migrate away from moment.js?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes \u2014 moment.js is in maintenance-only mode. The team recommends date-fns or dayjs for new projects. Both are smaller, tree-shakeable, and actively maintained. Migration is not trivial but worth it for long-lived projects."
-          }
+          "@type": "ListItem",
+          "position": 1,
+          "name": "npm vs PyPI Security",
+          "url": "https://packagefix.dev/compare/npm-vs-pypi"
         },
         {
-          "@type": "Question",
-          "name": "Is moment.js still safe to use?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "2.29.4 patches all known CVEs. But since it's in maintenance mode, future CVEs may not get fixes. If you're on a long-lived project, plan the migration to date-fns or dayjs."
-          }
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Snyk vs Dependabot",
+          "url": "https://packagefix.dev/compare/snyk-vs-dependabot"
         },
         {
-          "@type": "Question",
-          "name": "What's the easiest moment.js replacement?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "dayjs has an almost identical API to moment.js and is a near drop-in replacement. date-fns is more comprehensive but uses a different functional API. Start with dayjs if API compatibility matters."
-          }
+          "@type": "ListItem",
+          "position": 3,
+          "name": "npm audit vs pip-audit",
+          "url": "https://packagefix.dev/compare/npm-audit-vs-pip-audit"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "cargo-audit vs bundle-audit",
+          "url": "https://packagefix.dev/compare/cargo-audit-vs-bundle-audit"
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "name": "OWASP Dep-Check vs Snyk",
+          "url": "https://packagefix.dev/compare/owasp-vs-snyk"
+        },
+        {
+          "@type": "ListItem",
+          "position": 6,
+          "name": "pip-audit vs safety",
+          "url": "https://packagefix.dev/compare/pip-audit-vs-safety"
+        },
+        {
+          "@type": "ListItem",
+          "position": 7,
+          "name": "govulncheck vs nancy",
+          "url": "https://packagefix.dev/compare/govulncheck-vs-nancy"
+        },
+        {
+          "@type": "ListItem",
+          "position": 8,
+          "name": "bundle-audit vs Gemnasium",
+          "url": "https://packagefix.dev/compare/bundler-audit-vs-gemnasium"
         }
       ]
     }
@@ -187,35 +168,28 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
   </nav>
 </header>
 <main class="container">
-  <div class="breadcrumb"><a href="/">PackageFix</a> <span style='color:var(--border)'>/</span> <a href="/fix">Fix Guides</a> <span style='color:var(--border)'>/</span> <a href="/npm">npm</a> <span style='color:var(--border)'>/</span> <span style="color:var(--text)">moment.js</span></div>
+  <div class="breadcrumb"><a href="/">PackageFix</a> <span style='color:var(--border)'>/</span> <span style="color:var(--text)">Comparisons</span></div>
   
-<h1>All moment.js CVEs — Complete Vulnerability History</h1>
-<p class="lead">moment.js is a date manipulation library that is now in maintenance mode. The team recommends migrating to date-fns or dayjs for new projects. Its main CVEs are ReDoS vulnerabilities and a SSRF in its date parsing.</p>
-<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px">
-  <span class="badge badge-purple">npm</span>
-  <span class="badge badge-muted">20M+ weekly downloads</span>
-  <span class="badge badge-muted">4 CVEs total</span>
-  
-  
-</div>
-<h2>Full CVE history</h2>
+<h1>Dependency Security Tool Comparisons</h1>
+<p class="lead">How PackageFix compares to every major dependency scanner — CLI tools, GitHub bots, enterprise SCA platforms, and tools that have since shut down.</p>
 
-<table class="cve-history">
-<thead><tr><th>CVE</th><th>Year</th><th>Severity</th><th>Description</th><th>Fix</th></tr></thead>
-<tbody><tr><td><a href='https://osv.dev/vulnerability/CVE-2016-4055' target='_blank' rel='noopener'>CVE-2016-4055</a></td><td>2016</td><td><span class="badge badge-orange">HIGH</span></td><td style='color:var(--muted)'>ReDoS via date parsing regex</td><td><span class="badge badge-green">Fixed 2.11.2</span></td></tr><tr><td><a href='https://osv.dev/vulnerability/CVE-2017-18214' target='_blank' rel='noopener'>CVE-2017-18214</a></td><td>2017</td><td><span class="badge badge-orange">HIGH</span></td><td style='color:var(--muted)'>ReDoS via crafted string in moment()</td><td><span class="badge badge-green">Fixed 2.19.3</span></td></tr><tr><td><a href='https://osv.dev/vulnerability/CVE-2022-24785' target='_blank' rel='noopener'>CVE-2022-24785</a></td><td>2022</td><td><span class="badge badge-orange">HIGH</span></td><td style='color:var(--muted)'>Path traversal in locale loading</td><td><span class="badge badge-green">Fixed 2.29.2</span></td></tr><tr><td><a href='https://osv.dev/vulnerability/CVE-2022-31129' target='_blank' rel='noopener'>CVE-2022-31129</a></td><td>2022</td><td><span class="badge badge-orange">HIGH</span></td><td style='color:var(--muted)'>ReDoS in date parsing — moment is deprecated</td><td><span class="badge badge-green">Fixed 2.29.4</span></td></tr></tbody></table>
-<h2>Current safe version: 2.29.4</h2>
-<pre style="margin-bottom:4px"># Before</pre>
-<pre>"moment": "2.29.1"</pre>
-<pre style="margin-bottom:4px"># After</pre>
-<pre>"moment": "2.29.4"</pre>
-<p style="margin-top:8px">Then run: <code>npm install</code></p>
+<div class="compare-grid">
+<div class="compare-card"><h3><a href="/compare/npm-vs-pypi">npm vs PyPI Security</a></h3><p>Compare npm and PyPI dependency scanning</p></div><div class="compare-card"><h3><a href="/compare/snyk-vs-dependabot">Snyk vs Dependabot</a></h3><p>Both require GitHub — PackageFix doesn't</p></div><div class="compare-card"><h3><a href="/compare/npm-audit-vs-pip-audit">npm audit vs pip-audit</a></h3><p>CLI tools vs browser alternative</p></div><div class="compare-card"><h3><a href="/compare/cargo-audit-vs-bundle-audit">cargo-audit vs bundle-audit</a></h3><p>Rust and Ruby CLI scanners</p></div><div class="compare-card"><h3><a href="/compare/owasp-vs-snyk">OWASP Dep-Check vs Snyk</a></h3><p>Enterprise SCA tools compared</p></div><div class="compare-card"><h3><a href="/compare/pip-audit-vs-safety">pip-audit vs safety</a></h3><p>Python security tools</p></div><div class="compare-card"><h3><a href="/compare/govulncheck-vs-nancy">govulncheck vs nancy</a></h3><p>Go module security scanning</p></div><div class="compare-card"><h3><a href="/compare/bundler-audit-vs-gemnasium">bundle-audit vs Gemnasium</a></h3><p>Gemnasium shut down in 2018</p></div>
+</div>
+
+<div style="margin:48px 0">
+  <h2>The short version</h2>
+  <p>Most dependency security tools fall into one of three categories. CLI tools (npm audit, pip-audit, cargo-audit) run in your terminal and produce reports. GitHub bots (Dependabot, Renovate) open pull requests automatically. Enterprise platforms (Snyk, Mend, Black Duck) require accounts, integrations, and usually money.</p>
+  <p>PackageFix is none of those — it's a browser tool. Paste your manifest, get a fixed version back in seconds. No install, no account, no GitHub connection. It fills the gap between "run a CLI command" and "set up an enterprise SCA pipeline."</p>
+</div>
+
 <div class="cta-box">
   <p>Paste your manifest — see your exact versions against the full CVE history.</p>
   <a href="https://packagefix.dev" class="cta-btn">Scan with PackageFix →</a>
   <p style="margin-top:12px;font-size:11px;color:var(--muted)">Free · No signup · No CLI · Runs in your browser</p>
 </div>
-<div class="faq"><h2>Common questions</h2><div class="faq-item"><div class="faq-q">Should I migrate away from moment.js?</div><div class="faq-a">Yes — moment.js is in maintenance-only mode. The team recommends date-fns or dayjs for new projects. Both are smaller, tree-shakeable, and actively maintained. Migration is not trivial but worth it for long-lived projects.</div></div><div class="faq-item"><div class="faq-q">Is moment.js still safe to use?</div><div class="faq-a">2.29.4 patches all known CVEs. But since it's in maintenance mode, future CVEs may not get fixes. If you're on a long-lived project, plan the migration to date-fns or dayjs.</div></div><div class="faq-item"><div class="faq-q">What's the easiest moment.js replacement?</div><div class="faq-a">dayjs has an almost identical API to moment.js and is a near drop-in replacement. date-fns is more comprehensive but uses a different functional API. Start with dayjs if API compatibility matters.</div></div></div>
-<div style="margin:40px 0"><h2>Related</h2><div class="related-grid"><div class="related-card"><a href="/fix/npm/semver">Fix semver</a><p>Another ReDoS CVE</p></div><div class="related-card"><a href="/npm">npm Security</a><p>All npm guides</p></div></div></div>
+
+<div style="margin:40px 0"><h2>Related</h2><div class="related-grid"><div class="related-card"><a href="/vs/snyk-advisor">vs Snyk Advisor</a><p>Shut down January 2026</p></div><div class="related-card"><a href="/vs/dependabot">vs Dependabot</a><p>No GitHub required</p></div><div class="related-card"><a href="/vs/npm-audit">vs npm audit</a><p>Browser vs CLI</p></div><div class="related-card"><a href="/alternatives">All Alternatives</a><p>Full 16-tool table</p></div></div></div>
 
 </main>
 <footer class="site-footer">

@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Fix Puma CVE-2022-24790 — Ruby Vulnerability | PackageFix</title>
-<meta name="description" content="Fix CVE-2022-24790 (HIGH) in Puma for Ruby. Paste your Gemfile into PackageFix and get a patched version — no CLI, no signup. Http request smuggling via chunked transfer encoding.">
+<title>All Puma CVEs — Complete Ruby Vulnerability History | PackageFix</title>
+<meta name="description" content="Puma has 4 known CVEs. Safe version: 6.4.2. Full history with fix guide.">
 <link rel="canonical" href="https://packagefix.dev/fix/ruby/puma">
-<meta property="og:title" content="Fix Puma CVE-2022-24790 — Ruby Vulnerability | PackageFix">
-<meta property="og:description" content="Fix CVE-2022-24790 (HIGH) in Puma for Ruby. Paste your Gemfile into PackageFix and get a patched version — no CLI, no signup. Http request smuggling via chunked transfer encoding.">
+<meta property="og:title" content="All Puma CVEs — Complete Ruby Vulnerability History | PackageFix">
+<meta property="og:description" content="Puma has 4 known CVEs. Safe version: 6.4.2. Full history with fix guide.">
 <meta property="og:url" content="https://packagefix.dev/fix/ruby/puma">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
@@ -19,38 +19,34 @@
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "HowTo",
-      "name": "Fix Puma CVE vulnerabilities",
-      "description": "How to find and fix CVEs in Puma (Ruby)",
-      "estimatedCost": {
-        "@type": "MonetaryAmount",
-        "currency": "USD",
-        "value": "0"
-      },
-      "supply": {
-        "@type": "HowToSupply",
-        "name": "Gemfile"
-      },
-      "tool": {
-        "@type": "HowToTool",
-        "name": "PackageFix",
-        "url": "https://packagefix.dev"
-      },
-      "step": [
+      "@type": "ItemList",
+      "name": "All Puma CVEs",
+      "description": "Complete CVE history for Puma \u2014 4 known vulnerabilities",
+      "numberOfItems": 4,
+      "itemListElement": [
         {
-          "@type": "HowToStep",
-          "name": "Paste manifest",
-          "text": "Paste your Gemfile into PackageFix at packagefix.dev"
+          "@type": "ListItem",
+          "position": 1,
+          "name": "CVE-2019-16770",
+          "url": "https://osv.dev/vulnerability/CVE-2019-16770"
         },
         {
-          "@type": "HowToStep",
-          "name": "Review CVEs",
-          "text": "Check the CVE table for Puma vulnerabilities with severity badges"
+          "@type": "ListItem",
+          "position": 2,
+          "name": "CVE-2020-11076",
+          "url": "https://osv.dev/vulnerability/CVE-2020-11076"
         },
         {
-          "@type": "HowToStep",
-          "name": "Download fix",
-          "text": "Download the patched Gemfile and run bundle install"
+          "@type": "ListItem",
+          "position": 3,
+          "name": "CVE-2021-29509",
+          "url": "https://osv.dev/vulnerability/CVE-2021-29509"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "CVE-2022-24790",
+          "url": "https://osv.dev/vulnerability/CVE-2022-24790"
         }
       ]
     },
@@ -61,7 +57,7 @@
           "@type": "ListItem",
           "position": 1,
           "name": "PackageFix",
-          "item": "https://packagefix.dev/"
+          "item": "https://packagefix.dev"
         },
         {
           "@type": "ListItem",
@@ -88,34 +84,18 @@
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "What is CVE-2022-24790?",
+          "name": "What is the impact of Puma's HTTP request smuggling CVEs?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "CVE-2022-24790 is a HIGH severity vulnerability in Puma (Ruby). It allows HTTP request smuggling via chunked transfer encoding. Update to version 6.4.2 or later to fix it."
+            "text": "HTTP request smuggling can allow an attacker to bypass access controls, poison shared response caches, and hijack credentials. In a reverse-proxy setup (Nginx \u2192 Puma), smuggling exploits the gap between how each server parses the same request."
           }
         },
         {
           "@type": "Question",
-          "name": "How do I fix CVE-2022-24790 in Puma?",
+          "name": "Does Rails update Puma automatically?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Update Puma to version 6.4.2 in your Gemfile. Run bundle install after updating to apply the fix."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Is CVE-2022-24790 being actively exploited?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Check the live CISA KEV catalog at packagefix.dev \u2014 PackageFix always reflects the current KEV status."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How do I check if I am affected by CVE-2022-24790?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Paste your Gemfile into PackageFix. If your installed version of Puma is below 6.4.2, you are affected. PackageFix shows the exact CVE ID and fix version."
+            "text": "No \u2014 Puma is a separate gem. Specify it explicitly in your Gemfile and update regularly."
           }
         }
       ]
@@ -144,25 +124,35 @@ a:hover{text-decoration:underline}
 .breadcrumb a{color:var(--muted)}
 h1{font-size:clamp(18px,3vw,26px);font-weight:700;margin-bottom:12px;line-height:1.3}
 h2{font-size:14px;font-weight:600;margin:32px 0 12px}
-h3{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin:24px 0 8px}
+h3{font-size:13px;font-weight:600;margin:20px 0 8px}
 p{color:var(--muted);margin-bottom:12px;font-size:12px;line-height:1.7}
 .lead{color:var(--text);font-size:13px;margin-bottom:24px;line-height:1.7}
-.problem-box{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3);border-left:3px solid var(--red);border-radius:8px;padding:16px 20px;margin:20px 0}
-.problem-box .label{font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.definition-box{background:var(--surface);border:1px solid var(--purple);border-left:4px solid var(--purple);border-radius:8px;padding:20px 24px;margin:0 0 32px}
+.definition-box .def-label{font-size:10px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.definition-box p{color:var(--text);font-size:13px;line-height:1.7;margin:0}
 .fix-box{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.3);border-left:3px solid var(--green);border-radius:8px;padding:16px 20px;margin:20px 0}
 .fix-box .label{font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
-.kev-box{background:rgba(239,68,68,.12);border:1px solid var(--red);border-radius:8px;padding:12px 16px;margin:16px 0;font-size:11px;color:var(--red)}
 pre{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px 16px;overflow-x:auto;font-size:11px;line-height:1.6;margin:8px 0;white-space:pre-wrap}
 code{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:1px 5px;font-size:11px}
 .cta-box{background:var(--surface);border:1px solid var(--purple);border-radius:10px;padding:24px;margin:32px 0;text-align:center}
 .cta-box p{color:var(--text);font-size:13px;margin-bottom:16px}
 .cta-btn{display:inline-block;background:var(--purple);color:#fff;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;padding:12px 28px;border-radius:7px;text-decoration:none}
-.cta-btn:hover{opacity:.9;text-decoration:none}
 .badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em}
 .badge-red{background:rgba(239,68,68,.2);color:var(--red);border:1px solid var(--red)}
 .badge-orange{background:rgba(249,115,22,.2);color:var(--orange);border:1px solid var(--orange)}
 .badge-green{background:rgba(34,197,94,.2);color:var(--green);border:1px solid var(--green)}
 .badge-purple{background:rgba(108,99,255,.2);color:var(--purple);border:1px solid var(--purple)}
+.badge-muted{background:rgba(107,114,128,.15);color:var(--muted);border:1px solid var(--border)}
+.cve-history{width:100%;border-collapse:collapse;margin:16px 0;font-size:12px}
+.cve-history th{text-align:left;padding:10px 12px;border-bottom:2px solid var(--border);color:var(--muted);font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.08em}
+.cve-history td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+.cve-history tr:last-child td{border-bottom:none}
+.cve-history tr:hover td{background:var(--surface2)}
+.compare-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-top:16px}
+.compare-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px}
+.compare-card h3{font-size:12px;font-weight:600;margin:0 0 6px}
+.compare-card h3 a{color:var(--text)}
+.compare-card p{font-size:11px;color:var(--muted);margin:0}
 .faq{margin:40px 0}
 .faq-item{border-bottom:1px solid var(--border);padding:16px 0}
 .faq-item:last-child{border-bottom:none}
@@ -172,13 +162,9 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
 .related-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
 .related-card a{color:var(--text);font-size:12px;font-weight:500}
 .related-card p{font-size:11px;color:var(--muted);margin:4px 0 0}
-.cve-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:12px}
-.cve-table th{text-align:left;padding:8px 12px;border-bottom:1px solid var(--border);color:var(--muted);font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.08em}
-.cve-table td{padding:8px 12px;border-bottom:1px solid var(--border)}
-.cve-table tr:last-child td{border-bottom:none}
 .site-footer{border-top:1px solid var(--border);padding:24px;text-align:center;font-size:11px;color:var(--muted);margin-top:60px}
 .site-footer a{color:var(--muted)}
-@media(max-width:640px){.nav-links{display:none}.related-grid{grid-template-columns:1fr}}
+@media(max-width:640px){.nav-links{display:none}.related-grid{grid-template-columns:1fr}.compare-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -186,56 +172,42 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
   <a href="https://packagefix.dev" class="logo">Package<span>Fix</span></a>
   <nav class="nav-links">
     <a href="https://packagefix.dev">Tool</a>
-    <a href="https://packagefix.dev/alternatives">Alternatives</a>
-    <a href="https://packagefix.dev/error">Error Fixes</a>
+    <a href="https://packagefix.dev/glossary">Glossary</a>
+    <a href="https://packagefix.dev/cisa-kev">CISA KEV</a>
+    <a href="https://packagefix.dev/blog">Blog</a>
     <a href="https://github.com/metriclogic26/packagefix">GitHub</a>
   </nav>
 </header>
 <main class="container">
   <div class="breadcrumb"><a href="/">PackageFix</a> <span style='color:var(--border)'>/</span> <a href="/fix">Fix Guides</a> <span style='color:var(--border)'>/</span> <a href="/ruby">Ruby</a> <span style='color:var(--border)'>/</span> <span style="color:var(--text)">Puma</span></div>
   
-<h1>Fix Puma — CVE-2022-24790 <span class="badge badge-orange">HIGH</span></h1>
-<p class="lead">Fix CVE-2022-24790 (HIGH) in Puma for Ruby. Paste your Gemfile into PackageFix and get a patched version — no CLI, no signup. Http request smuggling via chunked transfer encoding.</p>
-
-<div class="problem-box">
-  <div class="label">⚠ Vulnerability</div>
-  <p style="margin:0"><strong>CVE-2022-24790</strong> (HIGH) — HTTP request smuggling via chunked transfer encoding in Puma versions below <code>6.4.2</code>.</p>
+<h1>All Puma CVEs — Complete Vulnerability History</h1>
+<p class="lead">Puma is Ruby's most widely-used multi-threaded web server. HTTP request smuggling and DoS are its main vulnerability classes — server-level issues that affect all applications regardless of framework.</p>
+<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px">
+  <span class="badge badge-purple">Ruby</span>
+  <span class="badge badge-muted">5M+ weekly downloads</span>
+  <span class="badge badge-muted">4 CVEs total</span>
+  
+  
 </div>
+<h2>Full CVE history</h2>
 
-<h2>Vulnerable Version — Gemfile</h2>
+<table class="cve-history">
+<thead><tr><th>CVE</th><th>Year</th><th>Severity</th><th>Description</th><th>Fix</th></tr></thead>
+<tbody><tr><td><a href='https://osv.dev/vulnerability/CVE-2019-16770' target='_blank' rel='noopener'>CVE-2019-16770</a></td><td>2019</td><td><span class="badge badge-orange">HIGH</span></td><td style='color:var(--muted)'>DoS via thread exhaustion</td><td><span class="badge badge-green">Fixed 3.12.2</span></td></tr><tr><td><a href='https://osv.dev/vulnerability/CVE-2020-11076' target='_blank' rel='noopener'>CVE-2020-11076</a></td><td>2020</td><td><span class="badge badge-orange">HIGH</span></td><td style='color:var(--muted)'>HTTP request smuggling via chunked transfer</td><td><span class="badge badge-green">Fixed 4.3.5</span></td></tr><tr><td><a href='https://osv.dev/vulnerability/CVE-2021-29509' target='_blank' rel='noopener'>CVE-2021-29509</a></td><td>2021</td><td><span class="badge badge-orange">HIGH</span></td><td style='color:var(--muted)'>DoS via connection queue exhaustion</td><td><span class="badge badge-green">Fixed 4.3.8</span></td></tr><tr><td><a href='https://osv.dev/vulnerability/CVE-2022-24790' target='_blank' rel='noopener'>CVE-2022-24790</a></td><td>2022</td><td><span class="badge badge-orange">HIGH</span></td><td style='color:var(--muted)'>HTTP request smuggling via chunked encoding</td><td><span class="badge badge-green">Fixed 5.6.4</span></td></tr></tbody></table>
+<h2>Current safe version: 6.4.2</h2>
+<pre style="margin-bottom:4px"># Before</pre>
 <pre>gem 'puma', '4.3.0'</pre>
-
-<h2>Fixed Version — Gemfile</h2>
+<pre style="margin-bottom:4px"># After</pre>
 <pre>gem 'puma', '6.4.2'</pre>
-
-<div class="fix-box">
-  <div class="label">✓ Fix</div>
-  <p style="margin:0">Update Puma to <code>6.4.2</code> or later. Run <code>bundle install</code> to apply. Verify with your ecosystem's audit tool after updating.</p>
-</div>
-
+<p style="margin-top:8px">Then run: <code>bundle install</code></p>
 <div class="cta-box">
-  <p>Paste your manifest — get back a fixed version with all CVEs patched in seconds.</p>
-  <a href="https://packagefix.dev" class="cta-btn">Open PackageFix →</a>
-  <p style="margin-top:12px;font-size:11px;color:var(--muted)">No signup · No CLI · No GitHub connection · Runs 100% in your browser</p>
+  <p>Paste your manifest — see your exact versions against the full CVE history.</p>
+  <a href="https://packagefix.dev" class="cta-btn">Scan with PackageFix →</a>
+  <p style="margin-top:12px;font-size:11px;color:var(--muted)">Free · No signup · No CLI · Runs in your browser</p>
 </div>
-
-<h2>CVE Details</h2>
-<table class="cve-table">
-  <thead><tr><th>Field</th><th>Value</th></tr></thead>
-  <tbody>
-    <tr><td>CVE ID</td><td><a href="https://osv.dev/vulnerability/CVE-2022-24790" target="_blank" rel="noopener">CVE-2022-24790</a></td></tr>
-    <tr><td>Severity</td><td><span class="badge badge-orange">HIGH</span></td></tr>
-    <tr><td>Package</td><td>Puma (Ruby)</td></tr>
-    <tr><td>Vulnerable versions</td><td>Below 6.4.2</td></tr>
-    <tr><td>Safe version</td><td>6.4.2</td></tr>
-    <tr><td>CISA KEV</td><td>—</td></tr>
-    <tr><td>Description</td><td>Http request smuggling via chunked transfer encoding</td></tr>
-  </tbody>
-</table>
-
-<div class="faq"><h2>Frequently Asked Questions</h2><div class="faq-item"><div class="faq-q">What is CVE-2022-24790?</div><div class="faq-a">CVE-2022-24790 is a HIGH severity vulnerability in Puma (Ruby). It allows HTTP request smuggling via chunked transfer encoding. Update to version 6.4.2 or later to fix it.</div></div><div class="faq-item"><div class="faq-q">How do I fix CVE-2022-24790 in Puma?</div><div class="faq-a">Update Puma to version 6.4.2 in your Gemfile. Run bundle install after updating to apply the fix.</div></div><div class="faq-item"><div class="faq-q">Is CVE-2022-24790 being actively exploited?</div><div class="faq-a">Check the live CISA KEV catalog at packagefix.dev — PackageFix always reflects the current KEV status.</div></div><div class="faq-item"><div class="faq-q">How do I check if I am affected by CVE-2022-24790?</div><div class="faq-a">Paste your Gemfile into PackageFix. If your installed version of Puma is below 6.4.2, you are affected. PackageFix shows the exact CVE ID and fix version.</div></div><div class="faq-item"><div class="faq-q">What search queries does this page target?</div><div class="faq-a">This page covers: Puma CVE, Puma HTTP smuggling, puma vulnerability fix.</div></div></div>
-
-<div style="margin:40px 0"><h2>Related Guides</h2><div class="related-grid"><div class="related-card"><a href="/ruby">Ruby Security Overview</a><p>All Ruby vulnerability guides</p></div><div class="related-card"><a href="/fix/ruby/outdated-dependencies">Fix Outdated Ruby Dependencies</a><p>General dependency updates</p></div><div class="related-card"><a href="/fix/ruby/critical-cve">Fix Critical Ruby CVEs</a><p>HIGH and CRITICAL severity</p></div><div class="related-card"><a href="https://packagefix.dev">Open PackageFix Tool</a><p>Scan your manifest live</p></div></div></div>
+<div class="faq"><h2>Common questions</h2><div class="faq-item"><div class="faq-q">What is the impact of Puma's HTTP request smuggling CVEs?</div><div class="faq-a">HTTP request smuggling can allow an attacker to bypass access controls, poison shared response caches, and hijack credentials. In a reverse-proxy setup (Nginx → Puma), smuggling exploits the gap between how each server parses the same request.</div></div><div class="faq-item"><div class="faq-q">Does Rails update Puma automatically?</div><div class="faq-a">No — Puma is a separate gem. Specify it explicitly in your Gemfile and update regularly.</div></div></div>
+<div style="margin:40px 0"><h2>Related</h2><div class="related-grid"><div class="related-card"><a href="/fix/ruby/rack">Fix Rack</a><p>Related server-level CVEs</p></div><div class="related-card"><a href="/ruby">Ruby Security</a><p>All Ruby guides</p></div></div></div>
 
 </main>
 <footer class="site-footer">
@@ -244,7 +216,7 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
   <a href="https://configclarity.dev">ConfigClarity</a> ·
   <a href="https://domainpreflight.dev">DomainPreflight</a></p>
   <p style="margin-top:6px">Vulnerability data: <a href="https://osv.dev">OSV Database</a> · <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog">CISA KEV Catalog</a></p>
-  <p style="margin-top:6px">Always test dependency updates in a staging environment before deploying to production.</p>
+  <p style="margin-top:6px">Always test dependency updates in staging before deploying to production.</p>
 </footer>
 </body>
 </html>
