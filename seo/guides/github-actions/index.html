@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Dependency Security Scanning in GitHub Actions | PackageFix</title>
+<meta name="description" content="Add CVE scanning to GitHub Actions. OSV Scanner, npm audit, pip-audit, and bundle-audit workflows — copy-paste ready. Block deploys on critical vulnerabilities.">
+<link rel="canonical" href="https://packagefix.dev/guides/github-actions">
+<meta property="og:title" content="Dependency Security Scanning in GitHub Actions | PackageFix">
+<meta property="og:description" content="Add CVE scanning to GitHub Actions. OSV Scanner, npm audit, pip-audit, and bundle-audit workflows — copy-paste ready. Block deploys on critical vulnerabilities.">
+<meta property="og:url" content="https://packagefix.dev/guides/github-actions">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/svg+xml" href="/icon.svg">
+<link rel="icon" type="image/png" sizes="512x512" href="/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "HowTo",
+      "name": "Add dependency security scanning to GitHub Actions",
+      "description": "Automate CVE scanning in your CI/CD pipeline with GitHub Actions",
+      "estimatedCost": {
+        "@type": "MonetaryAmount",
+        "currency": "USD",
+        "value": "0"
+      },
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Add workflow file",
+          "text": "Create .github/workflows/security.yml"
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Choose scanner",
+          "text": "Use OSV Scanner for all ecosystems or ecosystem-specific tools"
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Set fail threshold",
+          "text": "Use --audit-level=high or --fail-on=critical to block deploys"
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "PackageFix",
+          "item": "https://packagefix.dev"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Guides",
+          "item": "https://packagefix.dev/guides"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "GitHub Actions",
+          "item": "https://packagefix.dev/guides/github-actions"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Does PackageFix have a GitHub Actions integration?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "PackageFix is a browser tool for manual scans. For automated CI scanning, use OSV Scanner (Google's open-source CLI) or the ecosystem audit tools (npm audit, pip-audit). PackageFix generates the GitHub Actions workflow YAML you can copy directly from the results page."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I block a deploy if critical CVEs are found?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Use --audit-level=critical in npm audit or --fail-on=critical in pip-audit. The GitHub Actions job will fail and block the deploy. See the workflows below."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use PackageFix in CI without a browser?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "PackageFix requires a browser. For headless CI scanning, use OSV Scanner: google/osv-scanner-action@v2. It uses the same OSV database as PackageFix."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I get a fixed manifest automatically in CI?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Use Renovate or Dependabot \u2014 they open PRs with fixed versions automatically. PackageFix is for manual one-off scans. Use both: PackageFix for immediate checks, Renovate for automated maintenance."
+          }
+        }
+      ]
+    }
+  ]
+}</script>
+<style>
+:root {
+  --bg:#0B0D14; --surface:#12151F; --surface2:#1A1D2E;
+  --border:#252836; --purple:#6C63FF; --green:#22C55E;
+  --orange:#F97316; --red:#EF4444; --yellow:#EAB308;
+  --text:#E2E4F0; --muted:#6B7280;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.6;min-height:100vh}
+a{color:var(--purple);text-decoration:none}
+a:hover{text-decoration:underline}
+.site-header{border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:15px;font-weight:700;color:var(--text)}
+.logo span{color:var(--purple)}
+.nav-links{display:flex;gap:20px;font-size:12px}
+.nav-links a{color:var(--muted)}
+.nav-links a:hover{color:var(--text);text-decoration:none}
+.container{max-width:860px;margin:0 auto;padding:48px 24px}
+.breadcrumb{font-size:11px;color:var(--muted);margin-bottom:24px;display:flex;gap:6px;flex-wrap:wrap}
+.breadcrumb a{color:var(--muted)}
+h1{font-size:clamp(18px,3vw,28px);font-weight:700;margin-bottom:12px;line-height:1.3}
+h2{font-size:15px;font-weight:600;margin:36px 0 12px}
+h3{font-size:13px;font-weight:600;margin:24px 0 8px}
+p{color:var(--muted);margin-bottom:12px;font-size:12px;line-height:1.7}
+.lead{color:var(--text);font-size:13px;margin-bottom:24px;line-height:1.7}
+.kev-banner{background:rgba(239,68,68,.12);border:1px solid var(--red);border-radius:10px;padding:16px 20px;margin:24px 0}
+.kev-banner .label{font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
+.kev-banner p{color:var(--red);margin:0;font-size:12px}
+.fix-box{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.3);border-left:3px solid var(--green);border-radius:8px;padding:16px 20px;margin:20px 0}
+.fix-box .label{font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.info-box{background:rgba(108,99,255,.08);border:1px solid rgba(108,99,255,.3);border-left:3px solid var(--purple);border-radius:8px;padding:16px 20px;margin:20px 0}
+pre{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px 16px;overflow-x:auto;font-size:11px;line-height:1.6;margin:8px 0;white-space:pre-wrap}
+code{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:1px 5px;font-size:11px}
+.cta-box{background:var(--surface);border:1px solid var(--purple);border-radius:10px;padding:24px;margin:32px 0;text-align:center}
+.cta-box p{color:var(--text);font-size:13px;margin-bottom:16px}
+.cta-btn{display:inline-block;background:var(--purple);color:#fff;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;padding:12px 28px;border-radius:7px;text-decoration:none}
+.cta-btn:hover{opacity:.9;text-decoration:none}
+.badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em}
+.badge-red{background:rgba(239,68,68,.2);color:var(--red);border:1px solid var(--red)}
+.badge-orange{background:rgba(249,115,22,.2);color:var(--orange);border:1px solid var(--orange)}
+.badge-green{background:rgba(34,197,94,.2);color:var(--green);border:1px solid var(--green)}
+.badge-purple{background:rgba(108,99,255,.2);color:var(--purple);border:1px solid var(--purple)}
+.cve-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:12px}
+.cve-table th{text-align:left;padding:10px 12px;border-bottom:1px solid var(--border);color:var(--muted);font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.08em}
+.cve-table td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+.cve-table tr:last-child td{border-bottom:none}
+.faq{margin:40px 0}
+.faq-item{border-bottom:1px solid var(--border);padding:16px 0}
+.faq-item:last-child{border-bottom:none}
+.faq-q{font-size:12px;font-weight:600;color:var(--text);margin-bottom:8px}
+.faq-a{font-size:12px;color:var(--muted);line-height:1.7}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:12px}
+.related-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
+.related-card a{color:var(--text);font-size:12px;font-weight:500}
+.related-card p{font-size:11px;color:var(--muted);margin:4px 0 0}
+.terminal-box{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px;margin:20px 0;font-family:'JetBrains Mono',monospace}
+.terminal-box .prompt{color:var(--green);font-size:11px}
+.terminal-box .cmd{color:var(--text);font-size:12px}
+.step-list{counter-reset:steps;padding:0;list-style:none;margin:16px 0}
+.step-list li{counter-increment:steps;display:flex;gap:16px;margin-bottom:20px;font-size:12px;color:var(--muted)}
+.step-list li::before{content:counter(steps);display:flex;align-items:center;justify-content:center;min-width:28px;height:28px;background:var(--purple);color:#fff;border-radius:50%;font-weight:700;font-size:11px;flex-shrink:0;margin-top:2px}
+.site-footer{border-top:1px solid var(--border);padding:24px;text-align:center;font-size:11px;color:var(--muted);margin-top:60px}
+.site-footer a{color:var(--muted)}
+@media(max-width:640px){.nav-links{display:none}.related-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <a href="https://packagefix.dev" class="logo">Package<span>Fix</span></a>
+  <nav class="nav-links">
+    <a href="https://packagefix.dev">Tool</a>
+    <a href="https://packagefix.dev/blog">Blog</a>
+    <a href="https://packagefix.dev/cisa-kev">CISA KEV</a>
+    <a href="https://packagefix.dev/alternatives">Alternatives</a>
+    <a href="https://github.com/metriclogic26/packagefix">GitHub</a>
+  </nav>
+</header>
+<main class="container">
+  <div class="breadcrumb"><a href="/">PackageFix</a> <span style='color:var(--border)'>/</span> <a href="/guides">Guides</a> <span style='color:var(--border)'>/</span> <span style="color:var(--text)">GitHub Actions</span></div>
+  
+<h1>Dependency Security Scanning in GitHub Actions</h1>
+<p class="lead">Add automatic CVE scanning to your GitHub Actions pipeline. Catch vulnerable dependencies on every push before they reach production.</p>
+
+<h2>Option 1 — OSV Scanner (recommended)</h2>
+<p>Google's OSV Scanner uses the same database as PackageFix. Works for all 7 ecosystems.</p>
+<pre>name: Dependency Security Scan
+on: [push, pull_request]
+
+jobs:
+  osv-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: google/osv-scanner-action@v2
+        with:
+          scan-args: |-
+            --lockfile=package-lock.json</pre>
+
+<h2>Option 2 — npm audit (npm projects)</h2>
+<pre>name: npm Security Scan
+on: [push, pull_request]
+
+jobs:
+  npm-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm ci
+      - run: npm audit --audit-level=high</pre>
+
+<h2>Option 3 — pip-audit (Python projects)</h2>
+<pre>name: Python Security Scan
+on: [push, pull_request]
+
+jobs:
+  pip-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install pip-audit
+      - run: pip-audit -r requirements.txt --fail-on critical</pre>
+
+<h2>Option 4 — bundle-audit (Ruby projects)</h2>
+<pre>name: Ruby Security Scan
+on: [push, pull_request]
+
+jobs:
+  bundle-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+      - run: gem install bundler-audit
+      - run: bundle audit check --update</pre>
+
+<div class="info-box">
+  <p style="margin:0"><strong>Get this YAML from PackageFix:</strong> After scanning your manifest, the "Add to CI/CD" action card generates the exact workflow for your detected ecosystem. Copy it directly.</p>
+</div>
+
+<div class="cta-box">
+  <p>Paste your manifest — get back a fixed version with all CVEs patched in seconds.</p>
+  <a href="https://packagefix.dev" class="cta-btn">Open PackageFix →</a>
+  <p style="margin-top:12px;font-size:11px;color:var(--muted)">No signup · No CLI · No GitHub · Runs 100% in your browser</p>
+</div>
+<div class="faq"><h2>Frequently Asked Questions</h2><div class="faq-item"><div class="faq-q">Does PackageFix have a GitHub Actions integration?</div><div class="faq-a">PackageFix is a browser tool for manual scans. For automated CI scanning, use OSV Scanner (Google's open-source CLI) or the ecosystem audit tools (npm audit, pip-audit). PackageFix generates the GitHub Actions workflow YAML you can copy directly from the results page.</div></div><div class="faq-item"><div class="faq-q">How do I block a deploy if critical CVEs are found?</div><div class="faq-a">Use --audit-level=critical in npm audit or --fail-on=critical in pip-audit. The GitHub Actions job will fail and block the deploy. See the workflows below.</div></div><div class="faq-item"><div class="faq-q">Can I use PackageFix in CI without a browser?</div><div class="faq-a">PackageFix requires a browser. For headless CI scanning, use OSV Scanner: google/osv-scanner-action@v2. It uses the same OSV database as PackageFix.</div></div><div class="faq-item"><div class="faq-q">How do I get a fixed manifest automatically in CI?</div><div class="faq-a">Use Renovate or Dependabot — they open PRs with fixed versions automatically. PackageFix is for manual one-off scans. Use both: PackageFix for immediate checks, Renovate for automated maintenance.</div></div></div>
+<div style="margin:40px 0"><h2>Related</h2><div class="related-grid"><div class="related-card"><a href="/terminal">Terminal One-Liner</a><p>Pipe manifest from command line</p></div><div class="related-card"><a href="/guides/pre-commit">Pre-commit Hook</a><p>Scan before every commit</p></div><div class="related-card"><a href="/cisa-kev">CISA KEV Packages</a><p>Actively exploited right now</p></div><div class="related-card"><a href="/npm">npm Security Guide</a><p>All npm vulnerability guides</p></div></div></div>
+</main>
+<footer class="site-footer">
+  <p>PackageFix · <a href="https://packagefix.dev">packagefix.dev</a> · MIT Licensed · Open Source</p>
+  <p style="margin-top:6px">Part of the MetricLogic network ·
+  <a href="https://configclarity.dev">ConfigClarity</a> ·
+  <a href="https://domainpreflight.dev">DomainPreflight</a></p>
+  <p style="margin-top:6px">Vulnerability data: <a href="https://osv.dev">OSV Database</a> · <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog">CISA KEV Catalog</a></p>
+  <p style="margin-top:6px">Always test dependency updates in staging before deploying to production.</p>
+</footer>
+</body>
+</html>

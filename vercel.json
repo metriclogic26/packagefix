@@ -1775,6 +1775,150 @@
     {
       "source": "/kev/CVE-2022-1471/",
       "destination": "/seo/kev/CVE-2022-1471/index.html"
+    },
+    {
+      "source": "/kev/CVE-2020-8203",
+      "destination": "/seo/kev/CVE-2020-8203/index.html"
+    },
+    {
+      "source": "/kev/CVE-2020-8203/",
+      "destination": "/seo/kev/CVE-2020-8203/index.html"
+    },
+    {
+      "source": "/kev/CVE-2021-23337",
+      "destination": "/seo/kev/CVE-2021-23337/index.html"
+    },
+    {
+      "source": "/kev/CVE-2021-23337/",
+      "destination": "/seo/kev/CVE-2021-23337/index.html"
+    },
+    {
+      "source": "/kev/CVE-2022-24999",
+      "destination": "/seo/kev/CVE-2022-24999/index.html"
+    },
+    {
+      "source": "/kev/CVE-2022-24999/",
+      "destination": "/seo/kev/CVE-2022-24999/index.html"
+    },
+    {
+      "source": "/kev/CVE-2021-44906",
+      "destination": "/seo/kev/CVE-2021-44906/index.html"
+    },
+    {
+      "source": "/kev/CVE-2021-44906/",
+      "destination": "/seo/kev/CVE-2021-44906/index.html"
+    },
+    {
+      "source": "/kev/CVE-2023-26136",
+      "destination": "/seo/kev/CVE-2023-26136/index.html"
+    },
+    {
+      "source": "/kev/CVE-2023-26136/",
+      "destination": "/seo/kev/CVE-2023-26136/index.html"
+    },
+    {
+      "source": "/kev/CVE-2023-45857",
+      "destination": "/seo/kev/CVE-2023-45857/index.html"
+    },
+    {
+      "source": "/kev/CVE-2023-45857/",
+      "destination": "/seo/kev/CVE-2023-45857/index.html"
+    },
+    {
+      "source": "/kev/CVE-2022-23540",
+      "destination": "/seo/kev/CVE-2022-23540/index.html"
+    },
+    {
+      "source": "/kev/CVE-2022-23540/",
+      "destination": "/seo/kev/CVE-2022-23540/index.html"
+    },
+    {
+      "source": "/kev/CVE-2023-29017",
+      "destination": "/seo/kev/CVE-2023-29017/index.html"
+    },
+    {
+      "source": "/kev/CVE-2023-29017/",
+      "destination": "/seo/kev/CVE-2023-29017/index.html"
+    },
+    {
+      "source": "/kev/CVE-2023-4863",
+      "destination": "/seo/kev/CVE-2023-4863/index.html"
+    },
+    {
+      "source": "/kev/CVE-2023-4863/",
+      "destination": "/seo/kev/CVE-2023-4863/index.html"
+    },
+    {
+      "source": "/kev/CVE-2022-25883",
+      "destination": "/seo/kev/CVE-2022-25883/index.html"
+    },
+    {
+      "source": "/kev/CVE-2022-25883/",
+      "destination": "/seo/kev/CVE-2022-25883/index.html"
+    },
+    {
+      "source": "/kev/CVE-2023-32681",
+      "destination": "/seo/kev/CVE-2023-32681/index.html"
+    },
+    {
+      "source": "/kev/CVE-2023-32681/",
+      "destination": "/seo/kev/CVE-2023-32681/index.html"
+    },
+    {
+      "source": "/kev/CVE-2024-27351",
+      "destination": "/seo/kev/CVE-2024-27351/index.html"
+    },
+    {
+      "source": "/kev/CVE-2024-27351/",
+      "destination": "/seo/kev/CVE-2024-27351/index.html"
+    },
+    {
+      "source": "/kev/CVE-2024-34064",
+      "destination": "/seo/kev/CVE-2024-34064/index.html"
+    },
+    {
+      "source": "/kev/CVE-2024-34064/",
+      "destination": "/seo/kev/CVE-2024-34064/index.html"
+    },
+    {
+      "source": "/kev/CVE-2022-24836",
+      "destination": "/seo/kev/CVE-2022-24836/index.html"
+    },
+    {
+      "source": "/kev/CVE-2022-24836/",
+      "destination": "/seo/kev/CVE-2022-24836/index.html"
+    },
+    {
+      "source": "/kev/CVE-2023-27530",
+      "destination": "/seo/kev/CVE-2023-27530/index.html"
+    },
+    {
+      "source": "/kev/CVE-2023-27530/",
+      "destination": "/seo/kev/CVE-2023-27530/index.html"
+    },
+    {
+      "source": "/terminal",
+      "destination": "/seo/terminal/index.html"
+    },
+    {
+      "source": "/terminal/",
+      "destination": "/seo/terminal/index.html"
+    },
+    {
+      "source": "/guides/github-actions",
+      "destination": "/seo/guides/github-actions/index.html"
+    },
+    {
+      "source": "/guides/github-actions/",
+      "destination": "/seo/guides/github-actions/index.html"
+    },
+    {
+      "source": "/guides/pre-commit",
+      "destination": "/seo/guides/pre-commit/index.html"
+    },
+    {
+      "source": "/guides/pre-commit/",
+      "destination": "/seo/guides/pre-commit/index.html"
     }
   ]
 }
