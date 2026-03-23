@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
 Sitemap: https://packagefix.dev/sitemap.xml
+Sitemap: https://packagefix.dev/sitemap-seo.xml
