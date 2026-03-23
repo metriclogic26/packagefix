@@ -311,3 +311,17 @@ https://packagefix.dev/glossary/dependency-scanning
 https://packagefix.dev/glossary/software-composition-analysis
 https://packagefix.dev/glossary/open-source-vulnerability
 https://packagefix.dev/glossary
+
+## CVE History Pages (enriched)
+https://packagefix.dev/fix/npm/lodash
+https://packagefix.dev/fix/npm/axios
+https://packagefix.dev/fix/npm/express
+https://packagefix.dev/fix/npm/jsonwebtoken
+https://packagefix.dev/fix/npm/vm2
+https://packagefix.dev/fix/pypi/django
+https://packagefix.dev/fix/pypi/requests
+https://packagefix.dev/fix/pypi/cryptography
+https://packagefix.dev/fix/ruby/rails
+https://packagefix.dev/fix/ruby/nokogiri
+https://packagefix.dev/fix/java/log4j
+https://packagefix.dev/fix/java/spring-core

@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Fix Apache Log4j CVE-2021-44228 — Java/Maven Vulnerability | PackageFix</title>
-<meta name="description" content="Fix CVE-2021-44228 (CRITICAL) in Apache Log4j for Java/Maven. Paste your pom.xml into PackageFix and get a patched version — no CLI, no signup. Remote code execution via jndi lookup in log message (log4shell).">
+<title>All Apache Log4j CVEs — Complete Java/Maven Vulnerability History | PackageFix</title>
+<meta name="description" content="Apache Log4j has 5 known CVEs. CISA KEV — actively exploited. Latest CVE: CVE-2021-44228 (CRITICAL). Safe version: 2.23.1. Full history with fix guide.">
 <link rel="canonical" href="https://packagefix.dev/fix/java/log4j">
-<meta property="og:title" content="Fix Apache Log4j CVE-2021-44228 — Java/Maven Vulnerability | PackageFix">
-<meta property="og:description" content="Fix CVE-2021-44228 (CRITICAL) in Apache Log4j for Java/Maven. Paste your pom.xml into PackageFix and get a patched version — no CLI, no signup. Remote code execution via jndi lookup in log message (log4shell).">
+<meta property="og:title" content="All Apache Log4j CVEs — Complete Java/Maven Vulnerability History | PackageFix">
+<meta property="og:description" content="Apache Log4j has 5 known CVEs. CISA KEV — actively exploited. Latest CVE: CVE-2021-44228 (CRITICAL). Safe version: 2.23.1. Full history with fix guide.">
 <meta property="og:url" content="https://packagefix.dev/fix/java/log4j">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
@@ -19,38 +19,40 @@
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "HowTo",
-      "name": "Fix Apache Log4j CVE-2021-44228",
-      "description": "Fix CVE-2021-44228 (CRITICAL) in Apache Log4j for Java/Maven. Paste your pom.xml into PackageFix and get a patched version \u2014 no CLI, no signup. Remote code execution via jndi lookup in log message (log4shell).",
-      "estimatedCost": {
-        "@type": "MonetaryAmount",
-        "currency": "USD",
-        "value": "0"
-      },
-      "supply": {
-        "@type": "HowToSupply",
-        "name": "pom.xml"
-      },
-      "tool": {
-        "@type": "HowToTool",
-        "name": "PackageFix",
-        "url": "https://packagefix.dev"
-      },
-      "step": [
+      "@type": "ItemList",
+      "name": "All Apache Log4j CVEs",
+      "description": "Complete CVE history for Apache Log4j (Java/Maven) \u2014 5 known vulnerabilities",
+      "numberOfItems": 5,
+      "itemListElement": [
         {
-          "@type": "HowToStep",
-          "name": "Paste manifest",
-          "text": "Paste your pom.xml into PackageFix"
+          "@type": "ListItem",
+          "position": 1,
+          "name": "CVE-2019-17571",
+          "url": "https://osv.dev/vulnerability/CVE-2019-17571"
         },
         {
-          "@type": "HowToStep",
-          "name": "Find CVE",
-          "text": "Locate CVE-2021-44228 in the CVE table"
+          "@type": "ListItem",
+          "position": 2,
+          "name": "CVE-2021-44228",
+          "url": "https://osv.dev/vulnerability/CVE-2021-44228"
         },
         {
-          "@type": "HowToStep",
-          "name": "Download fix",
-          "text": "Download patched pom.xml and run mvn dependency:resolve"
+          "@type": "ListItem",
+          "position": 3,
+          "name": "CVE-2021-45046",
+          "url": "https://osv.dev/vulnerability/CVE-2021-45046"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "CVE-2021-45105",
+          "url": "https://osv.dev/vulnerability/CVE-2021-45105"
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "name": "CVE-2021-44832",
+          "url": "https://osv.dev/vulnerability/CVE-2021-44832"
         }
       ]
     },
@@ -61,7 +63,7 @@
           "@type": "ListItem",
           "position": 1,
           "name": "PackageFix",
-          "item": "https://packagefix.dev/"
+          "item": "https://packagefix.dev"
         },
         {
           "@type": "ListItem",
@@ -88,34 +90,34 @@
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "What is CVE-2021-44228?",
+          "name": "Why are there so many Log4j CVEs all at once in December 2021?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "CVE-2021-44228 is a CRITICAL severity vulnerability in Apache Log4j (Java/Maven) that allows remote code execution via JNDI lookup in log message (Log4Shell). Update to 2.23.1 or later."
+            "text": "Log4Shell (CVE-2021-44228) was disclosed on December 9, 2021. The initial patch (2.15.0) was incomplete \u2014 researchers immediately found bypass techniques, leading to CVE-2021-45046. Each bypass required another patch: 2.16.0, then 2.17.0 for the DoS, then 2.17.1 for a JDBC appender edge case. The final fully-patched version addressing all known bypasses is 2.17.1+."
           }
         },
         {
           "@type": "Question",
-          "name": "How do I fix CVE-2021-44228 in Apache Log4j?",
+          "name": "Is my app vulnerable to Log4Shell if I use Spring Boot?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Update Apache Log4j to version 2.23.1 in your pom.xml and run mvn dependency:resolve."
+            "text": "Check your Spring Boot version. Spring Boot 2.5.8+ and 2.6.2+ upgraded Log4j to 2.17.1. Earlier versions bundle vulnerable Log4j. Run mvn dependency:tree | grep log4j to see your resolved version, or paste your pom.xml into PackageFix."
           }
         },
         {
           "@type": "Question",
-          "name": "Is CVE-2021-44228 being actively exploited?",
+          "name": "Is Log4Shell still being exploited in 2026?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes \u2014 it appears on the CISA KEV catalog. Fix immediately."
+            "text": "Yes \u2014 CISA KEV confirms ongoing exploitation. Unpatched Log4j instances are continuously scanned by automated attack tools. The vulnerability is so well-known that any unpatched system is quickly found and attacked."
           }
         },
         {
           "@type": "Question",
-          "name": "How do I verify the fix for CVE-2021-44228?",
+          "name": "What if I can't upgrade Log4j immediately?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "After updating, paste your pom.xml into PackageFix again. If CVE-2021-44228 no longer appears in the CVE table, the fix is applied."
+            "text": "Temporary mitigation: set the JVM argument -Dlog4j2.formatMsgNoLookups=true. This disables the JNDI lookup that enables Log4Shell. This is a workaround only \u2014 upgrade to 2.17.1+ as soon as possible."
           }
         }
       ]
@@ -150,7 +152,6 @@ p{color:var(--muted);margin-bottom:12px;font-size:12px;line-height:1.7}
 .problem-box .label{font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
 .fix-box{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.3);border-left:3px solid var(--green);border-radius:8px;padding:16px 20px;margin:20px 0}
 .fix-box .label{font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
-.kev-box{background:rgba(239,68,68,.12);border:1px solid var(--red);border-radius:8px;padding:12px 16px;margin:16px 0;font-size:11px;color:var(--red)}
 pre{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px 16px;overflow-x:auto;font-size:11px;line-height:1.6;margin:8px 0;white-space:pre-wrap}
 code{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:1px 5px;font-size:11px}
 .cta-box{background:var(--surface);border:1px solid var(--purple);border-radius:10px;padding:24px;margin:32px 0;text-align:center}
@@ -162,6 +163,13 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
 .badge-orange{background:rgba(249,115,22,.2);color:var(--orange);border:1px solid var(--orange)}
 .badge-green{background:rgba(34,197,94,.2);color:var(--green);border:1px solid var(--green)}
 .badge-purple{background:rgba(108,99,255,.2);color:var(--purple);border:1px solid var(--purple)}
+.badge-muted{background:rgba(107,114,128,.15);color:var(--muted);border:1px solid var(--border)}
+.cve-history{width:100%;border-collapse:collapse;margin:16px 0;font-size:12px}
+.cve-history th{text-align:left;padding:10px 12px;border-bottom:2px solid var(--border);color:var(--muted);font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.08em}
+.cve-history td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+.cve-history tr:last-child td{border-bottom:none}
+.cve-history tr:hover td{background:var(--surface2)}
+.cve-history .kev-dot{color:var(--red);margin-right:4px}
 .faq{margin:40px 0}
 .faq-item{border-bottom:1px solid var(--border);padding:16px 0}
 .faq-item:last-child{border-bottom:none}
@@ -171,11 +179,6 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
 .related-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
 .related-card a{color:var(--text);font-size:12px;font-weight:500}
 .related-card p{font-size:11px;color:var(--muted);margin:4px 0 0}
-.cve-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:12px}
-.cve-table th{text-align:left;padding:8px 12px;border-bottom:1px solid var(--border);color:var(--muted);font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.08em}
-.cve-table td{padding:8px 12px;border-bottom:1px solid var(--border)}
-.cve-table tr:last-child td{border-bottom:none}
-.vs-table td:first-child{font-weight:600;color:var(--text)}
 .site-footer{border-top:1px solid var(--border);padding:24px;text-align:center;font-size:11px;color:var(--muted);margin-top:60px}
 .site-footer a{color:var(--muted)}
 @media(max-width:640px){.nav-links{display:none}.related-grid{grid-template-columns:1fr}}
@@ -186,48 +189,92 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
   <a href="https://packagefix.dev" class="logo">Package<span>Fix</span></a>
   <nav class="nav-links">
     <a href="https://packagefix.dev">Tool</a>
-    <a href="https://packagefix.dev/alternatives">Alternatives</a>
-    <a href="https://packagefix.dev/error">Error Fixes</a>
+    <a href="https://packagefix.dev/glossary">Glossary</a>
+    <a href="https://packagefix.dev/cisa-kev">CISA KEV</a>
+    <a href="https://packagefix.dev/blog">Blog</a>
     <a href="https://github.com/metriclogic26/packagefix">GitHub</a>
   </nav>
 </header>
 <main class="container">
   <div class="breadcrumb"><a href="/">PackageFix</a> <span style='color:var(--border)'>/</span> <a href="/fix">Fix Guides</a> <span style='color:var(--border)'>/</span> <a href="/java">Java/Maven</a> <span style='color:var(--border)'>/</span> <span style="color:var(--text)">Apache Log4j</span></div>
   
-<h1>Fix Apache Log4j — CVE-2021-44228 <span class="badge badge-red">CRITICAL</span></h1>
-<p class="lead">Fix CVE-2021-44228 (CRITICAL) in Apache Log4j for Java/Maven. Paste your pom.xml into PackageFix and get a patched version — no CLI, no signup. Remote code execution via jndi lookup in log message (log4shell).</p>
-<div class="kev-box">🔴 <strong>CISA KEV</strong> — Apache Log4j appears on the CISA Known Exploited Vulnerabilities catalog. Actively exploited in the wild. Fix immediately.</div>
-<div class="problem-box">
-  <div class="label">⚠ Vulnerability</div>
-  <p style="margin:0"><strong>CVE-2021-44228</strong> (CRITICAL) — remote code execution via JNDI lookup in log message (Log4Shell) in Apache Log4j below <code>2.23.1</code>.</p>
+<h1>All Apache Log4j CVEs — Complete Vulnerability History</h1>
+<p class="lead">Log4j is Apache's Java logging library used by virtually every Java application. Log4Shell (CVE-2021-44228) was the most severe Java vulnerability ever discovered. The fix process required multiple patches as bypasses were discovered.</p>
+
+<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px">
+  <span class="badge badge-purple">Java/Maven</span>
+  <span class="badge badge-muted">Millions weekly downloads</span>
+  <span class="badge badge-muted">5 CVEs total</span>
+  <span class="badge badge-red">3 CRITICAL</span>
+  <span class="badge badge-red">🔴 CISA KEV</span>
 </div>
-<h2>Vulnerable — pom.xml</h2>
-<pre><log4j.version>2.14.1</log4j.version></pre>
-<h2>Fixed — pom.xml</h2>
-<pre><log4j.version>2.23.1</log4j.version></pre>
-<div class="fix-box">
-  <div class="label">✓ Fix</div>
-  <p style="margin:0">Update Apache Log4j to <code>2.23.1</code> and run <code>mvn dependency:resolve</code>.</p>
-</div>
-<div class="cta-box">
-  <p>Paste your manifest — get back a fixed version with all CVEs patched in seconds.</p>
-  <a href="https://packagefix.dev" class="cta-btn">Open PackageFix →</a>
-  <p style="margin-top:12px;font-size:11px;color:var(--muted)">No signup · No CLI · No GitHub connection · Runs 100% in your browser</p>
-</div>
-<h2>CVE Details</h2>
-<table class="cve-table">
-  <thead><tr><th>Field</th><th>Value</th></tr></thead>
-  <tbody>
-    <tr><td>CVE ID</td><td><a href="https://osv.dev/vulnerability/CVE-2021-44228" target="_blank" rel="noopener">CVE-2021-44228</a></td></tr>
-    <tr><td>Severity</td><td><span class="badge badge-red">CRITICAL</span></td></tr>
-    <tr><td>Package</td><td>Apache Log4j (Java/Maven)</td></tr>
-    <tr><td>Safe version</td><td>2.23.1</td></tr>
-    <tr><td>CISA KEV</td><td>🔴 Yes</td></tr>
-    <tr><td>Description</td><td>Remote code execution via jndi lookup in log message (log4shell)</td></tr>
-  </tbody>
+
+<h2>CVE history — all 5 known vulnerabilities</h2>
+<p style="margin:8px 0 0;font-size:11px;color:var(--red)">🔴 2 CVEs on CISA KEV — actively exploited in real attacks</p>
+<table class="cve-history">
+  <thead>
+    <tr>
+      <th>CVE ID</th>
+      <th>Year</th>
+      <th>Severity</th>
+      <th>Description</th>
+      <th>Fix</th>
+    </tr>
+  </thead>
+  <tbody><tr>
+  <td><a href="https://osv.dev/vulnerability/CVE-2019-17571" target="_blank" rel="noopener">CVE-2019-17571</a></td>
+  <td>2019</td>
+  <td><span class="badge badge-red">CRITICAL</span></td>
+  <td style="color:var(--muted)">Deserialization of untrusted data via SocketServer</td>
+  <td><span class="badge badge-green">Fixed in 2.0-beta9</span></td>
+</tr><tr>
+  <td><a href="https://osv.dev/vulnerability/CVE-2021-44228" target="_blank" rel="noopener">CVE-2021-44228</a></td>
+  <td>2021</td>
+  <td><span class="kev-dot" title="CISA KEV — actively exploited">🔴</span><span class="badge badge-red">CRITICAL</span></td>
+  <td style="color:var(--muted)">Log4Shell — RCE via JNDI lookup in log message — CISA KEV</td>
+  <td><span class="badge badge-green">Fixed in 2.15.0</span></td>
+</tr><tr>
+  <td><a href="https://osv.dev/vulnerability/CVE-2021-45046" target="_blank" rel="noopener">CVE-2021-45046</a></td>
+  <td>2021</td>
+  <td><span class="kev-dot" title="CISA KEV — actively exploited">🔴</span><span class="badge badge-red">CRITICAL</span></td>
+  <td style="color:var(--muted)">Log4Shell bypass — incomplete fix in 2.15.0 — CISA KEV</td>
+  <td><span class="badge badge-green">Fixed in 2.16.0</span></td>
+</tr><tr>
+  <td><a href="https://osv.dev/vulnerability/CVE-2021-45105" target="_blank" rel="noopener">CVE-2021-45105</a></td>
+  <td>2021</td>
+  <td><span class="badge badge-orange">HIGH</span></td>
+  <td style="color:var(--muted)">DoS via crafted string causing infinite recursion</td>
+  <td><span class="badge badge-green">Fixed in 2.17.0</span></td>
+</tr><tr>
+  <td><a href="https://osv.dev/vulnerability/CVE-2021-44832" target="_blank" rel="noopener">CVE-2021-44832</a></td>
+  <td>2021</td>
+  <td><span class="badge badge-purple">MEDIUM</span></td>
+  <td style="color:var(--muted)">RCE via JDBC Appender with attacker-controlled config</td>
+  <td><span class="badge badge-green">Fixed in 2.17.1</span></td>
+</tr></tbody>
 </table>
-<div class="faq"><h2>Frequently Asked Questions</h2><div class="faq-item"><div class="faq-q">What is CVE-2021-44228?</div><div class="faq-a">CVE-2021-44228 is a CRITICAL severity vulnerability in Apache Log4j (Java/Maven) that allows remote code execution via JNDI lookup in log message (Log4Shell). Update to 2.23.1 or later.</div></div><div class="faq-item"><div class="faq-q">How do I fix CVE-2021-44228 in Apache Log4j?</div><div class="faq-a">Update Apache Log4j to version 2.23.1 in your pom.xml and run mvn dependency:resolve.</div></div><div class="faq-item"><div class="faq-q">Is CVE-2021-44228 being actively exploited?</div><div class="faq-a">Yes — it appears on the CISA KEV catalog. Fix immediately.</div></div><div class="faq-item"><div class="faq-q">How do I verify the fix for CVE-2021-44228?</div><div class="faq-a">After updating, paste your pom.xml into PackageFix again. If CVE-2021-44228 no longer appears in the CVE table, the fix is applied.</div></div></div>
-<div style="margin:40px 0"><h2>Related Guides</h2><div class="related-grid"><div class="related-card"><a href="/java">Java/Maven Security Overview</a><p>All Java/Maven vulnerability guides</p></div><div class="related-card"><a href="/fix/java/outdated-dependencies">Fix Outdated Java/Maven Dependencies</a><p>General dependency updates</p></div><div class="related-card"><a href="https://packagefix.dev">Open PackageFix Tool</a><p>Scan your manifest live</p></div><div class="related-card"><a href="/vs/snyk-advisor">PackageFix vs Snyk Advisor</a><p>Free browser alternative</p></div></div></div>
+
+<h2>Current safe version</h2>
+<div class="fix-box">
+  <div class="label">✓ Update to 2.23.1</div>
+  <p style="margin:0 0 12px">The latest safe version addresses all 5 known CVEs listed above.</p>
+</div>
+
+<h2>Before and after</h2>
+<p style="color:var(--muted);font-size:11px;margin-bottom:4px">Vulnerable:</p>
+<pre><log4j.version>2.14.1</log4j.version></pre>
+<p style="color:var(--muted);font-size:11px;margin-bottom:4px">Fixed:</p>
+<pre><log4j.version>2.23.1</log4j.version></pre>
+<p>Then run: <code>mvn dependency:resolve</code></p>
+
+<div class="cta-box">
+  <p>Paste your manifest — see your exact installed version against this full CVE list.</p>
+  <a href="https://packagefix.dev" class="cta-btn">Scan with PackageFix →</a>
+  <p style="margin-top:12px;font-size:11px;color:var(--muted)">Free · No signup · No CLI · Runs in your browser</p>
+</div>
+<div class="faq"><h2>Common questions</h2><div class="faq-item"><div class="faq-q">Why are there so many Log4j CVEs all at once in December 2021?</div><div class="faq-a">Log4Shell (CVE-2021-44228) was disclosed on December 9, 2021. The initial patch (2.15.0) was incomplete — researchers immediately found bypass techniques, leading to CVE-2021-45046. Each bypass required another patch: 2.16.0, then 2.17.0 for the DoS, then 2.17.1 for a JDBC appender edge case. The final fully-patched version addressing all known bypasses is 2.17.1+.</div></div><div class="faq-item"><div class="faq-q">Is my app vulnerable to Log4Shell if I use Spring Boot?</div><div class="faq-a">Check your Spring Boot version. Spring Boot 2.5.8+ and 2.6.2+ upgraded Log4j to 2.17.1. Earlier versions bundle vulnerable Log4j. Run mvn dependency:tree | grep log4j to see your resolved version, or paste your pom.xml into PackageFix.</div></div><div class="faq-item"><div class="faq-q">Is Log4Shell still being exploited in 2026?</div><div class="faq-a">Yes — CISA KEV confirms ongoing exploitation. Unpatched Log4j instances are continuously scanned by automated attack tools. The vulnerability is so well-known that any unpatched system is quickly found and attacked.</div></div><div class="faq-item"><div class="faq-q">What if I can't upgrade Log4j immediately?</div><div class="faq-a">Temporary mitigation: set the JVM argument -Dlog4j2.formatMsgNoLookups=true. This disables the JNDI lookup that enables Log4Shell. This is a workaround only — upgrade to 2.17.1+ as soon as possible.</div></div></div>
+<div style="margin:40px 0"><h2>Related</h2><div class="related-grid"><div class="related-card"><a href="/kev/CVE-2021-44228">CVE-2021-44228 — Log4Shell</a><p>CVSS 10.0 — full detail</p></div><div class="related-card"><a href="/fix/java/spring-core">Fix Spring Framework</a><p>Spring4Shell CVE</p></div><div class="related-card"><a href="/fix/java/commons-text">Fix Commons Text</a><p>Text4Shell CVE</p></div><div class="related-card"><a href="/java">Java Security Overview</a><p>All Java CVE guides</p></div></div></div>
+
 </main>
 <footer class="site-footer">
   <p>PackageFix · <a href="https://packagefix.dev">packagefix.dev</a> · MIT Licensed · Open Source</p>
@@ -235,7 +282,7 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
   <a href="https://configclarity.dev">ConfigClarity</a> ·
   <a href="https://domainpreflight.dev">DomainPreflight</a></p>
   <p style="margin-top:6px">Vulnerability data: <a href="https://osv.dev">OSV Database</a> · <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog">CISA KEV Catalog</a></p>
-  <p style="margin-top:6px">Always test dependency updates in a staging environment before deploying to production.</p>
+  <p style="margin-top:6px">Always test dependency updates in staging before deploying to production.</p>
 </footer>
 </body>
 </html>

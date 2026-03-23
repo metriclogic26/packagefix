@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Fix Django CVE-2024-27351 — PyPI Vulnerability | PackageFix</title>
-<meta name="description" content="Fix CVE-2024-27351 (HIGH) in Django for PyPI. Paste your requirements.txt into PackageFix and get a patched version — no CLI, no signup. Redos in strip_tags() html sanitizer function.">
+<title>All Django CVEs — Complete PyPI Vulnerability History | PackageFix</title>
+<meta name="description" content="Django has 8 known CVEs. Latest CVE: CVE-2024-27351 (HIGH). Safe version: 4.2.13. Full history with fix guide.">
 <link rel="canonical" href="https://packagefix.dev/fix/pypi/django">
-<meta property="og:title" content="Fix Django CVE-2024-27351 — PyPI Vulnerability | PackageFix">
-<meta property="og:description" content="Fix CVE-2024-27351 (HIGH) in Django for PyPI. Paste your requirements.txt into PackageFix and get a patched version — no CLI, no signup. Redos in strip_tags() html sanitizer function.">
+<meta property="og:title" content="All Django CVEs — Complete PyPI Vulnerability History | PackageFix">
+<meta property="og:description" content="Django has 8 known CVEs. Latest CVE: CVE-2024-27351 (HIGH). Safe version: 4.2.13. Full history with fix guide.">
 <meta property="og:url" content="https://packagefix.dev/fix/pypi/django">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
@@ -19,38 +19,58 @@
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "HowTo",
-      "name": "Fix Django CVE vulnerabilities",
-      "description": "How to find and fix CVEs in Django (PyPI)",
-      "estimatedCost": {
-        "@type": "MonetaryAmount",
-        "currency": "USD",
-        "value": "0"
-      },
-      "supply": {
-        "@type": "HowToSupply",
-        "name": "requirements.txt"
-      },
-      "tool": {
-        "@type": "HowToTool",
-        "name": "PackageFix",
-        "url": "https://packagefix.dev"
-      },
-      "step": [
+      "@type": "ItemList",
+      "name": "All Django CVEs",
+      "description": "Complete CVE history for Django (PyPI) \u2014 8 known vulnerabilities",
+      "numberOfItems": 8,
+      "itemListElement": [
         {
-          "@type": "HowToStep",
-          "name": "Paste manifest",
-          "text": "Paste your requirements.txt into PackageFix at packagefix.dev"
+          "@type": "ListItem",
+          "position": 1,
+          "name": "CVE-2021-45115",
+          "url": "https://osv.dev/vulnerability/CVE-2021-45115"
         },
         {
-          "@type": "HowToStep",
-          "name": "Review CVEs",
-          "text": "Check the CVE table for Django vulnerabilities with severity badges"
+          "@type": "ListItem",
+          "position": 2,
+          "name": "CVE-2021-45116",
+          "url": "https://osv.dev/vulnerability/CVE-2021-45116"
         },
         {
-          "@type": "HowToStep",
-          "name": "Download fix",
-          "text": "Download the patched requirements.txt and run pip install -r requirements.txt"
+          "@type": "ListItem",
+          "position": 3,
+          "name": "CVE-2022-28346",
+          "url": "https://osv.dev/vulnerability/CVE-2022-28346"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "CVE-2022-28347",
+          "url": "https://osv.dev/vulnerability/CVE-2022-28347"
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "name": "CVE-2022-36359",
+          "url": "https://osv.dev/vulnerability/CVE-2022-36359"
+        },
+        {
+          "@type": "ListItem",
+          "position": 6,
+          "name": "CVE-2023-24580",
+          "url": "https://osv.dev/vulnerability/CVE-2023-24580"
+        },
+        {
+          "@type": "ListItem",
+          "position": 7,
+          "name": "CVE-2023-31047",
+          "url": "https://osv.dev/vulnerability/CVE-2023-31047"
+        },
+        {
+          "@type": "ListItem",
+          "position": 8,
+          "name": "CVE-2024-27351",
+          "url": "https://osv.dev/vulnerability/CVE-2024-27351"
         }
       ]
     },
@@ -61,7 +81,7 @@
           "@type": "ListItem",
           "position": 1,
           "name": "PackageFix",
-          "item": "https://packagefix.dev/"
+          "item": "https://packagefix.dev"
         },
         {
           "@type": "ListItem",
@@ -73,7 +93,7 @@
           "@type": "ListItem",
           "position": 3,
           "name": "PyPI",
-          "item": "https://packagefix.dev/python"
+          "item": "https://packagefix.dev/pypi"
         },
         {
           "@type": "ListItem",
@@ -88,34 +108,34 @@
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "What is CVE-2024-27351?",
+          "name": "How often does Django release security patches?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "CVE-2024-27351 is a HIGH severity vulnerability in Django (PyPI). It allows ReDoS in strip_tags() HTML sanitizer function. Update to version 4.2.13 or later to fix it."
+            "text": "Roughly every 4-8 weeks. The Django team maintains a security mailing list (django-security-announce) and publishes advisories at docs.djangoproject.com/en/dev/releases/security. Subscribe to stay informed."
           }
         },
         {
           "@type": "Question",
-          "name": "How do I fix CVE-2024-27351 in Django?",
+          "name": "What are the most serious Django CVEs?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Update Django to version 4.2.13 in your requirements.txt. Run pip install -r requirements.txt after updating to apply the fix."
+            "text": "The 2022 SQL injection CVEs (CVE-2022-28346 and CVE-2022-28347) were the most severe \u2014 CRITICAL severity, affecting QuerySet methods used in almost all Django apps. Any app on Django < 3.2.13 that uses annotate, aggregate, extra, or explain with user input is vulnerable."
           }
         },
         {
           "@type": "Question",
-          "name": "Is CVE-2024-27351 being actively exploited?",
+          "name": "Is Django 3.2 still receiving security patches?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Check the live CISA KEV catalog at packagefix.dev \u2014 PackageFix always reflects the current KEV status."
+            "text": "Django 3.2 is end-of-life as of April 2024. You should be on Django 4.2 LTS (supported until April 2026) or Django 5.0+. Django 3.2 no longer receives security fixes \u2014 any new CVE discovered won't be patched."
           }
         },
         {
           "@type": "Question",
-          "name": "How do I check if I am affected by CVE-2024-27351?",
+          "name": "How do I check my Django version?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Paste your requirements.txt into PackageFix. If your installed version of Django is below 4.2.13, you are affected. PackageFix shows the exact CVE ID and fix version."
+            "text": "Run python -m django --version. Or paste your requirements.txt into PackageFix \u2014 it will show your installed Django version and flag any unpatched CVEs."
           }
         }
       ]
@@ -144,14 +164,12 @@ a:hover{text-decoration:underline}
 .breadcrumb a{color:var(--muted)}
 h1{font-size:clamp(18px,3vw,26px);font-weight:700;margin-bottom:12px;line-height:1.3}
 h2{font-size:14px;font-weight:600;margin:32px 0 12px}
-h3{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin:24px 0 8px}
 p{color:var(--muted);margin-bottom:12px;font-size:12px;line-height:1.7}
 .lead{color:var(--text);font-size:13px;margin-bottom:24px;line-height:1.7}
 .problem-box{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3);border-left:3px solid var(--red);border-radius:8px;padding:16px 20px;margin:20px 0}
 .problem-box .label{font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
 .fix-box{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.3);border-left:3px solid var(--green);border-radius:8px;padding:16px 20px;margin:20px 0}
 .fix-box .label{font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
-.kev-box{background:rgba(239,68,68,.12);border:1px solid var(--red);border-radius:8px;padding:12px 16px;margin:16px 0;font-size:11px;color:var(--red)}
 pre{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px 16px;overflow-x:auto;font-size:11px;line-height:1.6;margin:8px 0;white-space:pre-wrap}
 code{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:1px 5px;font-size:11px}
 .cta-box{background:var(--surface);border:1px solid var(--purple);border-radius:10px;padding:24px;margin:32px 0;text-align:center}
@@ -163,6 +181,13 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
 .badge-orange{background:rgba(249,115,22,.2);color:var(--orange);border:1px solid var(--orange)}
 .badge-green{background:rgba(34,197,94,.2);color:var(--green);border:1px solid var(--green)}
 .badge-purple{background:rgba(108,99,255,.2);color:var(--purple);border:1px solid var(--purple)}
+.badge-muted{background:rgba(107,114,128,.15);color:var(--muted);border:1px solid var(--border)}
+.cve-history{width:100%;border-collapse:collapse;margin:16px 0;font-size:12px}
+.cve-history th{text-align:left;padding:10px 12px;border-bottom:2px solid var(--border);color:var(--muted);font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.08em}
+.cve-history td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+.cve-history tr:last-child td{border-bottom:none}
+.cve-history tr:hover td{background:var(--surface2)}
+.cve-history .kev-dot{color:var(--red);margin-right:4px}
 .faq{margin:40px 0}
 .faq-item{border-bottom:1px solid var(--border);padding:16px 0}
 .faq-item:last-child{border-bottom:none}
@@ -172,10 +197,6 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
 .related-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
 .related-card a{color:var(--text);font-size:12px;font-weight:500}
 .related-card p{font-size:11px;color:var(--muted);margin:4px 0 0}
-.cve-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:12px}
-.cve-table th{text-align:left;padding:8px 12px;border-bottom:1px solid var(--border);color:var(--muted);font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.08em}
-.cve-table td{padding:8px 12px;border-bottom:1px solid var(--border)}
-.cve-table tr:last-child td{border-bottom:none}
 .site-footer{border-top:1px solid var(--border);padding:24px;text-align:center;font-size:11px;color:var(--muted);margin-top:60px}
 .site-footer a{color:var(--muted)}
 @media(max-width:640px){.nav-links{display:none}.related-grid{grid-template-columns:1fr}}
@@ -186,56 +207,109 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
   <a href="https://packagefix.dev" class="logo">Package<span>Fix</span></a>
   <nav class="nav-links">
     <a href="https://packagefix.dev">Tool</a>
-    <a href="https://packagefix.dev/alternatives">Alternatives</a>
-    <a href="https://packagefix.dev/error">Error Fixes</a>
+    <a href="https://packagefix.dev/glossary">Glossary</a>
+    <a href="https://packagefix.dev/cisa-kev">CISA KEV</a>
+    <a href="https://packagefix.dev/blog">Blog</a>
     <a href="https://github.com/metriclogic26/packagefix">GitHub</a>
   </nav>
 </header>
 <main class="container">
-  <div class="breadcrumb"><a href="/">PackageFix</a> <span style='color:var(--border)'>/</span> <a href="/fix">Fix Guides</a> <span style='color:var(--border)'>/</span> <a href="/python">PyPI</a> <span style='color:var(--border)'>/</span> <span style="color:var(--text)">Django</span></div>
+  <div class="breadcrumb"><a href="/">PackageFix</a> <span style='color:var(--border)'>/</span> <a href="/fix">Fix Guides</a> <span style='color:var(--border)'>/</span> <a href="/pypi">PyPI</a> <span style='color:var(--border)'>/</span> <span style="color:var(--text)">Django</span></div>
   
-<h1>Fix Django — CVE-2024-27351 <span class="badge badge-orange">HIGH</span></h1>
-<p class="lead">Fix CVE-2024-27351 (HIGH) in Django for PyPI. Paste your requirements.txt into PackageFix and get a patched version — no CLI, no signup. Redos in strip_tags() html sanitizer function.</p>
+<h1>All Django CVEs — Complete Vulnerability History</h1>
+<p class="lead">Django releases security patches regularly — usually every 4-8 weeks. The Django team has an excellent security disclosure process and clear upgrade paths. Most CVEs are ReDoS, XSS, or open redirect issues rather than critical RCE.</p>
 
-<div class="problem-box">
-  <div class="label">⚠ Vulnerability</div>
-  <p style="margin:0"><strong>CVE-2024-27351</strong> (HIGH) — ReDoS in strip_tags() HTML sanitizer function in Django versions below <code>4.2.13</code>.</p>
+<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px">
+  <span class="badge badge-purple">PyPI</span>
+  <span class="badge badge-muted">15M+ weekly downloads</span>
+  <span class="badge badge-muted">8 CVEs total</span>
+  <span class="badge badge-red">3 CRITICAL</span>
+  
 </div>
 
-<h2>Vulnerable Version — requirements.txt</h2>
-<pre>Django==3.2.0</pre>
+<h2>CVE history — all 8 known vulnerabilities</h2>
 
-<h2>Fixed Version — requirements.txt</h2>
-<pre>Django==4.2.13</pre>
-
-<div class="fix-box">
-  <div class="label">✓ Fix</div>
-  <p style="margin:0">Update Django to <code>4.2.13</code> or later. Run <code>pip install -r requirements.txt</code> to apply. Verify with your ecosystem's audit tool after updating.</p>
-</div>
-
-<div class="cta-box">
-  <p>Paste your manifest — get back a fixed version with all CVEs patched in seconds.</p>
-  <a href="https://packagefix.dev" class="cta-btn">Open PackageFix →</a>
-  <p style="margin-top:12px;font-size:11px;color:var(--muted)">No signup · No CLI · No GitHub connection · Runs 100% in your browser</p>
-</div>
-
-<h2>CVE Details</h2>
-<table class="cve-table">
-  <thead><tr><th>Field</th><th>Value</th></tr></thead>
-  <tbody>
-    <tr><td>CVE ID</td><td><a href="https://osv.dev/vulnerability/CVE-2024-27351" target="_blank" rel="noopener">CVE-2024-27351</a></td></tr>
-    <tr><td>Severity</td><td><span class="badge badge-orange">HIGH</span></td></tr>
-    <tr><td>Package</td><td>Django (PyPI)</td></tr>
-    <tr><td>Vulnerable versions</td><td>Below 4.2.13</td></tr>
-    <tr><td>Safe version</td><td>4.2.13</td></tr>
-    <tr><td>CISA KEV</td><td>—</td></tr>
-    <tr><td>Description</td><td>Redos in strip_tags() html sanitizer function</td></tr>
-  </tbody>
+<table class="cve-history">
+  <thead>
+    <tr>
+      <th>CVE ID</th>
+      <th>Year</th>
+      <th>Severity</th>
+      <th>Description</th>
+      <th>Fix</th>
+    </tr>
+  </thead>
+  <tbody><tr>
+  <td><a href="https://osv.dev/vulnerability/CVE-2021-45115" target="_blank" rel="noopener">CVE-2021-45115</a></td>
+  <td>2021</td>
+  <td><span class="badge badge-orange">HIGH</span></td>
+  <td style="color:var(--muted)">DoS via UserAttributeSimilarityValidator</td>
+  <td><span class="badge badge-green">Fixed in 3.2.11</span></td>
+</tr><tr>
+  <td><a href="https://osv.dev/vulnerability/CVE-2021-45116" target="_blank" rel="noopener">CVE-2021-45116</a></td>
+  <td>2021</td>
+  <td><span class="badge badge-purple">MEDIUM</span></td>
+  <td style="color:var(--muted)">Information disclosure via dictsort template filter</td>
+  <td><span class="badge badge-green">Fixed in 3.2.11</span></td>
+</tr><tr>
+  <td><a href="https://osv.dev/vulnerability/CVE-2022-28346" target="_blank" rel="noopener">CVE-2022-28346</a></td>
+  <td>2022</td>
+  <td><span class="badge badge-red">CRITICAL</span></td>
+  <td style="color:var(--muted)">SQL injection via QuerySet.annotate, aggregate, extra</td>
+  <td><span class="badge badge-green">Fixed in 3.2.13</span></td>
+</tr><tr>
+  <td><a href="https://osv.dev/vulnerability/CVE-2022-28347" target="_blank" rel="noopener">CVE-2022-28347</a></td>
+  <td>2022</td>
+  <td><span class="badge badge-red">CRITICAL</span></td>
+  <td style="color:var(--muted)">SQL injection via QuerySet.explain</td>
+  <td><span class="badge badge-green">Fixed in 3.2.13</span></td>
+</tr><tr>
+  <td><a href="https://osv.dev/vulnerability/CVE-2022-36359" target="_blank" rel="noopener">CVE-2022-36359</a></td>
+  <td>2022</td>
+  <td><span class="badge badge-orange">HIGH</span></td>
+  <td style="color:var(--muted)">Open redirect in FileResponse</td>
+  <td><span class="badge badge-green">Fixed in 3.2.15</span></td>
+</tr><tr>
+  <td><a href="https://osv.dev/vulnerability/CVE-2023-24580" target="_blank" rel="noopener">CVE-2023-24580</a></td>
+  <td>2023</td>
+  <td><span class="badge badge-orange">HIGH</span></td>
+  <td style="color:var(--muted)">DoS via multipart request parsing</td>
+  <td><span class="badge badge-green">Fixed in 4.1.7</span></td>
+</tr><tr>
+  <td><a href="https://osv.dev/vulnerability/CVE-2023-31047" target="_blank" rel="noopener">CVE-2023-31047</a></td>
+  <td>2023</td>
+  <td><span class="badge badge-red">CRITICAL</span></td>
+  <td style="color:var(--muted)">Upload validation bypass via FileField</td>
+  <td><span class="badge badge-green">Fixed in 4.2.1</span></td>
+</tr><tr>
+  <td><a href="https://osv.dev/vulnerability/CVE-2024-27351" target="_blank" rel="noopener">CVE-2024-27351</a></td>
+  <td>2024</td>
+  <td><span class="badge badge-orange">HIGH</span></td>
+  <td style="color:var(--muted)">ReDoS in strip_tags HTML sanitizer</td>
+  <td><span class="badge badge-green">Fixed in 4.2.13</span></td>
+</tr></tbody>
 </table>
 
-<div class="faq"><h2>Frequently Asked Questions</h2><div class="faq-item"><div class="faq-q">What is CVE-2024-27351?</div><div class="faq-a">CVE-2024-27351 is a HIGH severity vulnerability in Django (PyPI). It allows ReDoS in strip_tags() HTML sanitizer function. Update to version 4.2.13 or later to fix it.</div></div><div class="faq-item"><div class="faq-q">How do I fix CVE-2024-27351 in Django?</div><div class="faq-a">Update Django to version 4.2.13 in your requirements.txt. Run pip install -r requirements.txt after updating to apply the fix.</div></div><div class="faq-item"><div class="faq-q">Is CVE-2024-27351 being actively exploited?</div><div class="faq-a">Check the live CISA KEV catalog at packagefix.dev — PackageFix always reflects the current KEV status.</div></div><div class="faq-item"><div class="faq-q">How do I check if I am affected by CVE-2024-27351?</div><div class="faq-a">Paste your requirements.txt into PackageFix. If your installed version of Django is below 4.2.13, you are affected. PackageFix shows the exact CVE ID and fix version.</div></div><div class="faq-item"><div class="faq-q">What search queries does this page target?</div><div class="faq-a">This page covers: Django CVE fix, Django vulnerability, Django security patch.</div></div></div>
+<h2>Current safe version</h2>
+<div class="fix-box">
+  <div class="label">✓ Update to 4.2.13</div>
+  <p style="margin:0 0 12px">The latest safe version addresses all 8 known CVEs listed above.</p>
+</div>
 
-<div style="margin:40px 0"><h2>Related Guides</h2><div class="related-grid"><div class="related-card"><a href="/pypi">PyPI Security Overview</a><p>All PyPI vulnerability guides</p></div><div class="related-card"><a href="/fix/pypi/outdated-dependencies">Fix Outdated PyPI Dependencies</a><p>General dependency updates</p></div><div class="related-card"><a href="/fix/pypi/critical-cve">Fix Critical PyPI CVEs</a><p>HIGH and CRITICAL severity</p></div><div class="related-card"><a href="https://packagefix.dev">Open PackageFix Tool</a><p>Scan your manifest live</p></div></div></div>
+<h2>Before and after</h2>
+<p style="color:var(--muted);font-size:11px;margin-bottom:4px">Vulnerable:</p>
+<pre>Django==3.2.0</pre>
+<p style="color:var(--muted);font-size:11px;margin-bottom:4px">Fixed:</p>
+<pre>Django==4.2.13</pre>
+<p>Then run: <code>pip install -r requirements.txt</code></p>
+
+<div class="cta-box">
+  <p>Paste your manifest — see your exact installed version against this full CVE list.</p>
+  <a href="https://packagefix.dev" class="cta-btn">Scan with PackageFix →</a>
+  <p style="margin-top:12px;font-size:11px;color:var(--muted)">Free · No signup · No CLI · Runs in your browser</p>
+</div>
+<div class="faq"><h2>Common questions</h2><div class="faq-item"><div class="faq-q">How often does Django release security patches?</div><div class="faq-a">Roughly every 4-8 weeks. The Django team maintains a security mailing list (django-security-announce) and publishes advisories at docs.djangoproject.com/en/dev/releases/security. Subscribe to stay informed.</div></div><div class="faq-item"><div class="faq-q">What are the most serious Django CVEs?</div><div class="faq-a">The 2022 SQL injection CVEs (CVE-2022-28346 and CVE-2022-28347) were the most severe — CRITICAL severity, affecting QuerySet methods used in almost all Django apps. Any app on Django < 3.2.13 that uses annotate, aggregate, extra, or explain with user input is vulnerable.</div></div><div class="faq-item"><div class="faq-q">Is Django 3.2 still receiving security patches?</div><div class="faq-a">Django 3.2 is end-of-life as of April 2024. You should be on Django 4.2 LTS (supported until April 2026) or Django 5.0+. Django 3.2 no longer receives security fixes — any new CVE discovered won't be patched.</div></div><div class="faq-item"><div class="faq-q">How do I check my Django version?</div><div class="faq-a">Run python -m django --version. Or paste your requirements.txt into PackageFix — it will show your installed Django version and flag any unpatched CVEs.</div></div></div>
+<div style="margin:40px 0"><h2>Related</h2><div class="related-grid"><div class="related-card"><a href="/fix/pypi/django">Django Latest CVE Fix</a><p>Step-by-step fix guide</p></div><div class="related-card"><a href="/fix/pypi/werkzeug">Fix Werkzeug</a><p>Related Python web framework CVE</p></div><div class="related-card"><a href="/fix/pypi/sqlalchemy">Fix SQLAlchemy</a><p>SQL injection CVE</p></div><div class="related-card"><a href="/python">PyPI Security Overview</a><p>All Python CVE guides</p></div></div></div>
 
 </main>
 <footer class="site-footer">
@@ -244,7 +318,7 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
   <a href="https://configclarity.dev">ConfigClarity</a> ·
   <a href="https://domainpreflight.dev">DomainPreflight</a></p>
   <p style="margin-top:6px">Vulnerability data: <a href="https://osv.dev">OSV Database</a> · <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog">CISA KEV Catalog</a></p>
-  <p style="margin-top:6px">Always test dependency updates in a staging environment before deploying to production.</p>
+  <p style="margin-top:6px">Always test dependency updates in staging before deploying to production.</p>
 </footer>
 </body>
 </html>
