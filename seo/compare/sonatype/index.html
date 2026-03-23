@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>CVE-2022-24999 (qs Prototype Pollution) — Fix Guide | PackageFix</title>
-<meta name="description" content="Fix CVE-2022-24999: Prototype pollution in qs query string parsing. qs is a transitive dependency of Express — effectively present in the ma. CVSS 7.5. Affected: qs < 6.11.0. Safe version: 6.11.0.">
-<link rel="canonical" href="https://packagefix.dev/kev/CVE-2022-24999">
-<meta property="og:title" content="CVE-2022-24999 (qs Prototype Pollution) — Fix Guide | PackageFix">
-<meta property="og:description" content="Fix CVE-2022-24999: Prototype pollution in qs query string parsing. qs is a transitive dependency of Express — effectively present in the ma. CVSS 7.5. Affected: qs < 6.11.0. Safe version: 6.11.0.">
-<meta property="og:url" content="https://packagefix.dev/kev/CVE-2022-24999">
+<title>PackageFix vs Sonatype Nexus IQ | PackageFix</title>
+<meta name="description" content="Compare PackageFix and Sonatype Nexus IQ for dependency scanning. Nexus IQ is an enterprise platform. PackageFix is a free browser alternative.">
+<link rel="canonical" href="https://packagefix.dev/compare/sonatype">
+<meta property="og:title" content="PackageFix vs Sonatype Nexus IQ | PackageFix">
+<meta property="og:description" content="Compare PackageFix and Sonatype Nexus IQ for dependency scanning. Nexus IQ is an enterprise platform. PackageFix is a free browser alternative.">
+<meta property="og:url" content="https://packagefix.dev/compare/sonatype">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
 <link rel="icon" type="image/svg+xml" href="/icon.svg">
@@ -17,18 +17,6 @@
 <script type="application/ld+json">{
   "@context": "https://schema.org",
   "@graph": [
-    {
-      "@type": "TechArticle",
-      "headline": "CVE-2022-24999 \u2014 qs Prototype Pollution",
-      "description": "Prototype pollution in qs query string parsing. qs is a transitive dependency of Express \u2014 effectively present in the majority of Node.js web applications. Crafted query strings can pollute Object.pro",
-      "datePublished": "2026-03-22",
-      "dateModified": "2026-03-22",
-      "author": {
-        "@type": "Organization",
-        "name": "PackageFix",
-        "url": "https://packagefix.dev"
-      }
-    },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
@@ -41,13 +29,13 @@
         {
           "@type": "ListItem",
           "position": 2,
-          "name": "CISA KEV",
-          "item": "https://packagefix.dev/cisa-kev"
+          "name": "Compare",
+          "item": "https://packagefix.dev/compare"
         },
         {
           "@type": "ListItem",
           "position": 3,
-          "name": "CVE-2022-24999",
+          "name": "PackageFix vs Sonatype Nexus IQ",
           "item": "https://packagefix.dev"
         }
       ]
@@ -57,18 +45,26 @@
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "How does this reach production?",
+          "name": "Does PackageFix replace these tools?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "An attacker sends a crafted HTTP request like ?__proto__[isAdmin]=true. If your application uses qs to parse query strings (directly or via Express) and doesn't sanitize keys, the prototype is polluted."
+            "text": "PackageFix is a browser tool for quick one-off scans. Enterprise SCA platforms like Mend and Sonatype add value at scale \u2014 automated scanning, policy enforcement, audit trails. Use PackageFix for immediate checks and enterprise tools for continuous coverage."
           }
         },
         {
           "@type": "Question",
-          "name": "Does updating Express fix this?",
+          "name": "Is PackageFix free?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Express 4.18.0+ bundles qs 6.11.0. Updating Express is the cleanest fix. If you can't update Express, add an npm override: {\"overrides\": {\"qs\": \"6.11.0\"}}."
+            "text": "Yes \u2014 completely free, MIT licensed, open source."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which ecosystems does PackageFix support?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "npm, PyPI, Ruby, PHP, Go, Rust, and Java/Maven \u2014 7 ecosystems."
           }
         }
       ]
@@ -146,28 +142,20 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
   </nav>
 </header>
 <main class="container">
-  <div class="breadcrumb"><a href="/">PackageFix</a> <span style='color:var(--border)'>/</span> <a href="/cisa-kev">CISA KEV</a> <span style='color:var(--border)'>/</span> <span style="color:var(--text)">CVE-2022-24999</span></div>
-  
-<h1>CVE-2022-24999 — qs Prototype Pollution <span class="badge badge-orange">HIGH</span></h1>
-<div style="margin-bottom:20px">
-  <span class="badge badge-red" style="margin-right:6px">🔴 CISA KEV</span>
-  <span class="badge badge-muted">CVSS 7.5</span>
-</div>
-<p class="lead">Prototype pollution in qs query string parsing. qs is a transitive dependency of Express — effectively present in the majority of Node.js web applications. Crafted query strings can pollute Object.prototype and affect all objects in the application.</p>
-<div class="kev-banner"><div class="label">🔴 Actively Exploited</div>
-<p>CVE-2022-24999 is on the CISA Known Exploited Vulnerabilities catalog. Being used in real attacks right now. Fix immediately.</p></div>
-<h2>Affected package</h2>
-<table class="cve-history"><thead><tr><th>Package</th><th>Vulnerable</th><th>Safe version</th><th>Fix guide</th></tr></thead>
-<tbody><tr><td><strong>qs</strong></td><td>< 6.11.0</td><td>6.11.0</td><td><a href='/fix/npm/qs'>Fix guide →</a></td></tr></tbody></table>
-<h2>Timeline</h2>
-<div style="margin:16px 0"><div style="display:flex;gap:16px;padding:8px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted);font-size:11px;min-width:90px">Nov 2022</span><span style="font-size:12px;color:var(--text)">CVE filed — third prototype pollution in qs's history</span></div><div style="display:flex;gap:16px;padding:8px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted);font-size:11px;min-width:90px">Nov 2022</span><span style="font-size:12px;color:var(--text)">qs 6.11.0 released — Express 4.18.2 updated to include it</span></div><div style="display:flex;gap:16px;padding:8px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted);font-size:11px;min-width:90px">CISA</span><span style="font-size:12px;color:var(--text)">Added to KEV — active exploitation against Express applications</span></div><div style="display:flex;gap:16px;padding:8px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted);font-size:11px;min-width:90px">Ongoing</span><span style="font-size:12px;color:var(--text)">Express apps on 4.17.x and below remain vulnerable</span></div></div>
+  <div class="breadcrumb"><a href="/">PackageFix</a> <span style='color:var(--border)'>/</span> <a href="/compare">Compare</a> <span style='color:var(--border)'>/</span> <span style="color:var(--text)">PackageFix vs Sonatype Nexus IQ</span></div>
+  <h1>PackageFix vs Sonatype Nexus IQ</h1>
+<p class="lead">Sonatype Nexus IQ is a commercial SCA platform with binary scanning, policy enforcement, and component intelligence. PackageFix is a free browser tool. Nexus IQ is for teams managing hundreds of projects with compliance requirements. PackageFix is for developers who need a quick scan right now.</p>
+<table class="cve-history">
+  <thead><tr><th>Feature</th><th>PackageFix</th><th>Sonatype Nexus IQ</th></tr></thead>
+  <tbody><tr><td style='font-weight:600;color:var(--text)'>Browser-based</td><td>✅ Yes</td><td>❌ Requires integration</td></tr><tr><td style='font-weight:600;color:var(--text)'>Cost</td><td>✅ Free</td><td>❌ Enterprise pricing</td></tr><tr><td style='font-weight:600;color:var(--text)'>Fix output</td><td>✅ Downloads fixed file</td><td>⚠ Policy recommendations</td></tr><tr><td style='font-weight:600;color:var(--text)'>CISA KEV flags</td><td>✅ Yes</td><td>⚠ Via integration</td></tr><tr><td style='font-weight:600;color:var(--text)'>Binary scanning</td><td>❌ Source only</td><td>✅ Yes</td></tr><tr><td style='font-weight:600;color:var(--text)'>Policy enforcement</td><td>❌ No</td><td>✅ Yes</td></tr><tr><td style='font-weight:600;color:var(--text)'>Best for</td><td>Individual developers</td><td>Large enterprise teams</td></tr></tbody>
+</table>
 <div class="cta-box">
   <p>Paste your manifest — get a fixed version with all CVEs patched in seconds.</p>
   <a href="/" class="cta-btn">Open PackageFix →</a>
   <p style="margin-top:12px;font-size:11px;color:var(--muted)">Free · No signup · No CLI · Runs in your browser</p>
 </div>
-<div class="faq"><h2>Common questions</h2><div class="faq-item"><div class="faq-q">How does this reach production?</div><div class="faq-a">An attacker sends a crafted HTTP request like ?__proto__[isAdmin]=true. If your application uses qs to parse query strings (directly or via Express) and doesn't sanitize keys, the prototype is polluted.</div></div><div class="faq-item"><div class="faq-q">Does updating Express fix this?</div><div class="faq-a">Express 4.18.0+ bundles qs 6.11.0. Updating Express is the cleanest fix. If you can't update Express, add an npm override: {"overrides": {"qs": "6.11.0"}}.</div></div></div>
-<div style="margin:40px 0"><h2>Related</h2><div class="related-grid"><div class="related-card"><a href="/cisa-kev">All CISA KEV Packages</a><p>Full actively exploited list</p></div><div class="related-card"><a href="/fix/npm/qs">Fix qs</a><p>Full fix guide with CVE history</p></div><div class="related-card"><a href="/blog/supply-chain-attacks-package-json">Supply Chain Attack Guide</a><p>5 attacks npm audit misses</p></div><div class="related-card"><a href="/glossary/cisa-kev">What is CISA KEV?</a><p>Plain-English explanation</p></div></div></div>
+<div class="faq"><h2>Common questions</h2><div class="faq-item"><div class="faq-q">Does PackageFix replace these tools?</div><div class="faq-a">PackageFix is a browser tool for quick one-off scans. Enterprise SCA platforms like Mend and Sonatype add value at scale — automated scanning, policy enforcement, audit trails. Use PackageFix for immediate checks and enterprise tools for continuous coverage.</div></div><div class="faq-item"><div class="faq-q">Is PackageFix free?</div><div class="faq-a">Yes — completely free, MIT licensed, open source.</div></div><div class="faq-item"><div class="faq-q">Which ecosystems does PackageFix support?</div><div class="faq-a">npm, PyPI, Ruby, PHP, Go, Rust, and Java/Maven — 7 ecosystems.</div></div></div>
+<div style="margin:40px 0"><h2>Related</h2><div class="related-grid"><div class="related-card"><a href="/compare">All Comparisons</a><p>Full tool comparison index</p></div><div class="related-card"><a href="/vs/snyk-advisor">vs Snyk Advisor</a><p>Shut down Jan 2026</p></div><div class="related-card"><a href="/alternatives">All Alternatives</a><p>16-tool comparison table</p></div><div class="related-card"><a href="/glossary/software-composition-analysis">What is SCA?</a><p>Plain-English explanation</p></div></div></div>
 </main>
 <footer class="site-footer">
   <p>PackageFix · <a href="/">packagefix.dev</a> · MIT Licensed · Open Source</p>

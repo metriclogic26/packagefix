@@ -2079,6 +2079,142 @@
     {
       "source": "/fix/pypi/pyyaml/",
       "destination": "/seo/fix/pypi/pyyaml/index.html"
+    },
+    {
+      "source": "/fix",
+      "destination": "/seo/fix/index.html"
+    },
+    {
+      "source": "/fix/",
+      "destination": "/seo/fix/index.html"
+    },
+    {
+      "source": "/guides",
+      "destination": "/seo/guides/index.html"
+    },
+    {
+      "source": "/guides/",
+      "destination": "/seo/guides/index.html"
+    },
+    {
+      "source": "/providers",
+      "destination": "/seo/providers/index.html"
+    },
+    {
+      "source": "/providers/",
+      "destination": "/seo/providers/index.html"
+    },
+    {
+      "source": "/kev/CVE-2015-9284",
+      "destination": "/seo/kev/CVE-2015-9284/index.html"
+    },
+    {
+      "source": "/kev/CVE-2015-9284/",
+      "destination": "/seo/kev/CVE-2015-9284/index.html"
+    },
+    {
+      "source": "/kev/CVE-2020-14343",
+      "destination": "/seo/kev/CVE-2020-14343/index.html"
+    },
+    {
+      "source": "/kev/CVE-2020-14343/",
+      "destination": "/seo/kev/CVE-2020-14343/index.html"
+    },
+    {
+      "source": "/kev/CVE-2021-32708",
+      "destination": "/seo/kev/CVE-2021-32708/index.html"
+    },
+    {
+      "source": "/kev/CVE-2021-32708/",
+      "destination": "/seo/kev/CVE-2021-32708/index.html"
+    },
+    {
+      "source": "/glossary/zero-day",
+      "destination": "/seo/glossary/zero-day/index.html"
+    },
+    {
+      "source": "/glossary/zero-day/",
+      "destination": "/seo/glossary/zero-day/index.html"
+    },
+    {
+      "source": "/glossary/remote-code-execution",
+      "destination": "/seo/glossary/remote-code-execution/index.html"
+    },
+    {
+      "source": "/glossary/remote-code-execution/",
+      "destination": "/seo/glossary/remote-code-execution/index.html"
+    },
+    {
+      "source": "/glossary/deserialization",
+      "destination": "/seo/glossary/deserialization/index.html"
+    },
+    {
+      "source": "/glossary/deserialization/",
+      "destination": "/seo/glossary/deserialization/index.html"
+    },
+    {
+      "source": "/glossary/redos",
+      "destination": "/seo/glossary/redos/index.html"
+    },
+    {
+      "source": "/glossary/redos/",
+      "destination": "/seo/glossary/redos/index.html"
+    },
+    {
+      "source": "/glossary/cwe",
+      "destination": "/seo/glossary/cwe/index.html"
+    },
+    {
+      "source": "/glossary/cwe/",
+      "destination": "/seo/glossary/cwe/index.html"
+    },
+    {
+      "source": "/glossary/cyclonedx",
+      "destination": "/seo/glossary/cyclonedx/index.html"
+    },
+    {
+      "source": "/glossary/cyclonedx/",
+      "destination": "/seo/glossary/cyclonedx/index.html"
+    },
+    {
+      "source": "/blog/weekly-cve-march-29-2026",
+      "destination": "/seo/blog/weekly-cve-march-29-2026/index.html"
+    },
+    {
+      "source": "/blog/weekly-cve-march-29-2026/",
+      "destination": "/seo/blog/weekly-cve-march-29-2026/index.html"
+    },
+    {
+      "source": "/compare/osv-scanner",
+      "destination": "/seo/compare/osv-scanner/index.html"
+    },
+    {
+      "source": "/compare/osv-scanner/",
+      "destination": "/seo/compare/osv-scanner/index.html"
+    },
+    {
+      "source": "/compare/mend",
+      "destination": "/seo/compare/mend/index.html"
+    },
+    {
+      "source": "/compare/mend/",
+      "destination": "/seo/compare/mend/index.html"
+    },
+    {
+      "source": "/compare/sonatype",
+      "destination": "/seo/compare/sonatype/index.html"
+    },
+    {
+      "source": "/compare/sonatype/",
+      "destination": "/seo/compare/sonatype/index.html"
+    },
+    {
+      "source": "/compare/bytesafe",
+      "destination": "/seo/compare/bytesafe/index.html"
+    },
+    {
+      "source": "/compare/bytesafe/",
+      "destination": "/seo/compare/bytesafe/index.html"
     }
   ]
 }

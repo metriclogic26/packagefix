@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>All FastAPI CVEs — Complete PyPI Vulnerability History | PackageFix</title>
-<meta name="description" content="FastAPI has 1 known CVEs. Safe version: 0.109.1.">
-<link rel="canonical" href="https://packagefix.dev/fix/pypi/fastapi">
-<meta property="og:title" content="All FastAPI CVEs — Complete PyPI Vulnerability History | PackageFix">
-<meta property="og:description" content="FastAPI has 1 known CVEs. Safe version: 0.109.1.">
-<meta property="og:url" content="https://packagefix.dev/fix/pypi/fastapi">
+<title>Provider & CI Security Guides | PackageFix</title>
+<meta name="description" content="Dependency security scanning guides for GitHub Actions, GitLab CI, CircleCI, Vercel, Netlify, Railway, Fly.io, Hetzner, DigitalOcean, AWS Lambda, and Render.">
+<link rel="canonical" href="https://packagefix.dev/providers">
+<meta property="og:title" content="Provider & CI Security Guides | PackageFix">
+<meta property="og:description" content="Dependency security scanning guides for GitHub Actions, GitLab CI, CircleCI, Vercel, Netlify, Railway, Fly.io, Hetzner, DigitalOcean, AWS Lambda, and Render.">
+<meta property="og:url" content="https://packagefix.dev/providers">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
 <link rel="icon" type="image/svg+xml" href="/icon.svg">
@@ -17,20 +17,6 @@
 <script type="application/ld+json">{
   "@context": "https://schema.org",
   "@graph": [
-    {
-      "@type": "ItemList",
-      "name": "All FastAPI CVEs",
-      "description": "Complete CVE history \u2014 1 known vulnerabilities",
-      "numberOfItems": 1,
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "CVE-2024-24762",
-          "url": "https://osv.dev/vulnerability/CVE-2024-24762"
-        }
-      ]
-    },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
@@ -43,33 +29,122 @@
         {
           "@type": "ListItem",
           "position": 2,
-          "name": "Fix Guides",
-          "item": "https://packagefix.dev/fix"
-        },
-        {
-          "@type": "ListItem",
-          "position": 3,
-          "name": "PyPI",
-          "item": "https://packagefix.dev/pypi"
-        },
-        {
-          "@type": "ListItem",
-          "position": 4,
-          "name": "FastAPI",
-          "item": "https://packagefix.dev"
+          "name": "Providers",
+          "item": "https://packagefix.dev/providers"
         }
       ]
     },
     {
-      "@type": "FAQPage",
-      "mainEntity": [
+      "@type": "ItemList",
+      "name": "Provider Security Guides",
+      "itemListElement": [
         {
-          "@type": "Question",
-          "name": "Does FastAPI have many direct CVEs?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "FastAPI itself has very few direct CVEs \u2014 most FastAPI security issues come through Starlette or pydantic. Keeping the full stack updated together is the safest approach."
-          }
+          "@type": "ListItem",
+          "position": 1,
+          "name": "GitHub Actions \u2014 npm",
+          "url": "https://packagefix.dev/providers/github-actions/npm-audit"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "GitHub Actions \u2014 Python",
+          "url": "https://packagefix.dev/providers/github-actions/python-audit"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "GitLab CI \u2014 npm",
+          "url": "https://packagefix.dev/providers/gitlab-ci/dependency-scan"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "GitLab CI \u2014 Python",
+          "url": "https://packagefix.dev/providers/gitlab-ci/python-scan"
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "name": "CircleCI \u2014 npm",
+          "url": "https://packagefix.dev/providers/circleci/dependency-scan"
+        },
+        {
+          "@type": "ListItem",
+          "position": 6,
+          "name": "CircleCI \u2014 Python",
+          "url": "https://packagefix.dev/providers/circleci/python-scan"
+        },
+        {
+          "@type": "ListItem",
+          "position": 7,
+          "name": "Hetzner \u2014 Node.js",
+          "url": "https://packagefix.dev/providers/hetzner/nodejs-security"
+        },
+        {
+          "@type": "ListItem",
+          "position": 8,
+          "name": "Hetzner \u2014 Python",
+          "url": "https://packagefix.dev/providers/hetzner/python-security"
+        },
+        {
+          "@type": "ListItem",
+          "position": 9,
+          "name": "DigitalOcean \u2014 Node.js",
+          "url": "https://packagefix.dev/providers/digitalocean/nodejs-security"
+        },
+        {
+          "@type": "ListItem",
+          "position": 10,
+          "name": "DigitalOcean \u2014 Python",
+          "url": "https://packagefix.dev/providers/digitalocean/python-security"
+        },
+        {
+          "@type": "ListItem",
+          "position": 11,
+          "name": "Vercel \u2014 Node.js",
+          "url": "https://packagefix.dev/providers/vercel/nodejs-security"
+        },
+        {
+          "@type": "ListItem",
+          "position": 12,
+          "name": "Vercel \u2014 Python",
+          "url": "https://packagefix.dev/providers/vercel/python-security"
+        },
+        {
+          "@type": "ListItem",
+          "position": 13,
+          "name": "AWS Lambda \u2014 Node.js",
+          "url": "https://packagefix.dev/providers/aws/lambda-nodejs-security"
+        },
+        {
+          "@type": "ListItem",
+          "position": 14,
+          "name": "AWS Lambda \u2014 Python",
+          "url": "https://packagefix.dev/providers/aws/lambda-python-security"
+        },
+        {
+          "@type": "ListItem",
+          "position": 15,
+          "name": "Netlify \u2014 Node.js",
+          "url": "https://packagefix.dev/providers/netlify/nodejs-security"
+        },
+        {
+          "@type": "ListItem",
+          "position": 16,
+          "name": "Railway \u2014 Node.js",
+          "url": "https://packagefix.dev/providers/railway/nodejs-security"
+        },
+        {
+          "@type": "ListItem",
+          "position": 17,
+          "name": "Fly.io \u2014 Node.js",
+          "url": "https://packagefix.dev/providers/fly/nodejs-security"
+        },
+        {
+          "@type": "ListItem",
+          "position": 18,
+          "name": "Render \u2014 Node.js",
+          "url": "https://packagefix.dev/providers/render/nodejs-security"
         }
       ]
     }
@@ -146,30 +221,16 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
   </nav>
 </header>
 <main class="container">
-  <div class="breadcrumb"><a href="/">PackageFix</a> <span style='color:var(--border)'>/</span> <a href="/fix">Fix Guides</a> <span style='color:var(--border)'>/</span> <a href="/pypi">PyPI</a> <span style='color:var(--border)'>/</span> <span style="color:var(--text)">FastAPI</span></div>
-  <h1>All FastAPI CVEs — Complete Vulnerability History</h1>
-<p class="lead">FastAPI is Python's fastest-growing web framework. Its CVEs come primarily through Starlette (its ASGI foundation) and pydantic (its validation layer).</p>
-<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px">
-  <span class="badge badge-purple">PyPI</span>
-  <span class="badge badge-muted">20M+ weekly downloads</span>
-  <span class="badge badge-muted">1 CVE total</span>
-  
-  
-</div>
-<h2>Full CVE history</h2><table class="cve-history"><thead><tr><th>CVE</th><th>Year</th><th>Severity</th><th>Description</th><th>Fix</th></tr></thead><tbody><tr><td><a href='https://osv.dev/vulnerability/CVE-2024-24762' target='_blank' rel='noopener'>CVE-2024-24762</a></td><td>2024</td><td><span class="badge badge-orange">HIGH</span></td><td style='color:var(--muted)'>ReDoS via crafted multipart form data</td><td><span class="badge badge-green">Fixed 0.109.1</span></td></tr></tbody></table>
-<h2>Current safe version: 0.109.1</h2>
-<pre># Before
-fastapi==0.100.0</pre>
-<pre># After
-fastapi==0.109.1</pre>
-<p style="margin-top:8px">Then run: <code>pip install -r requirements.txt</code></p>
+  <div class="breadcrumb"><a href="/">PackageFix</a> <span style='color:var(--border)'>/</span> <span style="color:var(--text)">Providers</span></div>
+  <h1>Provider & CI Security Guides</h1>
+<p class="lead">Copy-paste dependency scanning configs for every major CI provider and hosting platform. Pick your platform, copy the config, and you're scanning on every deploy.</p>
+<div class="index-grid"><div class="index-card"><a href="/providers/github-actions/npm-audit">GitHub Actions — npm</a><p>npm audit in CI</p></div><div class="index-card"><a href="/providers/github-actions/python-audit">GitHub Actions — Python</a><p>pip-audit in CI</p></div><div class="index-card"><a href="/providers/gitlab-ci/dependency-scan">GitLab CI — npm</a><p>npm scanning</p></div><div class="index-card"><a href="/providers/gitlab-ci/python-scan">GitLab CI — Python</a><p>pip scanning</p></div><div class="index-card"><a href="/providers/circleci/dependency-scan">CircleCI — npm</a><p>npm scanning</p></div><div class="index-card"><a href="/providers/circleci/python-scan">CircleCI — Python</a><p>pip scanning</p></div><div class="index-card"><a href="/providers/hetzner/nodejs-security">Hetzner — Node.js</a><p>server-level security</p></div><div class="index-card"><a href="/providers/hetzner/python-security">Hetzner — Python</a><p>server-level security</p></div><div class="index-card"><a href="/providers/digitalocean/nodejs-security">DigitalOcean — Node.js</a><p>server-level security</p></div><div class="index-card"><a href="/providers/digitalocean/python-security">DigitalOcean — Python</a><p>server-level security</p></div><div class="index-card"><a href="/providers/vercel/nodejs-security">Vercel — Node.js</a><p>edge deployment security</p></div><div class="index-card"><a href="/providers/vercel/python-security">Vercel — Python</a><p>edge deployment security</p></div><div class="index-card"><a href="/providers/aws/lambda-nodejs-security">AWS Lambda — Node.js</a><p>serverless security</p></div><div class="index-card"><a href="/providers/aws/lambda-python-security">AWS Lambda — Python</a><p>serverless security</p></div><div class="index-card"><a href="/providers/netlify/nodejs-security">Netlify — Node.js</a><p>JAMstack security</p></div><div class="index-card"><a href="/providers/railway/nodejs-security">Railway — Node.js</a><p>Railway deployment</p></div><div class="index-card"><a href="/providers/fly/nodejs-security">Fly.io — Node.js</a><p>Fly deployment</p></div><div class="index-card"><a href="/providers/render/nodejs-security">Render — Node.js</a><p>Render deployment</p></div></div>
 <div class="cta-box">
   <p>Paste your manifest — get a fixed version with all CVEs patched in seconds.</p>
   <a href="/" class="cta-btn">Open PackageFix →</a>
   <p style="margin-top:12px;font-size:11px;color:var(--muted)">Free · No signup · No CLI · Runs in your browser</p>
 </div>
-<div class="faq"><h2>Common questions</h2><div class="faq-item"><div class="faq-q">Does FastAPI have many direct CVEs?</div><div class="faq-a">FastAPI itself has very few direct CVEs — most FastAPI security issues come through Starlette or pydantic. Keeping the full stack updated together is the safest approach.</div></div></div>
-<div style="margin:40px 0"><h2>Related</h2><div class="related-grid"><div class="related-card"><a href="/fix/pypi/starlette">Fix Starlette</a><p>FastAPI's ASGI layer</p></div><div class="related-card"><a href="/python">PyPI Security</a><p>All Python guides</p></div></div></div>
+<div style="margin:40px 0"><h2>Related</h2><div class="related-grid"><div class="related-card"><a href="/guides">Developer Guides</a><p>All integration guides</p></div><div class="related-card"><a href="/guides/github-actions">GitHub Actions</a><p>Full GitHub Actions guide</p></div><div class="related-card"><a href="/fix">Fix Guides</a><p>Fix what CI finds</p></div><div class="related-card"><a href="/glossary/dependency-scanning">Dependency Scanning</a><p>The broader concept</p></div></div></div>
 </main>
 <footer class="site-footer">
   <p>PackageFix · <a href="/">packagefix.dev</a> · MIT Licensed · Open Source</p>

@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>CVE-2022-24999 (qs Prototype Pollution) — Fix Guide | PackageFix</title>
-<meta name="description" content="Fix CVE-2022-24999: Prototype pollution in qs query string parsing. qs is a transitive dependency of Express — effectively present in the ma. CVSS 7.5. Affected: qs < 6.11.0. Safe version: 6.11.0.">
-<link rel="canonical" href="https://packagefix.dev/kev/CVE-2022-24999">
-<meta property="og:title" content="CVE-2022-24999 (qs Prototype Pollution) — Fix Guide | PackageFix">
-<meta property="og:description" content="Fix CVE-2022-24999: Prototype pollution in qs query string parsing. qs is a transitive dependency of Express — effectively present in the ma. CVSS 7.5. Affected: qs < 6.11.0. Safe version: 6.11.0.">
-<meta property="og:url" content="https://packagefix.dev/kev/CVE-2022-24999">
+<title>Dependency Fix Guides — All Ecosystems | PackageFix</title>
+<meta name="description" content="Step-by-step CVE fix guides for npm, PyPI, Ruby, PHP, Go, Rust, and Java/Maven. Every guide shows the vulnerable version, safe version, and exact command to run.">
+<link rel="canonical" href="https://packagefix.dev/fix">
+<meta property="og:title" content="Dependency Fix Guides — All Ecosystems | PackageFix">
+<meta property="og:description" content="Step-by-step CVE fix guides for npm, PyPI, Ruby, PHP, Go, Rust, and Java/Maven. Every guide shows the vulnerable version, safe version, and exact command to run.">
+<meta property="og:url" content="https://packagefix.dev/fix">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
 <link rel="icon" type="image/svg+xml" href="/icon.svg">
@@ -17,18 +17,6 @@
 <script type="application/ld+json">{
   "@context": "https://schema.org",
   "@graph": [
-    {
-      "@type": "TechArticle",
-      "headline": "CVE-2022-24999 \u2014 qs Prototype Pollution",
-      "description": "Prototype pollution in qs query string parsing. qs is a transitive dependency of Express \u2014 effectively present in the majority of Node.js web applications. Crafted query strings can pollute Object.pro",
-      "datePublished": "2026-03-22",
-      "dateModified": "2026-03-22",
-      "author": {
-        "@type": "Organization",
-        "name": "PackageFix",
-        "url": "https://packagefix.dev"
-      }
-    },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
@@ -41,35 +29,56 @@
         {
           "@type": "ListItem",
           "position": 2,
-          "name": "CISA KEV",
-          "item": "https://packagefix.dev/cisa-kev"
-        },
-        {
-          "@type": "ListItem",
-          "position": 3,
-          "name": "CVE-2022-24999",
-          "item": "https://packagefix.dev"
+          "name": "Fix Guides",
+          "item": "https://packagefix.dev/fix"
         }
       ]
     },
     {
-      "@type": "FAQPage",
-      "mainEntity": [
+      "@type": "ItemList",
+      "name": "Fix Guides by Ecosystem",
+      "itemListElement": [
         {
-          "@type": "Question",
-          "name": "How does this reach production?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "An attacker sends a crafted HTTP request like ?__proto__[isAdmin]=true. If your application uses qs to parse query strings (directly or via Express) and doesn't sanitize keys, the prototype is polluted."
-          }
+          "@type": "ListItem",
+          "position": 1,
+          "name": "npm / Node.js",
+          "url": "https://packagefix.dev/fix/npm"
         },
         {
-          "@type": "Question",
-          "name": "Does updating Express fix this?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Express 4.18.0+ bundles qs 6.11.0. Updating Express is the cleanest fix. If you can't update Express, add an npm override: {\"overrides\": {\"qs\": \"6.11.0\"}}."
-          }
+          "@type": "ListItem",
+          "position": 2,
+          "name": "PyPI / Python",
+          "url": "https://packagefix.dev/fix/pypi"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Ruby / Gems",
+          "url": "https://packagefix.dev/fix/ruby"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "PHP / Composer",
+          "url": "https://packagefix.dev/fix/php"
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "name": "Go / Modules",
+          "url": "https://packagefix.dev/fix/go"
+        },
+        {
+          "@type": "ListItem",
+          "position": 6,
+          "name": "Rust / Crates",
+          "url": "https://packagefix.dev/fix/rust"
+        },
+        {
+          "@type": "ListItem",
+          "position": 7,
+          "name": "Java / Maven",
+          "url": "https://packagefix.dev/fix/java"
         }
       ]
     }
@@ -146,28 +155,17 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
   </nav>
 </header>
 <main class="container">
-  <div class="breadcrumb"><a href="/">PackageFix</a> <span style='color:var(--border)'>/</span> <a href="/cisa-kev">CISA KEV</a> <span style='color:var(--border)'>/</span> <span style="color:var(--text)">CVE-2022-24999</span></div>
-  
-<h1>CVE-2022-24999 — qs Prototype Pollution <span class="badge badge-orange">HIGH</span></h1>
-<div style="margin-bottom:20px">
-  <span class="badge badge-red" style="margin-right:6px">🔴 CISA KEV</span>
-  <span class="badge badge-muted">CVSS 7.5</span>
-</div>
-<p class="lead">Prototype pollution in qs query string parsing. qs is a transitive dependency of Express — effectively present in the majority of Node.js web applications. Crafted query strings can pollute Object.prototype and affect all objects in the application.</p>
-<div class="kev-banner"><div class="label">🔴 Actively Exploited</div>
-<p>CVE-2022-24999 is on the CISA Known Exploited Vulnerabilities catalog. Being used in real attacks right now. Fix immediately.</p></div>
-<h2>Affected package</h2>
-<table class="cve-history"><thead><tr><th>Package</th><th>Vulnerable</th><th>Safe version</th><th>Fix guide</th></tr></thead>
-<tbody><tr><td><strong>qs</strong></td><td>< 6.11.0</td><td>6.11.0</td><td><a href='/fix/npm/qs'>Fix guide →</a></td></tr></tbody></table>
-<h2>Timeline</h2>
-<div style="margin:16px 0"><div style="display:flex;gap:16px;padding:8px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted);font-size:11px;min-width:90px">Nov 2022</span><span style="font-size:12px;color:var(--text)">CVE filed — third prototype pollution in qs's history</span></div><div style="display:flex;gap:16px;padding:8px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted);font-size:11px;min-width:90px">Nov 2022</span><span style="font-size:12px;color:var(--text)">qs 6.11.0 released — Express 4.18.2 updated to include it</span></div><div style="display:flex;gap:16px;padding:8px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted);font-size:11px;min-width:90px">CISA</span><span style="font-size:12px;color:var(--text)">Added to KEV — active exploitation against Express applications</span></div><div style="display:flex;gap:16px;padding:8px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted);font-size:11px;min-width:90px">Ongoing</span><span style="font-size:12px;color:var(--text)">Express apps on 4.17.x and below remain vulnerable</span></div></div>
+  <div class="breadcrumb"><a href="/">PackageFix</a> <span style='color:var(--border)'>/</span> <span style="color:var(--text)">Fix Guides</span></div>
+  <h1>Dependency Fix Guides</h1>
+<p class="lead">Exact fix instructions for CVEs across all 7 ecosystems PackageFix supports. Every page shows your vulnerable version, the safe version, and the exact command to run.</p>
+<h2>Browse by ecosystem</h2>
+<div class="index-grid"><div class="index-card"><a href="/fix/npm">npm / Node.js</a><p>express, lodash, axios, jsonwebtoken, vm2 and 20 more</p></div><div class="index-card"><a href="/fix/pypi">PyPI / Python</a><p>Django, Flask, requests, cryptography, Pillow and 20 more</p></div><div class="index-card"><a href="/fix/ruby">Ruby / Gems</a><p>Rails, Nokogiri, Devise, Puma, Rack and 15 more</p></div><div class="index-card"><a href="/fix/php">PHP / Composer</a><p>Laravel, Symfony, Guzzle, Flysystem and 10 more</p></div><div class="index-card"><a href="/fix/go">Go / Modules</a><p>Gin, gRPC, Echo, Fiber, GORM and 10 more</p></div><div class="index-card"><a href="/fix/rust">Rust / Crates</a><p>actix-web, axum, hyper, openssl, rustls and 10 more</p></div><div class="index-card"><a href="/fix/java">Java / Maven</a><p>Log4j, Spring, Jackson, Netty, Guava and 10 more</p></div></div>
 <div class="cta-box">
   <p>Paste your manifest — get a fixed version with all CVEs patched in seconds.</p>
   <a href="/" class="cta-btn">Open PackageFix →</a>
   <p style="margin-top:12px;font-size:11px;color:var(--muted)">Free · No signup · No CLI · Runs in your browser</p>
 </div>
-<div class="faq"><h2>Common questions</h2><div class="faq-item"><div class="faq-q">How does this reach production?</div><div class="faq-a">An attacker sends a crafted HTTP request like ?__proto__[isAdmin]=true. If your application uses qs to parse query strings (directly or via Express) and doesn't sanitize keys, the prototype is polluted.</div></div><div class="faq-item"><div class="faq-q">Does updating Express fix this?</div><div class="faq-a">Express 4.18.0+ bundles qs 6.11.0. Updating Express is the cleanest fix. If you can't update Express, add an npm override: {"overrides": {"qs": "6.11.0"}}.</div></div></div>
-<div style="margin:40px 0"><h2>Related</h2><div class="related-grid"><div class="related-card"><a href="/cisa-kev">All CISA KEV Packages</a><p>Full actively exploited list</p></div><div class="related-card"><a href="/fix/npm/qs">Fix qs</a><p>Full fix guide with CVE history</p></div><div class="related-card"><a href="/blog/supply-chain-attacks-package-json">Supply Chain Attack Guide</a><p>5 attacks npm audit misses</p></div><div class="related-card"><a href="/glossary/cisa-kev">What is CISA KEV?</a><p>Plain-English explanation</p></div></div></div>
+<div style="margin:40px 0"><h2>Related</h2><div class="related-grid"><div class="related-card"><a href="/cisa-kev">CISA KEV Packages</a><p>Actively exploited right now</p></div><div class="related-card"><a href="/glossary/dependency-scanning">Dependency Scanning</a><p>How to automate this</p></div><div class="related-card"><a href="/guides/github-actions">GitHub Actions</a><p>Catch CVEs in CI</p></div><div class="related-card"><a href="/alternatives">Alternatives</a><p>Other SCA tools</p></div></div></div>
 </main>
 <footer class="site-footer">
   <p>PackageFix · <a href="/">packagefix.dev</a> · MIT Licensed · Open Source</p>

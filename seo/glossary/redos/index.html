@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ReDoS — Regular Expression Denial of Service — Definition | PackageFix Glossary</title>
+<meta name="description" content="A denial of service attack where a crafted input causes a regular expression to take exponentially long to evaluate, hanging the application. ReDoS (Regular Expression Denial of Service) exploits how some regular expressions behave with certain inputs — specific...">
+<link rel="canonical" href="https://packagefix.dev/glossary/redos">
+<meta property="og:title" content="ReDoS — Regular Expression Denial of Service — Definition | PackageFix Glossary">
+<meta property="og:description" content="A denial of service attack where a crafted input causes a regular expression to take exponentially long to evaluate, hanging the application. ReDoS (Regular Expression Denial of Service) exploits how some regular expressions behave with certain inputs — specific...">
+<meta property="og:url" content="https://packagefix.dev/glossary/redos">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/svg+xml" href="/icon.svg">
+<link rel="icon" type="image/png" sizes="512x512" href="/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "DefinedTerm",
+      "name": "ReDoS \u2014 Regular Expression Denial of Service",
+      "description": "ReDoS (Regular Expression Denial of Service) exploits how some regular expressions behave with certain inputs \u2014 specifically, regex engines that use backtracking can take exponentially longer as input length increases when given a carefully crafted string. A single malicious HTTP request containing a few hundred characters can hang a Node.js server for seconds or cause a complete CPU lockup.",
+      "url": "https://packagefix.dev/glossary/redos",
+      "inDefinedTermSet": {
+        "@type": "DefinedTermSet",
+        "name": "PackageFix Dependency Security Glossary",
+        "url": "https://packagefix.dev/glossary"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "PackageFix",
+          "item": "https://packagefix.dev/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Glossary",
+          "item": "https://packagefix.dev/glossary"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "ReDoS \u2014 Regular Expression Denial of Service",
+          "item": "https://packagefix.dev"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is ReDoS a critical vulnerability?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "ReDoS is typically rated HIGH (7.5) rather than CRITICAL because it causes denial of service rather than data theft or code execution. However, for single-threaded runtimes like Node.js, a well-crafted ReDoS can completely take down a service \u2014 which is functionally critical in production."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I test if my regex is vulnerable?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Use a ReDoS checker tool or run the regex against increasingly long crafted inputs and check if evaluation time grows exponentially. Safe regex patterns use possessive quantifiers or atomic groups when available in your language."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does multi-threading protect against ReDoS?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Partially. In multi-threaded applications, only the affected thread is blocked, so other requests continue. But if enough ReDoS requests come in simultaneously, all threads can be occupied. Node.js is most vulnerable due to its single-threaded model."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does PackageFix handle ReDoS CVEs?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "PackageFix checks all package versions against OSV which includes ReDoS CVEs. They're flagged with HIGH severity. The fix is always a package update \u2014 the library must patch the vulnerable regex."
+          }
+        }
+      ]
+    }
+  ]
+}</script>
+<style>
+:root{--bg:#0B0D14;--surface:#12151F;--surface2:#1A1D2E;--border:#252836;--purple:#6C63FF;--green:#22C55E;--orange:#F97316;--red:#EF4444;--text:#E2E4F0;--muted:#6B7280}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.6;min-height:100vh}
+a{color:var(--purple);text-decoration:none}a:hover{text-decoration:underline}
+.site-header{border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:15px;font-weight:700;color:var(--text)}.logo span{color:var(--purple)}
+.nav-links{display:flex;gap:20px;font-size:12px}.nav-links a{color:var(--muted)}
+.nav-links a:hover{color:var(--text);text-decoration:none}
+.container{max-width:860px;margin:0 auto;padding:48px 24px}
+.breadcrumb{font-size:11px;color:var(--muted);margin-bottom:24px;display:flex;gap:6px;flex-wrap:wrap}
+.breadcrumb a{color:var(--muted)}
+h1{font-size:clamp(18px,3vw,26px);font-weight:700;margin-bottom:12px;line-height:1.3}
+h2{font-size:14px;font-weight:600;margin:32px 0 12px}
+h3{font-size:12px;font-weight:600;margin:20px 0 8px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+p{color:var(--muted);margin-bottom:12px;font-size:12px;line-height:1.7}
+.lead{color:var(--text);font-size:13px;margin-bottom:24px;line-height:1.7}
+.definition-box{background:var(--surface);border:1px solid var(--purple);border-left:4px solid var(--purple);border-radius:8px;padding:20px 24px;margin:0 0 32px}
+.definition-box .def-label{font-size:10px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.definition-box p{color:var(--text);font-size:13px;line-height:1.7;margin:0}
+.kev-banner{background:rgba(239,68,68,.12);border:1px solid var(--red);border-radius:10px;padding:16px 20px;margin:24px 0}
+.kev-banner .label{font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
+.kev-banner p{color:var(--red);margin:0;font-size:12px}
+pre{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px 16px;overflow-x:auto;font-size:11px;line-height:1.6;margin:8px 0;white-space:pre-wrap}
+code{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:1px 5px;font-size:11px}
+.cta-box{background:var(--surface);border:1px solid var(--purple);border-radius:10px;padding:24px;margin:32px 0;text-align:center}
+.cta-box p{color:var(--text);font-size:13px;margin-bottom:16px}
+.cta-btn{display:inline-block;background:var(--purple);color:#fff;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;padding:12px 28px;border-radius:7px;text-decoration:none}
+.badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em}
+.badge-red{background:rgba(239,68,68,.2);color:var(--red);border:1px solid var(--red)}
+.badge-orange{background:rgba(249,115,22,.2);color:var(--orange);border:1px solid var(--orange)}
+.badge-green{background:rgba(34,197,94,.2);color:var(--green);border:1px solid var(--green)}
+.badge-purple{background:rgba(108,99,255,.2);color:var(--purple);border:1px solid var(--purple)}
+.badge-muted{background:rgba(107,114,128,.15);color:var(--muted);border:1px solid var(--border)}
+.index-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:12px}
+.index-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px}
+.index-card a{color:var(--text);font-size:12px;font-weight:500;display:block;margin-bottom:4px}
+.index-card p{font-size:11px;color:var(--muted);margin:0;line-height:1.5}
+.cve-history{width:100%;border-collapse:collapse;margin:16px 0;font-size:12px}
+.cve-history th{text-align:left;padding:10px 12px;border-bottom:2px solid var(--border);color:var(--muted);font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.08em}
+.cve-history td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+.cve-history tr:last-child td{border-bottom:none}
+.cve-history tr:hover td{background:var(--surface2)}
+.faq{margin:40px 0}.faq-item{border-bottom:1px solid var(--border);padding:16px 0}
+.faq-item:last-child{border-bottom:none}
+.faq-q{font-size:12px;font-weight:600;color:var(--text);margin-bottom:8px}
+.faq-a{font-size:12px;color:var(--muted);line-height:1.7}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:12px}
+.related-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
+.related-card a{color:var(--text);font-size:12px;font-weight:500}
+.related-card p{font-size:11px;color:var(--muted);margin:4px 0 0}
+.digest-item{border-bottom:1px solid var(--border);padding:20px 0}
+.digest-item:last-child{border-bottom:none}
+.digest-item h3{font-size:13px;font-weight:600;margin:0 0 6px;color:var(--text)}
+.site-footer{border-top:1px solid var(--border);padding:24px;text-align:center;font-size:11px;color:var(--muted);margin-top:60px}
+.site-footer a{color:var(--muted)}
+@media(max-width:640px){.nav-links{display:none}.related-grid{grid-template-columns:1fr}.index-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <a href="/" class="logo">Package<span>Fix</span></a>
+  <nav class="nav-links">
+    <a href="/">Tool</a>
+    <a href="/glossary">Glossary</a>
+    <a href="/cisa-kev">CISA KEV</a>
+    <a href="/blog">Blog</a>
+    <a href="https://github.com/metriclogic26/packagefix">GitHub</a>
+  </nav>
+</header>
+<main class="container">
+  <div class="breadcrumb"><a href="/">PackageFix</a> <span style='color:var(--border)'>/</span> <a href="/glossary">Glossary</a> <span style='color:var(--border)'>/</span> <span style="color:var(--text)">ReDoS — Regular Expression Denial of Service</span></div>
+  <h1>ReDoS — Regular Expression Denial of Service</h1>
+<div style="margin-bottom:24px"><span class="badge badge-purple">DoS · All ecosystems</span></div>
+<div class="definition-box"><div class="def-label">Definition</div><p class="lead">ReDoS (Regular Expression Denial of Service) exploits how some regular expressions behave with certain inputs — specifically, regex engines that use backtracking can take exponentially longer as input length increases when given a carefully crafted string. A single malicious HTTP request containing a few hundred characters can hang a Node.js server for seconds or cause a complete CPU lockup.</p></div>
+<h2>How backtracking causes ReDoS</h2>
+<p>Most regex engines use backtracking — when a pattern doesn't match, the engine tries alternative paths. For certain patterns, this creates an explosion of possibilities. Consider a regex like <code>(a+)+</code> against the input <code>aaaaaaaaX</code>. The engine tries every possible way to group the a's before concluding no match — the number of attempts grows exponentially with input length.</p>
+<h2>ReDoS in popular packages</h2>
+<ul style="padding-left:20px;margin:12px 0;color:var(--muted);font-size:12px;line-height:2">
+  <li><strong>moment.js</strong> — CVE-2022-31129, CVE-2017-18214 — date parsing regex</li>
+  <li><strong>semver</strong> — CVE-2022-25883 — version coerce() function</li>
+  <li><strong>marked</strong> — CVE-2022-21681 — markdown parsing</li>
+  <li><strong>validator</strong> — CVE-2021-3765 — email validation</li>
+  <li><strong>Django</strong> — CVE-2024-27351 — strip_tags() HTML sanitizer</li>
+  <li><strong>pydantic</strong> — CVE-2024-3772 — email address validation</li>
+</ul>
+<h2>Why Node.js is especially vulnerable</h2>
+<p>Node.js runs JavaScript in a single-threaded event loop. A ReDoS attack that hangs the regex engine for 2 seconds doesn't just slow down one request — it blocks all other requests for those 2 seconds. A moderate-scale attack can completely take down a Node.js server with minimal bandwidth.</p>
+<div class="definition-box" style="margin:20px 0">
+  <div class="def-label">Detection</div>
+  <p class="lead">The <a href="https://devina.io/redos-checker" target="_blank" rel="noopener">ReDoS checker</a> can identify vulnerable regex patterns in your own code. For dependencies, PackageFix flags packages with known ReDoS CVEs.</p>
+</div>
+<div class="cta-box">
+  <p>Paste your manifest — get a fixed version with all CVEs patched in seconds.</p>
+  <a href="/" class="cta-btn">Open PackageFix →</a>
+  <p style="margin-top:12px;font-size:11px;color:var(--muted)">Free · No signup · No CLI · Runs in your browser</p>
+</div>
+<div class="faq"><h2>Common questions</h2><div class="faq-item"><div class="faq-q">Is ReDoS a critical vulnerability?</div><div class="faq-a">ReDoS is typically rated HIGH (7.5) rather than CRITICAL because it causes denial of service rather than data theft or code execution. However, for single-threaded runtimes like Node.js, a well-crafted ReDoS can completely take down a service — which is functionally critical in production.</div></div><div class="faq-item"><div class="faq-q">How do I test if my regex is vulnerable?</div><div class="faq-a">Use a ReDoS checker tool or run the regex against increasingly long crafted inputs and check if evaluation time grows exponentially. Safe regex patterns use possessive quantifiers or atomic groups when available in your language.</div></div><div class="faq-item"><div class="faq-q">Does multi-threading protect against ReDoS?</div><div class="faq-a">Partially. In multi-threaded applications, only the affected thread is blocked, so other requests continue. But if enough ReDoS requests come in simultaneously, all threads can be occupied. Node.js is most vulnerable due to its single-threaded model.</div></div><div class="faq-item"><div class="faq-q">How does PackageFix handle ReDoS CVEs?</div><div class="faq-a">PackageFix checks all package versions against OSV which includes ReDoS CVEs. They're flagged with HIGH severity. The fix is always a package update — the library must patch the vulnerable regex.</div></div></div>
+<div style="margin:40px 0"><h2>Related</h2><div class="related-grid"><div class="related-card"><a href="/glossary/cve">CVE</a><p>How ReDoS vulnerabilities are tracked</p></div><div class="related-card"><a href="/fix/npm/moment">Fix moment.js</a><p>ReDoS CVEs in moment</p></div><div class="related-card"><a href="/fix/npm/semver">Fix semver</a><p>ReDoS in semver</p></div><div class="related-card"><a href="/fix/pypi/django">Fix Django</a><p>ReDoS in Django</p></div></div></div>
+</main>
+<footer class="site-footer">
+  <p>PackageFix · <a href="/">packagefix.dev</a> · MIT Licensed · Open Source</p>
+  <p style="margin-top:6px">Vulnerability data: <a href="https://osv.dev">OSV</a> · <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog">CISA KEV</a></p>
+  <p style="margin-top:6px">Always test dependency updates in staging before deploying to production.</p>
+</footer>
+</body></html>

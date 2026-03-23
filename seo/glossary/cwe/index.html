@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>CVE-2022-24999 (qs Prototype Pollution) — Fix Guide | PackageFix</title>
-<meta name="description" content="Fix CVE-2022-24999: Prototype pollution in qs query string parsing. qs is a transitive dependency of Express — effectively present in the ma. CVSS 7.5. Affected: qs < 6.11.0. Safe version: 6.11.0.">
-<link rel="canonical" href="https://packagefix.dev/kev/CVE-2022-24999">
-<meta property="og:title" content="CVE-2022-24999 (qs Prototype Pollution) — Fix Guide | PackageFix">
-<meta property="og:description" content="Fix CVE-2022-24999: Prototype pollution in qs query string parsing. qs is a transitive dependency of Express — effectively present in the ma. CVSS 7.5. Affected: qs < 6.11.0. Safe version: 6.11.0.">
-<meta property="og:url" content="https://packagefix.dev/kev/CVE-2022-24999">
+<title>CWE — Common Weakness Enumeration — Definition | PackageFix Glossary</title>
+<meta name="description" content="A catalog of common software and hardware weakness types — the root cause categories that CVEs are classified under. CWE (Common Weakness Enumeration) is a catalog of software and hardware weakness types maintained by MITRE. Where CVEs a...">
+<link rel="canonical" href="https://packagefix.dev/glossary/cwe">
+<meta property="og:title" content="CWE — Common Weakness Enumeration — Definition | PackageFix Glossary">
+<meta property="og:description" content="A catalog of common software and hardware weakness types — the root cause categories that CVEs are classified under. CWE (Common Weakness Enumeration) is a catalog of software and hardware weakness types maintained by MITRE. Where CVEs a...">
+<meta property="og:url" content="https://packagefix.dev/glossary/cwe">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
 <link rel="icon" type="image/svg+xml" href="/icon.svg">
@@ -18,15 +18,14 @@
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "TechArticle",
-      "headline": "CVE-2022-24999 \u2014 qs Prototype Pollution",
-      "description": "Prototype pollution in qs query string parsing. qs is a transitive dependency of Express \u2014 effectively present in the majority of Node.js web applications. Crafted query strings can pollute Object.pro",
-      "datePublished": "2026-03-22",
-      "dateModified": "2026-03-22",
-      "author": {
-        "@type": "Organization",
-        "name": "PackageFix",
-        "url": "https://packagefix.dev"
+      "@type": "DefinedTerm",
+      "name": "CWE \u2014 Common Weakness Enumeration",
+      "description": "CWE (Common Weakness Enumeration) is a catalog of software and hardware weakness types maintained by MITRE. Where CVEs are specific vulnerabilities in specific products, CWEs are the categories of weakness that lead to those vulnerabilities. CWE-79 is Cross-Site Scripting, CWE-89 is SQL Injection, CWE-502 is Deserialization of Untrusted Data. A CVE will often reference the CWE that explains why the vulnerability exists.",
+      "url": "https://packagefix.dev/glossary/cwe",
+      "inDefinedTermSet": {
+        "@type": "DefinedTermSet",
+        "name": "PackageFix Dependency Security Glossary",
+        "url": "https://packagefix.dev/glossary"
       }
     },
     {
@@ -41,13 +40,13 @@
         {
           "@type": "ListItem",
           "position": 2,
-          "name": "CISA KEV",
-          "item": "https://packagefix.dev/cisa-kev"
+          "name": "Glossary",
+          "item": "https://packagefix.dev/glossary"
         },
         {
           "@type": "ListItem",
           "position": 3,
-          "name": "CVE-2022-24999",
+          "name": "CWE \u2014 Common Weakness Enumeration",
           "item": "https://packagefix.dev"
         }
       ]
@@ -57,18 +56,34 @@
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "How does this reach production?",
+          "name": "Do I need to know CWEs to use PackageFix?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "An attacker sends a crafted HTTP request like ?__proto__[isAdmin]=true. If your application uses qs to parse query strings (directly or via Express) and doesn't sanitize keys, the prototype is polluted."
+            "text": "No \u2014 PackageFix shows CVE IDs and severity. CWEs are useful background knowledge for understanding why a class of vulnerabilities keeps recurring in certain types of libraries."
           }
         },
         {
           "@type": "Question",
-          "name": "Does updating Express fix this?",
+          "name": "Where can I look up CWEs?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Express 4.18.0+ bundles qs 6.11.0. Updating Express is the cleanest fix. If you can't update Express, add an npm override: {\"overrides\": {\"qs\": \"6.11.0\"}}."
+            "text": "cwe.mitre.org has the full catalog. Individual CVE pages on NVD and OSV often reference the relevant CWE."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difference between CWE and OWASP Top 10?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "OWASP Top 10 lists the most critical web application security risks (like Injection, Broken Authentication). CWEs are the underlying technical weakness classifications. Many OWASP Top 10 categories map to multiple CWEs."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which CWE covers supply chain attacks?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Supply chain attacks don't have a single CWE \u2014 they involve multiple weaknesses. CWE-1357 (Reliance on Insufficiently Trustworthy Component) covers the conceptual failure. Specific attack techniques use other CWEs \u2014 code injection (CWE-94), malicious dependency (CWE-829)."
           }
         }
       ]
@@ -146,28 +161,30 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
   </nav>
 </header>
 <main class="container">
-  <div class="breadcrumb"><a href="/">PackageFix</a> <span style='color:var(--border)'>/</span> <a href="/cisa-kev">CISA KEV</a> <span style='color:var(--border)'>/</span> <span style="color:var(--text)">CVE-2022-24999</span></div>
-  
-<h1>CVE-2022-24999 — qs Prototype Pollution <span class="badge badge-orange">HIGH</span></h1>
-<div style="margin-bottom:20px">
-  <span class="badge badge-red" style="margin-right:6px">🔴 CISA KEV</span>
-  <span class="badge badge-muted">CVSS 7.5</span>
-</div>
-<p class="lead">Prototype pollution in qs query string parsing. qs is a transitive dependency of Express — effectively present in the majority of Node.js web applications. Crafted query strings can pollute Object.prototype and affect all objects in the application.</p>
-<div class="kev-banner"><div class="label">🔴 Actively Exploited</div>
-<p>CVE-2022-24999 is on the CISA Known Exploited Vulnerabilities catalog. Being used in real attacks right now. Fix immediately.</p></div>
-<h2>Affected package</h2>
-<table class="cve-history"><thead><tr><th>Package</th><th>Vulnerable</th><th>Safe version</th><th>Fix guide</th></tr></thead>
-<tbody><tr><td><strong>qs</strong></td><td>< 6.11.0</td><td>6.11.0</td><td><a href='/fix/npm/qs'>Fix guide →</a></td></tr></tbody></table>
-<h2>Timeline</h2>
-<div style="margin:16px 0"><div style="display:flex;gap:16px;padding:8px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted);font-size:11px;min-width:90px">Nov 2022</span><span style="font-size:12px;color:var(--text)">CVE filed — third prototype pollution in qs's history</span></div><div style="display:flex;gap:16px;padding:8px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted);font-size:11px;min-width:90px">Nov 2022</span><span style="font-size:12px;color:var(--text)">qs 6.11.0 released — Express 4.18.2 updated to include it</span></div><div style="display:flex;gap:16px;padding:8px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted);font-size:11px;min-width:90px">CISA</span><span style="font-size:12px;color:var(--text)">Added to KEV — active exploitation against Express applications</span></div><div style="display:flex;gap:16px;padding:8px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted);font-size:11px;min-width:90px">Ongoing</span><span style="font-size:12px;color:var(--text)">Express apps on 4.17.x and below remain vulnerable</span></div></div>
+  <div class="breadcrumb"><a href="/">PackageFix</a> <span style='color:var(--border)'>/</span> <a href="/glossary">Glossary</a> <span style='color:var(--border)'>/</span> <span style="color:var(--text)">CWE — Common Weakness Enumeration</span></div>
+  <h1>CWE — Common Weakness Enumeration</h1>
+<div style="margin-bottom:24px"><span class="badge badge-purple">Security · Classification</span></div>
+<div class="definition-box"><div class="def-label">Definition</div><p class="lead">CWE (Common Weakness Enumeration) is a catalog of software and hardware weakness types maintained by MITRE. Where CVEs are specific vulnerabilities in specific products, CWEs are the categories of weakness that lead to those vulnerabilities. CWE-79 is Cross-Site Scripting, CWE-89 is SQL Injection, CWE-502 is Deserialization of Untrusted Data. A CVE will often reference the CWE that explains why the vulnerability exists.</p></div>
+<h2>CWE vs CVE — what's the difference</h2>
+<p>Think of CWEs as the root causes and CVEs as the instances. CWE-502 (Deserialization of Untrusted Data) is the weakness category. CVE-2021-44228 (Log4Shell) is a specific instance of that weakness in Apache Log4j.</p>
+<p>CVEs describe what happened. CWEs describe why it happened and how to prevent the whole class of issue.</p>
+<h2>The most important CWEs for dependency security</h2>
+<ul style="padding-left:20px;margin:12px 0;color:var(--muted);font-size:12px;line-height:2">
+  <li><strong>CWE-502</strong> — Deserialization of Untrusted Data (Log4Shell, SnakeYAML, PyYAML)</li>
+  <li><strong>CWE-1321</strong> — Prototype Pollution (lodash, qs, minimist)</li>
+  <li><strong>CWE-400</strong> — Uncontrolled Resource Consumption (ReDoS — moment, semver)</li>
+  <li><strong>CWE-22</strong> — Path Traversal (Flysystem, CarrierWave, Sprockets)</li>
+  <li><strong>CWE-89</strong> — SQL Injection (Ransack, Hibernate, activerecord)</li>
+  <li><strong>CWE-79</strong> — Cross-Site Scripting (many web framework CVEs)</li>
+  <li><strong>CWE-601</strong> — URL Redirection (open redirect CVEs in axios, express)</li>
+</ul>
 <div class="cta-box">
   <p>Paste your manifest — get a fixed version with all CVEs patched in seconds.</p>
   <a href="/" class="cta-btn">Open PackageFix →</a>
   <p style="margin-top:12px;font-size:11px;color:var(--muted)">Free · No signup · No CLI · Runs in your browser</p>
 </div>
-<div class="faq"><h2>Common questions</h2><div class="faq-item"><div class="faq-q">How does this reach production?</div><div class="faq-a">An attacker sends a crafted HTTP request like ?__proto__[isAdmin]=true. If your application uses qs to parse query strings (directly or via Express) and doesn't sanitize keys, the prototype is polluted.</div></div><div class="faq-item"><div class="faq-q">Does updating Express fix this?</div><div class="faq-a">Express 4.18.0+ bundles qs 6.11.0. Updating Express is the cleanest fix. If you can't update Express, add an npm override: {"overrides": {"qs": "6.11.0"}}.</div></div></div>
-<div style="margin:40px 0"><h2>Related</h2><div class="related-grid"><div class="related-card"><a href="/cisa-kev">All CISA KEV Packages</a><p>Full actively exploited list</p></div><div class="related-card"><a href="/fix/npm/qs">Fix qs</a><p>Full fix guide with CVE history</p></div><div class="related-card"><a href="/blog/supply-chain-attacks-package-json">Supply Chain Attack Guide</a><p>5 attacks npm audit misses</p></div><div class="related-card"><a href="/glossary/cisa-kev">What is CISA KEV?</a><p>Plain-English explanation</p></div></div></div>
+<div class="faq"><h2>Common questions</h2><div class="faq-item"><div class="faq-q">Do I need to know CWEs to use PackageFix?</div><div class="faq-a">No — PackageFix shows CVE IDs and severity. CWEs are useful background knowledge for understanding why a class of vulnerabilities keeps recurring in certain types of libraries.</div></div><div class="faq-item"><div class="faq-q">Where can I look up CWEs?</div><div class="faq-a">cwe.mitre.org has the full catalog. Individual CVE pages on NVD and OSV often reference the relevant CWE.</div></div><div class="faq-item"><div class="faq-q">What is the difference between CWE and OWASP Top 10?</div><div class="faq-a">OWASP Top 10 lists the most critical web application security risks (like Injection, Broken Authentication). CWEs are the underlying technical weakness classifications. Many OWASP Top 10 categories map to multiple CWEs.</div></div><div class="faq-item"><div class="faq-q">Which CWE covers supply chain attacks?</div><div class="faq-a">Supply chain attacks don't have a single CWE — they involve multiple weaknesses. CWE-1357 (Reliance on Insufficiently Trustworthy Component) covers the conceptual failure. Specific attack techniques use other CWEs — code injection (CWE-94), malicious dependency (CWE-829).</div></div></div>
+<div style="margin:40px 0"><h2>Related</h2><div class="related-grid"><div class="related-card"><a href="/glossary/cve">CVE</a><p>Specific vulnerability instances</p></div><div class="related-card"><a href="/glossary/cvss">CVSS</a><p>How CVEs are scored</p></div><div class="related-card"><a href="/glossary/deserialization">Deserialization</a><p>CWE-502 examples</p></div><div class="related-card"><a href="/glossary/prototype-pollution">Prototype Pollution</a><p>CWE-1321 examples</p></div></div></div>
 </main>
 <footer class="site-footer">
   <p>PackageFix · <a href="/">packagefix.dev</a> · MIT Licensed · Open Source</p>

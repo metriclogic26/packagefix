@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Fix Hibernate ORM CVE-2023-25194 — Java/Maven Vulnerability | PackageFix</title>
-<meta name="description" content="Fix CVE-2023-25194 (HIGH) in Hibernate ORM for Java/Maven. Paste your pom.xml into PackageFix and get a patched version — no CLI, no signup. Sql injection via hql query interpolation.">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>All Hibernate ORM CVEs — Complete Java/Maven Vulnerability History | PackageFix</title>
+<meta name="description" content="Hibernate ORM has 2 known CVEs. Safe version: 6.4.4.Final.">
 <link rel="canonical" href="https://packagefix.dev/fix/java/hibernate">
-<meta property="og:title" content="Fix Hibernate ORM CVE-2023-25194 — Java/Maven Vulnerability | PackageFix">
-<meta property="og:description" content="Fix CVE-2023-25194 (HIGH) in Hibernate ORM for Java/Maven. Paste your pom.xml into PackageFix and get a patched version — no CLI, no signup. Sql injection via hql query interpolation.">
+<meta property="og:title" content="All Hibernate ORM CVEs — Complete Java/Maven Vulnerability History | PackageFix">
+<meta property="og:description" content="Hibernate ORM has 2 known CVEs. Safe version: 6.4.4.Final.">
 <meta property="og:url" content="https://packagefix.dev/fix/java/hibernate">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
@@ -19,38 +18,22 @@
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "HowTo",
-      "name": "Fix Hibernate ORM CVE-2023-25194",
-      "description": "Fix CVE-2023-25194 (HIGH) in Hibernate ORM for Java/Maven. Paste your pom.xml into PackageFix and get a patched version \u2014 no CLI, no signup. Sql injection via hql query interpolation.",
-      "estimatedCost": {
-        "@type": "MonetaryAmount",
-        "currency": "USD",
-        "value": "0"
-      },
-      "supply": {
-        "@type": "HowToSupply",
-        "name": "pom.xml"
-      },
-      "tool": {
-        "@type": "HowToTool",
-        "name": "PackageFix",
-        "url": "https://packagefix.dev"
-      },
-      "step": [
+      "@type": "ItemList",
+      "name": "All Hibernate ORM CVEs",
+      "description": "Complete CVE history \u2014 2 known vulnerabilities",
+      "numberOfItems": 2,
+      "itemListElement": [
         {
-          "@type": "HowToStep",
-          "name": "Paste manifest",
-          "text": "Paste your pom.xml into PackageFix"
+          "@type": "ListItem",
+          "position": 1,
+          "name": "CVE-2020-25638",
+          "url": "https://osv.dev/vulnerability/CVE-2020-25638"
         },
         {
-          "@type": "HowToStep",
-          "name": "Find CVE",
-          "text": "Locate CVE-2023-25194 in the CVE table"
-        },
-        {
-          "@type": "HowToStep",
-          "name": "Download fix",
-          "text": "Download patched pom.xml and run mvn dependency:resolve"
+          "@type": "ListItem",
+          "position": 2,
+          "name": "CVE-2023-25194",
+          "url": "https://osv.dev/vulnerability/CVE-2023-25194"
         }
       ]
     },
@@ -79,7 +62,7 @@
           "@type": "ListItem",
           "position": 4,
           "name": "Hibernate ORM",
-          "item": "https://packagefix.dev/fix/java/hibernate"
+          "item": "https://packagefix.dev"
         }
       ]
     },
@@ -88,34 +71,10 @@
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "What is CVE-2023-25194?",
+          "name": "Is Hibernate's JPQL/HQL safe from injection?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "CVE-2023-25194 is a HIGH severity vulnerability in Hibernate ORM (Java/Maven) that allows SQL injection via HQL query interpolation. Update to 6.4.4.Final or later."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How do I fix CVE-2023-25194 in Hibernate ORM?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Update Hibernate ORM to version 6.4.4.Final in your pom.xml and run mvn dependency:resolve."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Is CVE-2023-25194 being actively exploited?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Check packagefix.dev \u2014 the CISA KEV catalog updates daily."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How do I verify the fix for CVE-2023-25194?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "After updating, paste your pom.xml into PackageFix again. If CVE-2023-25194 no longer appears in the CVE table, the fix is applied."
+            "text": "Parameterized queries via @NamedQuery or CriteriaBuilder are safe. The CVEs affect raw HQL via createQuery() with string formatting. Never interpolate user input into HQL strings."
           }
         }
       ]
@@ -123,47 +82,49 @@
   ]
 }</script>
 <style>
-:root {
-  --bg:#0B0D14; --surface:#12151F; --surface2:#1A1D2E;
-  --border:#252836; --purple:#6C63FF; --green:#22C55E;
-  --orange:#F97316; --red:#EF4444; --yellow:#EAB308;
-  --text:#E2E4F0; --muted:#6B7280;
-}
+:root{--bg:#0B0D14;--surface:#12151F;--surface2:#1A1D2E;--border:#252836;--purple:#6C63FF;--green:#22C55E;--orange:#F97316;--red:#EF4444;--text:#E2E4F0;--muted:#6B7280}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.6;min-height:100vh}
-a{color:var(--purple);text-decoration:none}
-a:hover{text-decoration:underline}
+a{color:var(--purple);text-decoration:none}a:hover{text-decoration:underline}
 .site-header{border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
-.logo{font-size:15px;font-weight:700;color:var(--text)}
-.logo span{color:var(--purple)}
-.nav-links{display:flex;gap:20px;font-size:12px}
-.nav-links a{color:var(--muted)}
+.logo{font-size:15px;font-weight:700;color:var(--text)}.logo span{color:var(--purple)}
+.nav-links{display:flex;gap:20px;font-size:12px}.nav-links a{color:var(--muted)}
 .nav-links a:hover{color:var(--text);text-decoration:none}
 .container{max-width:860px;margin:0 auto;padding:48px 24px}
 .breadcrumb{font-size:11px;color:var(--muted);margin-bottom:24px;display:flex;gap:6px;flex-wrap:wrap}
 .breadcrumb a{color:var(--muted)}
 h1{font-size:clamp(18px,3vw,26px);font-weight:700;margin-bottom:12px;line-height:1.3}
 h2{font-size:14px;font-weight:600;margin:32px 0 12px}
+h3{font-size:12px;font-weight:600;margin:20px 0 8px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
 p{color:var(--muted);margin-bottom:12px;font-size:12px;line-height:1.7}
 .lead{color:var(--text);font-size:13px;margin-bottom:24px;line-height:1.7}
-.problem-box{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3);border-left:3px solid var(--red);border-radius:8px;padding:16px 20px;margin:20px 0}
-.problem-box .label{font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
-.fix-box{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.3);border-left:3px solid var(--green);border-radius:8px;padding:16px 20px;margin:20px 0}
-.fix-box .label{font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
-.kev-box{background:rgba(239,68,68,.12);border:1px solid var(--red);border-radius:8px;padding:12px 16px;margin:16px 0;font-size:11px;color:var(--red)}
+.definition-box{background:var(--surface);border:1px solid var(--purple);border-left:4px solid var(--purple);border-radius:8px;padding:20px 24px;margin:0 0 32px}
+.definition-box .def-label{font-size:10px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.definition-box p{color:var(--text);font-size:13px;line-height:1.7;margin:0}
+.kev-banner{background:rgba(239,68,68,.12);border:1px solid var(--red);border-radius:10px;padding:16px 20px;margin:24px 0}
+.kev-banner .label{font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
+.kev-banner p{color:var(--red);margin:0;font-size:12px}
 pre{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px 16px;overflow-x:auto;font-size:11px;line-height:1.6;margin:8px 0;white-space:pre-wrap}
 code{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:1px 5px;font-size:11px}
 .cta-box{background:var(--surface);border:1px solid var(--purple);border-radius:10px;padding:24px;margin:32px 0;text-align:center}
 .cta-box p{color:var(--text);font-size:13px;margin-bottom:16px}
 .cta-btn{display:inline-block;background:var(--purple);color:#fff;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;padding:12px 28px;border-radius:7px;text-decoration:none}
-.cta-btn:hover{opacity:.9;text-decoration:none}
 .badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em}
 .badge-red{background:rgba(239,68,68,.2);color:var(--red);border:1px solid var(--red)}
 .badge-orange{background:rgba(249,115,22,.2);color:var(--orange);border:1px solid var(--orange)}
 .badge-green{background:rgba(34,197,94,.2);color:var(--green);border:1px solid var(--green)}
 .badge-purple{background:rgba(108,99,255,.2);color:var(--purple);border:1px solid var(--purple)}
-.faq{margin:40px 0}
-.faq-item{border-bottom:1px solid var(--border);padding:16px 0}
+.badge-muted{background:rgba(107,114,128,.15);color:var(--muted);border:1px solid var(--border)}
+.index-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:12px}
+.index-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px}
+.index-card a{color:var(--text);font-size:12px;font-weight:500;display:block;margin-bottom:4px}
+.index-card p{font-size:11px;color:var(--muted);margin:0;line-height:1.5}
+.cve-history{width:100%;border-collapse:collapse;margin:16px 0;font-size:12px}
+.cve-history th{text-align:left;padding:10px 12px;border-bottom:2px solid var(--border);color:var(--muted);font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.08em}
+.cve-history td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+.cve-history tr:last-child td{border-bottom:none}
+.cve-history tr:hover td{background:var(--surface2)}
+.faq{margin:40px 0}.faq-item{border-bottom:1px solid var(--border);padding:16px 0}
 .faq-item:last-child{border-bottom:none}
 .faq-q{font-size:12px;font-weight:600;color:var(--text);margin-bottom:8px}
 .faq-a{font-size:12px;color:var(--muted);line-height:1.7}
@@ -171,71 +132,54 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
 .related-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
 .related-card a{color:var(--text);font-size:12px;font-weight:500}
 .related-card p{font-size:11px;color:var(--muted);margin:4px 0 0}
-.cve-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:12px}
-.cve-table th{text-align:left;padding:8px 12px;border-bottom:1px solid var(--border);color:var(--muted);font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.08em}
-.cve-table td{padding:8px 12px;border-bottom:1px solid var(--border)}
-.cve-table tr:last-child td{border-bottom:none}
-.vs-table td:first-child{font-weight:600;color:var(--text)}
+.digest-item{border-bottom:1px solid var(--border);padding:20px 0}
+.digest-item:last-child{border-bottom:none}
+.digest-item h3{font-size:13px;font-weight:600;margin:0 0 6px;color:var(--text)}
 .site-footer{border-top:1px solid var(--border);padding:24px;text-align:center;font-size:11px;color:var(--muted);margin-top:60px}
 .site-footer a{color:var(--muted)}
-@media(max-width:640px){.nav-links{display:none}.related-grid{grid-template-columns:1fr}}
+@media(max-width:640px){.nav-links{display:none}.related-grid{grid-template-columns:1fr}.index-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <header class="site-header">
-  <a href="https://packagefix.dev" class="logo">Package<span>Fix</span></a>
+  <a href="/" class="logo">Package<span>Fix</span></a>
   <nav class="nav-links">
-    <a href="https://packagefix.dev">Tool</a>
-    <a href="https://packagefix.dev/alternatives">Alternatives</a>
-    <a href="https://packagefix.dev/error">Error Fixes</a>
+    <a href="/">Tool</a>
+    <a href="/glossary">Glossary</a>
+    <a href="/cisa-kev">CISA KEV</a>
+    <a href="/blog">Blog</a>
     <a href="https://github.com/metriclogic26/packagefix">GitHub</a>
   </nav>
 </header>
 <main class="container">
   <div class="breadcrumb"><a href="/">PackageFix</a> <span style='color:var(--border)'>/</span> <a href="/fix">Fix Guides</a> <span style='color:var(--border)'>/</span> <a href="/java">Java/Maven</a> <span style='color:var(--border)'>/</span> <span style="color:var(--text)">Hibernate ORM</span></div>
+  <h1>All Hibernate ORM CVEs — Complete Vulnerability History</h1>
+<p class="lead">Hibernate is Java's most widely-used ORM, underlying Spring Data JPA. CVEs here are SQL injection via HQL and bypasses of Hibernate's built-in protections.</p>
+<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px">
+  <span class="badge badge-purple">Java/Maven</span>
+  <span class="badge badge-muted">Millions weekly downloads</span>
+  <span class="badge badge-muted">2 CVEs total</span>
+  <span class="badge badge-red">1 CRITICAL</span>
   
-<h1>Fix Hibernate ORM — CVE-2023-25194 <span class="badge badge-orange">HIGH</span></h1>
-<p class="lead">Fix CVE-2023-25194 (HIGH) in Hibernate ORM for Java/Maven. Paste your pom.xml into PackageFix and get a patched version — no CLI, no signup. Sql injection via hql query interpolation.</p>
-
-<div class="problem-box">
-  <div class="label">⚠ Vulnerability</div>
-  <p style="margin:0"><strong>CVE-2023-25194</strong> (HIGH) — SQL injection via HQL query interpolation in Hibernate ORM below <code>6.4.4.Final</code>.</p>
 </div>
-<h2>Vulnerable — pom.xml</h2>
-<pre><hibernate.version>5.6.14.Final</hibernate.version></pre>
-<h2>Fixed — pom.xml</h2>
-<pre><hibernate.version>6.4.4.Final</hibernate.version></pre>
-<div class="fix-box">
-  <div class="label">✓ Fix</div>
-  <p style="margin:0">Update Hibernate ORM to <code>6.4.4.Final</code> and run <code>mvn dependency:resolve</code>.</p>
-</div>
+<h2>Full CVE history</h2><table class="cve-history"><thead><tr><th>CVE</th><th>Year</th><th>Severity</th><th>Description</th><th>Fix</th></tr></thead><tbody><tr><td><a href='https://osv.dev/vulnerability/CVE-2020-25638' target='_blank' rel='noopener'>CVE-2020-25638</a></td><td>2020</td><td><span class="badge badge-red">CRITICAL</span></td><td style='color:var(--muted)'>SQL injection via HQL query with crafted input</td><td><span class="badge badge-green">Fixed 5.4.24.Final</span></td></tr><tr><td><a href='https://osv.dev/vulnerability/CVE-2023-25194' target='_blank' rel='noopener'>CVE-2023-25194</a></td><td>2023</td><td><span class="badge badge-orange">HIGH</span></td><td style='color:var(--muted)'>SQL injection via HQL query interpolation</td><td><span class="badge badge-green">Fixed 6.2.0.Final</span></td></tr></tbody></table>
+<h2>Current safe version: 6.4.4.Final</h2>
+<pre># Before
+<hibernate.version>5.6.14.Final</hibernate.version></pre>
+<pre># After
+<hibernate.version>6.4.4.Final</hibernate.version></pre>
+<p style="margin-top:8px">Then run: <code>mvn dependency:resolve</code></p>
 <div class="cta-box">
-  <p>Paste your manifest — get back a fixed version with all CVEs patched in seconds.</p>
-  <a href="https://packagefix.dev" class="cta-btn">Open PackageFix →</a>
-  <p style="margin-top:12px;font-size:11px;color:var(--muted)">No signup · No CLI · No GitHub connection · Runs 100% in your browser</p>
+  <p>Paste your manifest — get a fixed version with all CVEs patched in seconds.</p>
+  <a href="/" class="cta-btn">Open PackageFix →</a>
+  <p style="margin-top:12px;font-size:11px;color:var(--muted)">Free · No signup · No CLI · Runs in your browser</p>
 </div>
-<h2>CVE Details</h2>
-<table class="cve-table">
-  <thead><tr><th>Field</th><th>Value</th></tr></thead>
-  <tbody>
-    <tr><td>CVE ID</td><td><a href="https://osv.dev/vulnerability/CVE-2023-25194" target="_blank" rel="noopener">CVE-2023-25194</a></td></tr>
-    <tr><td>Severity</td><td><span class="badge badge-orange">HIGH</span></td></tr>
-    <tr><td>Package</td><td>Hibernate ORM (Java/Maven)</td></tr>
-    <tr><td>Safe version</td><td>6.4.4.Final</td></tr>
-    <tr><td>CISA KEV</td><td>—</td></tr>
-    <tr><td>Description</td><td>Sql injection via hql query interpolation</td></tr>
-  </tbody>
-</table>
-<div class="faq"><h2>Frequently Asked Questions</h2><div class="faq-item"><div class="faq-q">What is CVE-2023-25194?</div><div class="faq-a">CVE-2023-25194 is a HIGH severity vulnerability in Hibernate ORM (Java/Maven) that allows SQL injection via HQL query interpolation. Update to 6.4.4.Final or later.</div></div><div class="faq-item"><div class="faq-q">How do I fix CVE-2023-25194 in Hibernate ORM?</div><div class="faq-a">Update Hibernate ORM to version 6.4.4.Final in your pom.xml and run mvn dependency:resolve.</div></div><div class="faq-item"><div class="faq-q">Is CVE-2023-25194 being actively exploited?</div><div class="faq-a">Check packagefix.dev — the CISA KEV catalog updates daily.</div></div><div class="faq-item"><div class="faq-q">How do I verify the fix for CVE-2023-25194?</div><div class="faq-a">After updating, paste your pom.xml into PackageFix again. If CVE-2023-25194 no longer appears in the CVE table, the fix is applied.</div></div></div>
-<div style="margin:40px 0"><h2>Related Guides</h2><div class="related-grid"><div class="related-card"><a href="/java">Java/Maven Security Overview</a><p>All Java/Maven vulnerability guides</p></div><div class="related-card"><a href="/fix/java/outdated-dependencies">Fix Outdated Java/Maven Dependencies</a><p>General dependency updates</p></div><div class="related-card"><a href="https://packagefix.dev">Open PackageFix Tool</a><p>Scan your manifest live</p></div><div class="related-card"><a href="/vs/snyk-advisor">PackageFix vs Snyk Advisor</a><p>Free browser alternative</p></div></div></div>
+<div class="faq"><h2>Common questions</h2><div class="faq-item"><div class="faq-q">Is Hibernate's JPQL/HQL safe from injection?</div><div class="faq-a">Parameterized queries via @NamedQuery or CriteriaBuilder are safe. The CVEs affect raw HQL via createQuery() with string formatting. Never interpolate user input into HQL strings.</div></div></div>
+<div style="margin:40px 0"><h2>Related</h2><div class="related-grid"><div class="related-card"><a href="/java">Java Security</a><p>All Java guides</p></div></div></div>
 </main>
 <footer class="site-footer">
-  <p>PackageFix · <a href="https://packagefix.dev">packagefix.dev</a> · MIT Licensed · Open Source</p>
-  <p style="margin-top:6px">Part of the MetricLogic network ·
-  <a href="https://configclarity.dev">ConfigClarity</a> ·
-  <a href="https://domainpreflight.dev">DomainPreflight</a></p>
-  <p style="margin-top:6px">Vulnerability data: <a href="https://osv.dev">OSV Database</a> · <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog">CISA KEV Catalog</a></p>
-  <p style="margin-top:6px">Always test dependency updates in a staging environment before deploying to production.</p>
+  <p>PackageFix · <a href="/">packagefix.dev</a> · MIT Licensed · Open Source</p>
+  <p style="margin-top:6px">Vulnerability data: <a href="https://osv.dev">OSV</a> · <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog">CISA KEV</a></p>
+  <p style="margin-top:6px">Always test dependency updates in staging before deploying to production.</p>
 </footer>
-</body>
-</html>
+</body></html>

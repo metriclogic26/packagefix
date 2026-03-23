@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>CVE-2022-24999 (qs Prototype Pollution) — Fix Guide | PackageFix</title>
-<meta name="description" content="Fix CVE-2022-24999: Prototype pollution in qs query string parsing. qs is a transitive dependency of Express — effectively present in the ma. CVSS 7.5. Affected: qs < 6.11.0. Safe version: 6.11.0.">
-<link rel="canonical" href="https://packagefix.dev/kev/CVE-2022-24999">
-<meta property="og:title" content="CVE-2022-24999 (qs Prototype Pollution) — Fix Guide | PackageFix">
-<meta property="og:description" content="Fix CVE-2022-24999: Prototype pollution in qs query string parsing. qs is a transitive dependency of Express — effectively present in the ma. CVSS 7.5. Affected: qs < 6.11.0. Safe version: 6.11.0.">
-<meta property="og:url" content="https://packagefix.dev/kev/CVE-2022-24999">
+<title>Zero-Day Vulnerability — Definition | PackageFix Glossary</title>
+<meta name="description" content="A vulnerability that is being exploited in the wild before a fix exists. A zero-day is a security vulnerability that attackers are actively exploiting before the software vendor knows about it ...">
+<link rel="canonical" href="https://packagefix.dev/glossary/zero-day">
+<meta property="og:title" content="Zero-Day Vulnerability — Definition | PackageFix Glossary">
+<meta property="og:description" content="A vulnerability that is being exploited in the wild before a fix exists. A zero-day is a security vulnerability that attackers are actively exploiting before the software vendor knows about it ...">
+<meta property="og:url" content="https://packagefix.dev/glossary/zero-day">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
 <link rel="icon" type="image/svg+xml" href="/icon.svg">
@@ -18,15 +18,14 @@
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "TechArticle",
-      "headline": "CVE-2022-24999 \u2014 qs Prototype Pollution",
-      "description": "Prototype pollution in qs query string parsing. qs is a transitive dependency of Express \u2014 effectively present in the majority of Node.js web applications. Crafted query strings can pollute Object.pro",
-      "datePublished": "2026-03-22",
-      "dateModified": "2026-03-22",
-      "author": {
-        "@type": "Organization",
-        "name": "PackageFix",
-        "url": "https://packagefix.dev"
+      "@type": "DefinedTerm",
+      "name": "Zero-Day Vulnerability",
+      "description": "A zero-day is a security vulnerability that attackers are actively exploiting before the software vendor knows about it or has released a fix. The name comes from the fact that developers have had zero days to address it. Zero-days are the most dangerous class of vulnerability because there is no patch to apply \u2014 the only defenses are workarounds, network controls, or disabling affected functionality.",
+      "url": "https://packagefix.dev/glossary/zero-day",
+      "inDefinedTermSet": {
+        "@type": "DefinedTermSet",
+        "name": "PackageFix Dependency Security Glossary",
+        "url": "https://packagefix.dev/glossary"
       }
     },
     {
@@ -41,13 +40,13 @@
         {
           "@type": "ListItem",
           "position": 2,
-          "name": "CISA KEV",
-          "item": "https://packagefix.dev/cisa-kev"
+          "name": "Glossary",
+          "item": "https://packagefix.dev/glossary"
         },
         {
           "@type": "ListItem",
           "position": 3,
-          "name": "CVE-2022-24999",
+          "name": "Zero-Day Vulnerability",
           "item": "https://packagefix.dev"
         }
       ]
@@ -57,18 +56,34 @@
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "How does this reach production?",
+          "name": "How is a zero-day different from a CVE?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "An attacker sends a crafted HTTP request like ?__proto__[isAdmin]=true. If your application uses qs to parse query strings (directly or via Express) and doesn't sanitize keys, the prototype is polluted."
+            "text": "A CVE is just an ID number \u2014 it can be assigned to any vulnerability, including zero-days. A zero-day is a status: being exploited before a fix exists. Once a patch is released, it's no longer technically a zero-day, though it remains on the CISA KEV list if exploitation was confirmed."
           }
         },
         {
           "@type": "Question",
-          "name": "Does updating Express fix this?",
+          "name": "Does PackageFix detect zero-days?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Express 4.18.0+ bundles qs 6.11.0. Updating Express is the cleanest fix. If you can't update Express, add an npm override: {\"overrides\": {\"qs\": \"6.11.0\"}}."
+            "text": "PackageFix checks against the OSV database which updates daily as new CVEs are published. For true zero-days (exploited before any CVE exists), PackageFix won't have data until the CVE is filed. The CISA KEV catalog is the best signal \u2014 it confirms active exploitation regardless of patch status."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I protect against zero-days in dependencies?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Partially. Keeping dependencies updated means you patch quickly once a fix is released. Network controls (WAF rules, input validation) can block some zero-day exploits before a patch. The CISA KEV catalog helps prioritize \u2014 a zero-day on KEV needs immediate response."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What was the most significant open source zero-day?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Log4Shell (CVE-2021-44228) in Apache Log4j is widely considered the most severe. It affected virtually every Java application, had a CVSS of 10.0, and was being actively exploited before a complete fix was available. Over 3 billion devices were estimated to be affected."
           }
         }
       ]
@@ -146,28 +161,28 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
   </nav>
 </header>
 <main class="container">
-  <div class="breadcrumb"><a href="/">PackageFix</a> <span style='color:var(--border)'>/</span> <a href="/cisa-kev">CISA KEV</a> <span style='color:var(--border)'>/</span> <span style="color:var(--text)">CVE-2022-24999</span></div>
-  
-<h1>CVE-2022-24999 — qs Prototype Pollution <span class="badge badge-orange">HIGH</span></h1>
-<div style="margin-bottom:20px">
-  <span class="badge badge-red" style="margin-right:6px">🔴 CISA KEV</span>
-  <span class="badge badge-muted">CVSS 7.5</span>
-</div>
-<p class="lead">Prototype pollution in qs query string parsing. qs is a transitive dependency of Express — effectively present in the majority of Node.js web applications. Crafted query strings can pollute Object.prototype and affect all objects in the application.</p>
-<div class="kev-banner"><div class="label">🔴 Actively Exploited</div>
-<p>CVE-2022-24999 is on the CISA Known Exploited Vulnerabilities catalog. Being used in real attacks right now. Fix immediately.</p></div>
-<h2>Affected package</h2>
-<table class="cve-history"><thead><tr><th>Package</th><th>Vulnerable</th><th>Safe version</th><th>Fix guide</th></tr></thead>
-<tbody><tr><td><strong>qs</strong></td><td>< 6.11.0</td><td>6.11.0</td><td><a href='/fix/npm/qs'>Fix guide →</a></td></tr></tbody></table>
-<h2>Timeline</h2>
-<div style="margin:16px 0"><div style="display:flex;gap:16px;padding:8px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted);font-size:11px;min-width:90px">Nov 2022</span><span style="font-size:12px;color:var(--text)">CVE filed — third prototype pollution in qs's history</span></div><div style="display:flex;gap:16px;padding:8px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted);font-size:11px;min-width:90px">Nov 2022</span><span style="font-size:12px;color:var(--text)">qs 6.11.0 released — Express 4.18.2 updated to include it</span></div><div style="display:flex;gap:16px;padding:8px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted);font-size:11px;min-width:90px">CISA</span><span style="font-size:12px;color:var(--text)">Added to KEV — active exploitation against Express applications</span></div><div style="display:flex;gap:16px;padding:8px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted);font-size:11px;min-width:90px">Ongoing</span><span style="font-size:12px;color:var(--text)">Express apps on 4.17.x and below remain vulnerable</span></div></div>
+  <div class="breadcrumb"><a href="/">PackageFix</a> <span style='color:var(--border)'>/</span> <a href="/glossary">Glossary</a> <span style='color:var(--border)'>/</span> <span style="color:var(--text)">Zero-Day Vulnerability</span></div>
+  <h1>Zero-Day Vulnerability</h1>
+<div style="margin-bottom:24px"><span class="badge badge-purple">Security · Exploitation</span></div>
+<div class="definition-box"><div class="def-label">Definition</div><p class="lead">A zero-day is a security vulnerability that attackers are actively exploiting before the software vendor knows about it or has released a fix. The name comes from the fact that developers have had zero days to address it. Zero-days are the most dangerous class of vulnerability because there is no patch to apply — the only defenses are workarounds, network controls, or disabling affected functionality.</p></div>
+<h2>Zero-day vs known vulnerability</h2>
+<p>Most CVEs are not zero-days. The typical vulnerability lifecycle goes: researcher discovers the issue → privately notifies the vendor → vendor releases a patch → CVE is assigned and published. At the point of public disclosure, a patch already exists. A zero-day skips the patch step — it's being exploited before anyone has a fix ready.</p>
+<h2>Zero-days in open source dependencies</h2>
+<p>In the open source world, zero-days are particularly challenging because the source code is public — attackers can find vulnerabilities by reading the code. The Log4Shell vulnerability (CVE-2021-44228) was being actively exploited in the wild before the Apache team had a complete fix. For the first 72 hours after disclosure, there was no safe version to upgrade to.</p>
+<h2>What to do when a zero-day affects your dependencies</h2>
+<ul style="padding-left:20px;margin:12px 0;color:var(--muted);font-size:12px;line-height:2">
+  <li>Monitor the vendor's GitHub and security mailing list for patch releases</li>
+  <li>Apply vendor-recommended workarounds immediately (e.g., JVM flags for Log4Shell)</li>
+  <li>Consider disabling affected functionality until a patch is available</li>
+  <li>Update to the patched version the moment it's released</li>
+</ul>
 <div class="cta-box">
   <p>Paste your manifest — get a fixed version with all CVEs patched in seconds.</p>
   <a href="/" class="cta-btn">Open PackageFix →</a>
   <p style="margin-top:12px;font-size:11px;color:var(--muted)">Free · No signup · No CLI · Runs in your browser</p>
 </div>
-<div class="faq"><h2>Common questions</h2><div class="faq-item"><div class="faq-q">How does this reach production?</div><div class="faq-a">An attacker sends a crafted HTTP request like ?__proto__[isAdmin]=true. If your application uses qs to parse query strings (directly or via Express) and doesn't sanitize keys, the prototype is polluted.</div></div><div class="faq-item"><div class="faq-q">Does updating Express fix this?</div><div class="faq-a">Express 4.18.0+ bundles qs 6.11.0. Updating Express is the cleanest fix. If you can't update Express, add an npm override: {"overrides": {"qs": "6.11.0"}}.</div></div></div>
-<div style="margin:40px 0"><h2>Related</h2><div class="related-grid"><div class="related-card"><a href="/cisa-kev">All CISA KEV Packages</a><p>Full actively exploited list</p></div><div class="related-card"><a href="/fix/npm/qs">Fix qs</a><p>Full fix guide with CVE history</p></div><div class="related-card"><a href="/blog/supply-chain-attacks-package-json">Supply Chain Attack Guide</a><p>5 attacks npm audit misses</p></div><div class="related-card"><a href="/glossary/cisa-kev">What is CISA KEV?</a><p>Plain-English explanation</p></div></div></div>
+<div class="faq"><h2>Common questions</h2><div class="faq-item"><div class="faq-q">How is a zero-day different from a CVE?</div><div class="faq-a">A CVE is just an ID number — it can be assigned to any vulnerability, including zero-days. A zero-day is a status: being exploited before a fix exists. Once a patch is released, it's no longer technically a zero-day, though it remains on the CISA KEV list if exploitation was confirmed.</div></div><div class="faq-item"><div class="faq-q">Does PackageFix detect zero-days?</div><div class="faq-a">PackageFix checks against the OSV database which updates daily as new CVEs are published. For true zero-days (exploited before any CVE exists), PackageFix won't have data until the CVE is filed. The CISA KEV catalog is the best signal — it confirms active exploitation regardless of patch status.</div></div><div class="faq-item"><div class="faq-q">Can I protect against zero-days in dependencies?</div><div class="faq-a">Partially. Keeping dependencies updated means you patch quickly once a fix is released. Network controls (WAF rules, input validation) can block some zero-day exploits before a patch. The CISA KEV catalog helps prioritize — a zero-day on KEV needs immediate response.</div></div><div class="faq-item"><div class="faq-q">What was the most significant open source zero-day?</div><div class="faq-a">Log4Shell (CVE-2021-44228) in Apache Log4j is widely considered the most severe. It affected virtually every Java application, had a CVSS of 10.0, and was being actively exploited before a complete fix was available. Over 3 billion devices were estimated to be affected.</div></div></div>
+<div style="margin:40px 0"><h2>Related</h2><div class="related-grid"><div class="related-card"><a href="/glossary/cisa-kev">CISA KEV</a><p>Confirmed exploited CVEs</p></div><div class="related-card"><a href="/kev/CVE-2021-44228">Log4Shell</a><p>Most severe zero-day example</p></div><div class="related-card"><a href="/glossary/cve">CVE</a><p>How vulnerabilities are identified</p></div><div class="related-card"><a href="/cisa-kev">CISA KEV Packages</a><p>Actively exploited right now</p></div></div></div>
 </main>
 <footer class="site-footer">
   <p>PackageFix · <a href="/">packagefix.dev</a> · MIT Licensed · Open Source</p>

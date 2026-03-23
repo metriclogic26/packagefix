@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Remote Code Execution (RCE) — Definition | PackageFix Glossary</title>
+<meta name="description" content="A vulnerability that allows an attacker to run arbitrary code on a target system over a network, without physical access. Remote Code Execution (RCE) is the most severe class of security vulnerability. It allows an attacker to execute any cod...">
+<link rel="canonical" href="https://packagefix.dev/glossary/remote-code-execution">
+<meta property="og:title" content="Remote Code Execution (RCE) — Definition | PackageFix Glossary">
+<meta property="og:description" content="A vulnerability that allows an attacker to run arbitrary code on a target system over a network, without physical access. Remote Code Execution (RCE) is the most severe class of security vulnerability. It allows an attacker to execute any cod...">
+<meta property="og:url" content="https://packagefix.dev/glossary/remote-code-execution">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/svg+xml" href="/icon.svg">
+<link rel="icon" type="image/png" sizes="512x512" href="/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "DefinedTerm",
+      "name": "Remote Code Execution (RCE)",
+      "description": "Remote Code Execution (RCE) is the most severe class of security vulnerability. It allows an attacker to execute any code they choose on the target system \u2014 over the network, without logging in, without physical access. A successful RCE attack gives the attacker complete control of the affected process and potentially the entire system.",
+      "url": "https://packagefix.dev/glossary/remote-code-execution",
+      "inDefinedTermSet": {
+        "@type": "DefinedTermSet",
+        "name": "PackageFix Dependency Security Glossary",
+        "url": "https://packagefix.dev/glossary"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "PackageFix",
+          "item": "https://packagefix.dev/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Glossary",
+          "item": "https://packagefix.dev/glossary"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Remote Code Execution (RCE)",
+          "item": "https://packagefix.dev"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What CVSS score does RCE get?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "RCE vulnerabilities that are network-accessible with no authentication typically get CVSS 9.0-10.0 (Critical). The exact score depends on attack complexity, privilege requirements, and impact scope. CVSS 10.0 means maximum severity: network-accessible, no auth, no user interaction, complete system compromise."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I prevent RCE in my dependencies?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Keep all dependencies updated \u2014 RCE CVEs are patched when discovered. Specifically: never deserialize untrusted data without an allowlist, never pass untrusted input to eval() or exec(), keep Java's JNDI disabled in production (fixes Log4Shell class), and use yaml.safe_load() not yaml.load() in Python."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "If my app has an RCE CVE, what should I do immediately?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Patch immediately. If no patch is available, take the affected service offline or implement the vendor's recommended workaround. Assume the system may already be compromised \u2014 review logs for unusual activity, rotate all credentials that were accessible to the affected process."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is RCE possible through npm packages?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes \u2014 postinstall scripts in npm packages run automatically on npm install with full process permissions. A malicious postinstall script that runs curl | bash is effectively RCE on the developer's machine or CI server. This is why PackageFix scans for suspicious build scripts."
+          }
+        }
+      ]
+    }
+  ]
+}</script>
+<style>
+:root{--bg:#0B0D14;--surface:#12151F;--surface2:#1A1D2E;--border:#252836;--purple:#6C63FF;--green:#22C55E;--orange:#F97316;--red:#EF4444;--text:#E2E4F0;--muted:#6B7280}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.6;min-height:100vh}
+a{color:var(--purple);text-decoration:none}a:hover{text-decoration:underline}
+.site-header{border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:15px;font-weight:700;color:var(--text)}.logo span{color:var(--purple)}
+.nav-links{display:flex;gap:20px;font-size:12px}.nav-links a{color:var(--muted)}
+.nav-links a:hover{color:var(--text);text-decoration:none}
+.container{max-width:860px;margin:0 auto;padding:48px 24px}
+.breadcrumb{font-size:11px;color:var(--muted);margin-bottom:24px;display:flex;gap:6px;flex-wrap:wrap}
+.breadcrumb a{color:var(--muted)}
+h1{font-size:clamp(18px,3vw,26px);font-weight:700;margin-bottom:12px;line-height:1.3}
+h2{font-size:14px;font-weight:600;margin:32px 0 12px}
+h3{font-size:12px;font-weight:600;margin:20px 0 8px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+p{color:var(--muted);margin-bottom:12px;font-size:12px;line-height:1.7}
+.lead{color:var(--text);font-size:13px;margin-bottom:24px;line-height:1.7}
+.definition-box{background:var(--surface);border:1px solid var(--purple);border-left:4px solid var(--purple);border-radius:8px;padding:20px 24px;margin:0 0 32px}
+.definition-box .def-label{font-size:10px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.definition-box p{color:var(--text);font-size:13px;line-height:1.7;margin:0}
+.kev-banner{background:rgba(239,68,68,.12);border:1px solid var(--red);border-radius:10px;padding:16px 20px;margin:24px 0}
+.kev-banner .label{font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
+.kev-banner p{color:var(--red);margin:0;font-size:12px}
+pre{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px 16px;overflow-x:auto;font-size:11px;line-height:1.6;margin:8px 0;white-space:pre-wrap}
+code{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:1px 5px;font-size:11px}
+.cta-box{background:var(--surface);border:1px solid var(--purple);border-radius:10px;padding:24px;margin:32px 0;text-align:center}
+.cta-box p{color:var(--text);font-size:13px;margin-bottom:16px}
+.cta-btn{display:inline-block;background:var(--purple);color:#fff;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;padding:12px 28px;border-radius:7px;text-decoration:none}
+.badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em}
+.badge-red{background:rgba(239,68,68,.2);color:var(--red);border:1px solid var(--red)}
+.badge-orange{background:rgba(249,115,22,.2);color:var(--orange);border:1px solid var(--orange)}
+.badge-green{background:rgba(34,197,94,.2);color:var(--green);border:1px solid var(--green)}
+.badge-purple{background:rgba(108,99,255,.2);color:var(--purple);border:1px solid var(--purple)}
+.badge-muted{background:rgba(107,114,128,.15);color:var(--muted);border:1px solid var(--border)}
+.index-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:12px}
+.index-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px}
+.index-card a{color:var(--text);font-size:12px;font-weight:500;display:block;margin-bottom:4px}
+.index-card p{font-size:11px;color:var(--muted);margin:0;line-height:1.5}
+.cve-history{width:100%;border-collapse:collapse;margin:16px 0;font-size:12px}
+.cve-history th{text-align:left;padding:10px 12px;border-bottom:2px solid var(--border);color:var(--muted);font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.08em}
+.cve-history td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+.cve-history tr:last-child td{border-bottom:none}
+.cve-history tr:hover td{background:var(--surface2)}
+.faq{margin:40px 0}.faq-item{border-bottom:1px solid var(--border);padding:16px 0}
+.faq-item:last-child{border-bottom:none}
+.faq-q{font-size:12px;font-weight:600;color:var(--text);margin-bottom:8px}
+.faq-a{font-size:12px;color:var(--muted);line-height:1.7}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:12px}
+.related-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
+.related-card a{color:var(--text);font-size:12px;font-weight:500}
+.related-card p{font-size:11px;color:var(--muted);margin:4px 0 0}
+.digest-item{border-bottom:1px solid var(--border);padding:20px 0}
+.digest-item:last-child{border-bottom:none}
+.digest-item h3{font-size:13px;font-weight:600;margin:0 0 6px;color:var(--text)}
+.site-footer{border-top:1px solid var(--border);padding:24px;text-align:center;font-size:11px;color:var(--muted);margin-top:60px}
+.site-footer a{color:var(--muted)}
+@media(max-width:640px){.nav-links{display:none}.related-grid{grid-template-columns:1fr}.index-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <a href="/" class="logo">Package<span>Fix</span></a>
+  <nav class="nav-links">
+    <a href="/">Tool</a>
+    <a href="/glossary">Glossary</a>
+    <a href="/cisa-kev">CISA KEV</a>
+    <a href="/blog">Blog</a>
+    <a href="https://github.com/metriclogic26/packagefix">GitHub</a>
+  </nav>
+</header>
+<main class="container">
+  <div class="breadcrumb"><a href="/">PackageFix</a> <span style='color:var(--border)'>/</span> <a href="/glossary">Glossary</a> <span style='color:var(--border)'>/</span> <span style="color:var(--text)">Remote Code Execution (RCE)</span></div>
+  <h1>Remote Code Execution (RCE)</h1>
+<div style="margin-bottom:24px"><span class="badge badge-purple">Security · Critical</span></div>
+<div class="definition-box"><div class="def-label">Definition</div><p class="lead">Remote Code Execution (RCE) is the most severe class of security vulnerability. It allows an attacker to execute any code they choose on the target system — over the network, without logging in, without physical access. A successful RCE attack gives the attacker complete control of the affected process and potentially the entire system.</p></div>
+<h2>Why RCE is the worst outcome</h2>
+<p>With RCE, an attacker can do anything the compromised process can do: read files, write files, make network connections, install persistence mechanisms, move laterally to other systems. It's game over for the affected system.</p>
+<p>In the context of web servers, RCE typically means full server compromise — access to database credentials in environment variables, private keys, customer data, and the ability to serve malicious content to your users.</p>
+<h2>How RCE happens in dependencies</h2>
+<p>The most common RCE patterns in open source dependencies:</p>
+<ul style="padding-left:20px;margin:12px 0;color:var(--muted);font-size:12px;line-height:2">
+  <li><strong>Unsafe deserialization</strong> — Log4Shell, SnakeYAML, Jackson, PHP's unserialize()</li>
+  <li><strong>Template injection</strong> — user input reaches a template engine that evaluates code</li>
+  <li><strong>Command injection</strong> — user input reaches a shell command</li>
+  <li><strong>SSRF to internal service</strong> — attacker reaches internal services to pivot to RCE</li>
+</ul>
+<h2>RCE CVEs on CISA KEV</h2>
+<p>Every CRITICAL CVE in PackageFix's database that allows RCE appears on or has been considered for CISA KEV. Log4Shell (CVSS 10.0), Spring4Shell (9.8), Text4Shell (9.8), SnakeYAML (9.8), PHPMailer 2016 (9.8) — all RCE, all exploited in the wild.</p>
+<div class="cta-box">
+  <p>Paste your manifest — get a fixed version with all CVEs patched in seconds.</p>
+  <a href="/" class="cta-btn">Open PackageFix →</a>
+  <p style="margin-top:12px;font-size:11px;color:var(--muted)">Free · No signup · No CLI · Runs in your browser</p>
+</div>
+<div class="faq"><h2>Common questions</h2><div class="faq-item"><div class="faq-q">What CVSS score does RCE get?</div><div class="faq-a">RCE vulnerabilities that are network-accessible with no authentication typically get CVSS 9.0-10.0 (Critical). The exact score depends on attack complexity, privilege requirements, and impact scope. CVSS 10.0 means maximum severity: network-accessible, no auth, no user interaction, complete system compromise.</div></div><div class="faq-item"><div class="faq-q">How do I prevent RCE in my dependencies?</div><div class="faq-a">Keep all dependencies updated — RCE CVEs are patched when discovered. Specifically: never deserialize untrusted data without an allowlist, never pass untrusted input to eval() or exec(), keep Java's JNDI disabled in production (fixes Log4Shell class), and use yaml.safe_load() not yaml.load() in Python.</div></div><div class="faq-item"><div class="faq-q">If my app has an RCE CVE, what should I do immediately?</div><div class="faq-a">Patch immediately. If no patch is available, take the affected service offline or implement the vendor's recommended workaround. Assume the system may already be compromised — review logs for unusual activity, rotate all credentials that were accessible to the affected process.</div></div><div class="faq-item"><div class="faq-q">Is RCE possible through npm packages?</div><div class="faq-a">Yes — postinstall scripts in npm packages run automatically on npm install with full process permissions. A malicious postinstall script that runs curl | bash is effectively RCE on the developer's machine or CI server. This is why PackageFix scans for suspicious build scripts.</div></div></div>
+<div style="margin:40px 0"><h2>Related</h2><div class="related-grid"><div class="related-card"><a href="/glossary/zero-day">Zero-Day</a><p>Exploited before fix exists</p></div><div class="related-card"><a href="/glossary/deserialization">Deserialization</a><p>Main RCE attack vector</p></div><div class="related-card"><a href="/kev/CVE-2021-44228">Log4Shell — RCE</a><p>Most severe Java RCE</p></div><div class="related-card"><a href="/cisa-kev">CISA KEV</a><p>All confirmed exploited CVEs</p></div></div></div>
+</main>
+<footer class="site-footer">
+  <p>PackageFix · <a href="/">packagefix.dev</a> · MIT Licensed · Open Source</p>
+  <p style="margin-top:6px">Vulnerability data: <a href="https://osv.dev">OSV</a> · <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog">CISA KEV</a></p>
+  <p style="margin-top:6px">Always test dependency updates in staging before deploying to production.</p>
+</footer>
+</body></html>
