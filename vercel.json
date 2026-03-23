@@ -2232,5 +2232,17 @@
       "source": "/fix/npm/request/migrate/",
       "destination": "/seo/fix/npm/request/migrate/index.html"
     }
+  ],
+  "redirects": [
+    {
+      "source": "/alternatives",
+      "destination": "/compare",
+      "permanent": true
+    },
+    {
+      "source": "/alternatives/",
+      "destination": "/compare",
+      "permanent": true
+    }
   ]
 }
