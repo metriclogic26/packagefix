@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-PackageFix — Migration Guides
-1. /fix/npm/moment/migrate — moment.js → date-fns / dayjs
-2. /fix/npm/request/migrate — request → axios / node-fetch / got
+PackageFix - Migration Guides
+1. /fix/npm/moment/migrate - moment.js → date-fns / dayjs
+2. /fix/npm/request/migrate - request → axios / node-fetch / got
 """
 
 import os, json
@@ -152,21 +152,21 @@ def diff(before_label, before_code, after_label, after_code):
 print("\n📅 Generating moment.js migration guide...")
 
 moment_faqs = [
-    ("Is moment.js broken?","Not broken — moment.js 2.29.4 works fine and has no unpatched CVEs. The issue is that it's in maintenance mode. The team won't add features or fix non-security bugs. Future CVEs may not get patches. For long-lived projects, migrating before you have to is easier than migrating under pressure."),
-    ("Which replacement is the easiest migration from moment?","dayjs has an almost identical API to moment.js. Most moment.js code works with dayjs after changing the import — you don't need to relearn anything. date-fns is more comprehensive but uses a completely different functional API that requires rewriting your date logic."),
-    ("Can I run moment.js and dayjs side by side during migration?","Yes — both can be installed simultaneously. Migrate file by file, testing as you go. Remove moment.js from package.json when the last import is gone."),
-    ("Does dayjs support all moment.js plugins?","dayjs has its own plugin ecosystem that covers most moment.js plugin functionality. Check the dayjs plugin docs before migrating — plugins like duration, timezone, and relative time all have dayjs equivalents."),
-    ("What about moment-timezone?","dayjs has dayjs/plugin/timezone which uses the native Intl.DateTimeFormat API. It's smaller and doesn't require a timezone database bundle. The API is slightly different — check the dayjs timezone plugin docs."),
-    ("Is date-fns tree-shakeable?","Yes — this is one of date-fns's main advantages over moment.js. Only the functions you import get bundled. A typical date-fns usage might add 5-10KB to your bundle vs moment.js's 67KB minimum.")
+    ("Is moment.js broken?","Not broken - moment.js 2.29.4 works fine and has no unpatched CVEs. The issue is that it's in maintenance mode. The team won't add features or fix non-security bugs. Future CVEs may not get patches. For long-lived projects, migrating before you have to is easier than migrating under pressure."),
+    ("Which replacement is the easiest migration from moment?","dayjs has an almost identical API to moment.js. Most moment.js code works with dayjs after changing the import - you don't need to relearn anything. date-fns is more comprehensive but uses a completely different functional API that requires rewriting your date logic."),
+    ("Can I run moment.js and dayjs side by side during migration?","Yes - both can be installed simultaneously. Migrate file by file, testing as you go. Remove moment.js from package.json when the last import is gone."),
+    ("Does dayjs support all moment.js plugins?","dayjs has its own plugin ecosystem that covers most moment.js plugin functionality. Check the dayjs plugin docs before migrating - plugins like duration, timezone, and relative time all have dayjs equivalents."),
+    ("What about moment-timezone?","dayjs has dayjs/plugin/timezone which uses the native Intl.DateTimeFormat API. It's smaller and doesn't require a timezone database bundle. The API is slightly different - check the dayjs timezone plugin docs."),
+    ("Is date-fns tree-shakeable?","Yes - this is one of date-fns's main advantages over moment.js. Only the functions you import get bundled. A typical date-fns usage might add 5-10KB to your bundle vs moment.js's 67KB minimum.")
 ]
 
 moment_body = f"""
-<h1>Migrating from moment.js — Complete Guide</h1>
+<h1>Migrating from moment.js - Complete Guide</h1>
 <p class="lead">moment.js is in maintenance mode. It still works and 2.29.4 has no unpatched CVEs, but new features won't be added and future security fixes aren't guaranteed. This guide covers migrating to dayjs (near drop-in) or date-fns (more modern, tree-shakeable).</p>
 
 <div class="warning-box">
   <div class="label">⚠ moment.js Status</div>
-  <p>moment.js is officially in maintenance-only mode as of September 2020. The team recommends using Luxon, date-fns, or dayjs for new projects. The package has <strong>4 known CVEs</strong> — all fixed in 2.29.4. Future CVEs may not receive patches.</p>
+  <p>moment.js is officially in maintenance-only mode as of September 2020. The team recommends using Luxon, date-fns, or dayjs for new projects. The package has <strong>4 known CVEs</strong> - all fixed in 2.29.4. Future CVEs may not receive patches.</p>
 </div>
 
 <h2>Choose your replacement</h2>
@@ -180,7 +180,7 @@ moment_body = f"""
   <div class="option-card">
     <span class="tag">Most modern</span>
     <h3>date-fns</h3>
-    <p>Functional API — completely different from moment. Tree-shakeable, TypeScript-first. Better for new code than migration. 200+ utility functions, each imported separately.</p>
+    <p>Functional API - completely different from moment. Tree-shakeable, TypeScript-first. Better for new code than migration. 200+ utility functions, each imported separately.</p>
     <p style="margin-top:8px"><code>npm install date-fns</code></p>
   </div>
   <div class="option-card">
@@ -192,21 +192,21 @@ moment_body = f"""
   <div class="option-card">
     <span class="tag">Native (no library)</span>
     <h3>Temporal API</h3>
-    <p>The upcoming native JavaScript date API — better than Date, similar concepts to moment. Currently a TC39 proposal with polyfill available. Best choice for new projects targeting modern environments.</p>
+    <p>The upcoming native JavaScript date API - better than Date, similar concepts to moment. Currently a TC39 proposal with polyfill available. Best choice for new projects targeting modern environments.</p>
     <p style="margin-top:8px"><code>npm install @js-temporal/polyfill</code></p>
   </div>
 </div>
 
-<h2>Option A — Migrate to dayjs (recommended for existing codebases)</h2>
+<h2>Option A - Migrate to dayjs (recommended for existing codebases)</h2>
 
-<h3>Step 1 — Install dayjs and remove moment</h3>
+<h3>Step 1 - Install dayjs and remove moment</h3>
 <pre>npm install dayjs
 npm uninstall moment</pre>
 
-<h3>Step 2 — Replace imports</h3>
+<h3>Step 2 - Replace imports</h3>
 {diff("moment.js", "import moment from 'moment';", "dayjs", "import dayjs from 'dayjs';")}
 
-<h3>Step 3 — Basic usage — almost identical</h3>
+<h3>Step 3 - Basic usage - almost identical</h3>
 {diff("moment.js",
 """// Parse
 moment('2024-01-15')
@@ -248,7 +248,7 @@ dayjs('2024-01-15').isAfter(dayjs())
 dayjs().fromNow()                  // requires relativeTime plugin
 dayjs().toDate()""")}
 
-<h3>Step 4 — Enable plugins you need</h3>
+<h3>Step 4 - Enable plugins you need</h3>
 <pre>import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import advancedFormat from 'dayjs/plugin/advancedFormat'
@@ -263,7 +263,7 @@ dayjs.extend(customParseFormat)
 dayjs.extend(utc)
 dayjs.extend(timezone)</pre>
 
-<h3>Step 5 — Timezone handling</h3>
+<h3>Step 5 - Timezone handling</h3>
 {diff("moment-timezone",
 """import moment from 'moment-timezone'
 
@@ -281,16 +281,16 @@ dayjs().tz('Europe/London').format()""")}
 
 <h3>Key differences to watch for</h3>
 <ul style="padding-left:20px;margin:12px 0;color:var(--muted);font-size:12px;line-height:2">
-  <li>dayjs objects are <strong>immutable</strong> — manipulations return new objects (moment mutates by default)</li>
+  <li>dayjs objects are <strong>immutable</strong> - manipulations return new objects (moment mutates by default)</li>
   <li><code>add()</code> uses singular units: <code>'day'</code> not <code>'days'</code> (both work in dayjs but singular is canonical)</li>
   <li><code>moment.duration()</code> → requires <code>dayjs/plugin/duration</code></li>
   <li><code>moment.utc()</code> → requires <code>dayjs/plugin/utc</code></li>
   <li><code>fromNow()</code> → requires <code>dayjs/plugin/relativeTime</code></li>
 </ul>
 
-<h2>Option B — Migrate to date-fns (recommended for new code)</h2>
+<h2>Option B - Migrate to date-fns (recommended for new code)</h2>
 
-<p>date-fns uses a functional API — every operation is a standalone function. It's more verbose but also more explicit and tree-shakeable. Better for greenfield code than migration.</p>
+<p>date-fns uses a functional API - every operation is a standalone function. It's more verbose but also more explicit and tree-shakeable. Better for greenfield code than migration.</p>
 
 {diff("moment.js",
 """import moment from 'moment'
@@ -321,7 +321,7 @@ isBefore(new Date('2024-01-15'), new Date('2024-06-01'))
 // From now
 formatDistanceToNow(new Date(), { addSuffix: true })""")}
 
-<h2>Before migrating — check your CVE status</h2>
+<h2>Before migrating - check your CVE status</h2>
 <p>If you're on moment.js 2.29.4, you have no unpatched CVEs. The migration is about future-proofing, not an emergency. Paste your package.json into PackageFix to confirm your current CVE exposure before starting the migration.</p>
 
 {cta()}
@@ -347,7 +347,7 @@ moment_schemas = [
          {"@type":"HowToStep","name":"Install dayjs","text":"Run: npm install dayjs && npm uninstall moment"},
          {"@type":"HowToStep","name":"Replace imports","text":"Change import moment from 'moment' to import dayjs from 'dayjs'"},
          {"@type":"HowToStep","name":"Enable plugins","text":"Add relativeTime, timezone, duration plugins as needed"},
-         {"@type":"HowToStep","name":"Test","text":"Run your test suite — most moment.js code works with minimal changes"}
+         {"@type":"HowToStep","name":"Test","text":"Run your test suite - most moment.js code works with minimal changes"}
      ]},
     {"@type":"BreadcrumbList","itemListElement":[
         {"@type":"ListItem","position":1,"name":"PackageFix","item":BASE_URL},
@@ -363,7 +363,7 @@ moment_schemas = [
 ]
 
 write("fix/npm/moment/migrate", shell(
-    "Migrating from moment.js to dayjs or date-fns — Complete Guide | PackageFix",
+    "Migrating from moment.js to dayjs or date-fns - Complete Guide | PackageFix",
     "moment.js is in maintenance mode. This guide covers migrating to dayjs (near drop-in replacement) or date-fns (modern functional API). Includes side-by-side code examples for every common operation.",
     "/fix/npm/moment/migrate",
     [("PackageFix","/"),("Fix Guides","/fix"),("npm","/npm"),("moment.js","/fix/npm/moment"),("Migration Guide",None)],
@@ -378,16 +378,16 @@ write("fix/npm/moment/migrate", shell(
 print("\n🌐 Generating request deprecation guide...")
 
 request_faqs = [
-    ("Is request still safe to use?","request has been deprecated since February 2020 — no security patches, no updates. It has several unpatched vulnerabilities and will never receive fixes. Any new CVE discovered in request will not be patched. You should migrate."),
+    ("Is request still safe to use?","request has been deprecated since February 2020 - no security patches, no updates. It has several unpatched vulnerabilities and will never receive fixes. Any new CVE discovered in request will not be patched. You should migrate."),
     ("Which request replacement is the easiest migration?","got has an API most similar to request and was explicitly designed as a modern replacement. axios is the most popular choice for new code. For Node.js 18+, the built-in fetch API works for simple use cases with no dependencies."),
     ("Does request support async/await?","request uses callbacks natively. There are wrapper packages (request-promise, request-promise-native) but these are also deprecated. Modern alternatives support async/await natively."),
-    ("What about request-promise?","request-promise is also deprecated — it wraps request. Migrating from request-promise to got is straightforward since got returns promises natively."),
+    ("What about request-promise?","request-promise is also deprecated - it wraps request. Migrating from request-promise to got is straightforward since got returns promises natively."),
     ("Is axios safe to use in 2026?","axios 1.7.4 has no unpatched CVEs. It's actively maintained. It's the most widely used HTTP client for JavaScript and a solid choice for both Node.js and browser environments."),
     ("Should I use the native fetch API instead of a library?","For Node.js 18+, the built-in fetch API handles most HTTP use cases with zero dependencies. For complex needs (retries, interceptors, streaming), a library like got or axios is worth the dependency.")
 ]
 
 request_body = f"""
-<h1>Migrating away from request — Complete Guide</h1>
+<h1>Migrating away from request - Complete Guide</h1>
 <p class="lead">The request npm package has been deprecated since February 2020 and receives no security patches. With 15M+ weekly downloads, it's still in millions of production applications. This guide covers migrating to axios, got, or native fetch.</p>
 
 <div class="warning-box">
@@ -413,7 +413,7 @@ request_body = f"""
     <span class="tag">No dependency (Node 18+)</span>
     <h3>Native fetch</h3>
     <p>Built into Node.js 18+. No install needed. Covers basic GET/POST use cases. Lacks retries, interceptors, and some convenience features of libraries.</p>
-    <p style="margin-top:8px">Built-in — no install</p>
+    <p style="margin-top:8px">Built-in - no install</p>
   </div>
   <div class="option-card">
     <span class="tag">Lightweight</span>
@@ -423,7 +423,7 @@ request_body = f"""
   </div>
 </div>
 
-<h2>Option A — Migrate to axios (recommended)</h2>
+<h2>Option A - Migrate to axios (recommended)</h2>
 
 <h3>Install</h3>
 <pre>npm install axios
@@ -450,7 +450,7 @@ const data = await rp.get({
 """const axios = require('axios')
 // or: import axios from 'axios'
 
-// Promise style — automatic JSON parsing
+// Promise style - automatic JSON parsing
 const { data } = await axios.get('https://api.example.com/data')
 console.log(data)
 
@@ -526,7 +526,7 @@ await axios.get('https://api.example.com/data', {
 // Global defaults (set once)
 axios.defaults.headers.common['Authorization'] = 'Bearer mytoken'""")}
 
-<h2>Option B — Migrate to got</h2>
+<h2>Option B - Migrate to got</h2>
 
 <p>got is ESM-only from v12. If you're on CommonJS (<code>require()</code>), use got v11 or switch to axios.</p>
 
@@ -557,7 +557,7 @@ const body = await got('https://api.example.com/data', {
   headers: { Authorization: 'Bearer token' }
 }).json()""")}
 
-<h2>Option C — Native fetch (Node.js 18+)</h2>
+<h2>Option C - Native fetch (Node.js 18+)</h2>
 
 <p>No install required. Best for simple requests where you don't need retries or interceptors.</p>
 
@@ -605,8 +605,8 @@ request_schemas = [
      "step":[
          {"@type":"HowToStep","name":"Choose replacement","text":"axios for most projects, got for request-like API, native fetch for Node.js 18+ simple use cases"},
          {"@type":"HowToStep","name":"Install","text":"npm install axios && npm uninstall request request-promise"},
-         {"@type":"HowToStep","name":"Replace callbacks with async/await","text":"axios and got are promise-based — replace request callbacks with async/await"},
-         {"@type":"HowToStep","name":"Update error handling","text":"axios throws on non-2xx responses, request does not — update error handling logic"}
+         {"@type":"HowToStep","name":"Replace callbacks with async/await","text":"axios and got are promise-based - replace request callbacks with async/await"},
+         {"@type":"HowToStep","name":"Update error handling","text":"axios throws on non-2xx responses, request does not - update error handling logic"}
      ]},
     {"@type":"BreadcrumbList","itemListElement":[
         {"@type":"ListItem","position":1,"name":"PackageFix","item":BASE_URL},
@@ -622,8 +622,8 @@ request_schemas = [
 ]
 
 write("fix/npm/request/migrate", shell(
-    "Migrating from request (deprecated) to axios, got, or fetch — Complete Guide | PackageFix",
-    "request has been deprecated since 2020 with no security patches. This guide covers migrating to axios, got, or native fetch — with side-by-side code examples for GET, POST, error handling, and auth.",
+    "Migrating from request (deprecated) to axios, got, or fetch - Complete Guide | PackageFix",
+    "request has been deprecated since 2020 with no security patches. This guide covers migrating to axios, got, or native fetch - with side-by-side code examples for GET, POST, error handling, and auth.",
     "/fix/npm/request/migrate",
     [("PackageFix","/"),("Fix Guides","/fix"),("npm","/npm"),("request","/fix/npm/request"),("Migration Guide",None)],
     request_body, request_schemas
@@ -655,7 +655,7 @@ for r in rewrites:
 vercel_config["rewrites"] = existing
 with open("vercel.json","w") as f:
     json.dump(vercel_config, f, indent=2)
-print(f"  ✓ vercel.json — {len(existing)} total rewrites ({added} new)")
+print(f"  ✓ vercel.json - {len(existing)} total rewrites ({added} new)")
 
 print("\n🗺 Updating sitemap-seo.xml...")
 new_urls = "".join(
@@ -669,7 +669,7 @@ else:
     updated = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + new_urls + "</urlset>"
 with open("sitemap-seo.xml","w") as f:
     f.write(updated)
-print(f"  ✓ sitemap-seo.xml — {len(all_paths)} new URLs")
+print(f"  ✓ sitemap-seo.xml - {len(all_paths)} new URLs")
 
 print("\n🤖 Updating llm.txt...")
 with open("llm.txt","a") as f:
@@ -678,6 +678,6 @@ with open("llm.txt","a") as f:
         f.write(f"{BASE_URL}{p}\n")
 print("  ✓ llm.txt updated")
 
-print(f"\n✅ Done — {len(all_paths)} migration guides generated")
+print(f"\n✅ Done - {len(all_paths)} migration guides generated")
 for p in all_paths:
     print(f"   {p}")
