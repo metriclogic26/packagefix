@@ -6,7 +6,7 @@
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://packagefix.dev/alternatives/</loc>
+    <loc>https://packagefix.dev/compare</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
