@@ -424,3 +424,9 @@ https://packagefix.dev/compare/bytesafe
 ## Migration Guides
 https://packagefix.dev/fix/npm/moment/migrate
 https://packagefix.dev/fix/npm/request/migrate
+
+## Blog Posts - April 2026
+https://packagefix.dev/blog/weekly-cve-april-1-2026
+https://packagefix.dev/blog/transitive-package-vulnerability-fix
+https://packagefix.dev/blog/multer-1-4-5-lts-1-update-guide
+https://packagefix.dev/blog/ruby-on-rails-security-releases-2024

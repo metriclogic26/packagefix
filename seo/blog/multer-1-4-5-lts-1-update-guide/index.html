@@ -1,0 +1,152 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>multer 1.4.5-lts.1 - Why npm Skips It and How to Update | PackageFix</title><meta name="description" content="multer 1.4.5-lts.1 fixes CVE-2022-24434 but npm audit fix skips it because it is a pre-release version. Exact commands to update manually and fix transitive multer vulnerabilities."><link rel="canonical" href="https://packagefix.dev/blog/multer-1-4-5-lts-1-update-guide"><meta property="og:title" content="multer 1.4.5-lts.1 - Why npm Skips It and How to Update | PackageFix"><meta property="og:description" content="multer 1.4.5-lts.1 fixes CVE-2022-24434 but npm audit fix skips it because it is a pre-release version. Exact commands to update manually and fix transitive multer vulnerabilities."><meta property="og:url" content="https://packagefix.dev/blog/multer-1-4-5-lts-1-update-guide"><meta property="og:type" content="article"><meta name="twitter:card" content="summary"><link rel="icon" type="image/svg+xml" href="/icon.svg"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "multer 1.4.5-lts.1 - What Changed and How to Update",
+      "description": "multer 1.4.5-lts.1 fixes CVE-2022-24434 but npm skips it automatically. Here is why and how to update manually.",
+      "datePublished": "2026-04-01",
+      "dateModified": "2026-04-01",
+      "author": {
+        "@type": "Organization",
+        "name": "PackageFix",
+        "url": "https://packagefix.dev"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "PackageFix",
+          "item": "https://packagefix.dev"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": "https://packagefix.dev/blog"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "multer 1.4.5-lts.1 Guide",
+          "item": "https://packagefix.dev/blog/multer-1-4-5-lts-1-update-guide"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Why is the version 1.4.5-lts.1 and not just 1.4.5?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "multer 1.4.4 had a CRITICAL prototype pollution vulnerability (CVE-2022-24434). The maintainers released a patched version as 1.4.5-lts.1 rather than 1.4.5 to signal it was a long-term support security patch, not a feature release. The -lts.1 suffix is unconventional for npm but common in some ecosystems. It is a valid semver pre-release identifier."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does npm update to 1.4.5-lts.1 automatically?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No - npm does not automatically install pre-release versions. If your package.json has \"multer\": \"^1.4.4\", npm will not upgrade to 1.4.5-lts.1 because pre-release versions are excluded from semver range matching by default. You must explicitly update: npm install multer@1.4.5-lts.1."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is multer 2.x available?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "multer 2.x is in development but has not been officially released as of early 2026. The current safe version is 1.4.5-lts.1. Check the multer GitHub repo for the latest status before deciding whether to wait for v2 or pin to 1.4.5-lts.1."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is CVE-2022-24434?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "CVE-2022-24434 is a denial of service vulnerability in multer's multipart form parsing. A crafted multipart request can cause multer to hang indefinitely, blocking the Node.js event loop and taking down the server. In Node.js's single-threaded model, a single malicious request can affect all concurrent users."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does multer 1.4.5-lts.1 have any breaking changes from 1.4.4?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No - 1.4.5-lts.1 is a security patch only. The API is identical to 1.4.4. Updating requires no code changes - just the version number in package.json and a npm install."
+          }
+        }
+      ]
+    }
+  ]
+}</script><style>
+:root{--bg:#0B0D14;--surface:#12151F;--surface2:#1A1D2E;--border:#252836;--purple:#6C63FF;--green:#22C55E;--orange:#F97316;--red:#EF4444;--text:#E2E4F0;--muted:#6B7280}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.6;min-height:100vh}
+a{color:var(--purple);text-decoration:none}a:hover{text-decoration:underline}
+.site-header{border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:15px;font-weight:700;color:var(--text)}.logo span{color:var(--purple)}
+.nav-links{display:flex;gap:20px;font-size:12px}.nav-links a{color:var(--muted)}
+.nav-links a:hover{color:var(--text);text-decoration:none}
+.container{max-width:860px;margin:0 auto;padding:48px 24px}
+.breadcrumb{font-size:11px;color:var(--muted);margin-bottom:24px;display:flex;gap:6px;flex-wrap:wrap}
+.breadcrumb a{color:var(--muted)}
+h1{font-size:clamp(18px,3vw,26px);font-weight:700;margin-bottom:12px;line-height:1.3}
+h2{font-size:14px;font-weight:600;margin:36px 0 12px}
+h3{font-size:13px;font-weight:600;margin:24px 0 8px}
+p{color:var(--muted);margin-bottom:12px;font-size:12px;line-height:1.7}
+.lead{color:var(--text);font-size:13px;margin-bottom:24px;line-height:1.7}
+.meta{font-size:11px;color:var(--muted);margin-bottom:32px}
+.kev-banner{background:rgba(239,68,68,.12);border:1px solid var(--red);border-radius:10px;padding:16px 20px;margin:24px 0}
+.kev-banner .label{font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
+.kev-banner p{color:var(--red);margin:0;font-size:12px}
+.warning-box{background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.3);border-left:3px solid var(--orange);border-radius:8px;padding:16px 20px;margin:20px 0}
+.warning-box .label{font-size:10px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.fix-box{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.3);border-left:3px solid var(--green);border-radius:8px;padding:16px 20px;margin:20px 0}
+.fix-box .label{font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+pre{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px 16px;overflow-x:auto;font-size:11px;line-height:1.6;margin:8px 0;white-space:pre-wrap}
+code{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:1px 5px;font-size:11px}
+.cta-box{background:var(--surface);border:1px solid var(--purple);border-radius:10px;padding:24px;margin:32px 0;text-align:center}
+.cta-box p{color:var(--text);font-size:13px;margin-bottom:16px}
+.cta-btn{display:inline-block;background:var(--purple);color:#fff;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;padding:12px 28px;border-radius:7px;text-decoration:none}
+.badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em}
+.badge-red{background:rgba(239,68,68,.2);color:var(--red);border:1px solid var(--red)}
+.badge-orange{background:rgba(249,115,22,.2);color:var(--orange);border:1px solid var(--orange)}
+.badge-green{background:rgba(34,197,94,.2);color:var(--green);border:1px solid var(--green)}
+.badge-purple{background:rgba(108,99,255,.2);color:var(--purple);border:1px solid var(--purple)}
+.badge-muted{background:rgba(107,114,128,.15);color:var(--muted);border:1px solid var(--border)}
+.digest-item{border-bottom:1px solid var(--border);padding:24px 0}
+.digest-item:last-child{border-bottom:none}
+.digest-item h3{font-size:13px;font-weight:600;margin:0 0 8px;color:var(--text)}
+.faq{margin:40px 0}.faq-item{border-bottom:1px solid var(--border);padding:16px 0}
+.faq-item:last-child{border-bottom:none}
+.faq-q{font-size:12px;font-weight:600;color:var(--text);margin-bottom:8px}
+.faq-a{font-size:12px;color:var(--muted);line-height:1.7}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:12px}
+.related-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
+.related-card a{color:var(--text);font-size:12px;font-weight:500}
+.related-card p{font-size:11px;color:var(--muted);margin:4px 0 0}
+.site-footer{border-top:1px solid var(--border);padding:24px;text-align:center;font-size:11px;color:var(--muted);margin-top:60px}
+.site-footer a{color:var(--muted)}
+@media(max-width:640px){.nav-links{display:none}.related-grid{grid-template-columns:1fr}}
+</style></head><body><header class="site-header"><a href="/" class="logo">Package<span>Fix</span></a><nav class="nav-links"><a href="/">Tool</a><a href="/glossary">Glossary</a><a href="/cisa-kev">CISA KEV</a><a href="/blog">Blog</a><a href="https://github.com/metriclogic26/packagefix">GitHub</a></nav></header><main class="container"><div class="breadcrumb"><a href="/">PackageFix</a> <span style="color:var(--border)">/</span> <a href="/blog">Blog</a> <span style="color:var(--border)">/</span> <span style="color:var(--text)">multer 1.4.5-lts.1 - Why npm Skips It and How to Update</span></div><h1>multer 1.4.5-lts.1 &mdash; What Changed, Why the Version String is Weird, and How to Update</h1><p class="meta">April 1, 2026 &middot; PackageFix &middot; 5 min read</p><p class="lead">multer 1.4.5-lts.1 is confusing a lot of developers. The version string looks wrong. npm does not auto-update to it. Here is what happened, why the version is named this way, and the exact commands to update.</p><h2>What happened with multer</h2><p>multer 1.4.4 and below have CVE-2022-24434 &mdash; a denial of service vulnerability in multipart form parsing. A crafted HTTP request can cause multer to hang the Node.js event loop, effectively taking down your server.</p><p>The fix was released as version <strong>1.4.5-lts.1</strong>. Not 1.4.5. Not 2.0.0. The unusual version string is causing confusion &mdash; developers see it and think it is not a real release, or their version managers skip it.</p><h2>Why the version is called 1.4.5-lts.1</h2><p>In semver, anything after a hyphen is a pre-release identifier. So 1.4.5-lts.1 is technically a pre-release of 1.4.5. This means <code>npm install multer</code> and <code>npm update multer</code> will NOT install it unless you ask explicitly &mdash; npm skips pre-release versions by default.</p><p>The maintainers used this naming to signal it was a security-focused LTS patch rather than a standard feature release. The intention was good but the side effect is that millions of projects are still running vulnerable versions because their package managers quietly skipped the update.</p><div class="warning-box"><div class="label">Why npm audit fix does not always work</div><p style="margin:0">If you run <code>npm audit fix</code> on a project with vulnerable multer, it may report "0 vulnerabilities fixed" even though the vulnerability exists. This is because npm treats 1.4.5-lts.1 as a pre-release and will not upgrade to it automatically via audit fix. You must update manually.</p></div><h2>How to update - exact commands</h2><pre># Check your current version
+npm list multer
+
+# Update to the safe version
+npm install multer@1.4.5-lts.1
+
+# Verify the update
+npm list multer
+# Should show: multer@1.4.5-lts.1
+
+# Commit the lockfile
+git add package.json package-lock.json
+git commit -m "fix: update multer to 1.4.5-lts.1 (CVE-2022-24434)"</pre><h2>If multer is a transitive dependency</h2><p>Some projects pull in multer indirectly through another package. If <code>npm list multer</code> shows it under another package (not directly under your project), you need an npm override:</p><pre>// package.json
+{
+  "overrides": {
+    "multer": "1.4.5-lts.1"
+  }
+}</pre><h2>Is multer 2.x coming?</h2><p>multer 2.x is in development as of early 2026 but has not been officially released. For now, 1.4.5-lts.1 is the safe version to use. There are no known CVEs in 1.4.5-lts.1.</p><div class="cta-box"><p>Paste your manifest &mdash; PackageFix scans every dependency against OSV and CISA KEV instantly.</p><a href="/" class="cta-btn">Scan with PackageFix &rarr;</a><p style="margin-top:12px;font-size:11px;color:var(--muted)">Free &middot; No signup &middot; No CLI &middot; Runs in your browser</p></div><div class="faq"><h2>Common questions</h2><div class="faq-item"><div class="faq-q">Why is the version 1.4.5-lts.1 and not just 1.4.5?</div><div class="faq-a">multer 1.4.4 had a CRITICAL prototype pollution vulnerability (CVE-2022-24434). The maintainers released a patched version as 1.4.5-lts.1 rather than 1.4.5 to signal it was a long-term support security patch, not a feature release. The -lts.1 suffix is unconventional for npm but common in some ecosystems. It is a valid semver pre-release identifier.</div></div><div class="faq-item"><div class="faq-q">Does npm update to 1.4.5-lts.1 automatically?</div><div class="faq-a">No - npm does not automatically install pre-release versions. If your package.json has "multer": "^1.4.4", npm will not upgrade to 1.4.5-lts.1 because pre-release versions are excluded from semver range matching by default. You must explicitly update: npm install multer@1.4.5-lts.1.</div></div><div class="faq-item"><div class="faq-q">Is multer 2.x available?</div><div class="faq-a">multer 2.x is in development but has not been officially released as of early 2026. The current safe version is 1.4.5-lts.1. Check the multer GitHub repo for the latest status before deciding whether to wait for v2 or pin to 1.4.5-lts.1.</div></div><div class="faq-item"><div class="faq-q">What is CVE-2022-24434?</div><div class="faq-a">CVE-2022-24434 is a denial of service vulnerability in multer's multipart form parsing. A crafted multipart request can cause multer to hang indefinitely, blocking the Node.js event loop and taking down the server. In Node.js's single-threaded model, a single malicious request can affect all concurrent users.</div></div><div class="faq-item"><div class="faq-q">Does multer 1.4.5-lts.1 have any breaking changes from 1.4.4?</div><div class="faq-a">No - 1.4.5-lts.1 is a security patch only. The API is identical to 1.4.4. Updating requires no code changes - just the version number in package.json and a npm install.</div></div></div><div style="margin:40px 0"><h2>Related</h2><div class="related-grid"><div class="related-card"><a href="/fix/npm/multer">multer CVE History</a><p>All known vulnerabilities</p></div><div class="related-card"><a href="/blog/transitive-package-vulnerability-fix">Transitive Vulnerabilities</a><p>When multer is indirect</p></div><div class="related-card"><a href="/glossary/remediation">Remediation Guide</a><p>Fix strategies</p></div><div class="related-card"><a href="/fix/npm/express">Fix Express</a><p>Related npm security</p></div></div></div></main><footer class="site-footer"><p>PackageFix &middot; <a href="/">packagefix.dev</a> &middot; MIT Licensed &middot; Open Source</p><p style="margin-top:6px">Part of the MetricLogic network &middot; <a href="https://configclarity.dev">ConfigClarity</a> &middot; <a href="https://domainpreflight.dev">DomainPreflight</a></p></footer></body></html>

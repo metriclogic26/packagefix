@@ -2231,6 +2231,38 @@
     {
       "source": "/fix/npm/request/migrate/",
       "destination": "/seo/fix/npm/request/migrate/index.html"
+    },
+    {
+      "source": "/blog/weekly-cve-april-1-2026",
+      "destination": "/seo/blog/weekly-cve-april-1-2026/index.html"
+    },
+    {
+      "source": "/blog/weekly-cve-april-1-2026/",
+      "destination": "/seo/blog/weekly-cve-april-1-2026/index.html"
+    },
+    {
+      "source": "/blog/transitive-package-vulnerability-fix",
+      "destination": "/seo/blog/transitive-package-vulnerability-fix/index.html"
+    },
+    {
+      "source": "/blog/transitive-package-vulnerability-fix/",
+      "destination": "/seo/blog/transitive-package-vulnerability-fix/index.html"
+    },
+    {
+      "source": "/blog/multer-1-4-5-lts-1-update-guide",
+      "destination": "/seo/blog/multer-1-4-5-lts-1-update-guide/index.html"
+    },
+    {
+      "source": "/blog/multer-1-4-5-lts-1-update-guide/",
+      "destination": "/seo/blog/multer-1-4-5-lts-1-update-guide/index.html"
+    },
+    {
+      "source": "/blog/ruby-on-rails-security-releases-2024",
+      "destination": "/seo/blog/ruby-on-rails-security-releases-2024/index.html"
+    },
+    {
+      "source": "/blog/ruby-on-rails-security-releases-2024/",
+      "destination": "/seo/blog/ruby-on-rails-security-releases-2024/index.html"
     }
   ],
   "redirects": [

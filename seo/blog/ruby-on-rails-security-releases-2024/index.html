@@ -1,0 +1,134 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Ruby on Rails Security Releases 2024 - Complete CVE List | PackageFix</title><meta name="description" content="All 8 Ruby on Rails security CVEs in 2024 including the October batch (CVE-2024-41128, CVE-2024-47887) and December host authorization bypass. Affected versions and fix versions for Rails 7.0, 7.1, 7.2."><link rel="canonical" href="https://packagefix.dev/blog/ruby-on-rails-security-releases-2024"><meta property="og:title" content="Ruby on Rails Security Releases 2024 - Complete CVE List | PackageFix"><meta property="og:description" content="All 8 Ruby on Rails security CVEs in 2024 including the October batch (CVE-2024-41128, CVE-2024-47887) and December host authorization bypass. Affected versions and fix versions for Rails 7.0, 7.1, 7.2."><meta property="og:url" content="https://packagefix.dev/blog/ruby-on-rails-security-releases-2024"><meta property="og:type" content="article"><meta name="twitter:card" content="summary"><link rel="icon" type="image/svg+xml" href="/icon.svg"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "Ruby on Rails Security Releases 2024 - Complete CVE List",
+      "description": "All 8 Rails security CVEs in 2024. October batch plus December host authorization bypass. Fix versions for Rails 7.0, 7.1, 7.2.",
+      "datePublished": "2026-04-01",
+      "dateModified": "2026-04-01",
+      "author": {
+        "@type": "Organization",
+        "name": "PackageFix",
+        "url": "https://packagefix.dev"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "PackageFix",
+          "item": "https://packagefix.dev"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": "https://packagefix.dev/blog"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Rails Security Releases 2024",
+          "item": "https://packagefix.dev/blog/ruby-on-rails-security-releases-2024"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How do I update Rails to the latest security release?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Update your Gemfile: gem 'rails', '~> 7.1.0'. Then run bundle update rails. Always run your full test suite after updating Rails. Check the Rails security mailing list at groups.google.com/g/rubyonrails-security for announcements."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does Rails backport security fixes to older versions?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes - Rails backports security fixes to all currently supported branches. When a CVE is released, patches are available for the two most recent major versions simultaneously. Rails 6.1 reached end of life in June 2024 - upgrade to 7.0 or 7.1 to continue receiving security patches."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I know which Rails security releases affect my version?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Each CVE announcement lists the affected version ranges and patched versions. The Rails blog at rubyonrails.org/blog and the rubyonrails-security Google Group publish all security releases. PackageFix checks your Gemfile against the OSV database which includes all Rails CVEs."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the current supported Rails version in 2026?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "As of early 2026, Rails 7.1 and 7.2 are the actively maintained branches. Rails 7.0 is in security-only maintenance. Rails 6.1 and below are end of life. For new projects, use Rails 7.2."
+          }
+        }
+      ]
+    }
+  ]
+}</script><style>
+:root{--bg:#0B0D14;--surface:#12151F;--surface2:#1A1D2E;--border:#252836;--purple:#6C63FF;--green:#22C55E;--orange:#F97316;--red:#EF4444;--text:#E2E4F0;--muted:#6B7280}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.6;min-height:100vh}
+a{color:var(--purple);text-decoration:none}a:hover{text-decoration:underline}
+.site-header{border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:15px;font-weight:700;color:var(--text)}.logo span{color:var(--purple)}
+.nav-links{display:flex;gap:20px;font-size:12px}.nav-links a{color:var(--muted)}
+.nav-links a:hover{color:var(--text);text-decoration:none}
+.container{max-width:860px;margin:0 auto;padding:48px 24px}
+.breadcrumb{font-size:11px;color:var(--muted);margin-bottom:24px;display:flex;gap:6px;flex-wrap:wrap}
+.breadcrumb a{color:var(--muted)}
+h1{font-size:clamp(18px,3vw,26px);font-weight:700;margin-bottom:12px;line-height:1.3}
+h2{font-size:14px;font-weight:600;margin:36px 0 12px}
+h3{font-size:13px;font-weight:600;margin:24px 0 8px}
+p{color:var(--muted);margin-bottom:12px;font-size:12px;line-height:1.7}
+.lead{color:var(--text);font-size:13px;margin-bottom:24px;line-height:1.7}
+.meta{font-size:11px;color:var(--muted);margin-bottom:32px}
+.kev-banner{background:rgba(239,68,68,.12);border:1px solid var(--red);border-radius:10px;padding:16px 20px;margin:24px 0}
+.kev-banner .label{font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
+.kev-banner p{color:var(--red);margin:0;font-size:12px}
+.warning-box{background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.3);border-left:3px solid var(--orange);border-radius:8px;padding:16px 20px;margin:20px 0}
+.warning-box .label{font-size:10px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.fix-box{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.3);border-left:3px solid var(--green);border-radius:8px;padding:16px 20px;margin:20px 0}
+.fix-box .label{font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+pre{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px 16px;overflow-x:auto;font-size:11px;line-height:1.6;margin:8px 0;white-space:pre-wrap}
+code{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:1px 5px;font-size:11px}
+.cta-box{background:var(--surface);border:1px solid var(--purple);border-radius:10px;padding:24px;margin:32px 0;text-align:center}
+.cta-box p{color:var(--text);font-size:13px;margin-bottom:16px}
+.cta-btn{display:inline-block;background:var(--purple);color:#fff;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;padding:12px 28px;border-radius:7px;text-decoration:none}
+.badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em}
+.badge-red{background:rgba(239,68,68,.2);color:var(--red);border:1px solid var(--red)}
+.badge-orange{background:rgba(249,115,22,.2);color:var(--orange);border:1px solid var(--orange)}
+.badge-green{background:rgba(34,197,94,.2);color:var(--green);border:1px solid var(--green)}
+.badge-purple{background:rgba(108,99,255,.2);color:var(--purple);border:1px solid var(--purple)}
+.badge-muted{background:rgba(107,114,128,.15);color:var(--muted);border:1px solid var(--border)}
+.digest-item{border-bottom:1px solid var(--border);padding:24px 0}
+.digest-item:last-child{border-bottom:none}
+.digest-item h3{font-size:13px;font-weight:600;margin:0 0 8px;color:var(--text)}
+.faq{margin:40px 0}.faq-item{border-bottom:1px solid var(--border);padding:16px 0}
+.faq-item:last-child{border-bottom:none}
+.faq-q{font-size:12px;font-weight:600;color:var(--text);margin-bottom:8px}
+.faq-a{font-size:12px;color:var(--muted);line-height:1.7}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:12px}
+.related-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
+.related-card a{color:var(--text);font-size:12px;font-weight:500}
+.related-card p{font-size:11px;color:var(--muted);margin:4px 0 0}
+.site-footer{border-top:1px solid var(--border);padding:24px;text-align:center;font-size:11px;color:var(--muted);margin-top:60px}
+.site-footer a{color:var(--muted)}
+@media(max-width:640px){.nav-links{display:none}.related-grid{grid-template-columns:1fr}}
+</style></head><body><header class="site-header"><a href="/" class="logo">Package<span>Fix</span></a><nav class="nav-links"><a href="/">Tool</a><a href="/glossary">Glossary</a><a href="/cisa-kev">CISA KEV</a><a href="/blog">Blog</a><a href="https://github.com/metriclogic26/packagefix">GitHub</a></nav></header><main class="container"><div class="breadcrumb"><a href="/">PackageFix</a> <span style="color:var(--border)">/</span> <a href="/blog">Blog</a> <span style="color:var(--border)">/</span> <span style="color:var(--text)">Ruby on Rails Security Releases 2024 - Complete CVE List</span></div><h1>Ruby on Rails Security Releases 2024 &mdash; Complete CVE List</h1><p class="meta">April 1, 2026 &middot; PackageFix &middot; 6 min read</p><p class="lead">Rails had 8 security releases in 2024 spanning CVEs in Action Pack, Action Text, and the query parser. Four of them were released together in October 2024 &mdash; the largest single security release batch in recent Rails history. Here is every CVE, the affected versions, and the exact patch version to update to.</p><h2>All Rails CVEs in 2024</h2><table style="width:100%;border-collapse:collapse;font-size:12px;margin:16px 0"><thead><tr style="border-bottom:2px solid var(--border)"><th style="text-align:left;padding:10px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">CVE</th><th style="text-align:left;padding:10px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Date</th><th style="text-align:left;padding:10px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Severity</th><th style="text-align:left;padding:10px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Description</th><th style="text-align:left;padding:10px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Fix version</th></tr></thead><tbody><tr><td><a href="https://osv.dev/vulnerability/CVE-2024-26143" target="_blank" rel="noopener">CVE-2024-26143</a></td><td>Feb 2024</td><td><span class="badge badge-orange">HIGH</span></td><td style="color:var(--muted)">XSS via Action Text content</td><td style="color:var(--green);font-size:11px">7.1.3.1 / 7.0.8.1 / 6.1.7.7</td></tr><tr><td><a href="https://osv.dev/vulnerability/CVE-2024-26142" target="_blank" rel="noopener">CVE-2024-26142</a></td><td>Feb 2024</td><td><span class="badge badge-orange">HIGH</span></td><td style="color:var(--muted)">ReDoS via header parsing</td><td style="color:var(--green);font-size:11px">7.1.3.1 / 7.0.8.1 / 6.1.7.7</td></tr><tr><td><a href="https://osv.dev/vulnerability/CVE-2024-28103" target="_blank" rel="noopener">CVE-2024-28103</a></td><td>Jun 2024</td><td><span class="badge badge-purple">MEDIUM</span></td><td style="color:var(--muted)">Possible header injection in CORS headers</td><td style="color:var(--green);font-size:11px">7.1.3.4 / 7.0.8.4 / 6.1.7.8</td></tr><tr><td><a href="https://osv.dev/vulnerability/CVE-2024-41128" target="_blank" rel="noopener">CVE-2024-41128</a></td><td>Oct 2024</td><td><span class="badge badge-orange">HIGH</span></td><td style="color:var(--muted)">ReDoS in query parameter parsing</td><td style="color:var(--green);font-size:11px">7.2.1.1 / 7.1.4.1 / 7.0.8.5</td></tr><tr><td><a href="https://osv.dev/vulnerability/CVE-2024-47887" target="_blank" rel="noopener">CVE-2024-47887</a></td><td>Oct 2024</td><td><span class="badge badge-orange">HIGH</span></td><td style="color:var(--muted)">DoS via large multipart form</td><td style="color:var(--green);font-size:11px">7.2.1.1 / 7.1.4.1 / 7.0.8.5</td></tr><tr><td><a href="https://osv.dev/vulnerability/CVE-2024-47888" target="_blank" rel="noopener">CVE-2024-47888</a></td><td>Oct 2024</td><td><span class="badge badge-purple">MEDIUM</span></td><td style="color:var(--muted)">DoS via crafted Accept header</td><td style="color:var(--green);font-size:11px">7.2.1.1 / 7.1.4.1 / 7.0.8.5</td></tr><tr><td><a href="https://osv.dev/vulnerability/CVE-2024-47889" target="_blank" rel="noopener">CVE-2024-47889</a></td><td>Oct 2024</td><td><span class="badge badge-purple">MEDIUM</span></td><td style="color:var(--muted)">DoS via crafted Content-Type header</td><td style="color:var(--green);font-size:11px">7.2.1.1 / 7.1.4.1 / 7.0.8.5</td></tr><tr><td><a href="https://osv.dev/vulnerability/CVE-2024-54133" target="_blank" rel="noopener">CVE-2024-54133</a></td><td>Dec 2024</td><td><span class="badge badge-orange">HIGH</span></td><td style="color:var(--muted)">Action Pack host authorization bypass</td><td style="color:var(--green);font-size:11px">7.2.2.1 / 7.1.5.1</td></tr></tbody></table><h2>The October 2024 batch</h2><p>On October 15, 2024, the Rails team released patches for four CVEs simultaneously across Rails 7.2, 7.1, and 7.0. This is the standard Rails security release process &mdash; vulnerabilities are held until all supported versions are patched, then released together.</p><p>CVE-2024-41128 (ReDoS in query parsing) is the most serious of the four. An attacker sending a crafted query string can cause the Rails router to hang, blocking the request thread. In multi-threaded Puma deployments, enough of these requests can exhaust the thread pool.</p><h2>CVE-2024-54133 - December host authorization bypass</h2><p>The final 2024 Rails CVE was CVE-2024-54133 in December &mdash; a host authorization bypass in Action Pack. Applications using ActionDispatch::HostAuthorization middleware with certain configurations could be bypassed by a crafted Host header. This affects applications restricting access by hostname. Fix version: 7.2.2.1 or 7.1.5.1.</p><h2>How to stay current with Rails security releases</h2><p>The Rails security mailing list publishes all CVEs as they are released. Subscribe at groups.google.com/g/rubyonrails-security. The rubyonrails.org/blog also publishes all security releases. Use PackageFix to check your current Gemfile against all known CVEs instantly.</p><div class="fix-box"><div class="label">Update Rails</div><pre># Update to latest security release
+bundle update rails
+
+# Or pin to specific version in Gemfile
+gem 'rails', '~> 7.1.5'
+
+# Verify
+bundle exec rails --version</pre></div><div class="cta-box"><p>Paste your manifest &mdash; PackageFix scans every dependency against OSV and CISA KEV instantly.</p><a href="/" class="cta-btn">Scan with PackageFix &rarr;</a><p style="margin-top:12px;font-size:11px;color:var(--muted)">Free &middot; No signup &middot; No CLI &middot; Runs in your browser</p></div><div class="faq"><h2>Common questions</h2><div class="faq-item"><div class="faq-q">How do I update Rails to the latest security release?</div><div class="faq-a">Update your Gemfile: gem 'rails', '~> 7.1.0'. Then run bundle update rails. Always run your full test suite after updating Rails. Check the Rails security mailing list at groups.google.com/g/rubyonrails-security for announcements.</div></div><div class="faq-item"><div class="faq-q">Does Rails backport security fixes to older versions?</div><div class="faq-a">Yes - Rails backports security fixes to all currently supported branches. When a CVE is released, patches are available for the two most recent major versions simultaneously. Rails 6.1 reached end of life in June 2024 - upgrade to 7.0 or 7.1 to continue receiving security patches.</div></div><div class="faq-item"><div class="faq-q">How do I know which Rails security releases affect my version?</div><div class="faq-a">Each CVE announcement lists the affected version ranges and patched versions. The Rails blog at rubyonrails.org/blog and the rubyonrails-security Google Group publish all security releases. PackageFix checks your Gemfile against the OSV database which includes all Rails CVEs.</div></div><div class="faq-item"><div class="faq-q">What is the current supported Rails version in 2026?</div><div class="faq-a">As of early 2026, Rails 7.1 and 7.2 are the actively maintained branches. Rails 7.0 is in security-only maintenance. Rails 6.1 and below are end of life. For new projects, use Rails 7.2.</div></div></div><div style="margin:40px 0"><h2>Related</h2><div class="related-grid"><div class="related-card"><a href="/fix/ruby/rails">Rails CVE History</a><p>All Rails CVEs</p></div><div class="related-card"><a href="/fix/ruby/actionpack">Fix actionpack</a><p>Rails component CVEs</p></div><div class="related-card"><a href="/fix/ruby/rack">Fix Rack</a><p>Rails server interface</p></div><div class="related-card"><a href="/ruby">Ruby Security</a><p>All Ruby CVE guides</p></div></div></div></main><footer class="site-footer"><p>PackageFix &middot; <a href="/">packagefix.dev</a> &middot; MIT Licensed &middot; Open Source</p><p style="margin-top:6px">Part of the MetricLogic network &middot; <a href="https://configclarity.dev">ConfigClarity</a> &middot; <a href="https://domainpreflight.dev">DomainPreflight</a></p></footer></body></html>
