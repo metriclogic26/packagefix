@@ -2263,6 +2263,14 @@
     {
       "source": "/blog/ruby-on-rails-security-releases-2024/",
       "destination": "/seo/blog/ruby-on-rails-security-releases-2024/index.html"
+    },
+    {
+      "source": "/blog/axios-supply-chain-attack-march-2026",
+      "destination": "/seo/blog/axios-supply-chain-attack-march-2026/index.html"
+    },
+    {
+      "source": "/blog/axios-supply-chain-attack-march-2026/",
+      "destination": "/seo/blog/axios-supply-chain-attack-march-2026/index.html"
     }
   ],
   "redirects": [
