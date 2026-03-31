@@ -2235,6 +2235,11 @@
   ],
   "redirects": [
     {
+      "source": "https://www.packagefix.dev/:path*",
+      "destination": "https://packagefix.dev/:path*",
+      "permanent": true
+    },
+    {
       "source": "/alternatives",
       "destination": "/compare",
       "permanent": true
