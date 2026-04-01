@@ -2303,6 +2303,14 @@
     {
       "source": "/fix/ruby/rails/cve-2024/",
       "destination": "/seo/fix/ruby/rails/cve-2024/index.html"
+    },
+    {
+      "source": "/fix/npm/cross-spawn",
+      "destination": "/seo/fix/npm/cross-spawn/index.html"
+    },
+    {
+      "source": "/fix/npm/cross-spawn/",
+      "destination": "/seo/fix/npm/cross-spawn/index.html"
     }
   ],
   "redirects": [

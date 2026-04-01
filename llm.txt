@@ -439,3 +439,4 @@ https://packagefix.dev/blog/axios-plain-crypto-js-transitive-attack-explained
 https://packagefix.dev/fix/pypi/cryptography/cve-2024
 https://packagefix.dev/fix/pypi/django/cve-2024
 https://packagefix.dev/fix/ruby/rails/cve-2024
+https://packagefix.dev/fix/npm/cross-spawn
