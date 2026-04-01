@@ -273,7 +273,7 @@ digest_faqs = [
 digest_body = f"""
 <h1>Weekly CVE Digest — March 22, 2026</h1>
 <p style="color:var(--muted);font-size:11px;margin-bottom:24px">March 22, 2026 · PackageFix · 7 CVEs this week across npm, PyPI, Ruby, Go, Rust, Java</p>
-<p class="lead">The most critical dependency CVEs published or newly exploited this week across all 7 ecosystems PackageFix supports. Paste your manifest into PackageFix to check if you're affected.</p>
+<p class="lead">Every week PackageFix monitors the OSV database and CISA KEV catalog for new entries. This week had 7 worth paying attention to — two of them are CRITICAL and one is actively being exploited in production systems right now. Here's what to patch first.</p>
 
 <div class="kev-banner">
   <div class="label">🔴 CISA KEV Update This Week</div>

@@ -103,7 +103,7 @@ def render_page(title, desc, canonical_path, breadcrumbs, body_html, schemas):
     <a href="https://packagefix.dev/alternatives">Alternatives</a>
     <a href="https://packagefix.dev/error">Error Fixes</a>
     <a href="https://github.com/metriclogic26/packagefix">GitHub</a>
-    <a href="https://metriclogic.dev">MetricLogic</a>
+    <a href="https://packagefix.dev">PackageFix</a>
   </nav>
 </header>
 <main class="container">
@@ -112,7 +112,7 @@ def render_page(title, desc, canonical_path, breadcrumbs, body_html, schemas):
 </main>
 <footer class="site-footer">
   <p>PackageFix · <a href="https://packagefix.dev">packagefix.dev</a> · MIT Licensed · Open Source</p>
-  <p style="margin-top:6px">Part of the <a href="https://metriclogic.dev">MetricLogic</a> network ·
+  <p style="margin-top:6px">Part of the MetricLogic network ·
   <a href="https://configclarity.dev">ConfigClarity</a> ·
   <a href="https://domainpreflight.dev">DomainPreflight</a></p>
   <p style="margin-top:6px">Vulnerability data: <a href="https://osv.dev">OSV Database</a> · <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog">CISA KEV Catalog</a></p>

