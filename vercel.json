@@ -2271,6 +2271,14 @@
     {
       "source": "/blog/axios-supply-chain-attack-march-2026/",
       "destination": "/seo/blog/axios-supply-chain-attack-march-2026/index.html"
+    },
+    {
+      "source": "/blog/axios-plain-crypto-js-transitive-attack-explained",
+      "destination": "/seo/blog/axios-plain-crypto-js-transitive-attack-explained/index.html"
+    },
+    {
+      "source": "/blog/axios-plain-crypto-js-transitive-attack-explained/",
+      "destination": "/seo/blog/axios-plain-crypto-js-transitive-attack-explained/index.html"
     }
   ],
   "redirects": [

@@ -1,0 +1,170 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>How the axios Attack Used plain-crypto-js as a Transitive Dependency | PackageFix</title><meta name="description" content="The March 2026 axios supply chain attack succeeded because npm automatically installs transitive dependencies. Step-by-step technical breakdown of how plain-crypto-js was injected."><link rel="canonical" href="https://packagefix.dev/blog/axios-plain-crypto-js-transitive-attack-explained"><meta property="og:title" content="How the axios Attack Used plain-crypto-js as a Transitive Dependency | PackageFix"><meta property="og:description" content="The March 2026 axios supply chain attack succeeded because npm automatically installs transitive dependencies. Step-by-step technical breakdown of how plain-crypto-js was injected."><meta property="og:url" content="https://packagefix.dev/blog/axios-plain-crypto-js-transitive-attack-explained"><meta property="og:type" content="article"><meta name="twitter:card" content="summary"><link rel="icon" type="image/svg+xml" href="/icon.svg"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "How the axios Attack Used plain-crypto-js as a Transitive Dependency",
+      "description": "Technical breakdown of how the March 2026 axios supply chain attack exploited npm transitive dependency installation.",
+      "datePublished": "2026-03-31",
+      "dateModified": "2026-03-31",
+      "author": {
+        "@type": "Organization",
+        "name": "PackageFix",
+        "url": "https://packagefix.dev"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "PackageFix",
+          "item": "https://packagefix.dev"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": "https://packagefix.dev/blog"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "axios Transitive Attack Explained",
+          "item": "https://packagefix.dev/blog/axios-plain-crypto-js-transitive-attack-explained"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Why did npm install plain-crypto-js automatically?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "npm installs all dependencies listed in a package's package.json, including transitive ones. When you run npm install axios@1.14.1, npm reads axios's package.json, sees plain-crypto-js@4.2.1 listed as a dependency, and installs it automatically. You never asked for it, you never knew it was there, but npm ran its postinstall script anyway."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Would a lockfile have protected me?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A lockfile protects you from unexpected version changes on re-installs. But if you ran npm install axios@1.14.1 for the first time during the attack window, the lockfile would have been generated with plain-crypto-js@4.2.1 already in it. The lockfile records what was installed, it does not prevent malicious new packages from being installed the first time."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Could npm audit have caught this before installation?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. npm audit checks against known CVE databases. plain-crypto-js@4.2.1 was a brand new malicious package published specifically for this attack. No CVE existed yet. This is why real-time package reputation monitoring matters beyond CVE scanning."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difference between this and a normal transitive CVE?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A normal transitive CVE is a vulnerability in a legitimate package that your dependency uses. The axios attack is different: the malicious transitive dependency was injected by an attacker into what appeared to be a legitimate package release. The attack vector was the same (transitive dependency) but the mechanism was supply chain compromise rather than a vulnerability in existing code."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I prevent this class of attack in the future?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Use npm ci instead of npm install in CI/CD pipelines - it respects the lockfile exactly. Pin all dependencies to exact versions in production. Use package integrity checks. Consider tools that monitor for new transitive dependencies being added to packages you depend on. Require provenance attestations for critical packages."
+          }
+        }
+      ]
+    }
+  ]
+}</script><style>
+:root{--bg:#0B0D14;--surface:#12151F;--surface2:#1A1D2E;--border:#252836;--purple:#6C63FF;--green:#22C55E;--orange:#F97316;--red:#EF4444;--text:#E2E4F0;--muted:#6B7280}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.6;min-height:100vh}
+a{color:var(--purple);text-decoration:none}a:hover{text-decoration:underline}
+.site-header{border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:15px;font-weight:700;color:var(--text)}.logo span{color:var(--purple)}
+.nav-links{display:flex;gap:20px;font-size:12px}.nav-links a{color:var(--muted)}
+.nav-links a:hover{color:var(--text);text-decoration:none}
+.container{max-width:860px;margin:0 auto;padding:48px 24px}
+.breadcrumb{font-size:11px;color:var(--muted);margin-bottom:24px;display:flex;gap:6px;flex-wrap:wrap}
+.breadcrumb a{color:var(--muted)}
+h1{font-size:clamp(18px,3vw,26px);font-weight:700;margin-bottom:12px;line-height:1.3}
+h2{font-size:14px;font-weight:600;margin:36px 0 12px}
+h3{font-size:13px;font-weight:600;margin:24px 0 8px}
+p{color:var(--muted);margin-bottom:12px;font-size:12px;line-height:1.7}
+.lead{color:var(--text);font-size:13px;margin-bottom:24px;line-height:1.7}
+.meta{font-size:11px;color:var(--muted);margin-bottom:32px}
+.critical-banner{background:rgba(239,68,68,.15);border:2px solid var(--red);border-radius:10px;padding:20px 24px;margin:0 0 32px}
+.critical-banner .label{font-size:11px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px}
+.critical-banner p{color:var(--text);margin:0;font-size:13px;line-height:1.7}
+.fix-box{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.3);border-left:3px solid var(--green);border-radius:8px;padding:16px 20px;margin:20px 0}
+.fix-box .label{font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.warning-box{background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.3);border-left:3px solid var(--orange);border-radius:8px;padding:16px 20px;margin:20px 0}
+.warning-box .label{font-size:10px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+pre{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px 16px;overflow-x:auto;font-size:11px;line-height:1.6;margin:8px 0;white-space:pre-wrap}
+code{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:1px 5px;font-size:11px}
+.cta-box{background:var(--surface);border:1px solid var(--purple);border-radius:10px;padding:24px;margin:32px 0;text-align:center}
+.cta-box p{color:var(--text);font-size:13px;margin-bottom:16px}
+.cta-btn{display:inline-block;background:var(--purple);color:#fff;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;padding:12px 28px;border-radius:7px;text-decoration:none}
+.blog-grid{display:grid;gap:16px;margin-top:16px}
+.blog-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px 24px}
+.blog-card .date{font-size:10px;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.08em}
+.blog-card h2{font-size:13px;font-weight:600;margin:0 0 8px}
+.blog-card h2 a{color:var(--text)}
+.blog-card h2 a:hover{color:var(--purple)}
+.blog-card p{font-size:11px;color:var(--muted);margin:0;line-height:1.6}
+.blog-card .tag{display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.tag-breaking{background:rgba(239,68,68,.2);color:var(--red);border:1px solid var(--red)}
+.tag-guide{background:rgba(108,99,255,.2);color:var(--purple);border:1px solid var(--purple)}
+.tag-digest{background:rgba(34,197,94,.2);color:var(--green);border:1px solid var(--green)}
+.faq{margin:40px 0}.faq-item{border-bottom:1px solid var(--border);padding:16px 0}
+.faq-item:last-child{border-bottom:none}
+.faq-q{font-size:12px;font-weight:600;color:var(--text);margin-bottom:8px}
+.faq-a{font-size:12px;color:var(--muted);line-height:1.7}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:12px}
+.related-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
+.related-card a{color:var(--text);font-size:12px;font-weight:500}
+.related-card p{font-size:11px;color:var(--muted);margin:4px 0 0}
+.site-footer{border-top:1px solid var(--border);padding:24px;text-align:center;font-size:11px;color:var(--muted);margin-top:60px}
+.site-footer a{color:var(--muted)}
+@media(max-width:640px){.nav-links{display:none}.related-grid{grid-template-columns:1fr}}
+</style></head><body><header class="site-header"><a href="/" class="logo">Package<span>Fix</span></a><nav class="nav-links"><a href="/">Tool</a><a href="/glossary">Glossary</a><a href="/cisa-kev">CISA KEV</a><a href="/blog">Blog</a><a href="https://github.com/metriclogic26/packagefix">GitHub</a></nav></header><main class="container"><div class="breadcrumb"><a href="/">PackageFix</a> <span style="color:var(--border)">/</span> <a href="/blog">Blog</a> <span style="color:var(--border)">/</span> <span style="color:var(--text)">axios Transitive Attack Explained</span></div><h1>How the axios Attack Used plain-crypto-js as a Transitive Dependency</h1><p class="meta">March 31, 2026 &middot; PackageFix &middot; 6 min read</p><div class="critical-banner"><div class="label">&#x1F6A8; Related to breaking axios attack</div><p>This post explains the technical mechanism of the March 31, 2026 axios supply chain attack. If you ran npm install today, <a href="/blog/axios-supply-chain-attack-march-2026">check the main incident report first</a>.</p></div><p class="lead">The axios attack on March 31, 2026 succeeded because of how npm handles transitive dependencies. The attacker did not need to modify axios source code. They just added one line to axios's package.json. npm did the rest.</p><h2>What is a transitive dependency?</h2><p>When you install a package, you install everything it depends on too &mdash; and everything those packages depend on, and so on. These indirect dependencies are called transitive dependencies. In a typical Node.js project, your package.json might list 30 direct dependencies, but your node_modules folder contains 300-500 packages. The other 470 are transitive.</p><pre>Your package.json:
+  "axios": "1.14.1"    <- you asked for this
+
+npm also installs:
+  follow-redirects     <- axios needs this (legitimate)
+  form-data            <- axios needs this (legitimate)
+  proxy-from-env       <- axios needs this (legitimate)
+  plain-crypto-js      <- axios needs this (MALICIOUS - injected by attacker)
+</pre><h2>The attack mechanism - step by step</h2><h3>Step 1: Attacker pre-stages a "clean" package</h3><p>On March 30 at 05:57 UTC, the attacker published plain-crypto-js@4.2.0 to npm. This version was completely clean &mdash; no malicious code. Its purpose was to establish a brief package history and avoid "brand-new package" security alerts that some tools trigger for packages with no history.</p><h3>Step 2: Attacker publishes the malicious version</h3><p>23 hours later, plain-crypto-js@4.2.1 was published with the RAT payload. The package looked identical to a legitimate crypto library. Its package.json mimicked the real crypto-js library. The only difference: a postinstall script in the scripts field that executed setup.js.</p><pre>// plain-crypto-js@4.2.1 package.json (malicious)
+{
+  "name": "plain-crypto-js",
+  "version": "4.2.1",
+  "scripts": {
+    "postinstall": "node setup.js"  // <-- the dropper
+  }
+}</pre><h3>Step 3: Attacker compromises the axios maintainer account</h3><p>Using credentials from the compromised jasonsaayman npm account, the attacker published axios@1.14.1 with one change from the legitimate 1.14.0: plain-crypto-js@4.2.1 was added as a runtime dependency.</p><pre>// axios@1.14.1 package.json (malicious - showing only the change)
+{
+  "dependencies": {
+    "follow-redirects": "^1.15.4",  // legitimate
+    "form-data": "^4.0.0",          // legitimate
+    "proxy-from-env": "^1.1.0",     // legitimate
+    "plain-crypto-js": "^4.2.1"     // INJECTED - RAT dropper
+  }
+}</pre><h3>Step 4: npm does exactly what it is designed to do</h3><p>When any developer or CI/CD pipeline runs <code>npm install axios@1.14.1</code>, npm resolves the full dependency tree, finds plain-crypto-js@4.2.1 in axios's dependencies, downloads it, and runs its postinstall script. The RAT dropper executes in approximately 15 seconds. It contacts the C2 server, downloads platform-specific second-stage payloads, then deletes itself and replaces its package.json with a clean decoy.</p><div class="warning-box"><div class="label">The key insight</div><p style="margin:0">npm postinstall scripts run automatically with full system permissions of whoever ran npm install. In CI/CD pipelines, that is often a service account with access to secrets, cloud credentials, and source code repositories. This is why supply chain attacks via npm are so effective &mdash; the execution happens silently during a routine operation every developer performs hundreds of times.</p></div><h2>Why transitive dependencies are the attack surface</h2><p>The attacker chose the transitive dependency route deliberately. A direct modification to axios source code would have been noticed immediately &mdash; the axios repository is watched by thousands of developers and security researchers. But a new dependency added to package.json is much less visible. Most developers never read the full dependency tree of packages they install.</p><p>This is the same attack surface exploited in the event-stream attack (2018), the ua-parser-js attack (2021), and the node-ipc attack (2022). In each case, the attacker gained access to a legitimate package and used it as a vector to deliver malicious code via the transitive dependency mechanism.</p><h2>How to detect this class of attack</h2><pre># Check if plain-crypto-js is in your lockfile
+grep "plain-crypto-js" package-lock.json
+
+# See ALL transitive dependencies of axios
+npm ls axios
+
+# Check when a package was added to your lockfile
+git log -p package-lock.json | grep "plain-crypto-js"
+
+# Verify axios has only its legitimate 3 deps
+npm ls --depth=1 axios</pre><div class="fix-box"><div class="label">The legitimate axios deps (3 only)</div><p style="margin:0">axios@1.14.0 (safe) has exactly 3 dependencies: <code>follow-redirects</code>, <code>form-data</code>, <code>proxy-from-env</code>. Any additional dependency in an axios release is a red flag. The presence of plain-crypto-js confirms the malicious version.</p></div><div class="cta-box"><p>Check your lockfile for plain-crypto-js or compromised axios versions now.</p><a href="/" class="cta-btn">Scan with PackageFix &rarr;</a><p style="margin-top:12px;font-size:11px;color:var(--muted)">Free &middot; No signup &middot; Paste your package-lock.json</p></div><div class="faq"><h2>Common questions</h2><div class="faq-item"><div class="faq-q">Why did npm install plain-crypto-js automatically?</div><div class="faq-a">npm installs all dependencies listed in a package's package.json, including transitive ones. When you run npm install axios@1.14.1, npm reads axios's package.json, sees plain-crypto-js@4.2.1 listed as a dependency, and installs it automatically. You never asked for it, you never knew it was there, but npm ran its postinstall script anyway.</div></div><div class="faq-item"><div class="faq-q">Would a lockfile have protected me?</div><div class="faq-a">A lockfile protects you from unexpected version changes on re-installs. But if you ran npm install axios@1.14.1 for the first time during the attack window, the lockfile would have been generated with plain-crypto-js@4.2.1 already in it. The lockfile records what was installed, it does not prevent malicious new packages from being installed the first time.</div></div><div class="faq-item"><div class="faq-q">Could npm audit have caught this before installation?</div><div class="faq-a">No. npm audit checks against known CVE databases. plain-crypto-js@4.2.1 was a brand new malicious package published specifically for this attack. No CVE existed yet. This is why real-time package reputation monitoring matters beyond CVE scanning.</div></div><div class="faq-item"><div class="faq-q">What is the difference between this and a normal transitive CVE?</div><div class="faq-a">A normal transitive CVE is a vulnerability in a legitimate package that your dependency uses. The axios attack is different: the malicious transitive dependency was injected by an attacker into what appeared to be a legitimate package release. The attack vector was the same (transitive dependency) but the mechanism was supply chain compromise rather than a vulnerability in existing code.</div></div><div class="faq-item"><div class="faq-q">How do I prevent this class of attack in the future?</div><div class="faq-a">Use npm ci instead of npm install in CI/CD pipelines - it respects the lockfile exactly. Pin all dependencies to exact versions in production. Use package integrity checks. Consider tools that monitor for new transitive dependencies being added to packages you depend on. Require provenance attestations for critical packages.</div></div></div><div style="margin:40px 0"><h2>Related</h2><div class="related-grid"><div class="related-card"><a href="/blog/axios-supply-chain-attack-march-2026">axios Incident Report</a><p>IOCs, timeline, remediation</p></div><div class="related-card"><a href="/glossary/transitive-dependency">What is a Transitive Dependency</a><p>Plain-English definition</p></div><div class="related-card"><a href="/blog/transitive-package-vulnerability-fix">Transitive Vulnerability Guide</a><p>How to fix them</p></div><div class="related-card"><a href="/glossary/supply-chain-attack">Supply Chain Attack</a><p>The attack category</p></div><div class="related-card"><a href="/fix/npm/axios">axios CVE History</a><p>All axios vulnerabilities</p></div><div class="related-card"><a href="/glossary/glassworm">Glassworm</a><p>Invisible script attacks</p></div></div></div></main><footer class="site-footer"><p>PackageFix &middot; <a href="/">packagefix.dev</a> &middot; MIT Licensed</p><p style="margin-top:6px">Vulnerability data: <a href="https://osv.dev">OSV</a> &middot; <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog">CISA KEV</a></p></footer></body></html>
