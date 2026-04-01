@@ -80,6 +80,30 @@
           }
         }
       ]
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "codeSampleType": "full solution",
+      "programmingLanguage": "javascript",
+      "text": "Your package.json:\n  \"axios\": \"1.14.1\"    <- you asked for this\n\nnpm also installs:\n  follow-redirects     <- axios needs this (legitimate)\n  form-data            <- axios needs this (legitimate)\n  proxy-from-env       <- axios needs this (legitimate)\n  plain-crypto-js      <- axios needs this (MALICIOUS - injected by attacker)"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "codeSampleType": "full solution",
+      "programmingLanguage": "javascript",
+      "text": "// plain-crypto-js@4.2.1 package.json (malicious)\n{\n  \"name\": \"plain-crypto-js\",\n  \"version\": \"4.2.1\",\n  \"scripts\": {\n    \"postinstall\": \"node setup.js\"  // <-- the dropper\n  }\n}"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "codeSampleType": "full solution",
+      "programmingLanguage": "javascript",
+      "text": "// axios@1.14.1 package.json (malicious - showing only the change)\n{\n  \"dependencies\": {\n    \"follow-redirects\": \"^1.15.4\",  // legitimate\n    \"form-data\": \"^4.0.0\",          // legitimate\n    \"proxy-from-env\": \"^1.1.0\",     // legitimate\n    \"plain-crypto-js\": \"^4.2.1\"     // INJECTED - RAT dropper\n  }\n}"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "codeSampleType": "full solution",
+      "programmingLanguage": "bash",
+      "text": "# Check if plain-crypto-js is in your lockfile\ngrep \"plain-crypto-js\" package-lock.json\n\n# See ALL transitive dependencies of axios\nnpm ls axios\n\n# Check when a package was added to your lockfile\ngit log -p package-lock.json | grep \"plain-crypto-js\"\n\n# Verify axios has only its legitimate 3 deps\nnpm ls --depth=1 axios"
     }
   ]
 }</script><style>

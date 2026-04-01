@@ -112,6 +112,66 @@
           }
         }
       ]
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "codeSampleType": "full solution",
+      "programmingLanguage": "javascript",
+      "text": "npm install dayjs\nnpm uninstall moment"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "codeSampleType": "full solution",
+      "programmingLanguage": "python",
+      "text": "import moment from 'moment';"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "codeSampleType": "full solution",
+      "programmingLanguage": "python",
+      "text": "import dayjs from 'dayjs';"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "codeSampleType": "full solution",
+      "programmingLanguage": "bash",
+      "text": "// Parse\nmoment('2024-01-15')\nmoment('2024-01-15', 'YYYY-MM-DD')\n\n// Format\nmoment().format('YYYY-MM-DD')\nmoment().format('MMMM Do YYYY')\n\n// Manipulate\nmoment().add(7, 'days')\nmoment().subtract(1, 'month')\n\n// Compare\nmoment('2024-01-15').isBefore('2024-06-01')\nmoment('2024-01-15').isAfter(moment())\n\n// Display\nmoment().fromNow()\nmoment().toDate()"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "codeSampleType": "full solution",
+      "programmingLanguage": "bash",
+      "text": "// Parse\ndayjs('2024-01-15')\ndayjs('2024-01-15', 'YYYY-MM-DD')  // needs customParseFormat plugin\n\n// Format\ndayjs().format('YYYY-MM-DD')\ndayjs().format('MMMM Do YYYY')     // needs advancedFormat plugin\n\n// Manipulate\ndayjs().add(7, 'day')\ndayjs().subtract(1, 'month')\n\n// Compare\ndayjs('2024-01-15').isBefore('2024-06-01')\ndayjs('2024-01-15').isAfter(dayjs())\n\n// Display\ndayjs().fromNow()  // needs relativeTime plugin\ndayjs().toDate()"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "codeSampleType": "full solution",
+      "programmingLanguage": "python",
+      "text": "import dayjs from 'dayjs'\nimport relativeTime from 'dayjs/plugin/relativeTime'\nimport advancedFormat from 'dayjs/plugin/advancedFormat'\nimport customParseFormat from 'dayjs/plugin/customParseFormat'\nimport timezone from 'dayjs/plugin/timezone'\nimport utc from 'dayjs/plugin/utc'\nimport duration from 'dayjs/plugin/duration'\n\ndayjs.extend(relativeTime)\ndayjs.extend(advancedFormat)\ndayjs.extend(customParseFormat)\ndayjs.extend(utc)\ndayjs.extend(timezone)"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "codeSampleType": "full solution",
+      "programmingLanguage": "python",
+      "text": "import moment from 'moment-timezone'\n\nmoment.tz('2024-01-15 12:00', 'America/New_York')\nmoment().tz('Europe/London').format()"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "codeSampleType": "full solution",
+      "programmingLanguage": "python",
+      "text": "import dayjs from 'dayjs'\nimport utc from 'dayjs/plugin/utc'\nimport timezone from 'dayjs/plugin/timezone'\ndayjs.extend(utc)\ndayjs.extend(timezone)\n\ndayjs.tz('2024-01-15 12:00', 'America/New_York')\ndayjs().tz('Europe/London').format()"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "codeSampleType": "full solution",
+      "programmingLanguage": "python",
+      "text": "import moment from 'moment'\n\n// Format\nmoment().format('yyyy-MM-dd')\n\n// Add days\nmoment().add(7, 'days').toDate()\n\n// Check if before\nmoment('2024-01-15').isBefore('2024-06-01')\n\n// From now\nmoment().fromNow()"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "codeSampleType": "full solution",
+      "programmingLanguage": "python",
+      "text": "import { format, addDays, isBefore, formatDistanceToNow } from 'date-fns'\n\n// Format\nformat(new Date(), 'yyyy-MM-dd')\n\n// Add days\naddDays(new Date(), 7)\n\n// Check if before\nisBefore(new Date('2024-01-15'), new Date('2024-06-01'))\n\n// From now\nformatDistanceToNow(new Date(), { addSuffix: true })"
     }
   ]
 }</script><style>

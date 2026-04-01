@@ -112,6 +112,90 @@
           }
         }
       ]
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "codeSampleType": "full solution",
+      "programmingLanguage": "javascript",
+      "text": "npm install axios\nnpm uninstall request request-promise"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "codeSampleType": "full solution",
+      "programmingLanguage": "bash",
+      "text": "const request = require('request')\n\n// Callback style\nrequest('https://api.example.com/data', (err, res, body) => {\n  if (err) throw err\n  const data = JSON.parse(body)\n  console.log(data)\n})\n\n// With request-promise\nconst rp = require('request-promise')\nconst data = await rp.get({\n  uri: 'https://api.example.com/data',\n  json: true\n})"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "codeSampleType": "full solution",
+      "programmingLanguage": "python",
+      "text": "const axios = require('axios')\n// or: import axios from 'axios'\n\n// Automatic JSON parsing\nconst { data } = await axios.get('https://api.example.com/data')\nconsole.log(data)\n\n// With options\nconst { data } = await axios.get('https://api.example.com/data', {\n  params: { page: 1 },\n  headers: { Authorization: 'Bearer token' }\n})"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "codeSampleType": "full solution",
+      "programmingLanguage": "bash",
+      "text": "request.post({\n  url: 'https://api.example.com/users',\n  json: true,\n  body: { name: 'Alice', email: 'alice@example.com' }\n}, (err, res, body) => {\n  console.log(body)\n})"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "codeSampleType": "full solution",
+      "programmingLanguage": "bash",
+      "text": "const { data } = await axios.post('https://api.example.com/users', {\n  name: 'Alice',\n  email: 'alice@example.com'\n})\nconsole.log(data)"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "codeSampleType": "full solution",
+      "programmingLanguage": "bash",
+      "text": "request('https://api.example.com', (err, res, body) => {\n  if (err) {\n    console.error('Network error:', err)\n    return\n  }\n  if (res.statusCode !== 200) {\n    console.error('HTTP error:', res.statusCode)\n    return\n  }\n  console.log(JSON.parse(body))\n})"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "codeSampleType": "full solution",
+      "programmingLanguage": "bash",
+      "text": "try {\n  const { data } = await axios.get('https://api.example.com')\n  console.log(data)\n} catch (err) {\n  if (err.response) {\n    // non-200 response\n    console.error('HTTP error:', err.response.status)\n  } else {\n    // network failure\n    console.error('Network error:', err.message)\n  }\n}"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "codeSampleType": "full solution",
+      "programmingLanguage": "bash",
+      "text": "request({\n  url: 'https://api.example.com/data',\n  headers: {\n    'Authorization': 'Bearer mytoken',\n    'X-Custom-Header': 'value'\n  },\n  auth: { user: 'username', pass: 'password' }\n}, callback)"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "codeSampleType": "full solution",
+      "programmingLanguage": "bash",
+      "text": "// Per-request headers\nawait axios.get('https://api.example.com/data', {\n  headers: {\n    'Authorization': 'Bearer mytoken',\n    'X-Custom-Header': 'value'\n  },\n  auth: { username: 'username', password: 'password' }\n})\n\n// Global defaults\naxios.defaults.headers.common['Authorization'] = 'Bearer mytoken'"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "codeSampleType": "full solution",
+      "programmingLanguage": "javascript",
+      "text": "npm install got@11   # CommonJS compatible\nnpm install got      # ESM only (v12+)"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "codeSampleType": "full solution",
+      "programmingLanguage": "bash",
+      "text": "const request = require('request')\n\nrequest.get({\n  url: 'https://api.example.com/data',\n  json: true\n}, (err, res, body) => {\n  console.log(body)\n})"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "codeSampleType": "full solution",
+      "programmingLanguage": "bash",
+      "text": "const got = require('got')\n\nconst body = await got('https://api.example.com/data').json()\nconsole.log(body)\n\n// With options\nconst body = await got('https://api.example.com/data', {\n  searchParams: { page: 1 },\n  headers: { Authorization: 'Bearer token' }\n}).json()"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "codeSampleType": "full solution",
+      "programmingLanguage": "bash",
+      "text": "request('https://api.example.com/data', (err, res, body) => {\n  const data = JSON.parse(body)\n  console.log(data)\n})"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "codeSampleType": "full solution",
+      "programmingLanguage": "bash",
+      "text": "// Built into Node.js 18+\nconst res = await fetch('https://api.example.com/data')\nif (!res.ok) throw new Error('HTTP error: ' + res.status)\nconst data = await res.json()\nconsole.log(data)\n\n// POST\nconst res = await fetch('https://api.example.com/users', {\n  method: 'POST',\n  headers: { 'Content-Type': 'application/json' },\n  body: JSON.stringify({ name: 'Alice' })\n})\nconst data = await res.json()"
     }
   ]
 }</script><style>

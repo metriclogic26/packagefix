@@ -119,6 +119,18 @@
           }
         }
       ]
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "codeSampleType": "full solution",
+      "programmingLanguage": "javascript",
+      "text": "# package.json: \"express\": \"^4.19.2\"\n# package-lock.json: \"express\": \"4.17.1\"  \u2190 vulnerable version still pinned"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "codeSampleType": "full solution",
+      "programmingLanguage": "javascript",
+      "text": "# Delete package-lock.json and regenerate:\nrm package-lock.json\nnpm install\n\n# Or update a specific package:\nnpm update express"
     }
   ]
 }</script>

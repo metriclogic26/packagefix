@@ -101,6 +101,12 @@
           }
         }
       ]
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "codeSampleType": "full solution",
+      "programmingLanguage": "javascript",
+      "text": "# Check your current axios version\nnpm list axios\n\n# Check if plain-crypto-js is present\ngrep -r \"plain-crypto-js\" package-lock.json\n\n# If affected - downgrade immediately\nnpm install axios@1.14.0\n\n# For 0.x users\nnpm install axios@0.30.3\n\n# Commit the fix\ngit add package.json package-lock.json\ngit commit -m \"security: downgrade axios - supply chain attack (GHSA-fw8c-xr5c-95f9)\""
     }
   ]
 }</script><style>

@@ -80,6 +80,18 @@
           }
         }
       ]
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "codeSampleType": "full solution",
+      "programmingLanguage": "javascript",
+      "text": "# Check your current version\nnpm list multer\n\n# Update to the safe version\nnpm install multer@1.4.5-lts.1\n\n# Verify the update\nnpm list multer\n# Should show: multer@1.4.5-lts.1\n\n# Commit the lockfile\ngit add package.json package-lock.json\ngit commit -m \"fix: update multer to 1.4.5-lts.1 (CVE-2022-24434)\""
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "codeSampleType": "full solution",
+      "programmingLanguage": "javascript",
+      "text": "// package.json\n{\n  \"overrides\": {\n    \"multer\": \"1.4.5-lts.1\"\n  }\n}"
     }
   ]
 }</script><style>

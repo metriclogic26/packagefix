@@ -104,6 +104,36 @@
           }
         }
       ]
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "codeSampleType": "full solution",
+      "programmingLanguage": "javascript",
+      "text": "# Install husky\nnpm install --save-dev husky\nnpx husky init\n\n# Add to .husky/pre-commit:\n#!/bin/sh\nnpm audit --audit-level=critical\nif [ $? -ne 0 ]; then\n  echo \"Critical CVEs found. Fix before committing.\"\n  echo \"Run: npm audit fix or paste package.json into packagefix.dev\"\n  exit 1\nfi"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "codeSampleType": "full solution",
+      "programmingLanguage": "bash",
+      "text": "repos:\n  # OSV Scanner \u2014 works for all 7 ecosystems\n  - repo: https://github.com/google/osv-scanner\n    rev: v1.7.0\n    hooks:\n      - id: osv-scanner\n        args: ['--fail-on-vuln']\n\n  # npm audit (npm projects only)\n  - repo: local\n    hooks:\n      - id: npm-audit\n        name: npm audit\n        entry: npm audit --audit-level=high\n        language: system\n        files: package\\.json$\n        pass_filenames: false"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "codeSampleType": "full solution",
+      "programmingLanguage": "python",
+      "text": "pip install pre-commit\npre-commit install"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "codeSampleType": "full solution",
+      "programmingLanguage": "python",
+      "text": "repos:\n  - repo: local\n    hooks:\n      - id: pip-audit\n        name: pip-audit\n        entry: pip-audit -r requirements.txt --fail-on critical\n        language: system\n        files: requirements\\.txt$\n        pass_filenames: false"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "codeSampleType": "full solution",
+      "programmingLanguage": "ruby",
+      "text": "repos:\n  - repo: local\n    hooks:\n      - id: bundle-audit\n        name: bundle audit\n        entry: bundle audit check --update\n        language: system\n        files: Gemfile\\.lock$\n        pass_filenames: false"
     }
   ]
 }</script>

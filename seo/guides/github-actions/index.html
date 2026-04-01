@@ -104,6 +104,30 @@
           }
         }
       ]
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "codeSampleType": "full solution",
+      "programmingLanguage": "bash",
+      "text": "name: Dependency Security Scan\non: [push, pull_request]\n\njobs:\n  osv-scan:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: google/osv-scanner-action@v2\n        with:\n          scan-args: |-\n            --lockfile=package-lock.json"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "codeSampleType": "full solution",
+      "programmingLanguage": "bash",
+      "text": "name: npm Security Scan\non: [push, pull_request]\n\njobs:\n  npm-audit:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-node@v4\n        with:\n          node-version: '20'\n      - run: npm ci\n      - run: npm audit --audit-level=high"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "codeSampleType": "full solution",
+      "programmingLanguage": "python",
+      "text": "name: Python Security Scan\non: [push, pull_request]\n\njobs:\n  pip-audit:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-python@v5\n        with:\n          python-version: '3.11'\n      - run: pip install pip-audit\n      - run: pip-audit -r requirements.txt --fail-on critical"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "codeSampleType": "full solution",
+      "programmingLanguage": "bash",
+      "text": "name: Ruby Security Scan\non: [push, pull_request]\n\njobs:\n  bundle-audit:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: ruby/setup-ruby@v1\n        with:\n          ruby-version: '3.3'\n          bundler-cache: true\n      - run: gem install bundler-audit\n      - run: bundle audit check --update"
     }
   ]
 }</script>
