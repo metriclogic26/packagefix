@@ -434,3 +434,8 @@ https://packagefix.dev/blog/ruby-on-rails-security-releases-2024
 ## Breaking - axios Supply Chain Attack
 https://packagefix.dev/blog/axios-supply-chain-attack-march-2026
 https://packagefix.dev/blog/axios-plain-crypto-js-transitive-attack-explained
+
+## Version-first pages
+https://packagefix.dev/fix/pypi/cryptography/cve-2024
+https://packagefix.dev/fix/pypi/django/cve-2024
+https://packagefix.dev/fix/ruby/rails/cve-2024

@@ -2279,6 +2279,30 @@
     {
       "source": "/blog/axios-plain-crypto-js-transitive-attack-explained/",
       "destination": "/seo/blog/axios-plain-crypto-js-transitive-attack-explained/index.html"
+    },
+    {
+      "source": "/fix/pypi/cryptography/cve-2024",
+      "destination": "/seo/fix/pypi/cryptography/cve-2024/index.html"
+    },
+    {
+      "source": "/fix/pypi/cryptography/cve-2024/",
+      "destination": "/seo/fix/pypi/cryptography/cve-2024/index.html"
+    },
+    {
+      "source": "/fix/pypi/django/cve-2024",
+      "destination": "/seo/fix/pypi/django/cve-2024/index.html"
+    },
+    {
+      "source": "/fix/pypi/django/cve-2024/",
+      "destination": "/seo/fix/pypi/django/cve-2024/index.html"
+    },
+    {
+      "source": "/fix/ruby/rails/cve-2024",
+      "destination": "/seo/fix/ruby/rails/cve-2024/index.html"
+    },
+    {
+      "source": "/fix/ruby/rails/cve-2024/",
+      "destination": "/seo/fix/ruby/rails/cve-2024/index.html"
     }
   ],
   "redirects": [
