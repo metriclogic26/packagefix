@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>multer 1.4.5-lts.1 — Fix CVE-2022-24434 | PackageFix</title>
-<meta name="description" content="multer 1.4.5-lts.1 fixes CVE-2022-24434 (HIGH) — denial of service via crafted multipart request. Paste your package.json, get a fixed version instantly. No CLI, no signup.">
+<title>Fix multer CVE-2025-47944 — Upgrade to 2.1.1 (1.4.5-lts.1 is Vulnerable) | PackageFix</title>
+<meta name="description" content="multer 1.4.5-lts.1 is now vulnerable to CVE-2025-47944 (HIGH). Safe version: multer@2.1.1. Upgrade guide from 1.x to 2.x with breaking changes and migration steps.">
 <link rel="canonical" href="https://packagefix.dev/fix/npm/multer">
-<meta property="og:title" content="multer 1.4.5-lts.1 — Fix CVE-2022-24434 | PackageFix">
-<meta property="og:description" content="multer 1.4.5-lts.1 fixes CVE-2022-24434 (HIGH) — denial of service via crafted multipart request. Paste your package.json, get a fixed version instantly. No CLI, no signup.">
+<meta property="og:title" content="Fix multer CVE-2025-47944 — Upgrade to 2.1.1 (1.4.5-lts.1 is Vulnerable) | PackageFix">
+<meta property="og:description" content="multer 1.4.5-lts.1 is now vulnerable to CVE-2025-47944 (HIGH). Safe version: multer@2.1.1. Upgrade guide from 1.x to 2.x with breaking changes and migration steps.">
 <meta property="og:url" content="https://packagefix.dev/fix/npm/multer">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
@@ -207,63 +207,62 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
   <div class="breadcrumb"><a href="/">PackageFix</a> <span style='color:var(--border)'>/</span> <a href="/fix">Fix Guides</a> <span style='color:var(--border)'>/</span> <a href="/npm">npm</a> <span style='color:var(--border)'>/</span> <span style="color:var(--text)">multer</span></div>
   
 <div id="version-status-table">
-<div style="margin:0 0 32px">
+<div style="background:rgba(239,68,68,.15);border:2px solid #EF4444;border-radius:10px;padding:20px 24px;margin:0 0 24px">
+<div style="font-size:11px;font-weight:700;color:#EF4444;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px">&#x26A0; Critical Update &mdash; April 2026</div>
+<p style="color:var(--text);margin:0;font-size:13px;line-height:1.7"><strong>multer 1.4.5-lts.1 is now vulnerable.</strong> CVE-2025-47944 (HIGH, CVSS 7.5) affects all multer versions &gt;=1.4.4-lts.1 and &lt;2.0.0. The only fix is upgrading to <strong>multer@2.1.1</strong>. No workarounds exist.</p>
+</div>
+
 <h2>multer Version Security Status</h2>
-<p style="color:var(--muted);font-size:12px;margin-bottom:12px">Last updated March 31, 2026. Check your version: <code>npm list multer</code></p>
+<p style="color:var(--muted);font-size:12px;margin-bottom:12px">Last updated April 1, 2026. Check your version: <code>npm list multer</code></p>
 <table style="width:100%;border-collapse:collapse;font-size:12px">
 <thead>
 <tr style="border-bottom:2px solid var(--border)">
 <th style="text-align:left;padding:10px 12px;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.08em">Version</th>
 <th style="text-align:left;padding:10px 12px;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.08em">Status</th>
-<th style="text-align:left;padding:10px 12px;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.08em">CVE</th>
+<th style="text-align:left;padding:10px 12px;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.08em">CVEs</th>
 <th style="text-align:left;padding:10px 12px;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.08em">Notes</th>
 </tr>
 </thead>
 <tbody>
 <tr style="border-bottom:1px solid var(--border);background:rgba(34,197,94,.05)">
-<td style="padding:10px 12px;font-weight:700;color:var(--text)">1.4.5-lts.1</td>
+<td style="padding:10px 12px;font-weight:700;color:var(--text)">2.1.1+</td>
 <td style="padding:10px 12px"><span style="background:rgba(34,197,94,.2);color:#22C55E;border:1px solid #22C55E;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase">SAFE</span></td>
 <td style="padding:10px 12px;color:var(--muted)">None</td>
-<td style="padding:10px 12px;color:var(--muted)">Current safe version. Update to this.</td>
+<td style="padding:10px 12px;color:var(--muted)">Current safe version. Requires Node.js 10.16+. Has breaking changes from 1.x.</td>
 </tr>
 <tr style="border-bottom:1px solid var(--border)">
-<td style="padding:10px 12px;font-weight:700;color:var(--text)">1.4.4</td>
+<td style="padding:10px 12px;font-weight:700;color:var(--text)">1.4.5-lts.1</td>
 <td style="padding:10px 12px"><span style="background:rgba(239,68,68,.2);color:#EF4444;border:1px solid #EF4444;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase">VULNERABLE</span></td>
-<td style="padding:10px 12px"><a href="https://osv.dev/vulnerability/CVE-2022-24434" target="_blank" rel="noopener" style="color:var(--purple)">CVE-2022-24434</a></td>
-<td style="padding:10px 12px;color:var(--muted)">DoS via crafted multipart request. Do not use.</td>
+<td style="padding:10px 12px;color:var(--muted)">CVE-2025-47944, CVE-2022-24434</td>
+<td style="padding:10px 12px;color:var(--muted)">Previously recommended as safe for CVE-2022-24434 &mdash; now itself vulnerable. Upgrade to 2.1.1.</td>
 </tr>
 <tr style="border-bottom:1px solid var(--border)">
-<td style="padding:10px 12px;font-weight:700;color:var(--text)">1.4.3</td>
+<td style="padding:10px 12px;font-weight:700;color:var(--text)">1.4.4 and below</td>
 <td style="padding:10px 12px"><span style="background:rgba(239,68,68,.2);color:#EF4444;border:1px solid #EF4444;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase">VULNERABLE</span></td>
-<td style="padding:10px 12px"><a href="https://osv.dev/vulnerability/CVE-2022-24434" target="_blank" rel="noopener" style="color:var(--purple)">CVE-2022-24434</a></td>
-<td style="padding:10px 12px;color:var(--muted)">Affected. Update to 1.4.5-lts.1.</td>
-</tr>
-<tr style="border-bottom:1px solid var(--border)">
-<td style="padding:10px 12px;font-weight:700;color:var(--text)">1.4.2</td>
-<td style="padding:10px 12px"><span style="background:rgba(239,68,68,.2);color:#EF4444;border:1px solid #EF4444;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase">VULNERABLE</span></td>
-<td style="padding:10px 12px"><a href="https://osv.dev/vulnerability/CVE-2022-24434" target="_blank" rel="noopener" style="color:var(--purple)">CVE-2022-24434</a></td>
-<td style="padding:10px 12px;color:var(--muted)">Affected. Update to 1.4.5-lts.1.</td>
-</tr>
-<tr style="border-bottom:1px solid var(--border)">
-<td style="padding:10px 12px;font-weight:700;color:var(--text)">1.4.1</td>
-<td style="padding:10px 12px"><span style="background:rgba(239,68,68,.2);color:#EF4444;border:1px solid #EF4444;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase">VULNERABLE</span></td>
-<td style="padding:10px 12px"><a href="https://osv.dev/vulnerability/CVE-2022-24434" target="_blank" rel="noopener" style="color:var(--purple)">CVE-2022-24434</a></td>
-<td style="padding:10px 12px;color:var(--muted)">Affected. Update to 1.4.5-lts.1.</td>
-</tr>
-<tr>
-<td style="padding:10px 12px;font-weight:700;color:var(--text)">1.4.0 and below</td>
-<td style="padding:10px 12px"><span style="background:rgba(239,68,68,.2);color:#EF4444;border:1px solid #EF4444;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase">VULNERABLE</span></td>
-<td style="padding:10px 12px"><a href="https://osv.dev/vulnerability/CVE-2022-24434" target="_blank" rel="noopener" style="color:var(--purple)">CVE-2022-24434</a></td>
-<td style="padding:10px 12px;color:var(--muted)">All versions below 1.4.5-lts.1 are affected.</td>
+<td style="padding:10px 12px;color:var(--muted)">CVE-2022-24434 + more</td>
+<td style="padding:10px 12px;color:var(--muted)">Multiple CVEs. Upgrade to 2.1.1 immediately.</td>
 </tr>
 </tbody>
 </table>
-<div style="margin-top:12px;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.3);border-left:3px solid #22C55E;border-radius:8px;padding:12px 16px">
-<p style="margin:0;font-size:12px;color:var(--text)"><strong>Fix:</strong> <code>npm install multer@1.4.5-lts.1</code> &mdash; Note: npm update will NOT auto-upgrade to this version because the -lts.1 suffix makes it a pre-release. You must update manually.</p>
+
+<h2>How to upgrade: 1.x &rarr; 2.x</h2>
+<div style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.3);border-left:3px solid #22C55E;border-radius:8px;padding:16px 20px;margin:12px 0">
+<div style="font-size:10px;font-weight:700;color:#22C55E;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px">Fix</div>
+<pre style="margin:0;background:transparent;border:none;padding:0">npm install multer@2.1.1</pre>
+</div>
+
+<div style="background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.3);border-left:3px solid #F97316;border-radius:8px;padding:16px 20px;margin:12px 0">
+<div style="font-size:10px;font-weight:700;color:#F97316;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px">Breaking changes in multer 2.x</div>
+<ul style="margin:0;padding-left:18px;color:var(--muted);font-size:12px;line-height:2">
+<li>Requires Node.js 10.16.0 or later</li>
+<li><code>fileFilter</code> callback signature changed &mdash; check the multer 2.x docs</li>
+<li>Some multer plugins (multer-gridfs-storage, multer-s3) may need updates to support 2.x &mdash; check their GitHub for 2.x compatibility</li>
+<li>Error handling changed &mdash; test your upload error paths</li>
+</ul>
 </div>
 </div>
-</div><h1>multer 1.4.5-lts.1 — Fix CVE-2022-24434 <span class="badge badge-orange">HIGH</span></h1>
-<p class="lead">multer 1.4.5-lts.1 fixes CVE-2022-24434 (HIGH) — denial of service via crafted multipart request. Paste your package.json, get a fixed version instantly. No CLI, no signup.</p>
+</div><h1>Fix multer — CVE-2025-47944 <span class="badge badge-red">HIGH</span> <span class="badge badge-orange" style="font-size:9px;margin-left:4px">1.4.5-lts.1 VULNERABLE</span></h1>
+<p class="lead">multer 1.4.5-lts.1 is now vulnerable to CVE-2025-47944 (HIGH). Safe version: multer@2.1.1. Upgrade guide from 1.x to 2.x with breaking changes and migration steps.</p>
 
 <div class="problem-box">
   <div class="label">⚠ Vulnerability</div>

@@ -210,7 +210,7 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
 <main class="container">
   <div class="breadcrumb"><a href="/">PackageFix</a> <span style='color:var(--border)'>/</span> <a href="/fix">Fix Guides</a> <span style='color:var(--border)'>/</span> <a href="/ruby">Ruby</a> <span style='color:var(--border)'>/</span> <span style="color:var(--text)">Rails</span></div>
   
-<div style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.3);border-radius:8px;padding:14px 18px;margin:0 0 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px"><div><div style="font-size:10px;font-weight:700;color:#22C55E;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Current Safe Versions (as of March 31, 2026)</div><p style="margin:0;font-size:12px;color:var(--text)">Rails 7.2 &rarr; <strong>7.2.2.1</strong> &nbsp;&middot;&nbsp; Rails 7.1 LTS &rarr; <strong>7.1.5.1</strong> &nbsp;&middot;&nbsp; Rails 7.0 &rarr; <strong>7.0.8.5</strong></p></div><a href="/blog/ruby-on-rails-security-releases-2024" style="color:#6C63FF;font-size:11px;white-space:nowrap">Full 2024 release history &rarr;</a></div><h1>All Rails CVEs — Complete Vulnerability History</h1>
+<div style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.3);border-radius:8px;padding:14px 18px;margin:0 0 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px"><div><div style="font-size:10px;font-weight:700;color:#22C55E;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Current Safe Versions (as of April 1, 2026)</div><p style="margin:0;font-size:12px;color:var(--text)">Rails 8.1 &rarr; <strong>8.1.2.1</strong> &nbsp;&middot;&nbsp; Rails 8.0 &rarr; <strong>8.0.4.1</strong> &nbsp;&middot;&nbsp; Rails 7.2 &rarr; <strong>7.2.3.1</strong> &nbsp;&middot;&nbsp; <span style="color:var(--red)">Rails 7.1 &amp; 7.0: EOL &mdash; no more patches</span></p></div><a href="/blog/ruby-on-rails-security-releases-2024" style="color:#6C63FF;font-size:11px;white-space:nowrap">Full 2024 release history &rarr;</a></div><h1>All Rails CVEs — Complete Vulnerability History</h1>
 <p class="lead">Rails has a mature, well-run security process. CVEs are disclosed on the Rails blog and through rubyonrails-security mailing list. Most CVEs are XSS, CSRF, or open redirect issues — serious but manageable with prompt updates.</p>
 
 <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px">
@@ -221,6 +221,39 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
   
 </div>
 
+
+<h2>March 2026 Security Release &mdash; 10 CVEs</h2>
+<p>On March 23, 2026, Rails released security patches across all supported versions (7.2.3.1, 8.0.4.1, 8.1.2.1) addressing 10 security issues including path traversal in Active Storage, XSS in Action Pack debug exceptions, and DoS via Active Storage proxy mode. Rails 7.0 and 7.1 received no patches &mdash; they are end of life.</p>
+<table style="width:100%;border-collapse:collapse;font-size:12px;margin:16px 0">
+<thead><tr style="border-bottom:2px solid var(--border)">
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">CVE</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Component</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Description</th>
+</tr></thead>
+<tbody>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px;color:var(--purple)">CVE-2026-33195</td><td style="padding:8px 12px;color:var(--muted)">Active Storage</td><td style="padding:8px 12px;color:var(--muted)">Path traversal in DiskService</td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px;color:var(--purple)">CVE-2026-33167</td><td style="padding:8px 12px;color:var(--muted)">Action Pack</td><td style="padding:8px 12px;color:var(--muted)">XSS in debug exceptions (dev mode)</td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px;color:var(--purple)">CVE-2026-33168</td><td style="padding:8px 12px;color:var(--muted)">Action View</td><td style="padding:8px 12px;color:var(--muted)">XSS in tag helpers</td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px;color:var(--purple)">CVE-2026-33174</td><td style="padding:8px 12px;color:var(--muted)">Active Storage</td><td style="padding:8px 12px;color:var(--muted)">DoS via Range requests in proxy mode</td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px;color:var(--purple)">CVE-2026-33202</td><td style="padding:8px 12px;color:var(--muted)">Active Storage</td><td style="padding:8px 12px;color:var(--muted)">Glob injection in DiskService</td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px;color:var(--purple)">CVE-2026-33169</td><td style="padding:8px 12px;color:var(--muted)">Active Support</td><td style="padding:8px 12px;color:var(--muted)">ReDoS in number_to_delimited</td></tr>
+<tr><td style="padding:8px 12px;color:var(--purple)">+4 more</td><td style="padding:8px 12px;color:var(--muted)">Various</td><td style="padding:8px 12px;color:var(--muted)">XSS, DoS, metadata filtering</td></tr>
+</tbody>
+</table>
+<div style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.3);border-left:3px solid #22C55E;border-radius:8px;padding:14px 18px;margin:12px 0">
+<pre style="margin:0;background:transparent;border:none;padding:0"># Update to March 2026 security release
+bundle update rails
+
+# Target specific version
+gem 'rails', '~> 8.1.2'  # Rails 8.1
+gem 'rails', '~> 8.0.4'  # Rails 8.0
+gem 'rails', '~> 7.2.3'  # Rails 7.2 (last supported minor)</pre>
+</div>
+
+<div style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3);border-left:3px solid #EF4444;border-radius:8px;padding:14px 18px;margin:12px 0">
+<div style="font-size:10px;font-weight:700;color:#EF4444;text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Rails 7.0 and 7.1 are End of Life</div>
+<p style="margin:0;font-size:12px;color:var(--muted)">Rails 7.0 reached EOL April 2025. Rails 7.1 reached EOL October 2025. Neither received patches for the March 2026 CVEs. If you are on 7.0 or 7.1, upgrade to 7.2 or 8.x immediately &mdash; your application has unpatched path traversal and XSS vulnerabilities.</p>
+</div>
 <h2>CVE history — all 5 known vulnerabilities</h2>
 
 <table class="cve-history">
