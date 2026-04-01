@@ -206,7 +206,8 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
 <main class="container">
   <div class="breadcrumb"><a href="/">PackageFix</a> <span style='color:var(--border)'>/</span> <a href="/fix">Fix Guides</a> <span style='color:var(--border)'>/</span> <a href="/ruby">Ruby</a> <span style='color:var(--border)'>/</span> <span style="color:var(--text)">ruby-jwt</span></div>
   
-<h1>Fix ruby-jwt — CVE-2024-21979 <span class="badge badge-orange">HIGH</span></h1><div style="background:rgba(108,99,255,.08);border:1px solid rgba(108,99,255,.3);border-left:3px solid #6C63FF;border-radius:8px;padding:16px 20px;margin:24px 0">
+<h1>Fix ruby-jwt — CVE-2024-21979 <span class="badge badge-orange">HIGH</span></h1>
+<p style="font-size:11px;color:var(--muted);margin-bottom:16px">Last updated: April 1, 2026 &middot; <a href="https://osv.dev" target="_blank" rel="noopener" style="color:var(--muted)">Data: OSV Database</a></p><div style="background:rgba(108,99,255,.08);border:1px solid rgba(108,99,255,.3);border-left:3px solid #6C63FF;border-radius:8px;padding:16px 20px;margin:24px 0">
 <div style="font-size:10px;font-weight:700;color:#6C63FF;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px">Did you know?</div>
 <p style="margin:0 0 8px;font-size:12px;color:var(--text)"><strong>ruby-jwt is often a transitive dependency.</strong> You may have it without knowing.</p>
 <p style="margin:0;font-size:12px;color:var(--muted)">Auth0, Devise-JWT, and several API authentication gems pull in ruby-jwt automatically. If you use any of these, a vulnerable ruby-jwt version may be in your lockfile even if it is not in your Gemfile directly. This is called a <a href="/glossary/transitive-dependency" style="color:#6C63FF">transitive dependency</a>.</p>
