@@ -4939,6 +4939,80 @@ Gemfile.lock, composer.lock</p>
             resetToInputState();
           });
         }
+
+        // OSV freshness timestamp
+        var tsDiv = document.createElement('div');
+        tsDiv.style.cssText = 'font-size:0.72rem;color:var(--muted);margin:0.25rem 0 1.25rem;';
+        var scanTime = new Date().toLocaleString('en-US', {month:'short',day:'numeric',year:'numeric',hour:'2-digit',minute:'2-digit',timeZoneName:'short'});
+        tsDiv.textContent = '\u{1F550} Scanned ' + scanTime + '  \u00b7  OSV database \u2014 updated continuously  \u00b7  CISA KEV \u2014 checked on every scan';
+        if (resultsContent.firstChild) {
+          resultsContent.insertBefore(tsDiv, resultsContent.firstChild.nextSibling);
+        }
+
+        // Share results button
+        var existingScanBtn = document.getElementById('scan-another-btn');
+        if (existingScanBtn && !document.getElementById('share-results-btn')) {
+          var shareBtn = document.createElement('button');
+          shareBtn.id = 'share-results-btn';
+          shareBtn.style.cssText = 'font-family:JetBrains Mono,monospace;font-size:0.85rem;background:var(--surface);border:1px solid var(--purple);color:var(--purple);padding:0.4rem 0.85rem;border-radius:6px;cursor:pointer;margin-left:0.5rem;';
+          shareBtn.textContent = '\u2398 Share results';
+          shareBtn.addEventListener('click', function() {
+            var url = window.location.origin + window.location.pathname;
+            var el = document.getElementById('manifest-input');
+            if (el && el.value) {
+              try { url += '?share=' + encodeURIComponent(btoa(unescape(encodeURIComponent(el.value)))); } catch(e) {}
+            }
+            var btn = this;
+            var done = function() {
+              btn.textContent = '\u2713 Link copied!';
+              btn.style.borderColor = 'var(--green)';
+              btn.style.color = 'var(--green)';
+              setTimeout(function() {
+                btn.textContent = '\u2398 Share results';
+                btn.style.borderColor = 'var(--purple)';
+                btn.style.color = 'var(--purple)';
+              }, 2000);
+            };
+            if (navigator.clipboard) {
+              navigator.clipboard.writeText(url).then(done).catch(function() {
+                var ta = document.createElement('textarea');
+                ta.value = url; ta.style.position = 'fixed'; ta.style.opacity = '0';
+                document.body.appendChild(ta); ta.focus(); ta.select();
+                document.execCommand('copy'); document.body.removeChild(ta); done();
+              });
+            } else {
+              var ta = document.createElement('textarea');
+              ta.value = url; ta.style.position = 'fixed'; ta.style.opacity = '0';
+              document.body.appendChild(ta); ta.focus(); ta.select();
+              document.execCommand('copy'); document.body.removeChild(ta); done();
+            }
+          });
+          existingScanBtn.insertAdjacentElement('afterend', shareBtn);
+        }
+
+        // README badge
+        var badgeDiv = document.createElement('div');
+        badgeDiv.style.cssText = 'margin-top:2rem;padding:1rem 1.25rem;background:var(--surface);border:1px solid var(--border);border-radius:8px;';
+        var badgeMd = '[!\u005bPackageFix\u005d(https://img.shields.io/badge/PackageFix-scanned-6C63FF?style=flat)](https://packagefix.dev)';
+        badgeDiv.innerHTML = '<div style="font-size:0.75rem;font-weight:600;color:var(--text);margin-bottom:0.5rem;">\uD83C\uDFF7 GitHub README Badge</div>' +
+          '<p style="font-size:0.72rem;color:var(--muted);margin:0 0 0.75rem;">Add to your README to show your project has been scanned.</p>' +
+          '<div id="badge-md-box" style="background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:0.6rem 0.85rem;font-size:0.7rem;color:var(--muted);font-family:JetBrains Mono,monospace;margin-bottom:0.5rem;word-break:break-all;"></div>' +
+          '<button id="copy-badge-btn" style="font-family:JetBrains Mono,monospace;font-size:0.72rem;background:transparent;border:1px solid var(--border);color:var(--muted);padding:0.3rem 0.7rem;border-radius:4px;cursor:pointer;">Copy badge markdown</button>';
+        resultsContent.appendChild(badgeDiv);
+        var badgeBox = document.getElementById('badge-md-box');
+        if (badgeBox) badgeBox.textContent = badgeMd;
+        var copyBadgeBtn = document.getElementById('copy-badge-btn');
+        if (copyBadgeBtn) {
+          copyBadgeBtn.addEventListener('click', function() {
+            var btn = this;
+            if (navigator.clipboard) {
+              navigator.clipboard.writeText(badgeMd).then(function() {
+                btn.textContent = '\u2713 Copied!';
+                setTimeout(function() { btn.textContent = 'Copy badge markdown'; }, 2000);
+              });
+            }
+          });
+        }
       }
 
       function escapeHtml(s) {
