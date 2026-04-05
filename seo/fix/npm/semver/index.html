@@ -208,7 +208,7 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
   <p style="margin-top:12px;font-size:11px;color:var(--muted)">Free · No signup · No CLI · Runs in your browser</p>
 </div>
 <div class="faq"><h2>Common questions</h2><div class="faq-item"><div class="faq-q">How do I fix semver if it's a transitive dependency?</div><div class="faq-a">semver appears as a transitive dependency in almost every Node.js project. Use npm overrides: {"overrides": {"semver": "7.5.4"}}. PackageFix generates this block automatically.</div></div><div class="faq-item"><div class="faq-q">Is semver ReDoS exploitable in practice?</div><div class="faq-a">The coerce() ReDoS requires passing a very long string. In most applications, version strings come from package.json or known sources, not user input. Still worth patching — the upgrade has no breaking changes.</div></div></div>
-<div style="margin:40px 0"><h2>Related</h2><div class="related-grid"><div class="related-card"><a href="/fix/npm/minimist">Fix minimist</a><p>Another heavily-transitive CVE</p></div><div class="related-card"><a href="/npm">npm Security</a><p>All npm guides</p></div></div></div>
+<div style="margin:40px 0"><h2>Related</h2><div class="related-grid"><div class="related-card"><a href="/kev/CVE-2022-25883">CVE-2022-25883 KEV</a><p>semver CISA KEV entry</p></div><div class="related-card"><a href="/fix/npm/minimist">Fix minimist</a><p>Another heavily-transitive CVE</p></div><div class="related-card"><a href="/npm">npm Security</a><p>All npm guides</p></div></div></div>
 
 </main>
 <footer class="site-footer">

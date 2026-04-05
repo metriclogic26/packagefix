@@ -226,7 +226,7 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
   <p style="margin-top:12px;font-size:11px;color:var(--muted)">Free · No signup · No CLI · Runs in your browser</p>
 </div>
 <div class="faq"><h2>Common questions</h2><div class="faq-item"><div class="faq-q">Why does Pillow have so many CVEs?</div><div class="faq-a">Image file parsing requires handling dozens of complex binary formats (JPEG, PNG, TIFF, BMP, WebP, etc.), each with their own quirks. C extensions handle the low-level parsing, which means memory safety issues in the underlying C code surface as CVEs.</div></div><div class="faq-item"><div class="faq-q">Should I validate image uploads before passing to Pillow?</div><div class="faq-a">Yes — always validate that uploaded files are valid images of the expected format. Use Pillow's verify() method or check the file header before processing. Reject unexpected formats entirely.</div></div></div>
-<div style="margin:40px 0"><h2>Related</h2><div class="related-grid"><div class="related-card"><a href="/python">PyPI Security</a><p>All Python guides</p></div><div class="related-card"><a href="/glossary/dependency-scanning">Dependency Scanning</a><p>Staying on top of CVEs</p></div></div></div>
+<div style="margin:40px 0"><h2>Related</h2><div class="related-grid"><div class="related-card"><a href="/fix/pypi/critical-cve/pillow">Pillow Critical CVEs</a><p>Image processing CVEs</p></div><div class="related-card"><a href="/python">PyPI Security</a><p>All Python guides</p></div><div class="related-card"><a href="/glossary/dependency-scanning">Dependency Scanning</a><p>Staying on top of CVEs</p></div></div></div>
 
 </main>
 <footer class="site-footer">
