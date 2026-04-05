@@ -208,7 +208,7 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
   <p style="margin-top:12px;font-size:11px;color:var(--muted)">Free · No signup · No CLI · Runs in your browser</p>
 </div>
 <div class="faq"><h2>Common questions</h2><div class="faq-item"><div class="faq-q">Is using Pickle as the Celery result backend safe?</div><div class="faq-a">No — Pickle allows arbitrary Python object deserialisation and should never be used with untrusted task results. Use JSON as the task serialiser: task_serializer='json', result_serializer='json', accept_content=['json'].</div></div><div class="faq-item"><div class="faq-q">Does Celery expose a network endpoint?</div><div class="faq-a">Celery workers connect to a broker (RabbitMQ, Redis) and listen for tasks. The broker should never be exposed to untrusted networks. Access control on your broker is as important as keeping Celery updated.</div></div></div>
-<div style="margin:40px 0"><h2>Related</h2><div class="related-grid"><div class="related-card"><a href="/python">PyPI Security</a><p>All Python guides</p></div></div></div>
+<div style="margin:40px 0"><h2>Related</h2><div class="related-grid"><div class="related-card"><a href="/fix/pypi/redis">Fix redis-py</a><p>Celery uses Redis as broker</p></div><div class="related-card"><a href="/python">PyPI Security</a><p>All Python guides</p></div></div></div>
 
 </main>
 <footer class="site-footer">
