@@ -182,7 +182,7 @@ diesel = "2.1.5"</pre>
   <p style="margin-top:12px;font-size:11px;color:var(--muted)">Free · No signup · No CLI · Runs in your browser</p>
 </div>
 <div class="faq"><h2>Common questions</h2><div class="faq-item"><div class="faq-q">Does Rust's type system prevent SQL injection in Diesel?</div><div class="faq-a">Diesel's query builder is injection-safe. The CVE is in raw SQL via diesel::sql_query() with string formatting — which bypasses the type-safe query builder. Avoid string interpolation in raw queries.</div></div></div>
-<div style="margin:40px 0"><h2>Related</h2><div class="related-grid"><div class="related-card"><a href="/rust">Rust Security</a><p>All Rust guides</p></div></div></div>
+<div style="margin:40px 0"><h2>Related</h2><div class="related-grid"><div class="related-card"><a href="/fix/rust/sqlx">Fix sqlx</a><p>Alternative Rust ORM</p></div><div class="related-card"><a href="/rust">Rust Security</a><p>All Rust guides</p></div></div></div>
 </main>
 <footer class="site-footer">
   <p>PackageFix · <a href="/">packagefix.dev</a> · MIT Licensed · Open Source</p>
