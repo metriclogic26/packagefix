@@ -220,7 +220,7 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
   <p style="margin-top:12px;font-size:11px;color:var(--muted)">Free · No signup · No CLI · Runs in your browser</p>
 </div>
 <div class="faq"><h2>Common questions</h2><div class="faq-item"><div class="faq-q">Why does Guzzle have credential exposure CVEs?</div><div class="faq-a">HTTP clients that follow redirects must decide what to do with authentication headers when the redirect goes to a different host. Guzzle historically was too permissive, sending auth headers across host boundaries. The fixes add strict host checking before forwarding credentials.</div></div><div class="faq-item"><div class="faq-q">Do Laravel and Symfony use Guzzle?</div><div class="faq-a">Yes — Laravel's HTTP client wraps Guzzle, and many Symfony packages use it. Updating the underlying guzzlehttp/guzzle package directly is the safest approach.</div></div></div>
-<div style="margin:40px 0"><h2>Related</h2><div class="related-grid"><div class="related-card"><a href="/fix/php/laravel">Fix Laravel</a><p>Main Guzzle consumer</p></div><div class="related-card"><a href="/php">PHP Security</a><p>All PHP guides</p></div></div></div>
+<div style="margin:40px 0"><h2>Related</h2><div class="related-grid"><div class="related-card"><a href="/fix/php/jwt-auth">Fix jwt-auth</a><p>PHP JWT authentication</p></div><div class="related-card"><a href="/fix/php/critical-cve/guzzle">Guzzle Critical CVEs</a><p>Severity breakdown</p></div><div class="related-card"><a href="/fix/php/laravel">Fix Laravel</a><p>Main Guzzle consumer</p></div><div class="related-card"><a href="/php">PHP Security</a><p>All PHP guides</p></div></div></div>
 
 </main>
 <footer class="site-footer">
