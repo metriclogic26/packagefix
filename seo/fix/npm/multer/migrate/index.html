@@ -1,0 +1,157 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>multer 2.0 Migration Guide — Breaking Changes from 1.x to 2.x | PackageFix</title><meta name="description" content="Complete multer 1.x to 2.x migration guide. Breaking changes in fileFilter, error handling, and peer deps. multer 1.4.5-lts.1 is vulnerable — upgrade to 2.1.1."><link rel="canonical" href="https://packagefix.dev/fix/npm/multer/migrate"><meta property="og:title" content="multer 2.0 Migration — Breaking Changes from 1.x | PackageFix"><meta property="og:url" content="https://packagefix.dev/fix/npm/multer/migrate"><meta property="og:type" content="article"><link rel="icon" type="image/svg+xml" href="/icon.svg"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "multer 2.0 Migration Guide \u2014 Breaking Changes from 1.x to 2.x",
+      "description": "Complete multer 1.x to 2.x migration guide with breaking changes.",
+      "datePublished": "2026-04-10",
+      "dateModified": "2026-04-10",
+      "author": {
+        "@type": "Organization",
+        "name": "PackageFix",
+        "url": "https://packagefix.dev"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "PackageFix",
+          "item": "https://packagefix.dev"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Fix Guides",
+          "item": "https://packagefix.dev/fix"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "multer",
+          "item": "https://packagefix.dev/fix/npm/multer"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "2.0 Migration",
+          "item": "https://packagefix.dev/fix/npm/multer/migrate"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is multer 2.x a complete rewrite?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. multer 2.x is the same middleware with targeted fixes for the DoS vulnerabilities. The core API (single, array, fields, none) is unchanged. Most apps need only a version bump. Breaking changes are in error handling and the fileFilter callback signature."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do multer-s3 and multer-gridfs-storage work with 2.x?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "multer-s3 released 3.x which supports multer 2.x \u2014 update both together: npm install multer@2.1.1 multer-s3@3. multer-gridfs-storage had slower adoption \u2014 check their GitHub for 2.x compatibility before upgrading in projects that use it."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What Node.js version does multer 2.x require?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "multer 2.x requires Node.js 10.16.0 or later. If you are on Node 8 or earlier you cannot upgrade to 2.x \u2014 but those Node versions are themselves end of life and should be upgraded regardless."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I stay on multer 1.4.5-lts.1 if I can't upgrade yet?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No \u2014 1.4.5-lts.1 is vulnerable to CVE-2025-47944 and CVE-2026-3520. There is no safe 1.x version. If you cannot upgrade to 2.x immediately, add rate limiting and body size limits as a temporary mitigation, but plan the 2.x upgrade as soon as possible."
+          }
+        }
+      ]
+    }
+  ]
+}</script><style>
+:root{--bg:#0B0D14;--surface:#12151F;--border:#252836;--purple:#6C63FF;--green:#22C55E;--orange:#F97316;--red:#EF4444;--text:#E2E4F0;--muted:#6B7280}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.6}
+a{color:var(--purple);text-decoration:none}a:hover{text-decoration:underline}
+.site-header{border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:15px;font-weight:700;color:var(--text)}.logo span{color:var(--purple)}
+.nav-links{display:flex;gap:20px;font-size:12px}.nav-links a{color:var(--muted)}
+.container{max-width:860px;margin:0 auto;padding:48px 24px}
+.breadcrumb{font-size:11px;color:var(--muted);margin-bottom:24px;display:flex;gap:6px;flex-wrap:wrap}
+.breadcrumb a{color:var(--muted)}
+h1{font-size:clamp(18px,3vw,26px);font-weight:700;margin-bottom:12px;line-height:1.3}
+h2{font-size:14px;font-weight:600;margin:32px 0 12px}
+h3{font-size:13px;font-weight:600;margin:20px 0 8px}
+p{color:var(--muted);margin-bottom:12px;font-size:12px;line-height:1.7}
+.lead{color:var(--text);font-size:13px;margin-bottom:24px;line-height:1.7}
+.meta{font-size:11px;color:var(--muted);margin-bottom:24px}
+pre{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px 16px;overflow-x:auto;font-size:11px;line-height:1.6;margin:8px 0;white-space:pre-wrap}
+code{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:1px 5px;font-size:11px}
+.fix-box{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.3);border-left:3px solid var(--green);border-radius:8px;padding:16px 20px;margin:20px 0}
+.fix-box .label{font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.warning-box{background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.3);border-left:3px solid var(--orange);border-radius:8px;padding:16px 20px;margin:20px 0}
+.warning-box .label{font-size:10px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.cta-box{background:var(--surface);border:1px solid var(--purple);border-radius:10px;padding:24px;margin:32px 0;text-align:center}
+.cta-box p{color:var(--text);font-size:13px;margin-bottom:16px}
+.cta-btn{display:inline-block;background:var(--purple);color:#fff;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;padding:12px 28px;border-radius:7px}
+.faq{margin:40px 0}.faq-item{border-bottom:1px solid var(--border);padding:16px 0}
+.faq-item:last-child{border-bottom:none}
+.faq-q{font-size:12px;font-weight:600;color:var(--text);margin-bottom:8px}
+.faq-a{font-size:12px;color:var(--muted);line-height:1.7}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:12px}
+.related-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
+.related-card a{color:var(--text);font-size:12px;font-weight:500}
+.related-card p{font-size:11px;color:var(--muted);margin:4px 0 0}
+.site-footer{border-top:1px solid var(--border);padding:24px;text-align:center;font-size:11px;color:var(--muted);margin-top:60px}
+.site-footer a{color:var(--muted)}
+@media(max-width:640px){.nav-links{display:none}.related-grid{grid-template-columns:1fr}}
+</style></head><body><header class="site-header"><a href="/" class="logo">Package<span>Fix</span></a><nav class="nav-links"><a href="/">Tool</a><a href="/glossary">Glossary</a><a href="/cisa-kev">CISA KEV</a><a href="/blog">Blog</a></nav></header><main class="container"><div class="breadcrumb"><a href="/">PackageFix</a> <span style="color:var(--border)">/</span> <a href="/fix">Fix Guides</a> <span style="color:var(--border)">/</span> <a href="/npm">npm</a> <span style="color:var(--border)">/</span> <a href="/fix/npm/multer">multer</a> <span style="color:var(--border)">/</span> <span style="color:var(--text)">2.0 Migration</span></div><h1>multer 2.0 Migration Guide &mdash; Breaking Changes from 1.x to 2.x</h1><p class="meta">Updated April 10, 2026 &middot; Safe version: multer@2.1.1</p><div style="background:rgba(239,68,68,.12);border:1px solid var(--red);border-radius:8px;padding:14px 18px;margin:0 0 24px;font-size:13px;color:var(--text);"><strong>multer 1.4.5-lts.1 is vulnerable.</strong> CVE-2025-47944 and CVE-2026-3520 affect all 1.x versions. The only safe version is <strong>multer@2.1.1</strong>. This guide covers exactly what breaks when you upgrade.</div><p class="lead">Most multer 1.x apps migrate to 2.x with just a version bump. There are three areas with actual breaking changes: error handling, fileFilter callback, and peer dependency compatibility with storage engines.</p><h2>Step 1 &mdash; Update the version</h2><div class="fix-box"><div class="label">Install</div><pre>npm install multer@2.1.1
+
+# Verify
+npm list multer
+# Should show multer@2.1.1</pre></div><h2>Step 2 &mdash; Check these breaking changes</h2><h3>Breaking change 1 &mdash; fileFilter callback</h3><p>The fileFilter callback signature changed in 2.x. If you use a custom fileFilter, update it:</p><pre>// multer 1.x
+const upload = multer({
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype === "image/jpeg") {
+      cb(null, true);
+    } else {
+      cb(new Error("Only JPEG allowed"), false);
+    }
+  }
+});
+
+// multer 2.x — same signature, but error handling changed
+// cb(new Error(...)) now emits the error differently
+// Test your error handling paths after upgrading</pre><h3>Breaking change 2 &mdash; Error handling</h3><p>In multer 2.x, errors from file size limits and fileFilter rejections are surfaced differently. Test these paths in your app:</p><pre>// Express error handler — test this still catches multer errors
+app.use((err, req, res, next) => {
+  if (err instanceof multer.MulterError) {
+    // LIMIT_FILE_SIZE, LIMIT_FILE_COUNT etc — still work in 2.x
+    return res.status(400).json({ error: err.code });
+  }
+  next(err);
+});</pre><h3>Breaking change 3 &mdash; Storage engine compatibility</h3><div class="warning-box"><div class="label">Check before upgrading</div><p style="margin:0;font-size:12px">If you use <code>multer-s3</code> or <code>multer-gridfs-storage</code>, check their GitHub for multer 2.x compatibility before upgrading. multer-s3 v3+ supports multer 2.x. multer-gridfs-storage — check their latest release.</p></div><pre># If using multer-s3, upgrade both together
+npm install multer@2.1.1 multer-s3@3
+
+# Check what version of multer-s3 you have
+npm list multer-s3</pre><h2>Step 3 &mdash; Run your tests</h2><pre># After upgrading
+npm install
+npm test
+
+# Specifically test:
+# 1. File upload success paths
+# 2. File size limit errors
+# 3. File type rejection (if using fileFilter)
+# 4. Multiple file uploads
+# 5. Memory storage vs disk storage</pre><h2>Node.js version requirement</h2><p>multer 2.x requires Node.js 10.16.0 or later. Check your version: <code>node --version</code>. If you are on Node 8 or earlier, upgrade Node first.</p><h2>Version history &mdash; what each version fixed</h2><table style="width:100%;border-collapse:collapse;font-size:12px;margin:16px 0"><thead><tr style="border-bottom:2px solid var(--border)"><th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Version</th><th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Status</th><th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">What changed</th></tr></thead><tbody><tr style="border-bottom:1px solid var(--border);background:rgba(34,197,94,.05)"><td style="padding:8px 12px;font-weight:700">2.1.1</td><td style="padding:8px 12px"><span style="background:rgba(34,197,94,.2);color:var(--green);border:1px solid var(--green);font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px">SAFE</span></td><td style="padding:8px 12px;color:var(--muted)">Fixes CVE-2026-3520 (uncontrolled recursion DoS)</td></tr><tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px;font-weight:700">2.0.0&ndash;2.0.x</td><td style="padding:8px 12px"><span style="background:rgba(239,68,68,.2);color:var(--red);border:1px solid var(--red);font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px">VULNERABLE</span></td><td style="padding:8px 12px;color:var(--muted)">Fixes 2025 CVEs but vulnerable to CVE-2026-3520</td></tr><tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px;font-weight:700">1.4.5-lts.1</td><td style="padding:8px 12px"><span style="background:rgba(239,68,68,.2);color:var(--red);border:1px solid var(--red);font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px">VULNERABLE</span></td><td style="padding:8px 12px;color:var(--muted)">CVE-2025-47944, CVE-2022-24434</td></tr><tr><td style="padding:8px 12px;font-weight:700">1.4.4 and below</td><td style="padding:8px 12px"><span style="background:rgba(239,68,68,.2);color:var(--red);border:1px solid var(--red);font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px">VULNERABLE</span></td><td style="padding:8px 12px;color:var(--muted)">Multiple CVEs</td></tr></tbody></table><div class="cta-box"><p>Check if your project is using vulnerable multer versions — including transitive dependencies.</p><a href="/" class="cta-btn">Scan with PackageFix &rarr;</a><p style="margin-top:12px;font-size:11px;color:var(--muted)">Free &middot; No signup &middot; Paste package.json or package-lock.json</p></div><div class="faq"><h2>Common questions</h2><div class="faq-item"><div class="faq-q">Is multer 2.x a complete rewrite?</div><div class="faq-a">No. multer 2.x is the same middleware with targeted fixes for the DoS vulnerabilities. The core API (single, array, fields, none) is unchanged. Most apps need only a version bump. Breaking changes are in error handling and the fileFilter callback signature.</div></div><div class="faq-item"><div class="faq-q">Do multer-s3 and multer-gridfs-storage work with 2.x?</div><div class="faq-a">multer-s3 released 3.x which supports multer 2.x — update both together: npm install multer@2.1.1 multer-s3@3. multer-gridfs-storage had slower adoption — check their GitHub for 2.x compatibility before upgrading in projects that use it.</div></div><div class="faq-item"><div class="faq-q">What Node.js version does multer 2.x require?</div><div class="faq-a">multer 2.x requires Node.js 10.16.0 or later. If you are on Node 8 or earlier you cannot upgrade to 2.x — but those Node versions are themselves end of life and should be upgraded regardless.</div></div><div class="faq-item"><div class="faq-q">Can I stay on multer 1.4.5-lts.1 if I can't upgrade yet?</div><div class="faq-a">No — 1.4.5-lts.1 is vulnerable to CVE-2025-47944 and CVE-2026-3520. There is no safe 1.x version. If you cannot upgrade to 2.x immediately, add rate limiting and body size limits as a temporary mitigation, but plan the 2.x upgrade as soon as possible.</div></div></div><div style="margin:40px 0"><h2>Related</h2><div class="related-grid"><div class="related-card"><a href="/fix/npm/multer">multer CVE History</a><p>All known vulnerabilities</p></div><div class="related-card"><a href="/blog/multer-1-4-5-lts-1-update-guide">multer 1.4.5-lts.1 Guide</a><p>Why npm skips it</p></div><div class="related-card"><a href="/glossary/transitive-dependency">Transitive Dependencies</a><p>When multer is indirect</p></div><div class="related-card"><a href="/fix/npm/cross-spawn">Fix cross-spawn</a><p>Another npm transitive CVE</p></div></div></div></main><footer class="site-footer"><p>PackageFix &middot; <a href="/">packagefix.dev</a> &middot; MIT Licensed</p></footer></body></html>

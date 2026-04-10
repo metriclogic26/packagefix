@@ -2311,6 +2311,22 @@
     {
       "source": "/fix/npm/cross-spawn/",
       "destination": "/seo/fix/npm/cross-spawn/index.html"
+    },
+    {
+      "source": "/fix/npm/multer/migrate",
+      "destination": "/seo/fix/npm/multer/migrate/index.html"
+    },
+    {
+      "source": "/fix/npm/multer/migrate/",
+      "destination": "/seo/fix/npm/multer/migrate/index.html"
+    },
+    {
+      "source": "/fix/npm/angular-ssr",
+      "destination": "/seo/fix/npm/angular-ssr/index.html"
+    },
+    {
+      "source": "/fix/npm/angular-ssr/",
+      "destination": "/seo/fix/npm/angular-ssr/index.html"
     }
   ],
   "redirects": [

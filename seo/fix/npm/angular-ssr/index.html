@@ -1,0 +1,149 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Fix @angular/ssr CVE-2026-27739 SSRF — Safe Versions 19.2.21, 20.3.17, 21.1.5 | PackageFix</title><meta name="description" content="CVE-2026-27739 is a CRITICAL SSRF (CVSS 9.2) in @angular/ssr. Affects all versions below 19.2.21, 20.3.17, 21.1.5. Angular 18 and below: no patch. Middleware workaround included."><link rel="canonical" href="https://packagefix.dev/fix/npm/angular-ssr"><meta property="og:title" content="Fix @angular/ssr CVE-2026-27739 SSRF (CVSS 9.2) | PackageFix"><meta property="og:url" content="https://packagefix.dev/fix/npm/angular-ssr"><meta property="og:type" content="article"><link rel="icon" type="image/svg+xml" href="/icon.svg"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "headline": "Fix @angular/ssr CVE-2026-27739 SSRF \u2014 Safe Versions and Workaround",
+      "description": "CVE-2026-27739 CRITICAL SSRF in Angular SSR. Safe versions: 19.2.21, 20.3.17, 21.1.5. Middleware workaround for EOL versions.",
+      "datePublished": "2026-04-10",
+      "dateModified": "2026-04-10",
+      "author": {
+        "@type": "Organization",
+        "name": "PackageFix",
+        "url": "https://packagefix.dev"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "PackageFix",
+          "item": "https://packagefix.dev"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Fix Guides",
+          "item": "https://packagefix.dev/fix"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "npm",
+          "item": "https://packagefix.dev/npm"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "@angular/ssr",
+          "item": "https://packagefix.dev/fix/npm/angular-ssr"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is Angular 18 getting a patch for CVE-2026-27739?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Angular 18 reached end of life in early 2026. The Angular open source community will not release a patch for EOL versions. If you are on Angular 18, your options are: upgrade to Angular 19.2.21+, implement the header validation middleware workaround, or use a WAF to strip X-Forwarded-Host headers at the edge."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does this affect Angular apps that don't use SSR?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. CVE-2026-27739 is exclusively in @angular/ssr (and the legacy @nguniversal packages). Client-side-only Angular apps are not affected. The vulnerability is in how the SSR engine reconstructs URLs from HTTP headers on the server."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the header validation middleware workaround?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Add middleware in server.ts to validate Host and X-Forwarded-Host headers against an allowlist of trusted domains before they reach Angular SSR. This blocks the attack vector without requiring an immediate version upgrade. See the Angular security advisory for the exact middleware code."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does this affect Vercel, Netlify, or similar platforms?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It depends on whether your platform strips or validates X-Forwarded-Host headers before passing them to your Angular SSR app. Some CDNs set their own trusted X-Forwarded-Host values. Check your platform documentation and test with a crafted header to verify."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the cloud metadata risk?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "If your Angular SSR app runs on AWS EC2 or GCP, an attacker who sets X-Forwarded-Host to 169.254.169.254 could cause your SSR server to make requests to the cloud metadata endpoint. This can expose IAM credentials and instance metadata. This is the most severe exploitation path."
+          }
+        }
+      ]
+    }
+  ]
+}</script><style>
+:root{--bg:#0B0D14;--surface:#12151F;--border:#252836;--purple:#6C63FF;--green:#22C55E;--orange:#F97316;--red:#EF4444;--text:#E2E4F0;--muted:#6B7280}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.6}
+a{color:var(--purple);text-decoration:none}a:hover{text-decoration:underline}
+.site-header{border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:15px;font-weight:700;color:var(--text)}.logo span{color:var(--purple)}
+.nav-links{display:flex;gap:20px;font-size:12px}.nav-links a{color:var(--muted)}
+.container{max-width:860px;margin:0 auto;padding:48px 24px}
+.breadcrumb{font-size:11px;color:var(--muted);margin-bottom:24px;display:flex;gap:6px;flex-wrap:wrap}
+.breadcrumb a{color:var(--muted)}
+h1{font-size:clamp(18px,3vw,26px);font-weight:700;margin-bottom:12px;line-height:1.3}
+h2{font-size:14px;font-weight:600;margin:32px 0 12px}
+h3{font-size:13px;font-weight:600;margin:20px 0 8px}
+p{color:var(--muted);margin-bottom:12px;font-size:12px;line-height:1.7}
+.lead{color:var(--text);font-size:13px;margin-bottom:24px;line-height:1.7}
+.meta{font-size:11px;color:var(--muted);margin-bottom:24px}
+pre{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px 16px;overflow-x:auto;font-size:11px;line-height:1.6;margin:8px 0;white-space:pre-wrap}
+code{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:1px 5px;font-size:11px}
+.fix-box{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.3);border-left:3px solid var(--green);border-radius:8px;padding:16px 20px;margin:20px 0}
+.fix-box .label{font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.warning-box{background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.3);border-left:3px solid var(--orange);border-radius:8px;padding:16px 20px;margin:20px 0}
+.warning-box .label{font-size:10px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.cta-box{background:var(--surface);border:1px solid var(--purple);border-radius:10px;padding:24px;margin:32px 0;text-align:center}
+.cta-box p{color:var(--text);font-size:13px;margin-bottom:16px}
+.cta-btn{display:inline-block;background:var(--purple);color:#fff;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;padding:12px 28px;border-radius:7px}
+.faq{margin:40px 0}.faq-item{border-bottom:1px solid var(--border);padding:16px 0}
+.faq-item:last-child{border-bottom:none}
+.faq-q{font-size:12px;font-weight:600;color:var(--text);margin-bottom:8px}
+.faq-a{font-size:12px;color:var(--muted);line-height:1.7}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:12px}
+.related-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
+.related-card a{color:var(--text);font-size:12px;font-weight:500}
+.related-card p{font-size:11px;color:var(--muted);margin:4px 0 0}
+.site-footer{border-top:1px solid var(--border);padding:24px;text-align:center;font-size:11px;color:var(--muted);margin-top:60px}
+.site-footer a{color:var(--muted)}
+@media(max-width:640px){.nav-links{display:none}.related-grid{grid-template-columns:1fr}}
+</style></head><body><header class="site-header"><a href="/" class="logo">Package<span>Fix</span></a><nav class="nav-links"><a href="/">Tool</a><a href="/glossary">Glossary</a><a href="/cisa-kev">CISA KEV</a><a href="/blog">Blog</a></nav></header><main class="container"><div class="breadcrumb"><a href="/">PackageFix</a> <span style="color:var(--border)">/</span> <a href="/fix">Fix Guides</a> <span style="color:var(--border)">/</span> <a href="/npm">npm</a> <span style="color:var(--border)">/</span> <span style="color:var(--text)">@angular/ssr</span></div><h1>Fix @angular/ssr CVE-2026-27739 &mdash; SSRF via Unvalidated Headers</h1><p class="meta">Updated April 10, 2026 &middot; <span style="background:rgba(239,68,68,.2);color:var(--red);border:1px solid var(--red);font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px">CRITICAL</span> &middot; CVSS 9.2 &middot; GHSA-x288-3778-4hhx</p><p class="lead">CVE-2026-27739 is a Server-Side Request Forgery (SSRF) vulnerability in Angular's SSR engine. The <code>createRequestUrl()</code> function trusts <code>Host</code> and <code>X-Forwarded-Host</code> headers without validation — an attacker who controls those headers turns your SSR server into an open proxy. Angular 18 and below have no patch.</p><div style="background:rgba(239,68,68,.12);border:1px solid var(--red);border-radius:8px;padding:14px 18px;margin:0 0 24px"><div style="font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px">Affected versions</div><table style="width:100%;border-collapse:collapse;font-size:12px"><tr><td style="padding:6px 8px;color:var(--text)">@angular/ssr</td><td style="padding:6px 8px;color:var(--muted)">All versions below 19.2.21</td></tr><tr><td style="padding:6px 8px;color:var(--text)">@angular/ssr 20.x</td><td style="padding:6px 8px;color:var(--muted)">Below 20.3.17</td></tr><tr><td style="padding:6px 8px;color:var(--text)">@angular/ssr 21.x</td><td style="padding:6px 8px;color:var(--muted)">Below 21.1.5</td></tr><tr><td style="padding:6px 8px;color:var(--text)">@nguniversal/* (Angular 16 and below)</td><td style="padding:6px 8px;color:var(--red);font-weight:600">No patch — EOL</td></tr></table></div><h2>Fix &mdash; update @angular/ssr</h2><div class="fix-box"><div class="label">Fix</div><pre># Angular 19 users
+npm install @angular/ssr@19.2.21
+
+# Angular 20 users
+npm install @angular/ssr@20.3.17
+
+# Angular 21 users
+npm install @angular/ssr@21.1.5
+
+# Verify
+npm list @angular/ssr</pre></div><h2>Workaround for Angular 18 and below (no patch available)</h2><p>Add header validation middleware in <code>server.ts</code> before Angular SSR handles requests:</p><pre>// server.ts
+const ALLOWED_HOSTS = new Set(['your-domain.com', 'www.your-domain.com']);
+
+app.use((req, res, next) => {
+  const host = (req.headers['x-forwarded-host'] ?? req.headers['host'] ?? '').toString();
+  const hostname = host.split(':')[0];
+  if (!ALLOWED_HOSTS.has(hostname)) {
+    delete req.headers['x-forwarded-host'];
+    delete req.headers['x-forwarded-port'];
+  }
+  next();
+});</pre><h2>Root cause &mdash; createRequestUrl()</h2><p>The vulnerability is in <code>packages/angular/ssr/node/src/request.ts</code>. The <code>createRequestUrl()</code> function reads <code>host</code> and <code>x-forwarded-host</code> headers to build the base URL for SSR rendering. Before the patch, no domain validation existed. An attacker sets <code>X-Forwarded-Host: evil.com</code> — all relative HttpClient calls in your SSR app now resolve against <code>evil.com</code>, forwarding Authorization headers and cookies.</p><h2>Cloud metadata risk</h2><div style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3);border-left:3px solid var(--red);border-radius:8px;padding:16px 20px;margin:16px 0"><div style="font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px">AWS / GCP risk</div><p style="margin:0;font-size:12px;color:var(--text)">If your Angular SSR app runs on EC2 or GCP, an attacker can set <code>X-Forwarded-Host: 169.254.169.254</code>. Your SSR server makes requests to the cloud metadata endpoint, returning IAM credentials and instance metadata to the attacker. This escalates SSRF to full cloud account compromise.</p></div><div class="cta-box"><p>Check if your project uses a vulnerable @angular/ssr version.</p><a href="/" class="cta-btn">Scan with PackageFix &rarr;</a><p style="margin-top:12px;font-size:11px;color:var(--muted)">Free &middot; No signup &middot; Paste package.json</p></div><div class="faq"><h2>Common questions</h2><div class="faq-item"><div class="faq-q">Is Angular 18 getting a patch for CVE-2026-27739?</div><div class="faq-a">No. Angular 18 reached end of life in early 2026. The Angular open source community will not release a patch for EOL versions. If you are on Angular 18, your options are: upgrade to Angular 19.2.21+, implement the header validation middleware workaround, or use a WAF to strip X-Forwarded-Host headers at the edge.</div></div><div class="faq-item"><div class="faq-q">Does this affect Angular apps that don't use SSR?</div><div class="faq-a">No. CVE-2026-27739 is exclusively in @angular/ssr (and the legacy @nguniversal packages). Client-side-only Angular apps are not affected. The vulnerability is in how the SSR engine reconstructs URLs from HTTP headers on the server.</div></div><div class="faq-item"><div class="faq-q">What is the header validation middleware workaround?</div><div class="faq-a">Add middleware in server.ts to validate Host and X-Forwarded-Host headers against an allowlist of trusted domains before they reach Angular SSR. This blocks the attack vector without requiring an immediate version upgrade. See the Angular security advisory for the exact middleware code.</div></div><div class="faq-item"><div class="faq-q">Does this affect Vercel, Netlify, or similar platforms?</div><div class="faq-a">It depends on whether your platform strips or validates X-Forwarded-Host headers before passing them to your Angular SSR app. Some CDNs set their own trusted X-Forwarded-Host values. Check your platform documentation and test with a crafted header to verify.</div></div><div class="faq-item"><div class="faq-q">What is the cloud metadata risk?</div><div class="faq-a">If your Angular SSR app runs on AWS EC2 or GCP, an attacker who sets X-Forwarded-Host to 169.254.169.254 could cause your SSR server to make requests to the cloud metadata endpoint. This can expose IAM credentials and instance metadata. This is the most severe exploitation path.</div></div></div><div style="margin:40px 0"><h2>Related</h2><div class="related-grid"><div class="related-card"><a href="/fix/npm/axios">Fix axios</a><p>Another npm supply chain attack</p></div><div class="related-card"><a href="/glossary/ssrf">SSRF Explained</a><p>Server-Side Request Forgery</p></div><div class="related-card"><a href="/cisa-kev">CISA KEV</a><p>Actively exploited packages</p></div><div class="related-card"><a href="/fix/npm/express">Fix Express</a><p>Node.js server CVEs</p></div></div></div></main><footer class="site-footer"><p>PackageFix &middot; <a href="/">packagefix.dev</a> &middot; MIT Licensed</p><p style="margin-top:6px">Vulnerability data: <a href="https://osv.dev">OSV</a> &middot; GHSA-x288-3778-4hhx</p></footer></body></html>
