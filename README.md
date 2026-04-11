@@ -50,7 +50,7 @@ Most dependency tools require a GitHub connection, a CLI install, or an account.
 | ConfigClarity | [configclarity.dev](https://configclarity.dev) | Server & DevOps |
 | DomainPreflight | [domainpreflight.dev](https://domainpreflight.dev) | DNS & Email |
 | PackageFix | [packagefix.dev](https://packagefix.dev) | Dependencies |
-| StackFix | [stackfix.dev](https://stackfix.dev) | Web App Security |
+| HttpFixer | [httpfixer.dev](https://httpfixer.dev) | Web App Security |
 
 ## Alternatives
 
