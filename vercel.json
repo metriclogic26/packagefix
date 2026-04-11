@@ -2327,6 +2327,14 @@
     {
       "source": "/fix/npm/angular-ssr/",
       "destination": "/seo/fix/npm/angular-ssr/index.html"
+    },
+    {
+      "source": "/blog/weekly-cve-april-10-2026",
+      "destination": "/seo/blog/weekly-cve-april-10-2026/index.html"
+    },
+    {
+      "source": "/blog/weekly-cve-april-10-2026/",
+      "destination": "/seo/blog/weekly-cve-april-10-2026/index.html"
     }
   ],
   "redirects": [
