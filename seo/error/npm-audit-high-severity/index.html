@@ -198,6 +198,75 @@ tr:last-child td{border-bottom:none}
 <p>One or more of your npm dependencies has a known HIGH or CRITICAL CVE. npm audit reports it but npm audit fix may not be able to resolve it without breaking changes.</p>
 <h2>How to Fix</h2>
 <ol style="padding-left:20px;margin:12px 0"><li style='margin-bottom:8px;color:var(--muted);font-size:12px'>Paste your package.json into PackageFix to get a live CVE scan with safe fix versions.</li><li style='margin-bottom:8px;color:var(--muted);font-size:12px'>Review the severity badges — CRITICAL and HIGH packages on the CISA KEV catalog are flagged in red.</li><li style='margin-bottom:8px;color:var(--muted);font-size:12px'>Download the fixed package.json and run npm install to regenerate package-lock.json.</li><li style='margin-bottom:8px;color:var(--muted);font-size:12px'>For transitive vulnerabilities, use the npm overrides block PackageFix generates.</li></ol>
+
+<h2>What npm audit high severity means</h2>
+<p>When npm audit reports a high severity vulnerability, it means one or more packages in your dependency tree have a CVSS score between 7.0 and 8.9. These vulnerabilities can often be exploited remotely and should be fixed within your next release cycle.</p>
+
+<div style="background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.3);border-left:3px solid var(--orange);border-radius:8px;padding:16px 20px;margin:20px 0">
+<div style="font-size:10px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px">CVSS Severity Scale</div>
+<table style="width:100%;border-collapse:collapse;font-size:12px">
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:6px 8px;color:var(--text)">CRITICAL</td><td style="padding:6px 8px;color:var(--muted)">CVSS 9.0–10.0 — Fix immediately</td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:6px 8px;color:var(--orange);font-weight:600">HIGH</td><td style="padding:6px 8px;color:var(--muted)">CVSS 7.0–8.9 — Fix in next release cycle</td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:6px 8px;color:var(--text)">MEDIUM</td><td style="padding:6px 8px;color:var(--muted)">CVSS 4.0–6.9 — Fix when practical</td></tr>
+<tr><td style="padding:6px 8px;color:var(--text)">LOW</td><td style="padding:6px 8px;color:var(--muted)">CVSS 0.1–3.9 — Fix at convenience</td></tr>
+</table>
+</div>
+
+<h2>Why npm audit fix doesn't resolve it</h2>
+<p>The most common reason npm audit fix won't resolve a high severity vulnerability is that the fix requires a major version bump. npm audit fix only applies semver-compatible updates — it won't automatically upgrade from express@4 to express@5 because that could introduce breaking changes.</p>
+<pre>
+# See what npm audit fix would do
+npm audit fix --dry-run
+
+# Force major version upgrades (test thoroughly first)
+npm audit fix --force
+
+# See the full vulnerability tree
+npm audit --json | head -100</pre>
+
+<h2>Fixing transitive high severity vulnerabilities</h2>
+<p>If the vulnerable package is not in your package.json directly — it's pulled in by another package — npm audit fix cannot resolve it automatically. You have two options:</p>
+
+<h3>Option 1 — npm overrides (recommended)</h3>
+<pre>
+// Add to package.json
+{
+  "overrides": {
+    "vulnerable-package": "safe-version"
+  }
+}
+
+// Then reinstall
+npm install</pre>
+
+<h3>Option 2 — Update the parent package</h3>
+<pre>
+# Find which package pulls in the vulnerability
+npm ls vulnerable-package
+
+# Update the parent package that depends on it
+npm install parent-package@latest</pre>
+
+<h2>Common high severity npm packages and fixes</h2>
+<table style="width:100%;border-collapse:collapse;font-size:12px;margin:16px 0">
+<thead><tr style="border-bottom:2px solid var(--border)">
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Package</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">CVE</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Safe Version</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Fix Guide</th>
+</tr></thead>
+<tbody>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px">cross-spawn</td><td style="padding:8px 12px;color:var(--muted)">CVE-2024-21538</td><td style="padding:8px 12px">7.0.5+</td><td style="padding:8px 12px"><a href="/fix/npm/cross-spawn">Fix guide →</a></td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px">multer</td><td style="padding:8px 12px;color:var(--muted)">CVE-2025-47944</td><td style="padding:8px 12px">2.1.1</td><td style="padding:8px 12px"><a href="/fix/npm/multer">Fix guide →</a></td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px">jsonwebtoken</td><td style="padding:8px 12px;color:var(--muted)">CVE-2022-23529</td><td style="padding:8px 12px">9.0.0+</td><td style="padding:8px 12px"><a href="/fix/npm/jsonwebtoken">Fix guide →</a></td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px">axios</td><td style="padding:8px 12px;color:var(--muted)">CVE-2023-45857</td><td style="padding:8px 12px">1.7.4+</td><td style="padding:8px 12px"><a href="/fix/npm/axios">Fix guide →</a></td></tr>
+<tr><td style="padding:8px 12px">lodash</td><td style="padding:8px 12px;color:var(--muted)">CVE-2021-23337</td><td style="padding:8px 12px">4.17.21</td><td style="padding:8px 12px"><a href="/fix/npm/lodash">Fix guide →</a></td></tr>
+</tbody>
+</table>
+
+<h2>Scan your full manifest</h2>
+<p>npm audit only covers your lockfile. PackageFix checks all 7 ecosystems, flags CISA KEV actively exploited packages, and generates the exact npm overrides block for transitive vulnerabilities.</p>
+
 <div class="cta-box">
   <p>Scan your dependencies now — paste your manifest, get a fixed version back in seconds.</p>
   <a href="https://packagefix.dev" class="cta-btn">Open PackageFix →</a>
