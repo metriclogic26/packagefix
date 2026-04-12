@@ -149,6 +149,88 @@ tr:last-child td{border-bottom:none}
 <p class="lead">Exact error message fixes for npm, PyPI, Ruby, and PHP dependency issues.</p>
 <div class="related-grid">
 <div class="related-card"><a href="/error/npm-audit-high-severity">npm audit found high severity vulnerabilities</a><p>Fix 'npm audit found N vulnerabilities (M high severity)'. Get a patched package...</p></div><div class="related-card"><a href="/error/pip-dependency-conflict">pip dependency conflict — ResolutionImpossible</a><p>Fix pip ResolutionImpossible and dependency conflict errors. Resolve incompatibl...</p></div><div class="related-card"><a href="/error/bundler-version-conflict">Bundler version conflict — Gemfile.lock out of date</a><p>Fix Bundler version conflicts and Gemfile.lock errors. Resolve incompatible gem ...</p></div><div class="related-card"><a href="/error/composer-memory-limit">Composer memory limit exhausted</a><p>Fix 'PHP Fatal error: Allowed memory size exhausted' during composer install. Up...</p></div><div class="related-card"><a href="/error/package-json-missing-lockfile">package-lock.json missing or out of sync</a><p>Fix 'npm ci can only install packages when your package.json and package-lock.js...</p></div></div>
+
+<h2>Common npm, PyPI, Ruby, and Go dependency errors</h2>
+<p>These are the most common errors developers hit when managing dependencies — package conflicts, audit failures, lockfile mismatches, and version resolution issues. Each guide includes the exact command to diagnose and the specific fix.</p>
+
+<div style="display:grid;gap:12px;margin:20px 0">
+
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px 20px">
+<h3 style="margin:0 0 8px;font-size:13px"><a href="/error/npm-audit-high-severity">npm audit found high severity vulnerabilities</a></h3>
+<p style="margin:0;font-size:12px;color:var(--muted)">npm audit fix won't resolve it. The fix requires a major version bump or the vulnerability is in a transitive dependency. Includes npm overrides pattern and force-upgrade commands.</p>
+</div>
+
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px 20px">
+<h3 style="margin:0 0 8px;font-size:13px"><a href="/error/package-json-missing-lockfile">package.json missing lockfile</a></h3>
+<p style="margin:0;font-size:12px;color:var(--muted)">No package-lock.json or yarn.lock committed to the repo. This causes non-reproducible installs and means transitive vulnerabilities are invisible to audit tools.</p>
+</div>
+
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px 20px">
+<h3 style="margin:0 0 8px;font-size:13px"><a href="/error/npm-audit-high-severity">Transitive dependency vulnerability — npm overrides</a></h3>
+<p style="margin:0;font-size:12px;color:var(--muted)">The vulnerable package is not in your package.json — it is pulled in by a dependency you did install. npm audit fix cannot resolve this automatically. Use npm overrides.</p>
+</div>
+
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px 20px">
+<h3 style="margin:0 0 8px;font-size:13px"><a href="/error/pip-dependency-conflict">pip dependency conflict</a></h3>
+<p style="margin:0;font-size:12px;color:var(--muted)">Two packages require incompatible versions of a shared dependency. pip cannot install both. Includes resolution strategies for requirements.txt and pyproject.toml projects.</p>
+</div>
+
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px 20px">
+<h3 style="margin:0 0 8px;font-size:13px"><a href="/error/composer-memory-limit">composer memory limit exhausted</a></h3>
+<p style="margin:0;font-size:12px;color:var(--muted)">Composer runs out of memory resolving dependencies. Common in Laravel projects with many packages. Includes PHP memory limit and COMPOSER_MEMORY_LIMIT fixes.</p>
+</div>
+
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px 20px">
+<h3 style="margin:0 0 8px;font-size:13px"><a href="/error/bundler-version-conflict">Bundler version conflict</a></h3>
+<p style="margin:0;font-size:12px;color:var(--muted)">Gemfile.lock was generated with a different Bundler version. bundle install fails or produces inconsistent results across environments.</p>
+</div>
+
+</div>
+
+<h2>Most common transitive vulnerability patterns</h2>
+<p>Transitive vulnerabilities — CVEs in packages you did not install directly — are the hardest to fix because standard update commands skip them. These are the packages most commonly found as transitive vulnerabilities in 2026:</p>
+
+<table style="width:100%;border-collapse:collapse;font-size:12px;margin:16px 0">
+<thead><tr style="border-bottom:2px solid var(--border)">
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Package</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Ecosystem</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">CVE</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Fix</th>
+</tr></thead>
+<tbody>
+<tr style="border-bottom:1px solid var(--border)">
+<td style="padding:8px 12px"><a href="/fix/npm/cross-spawn">cross-spawn</a></td>
+<td style="padding:8px 12px;color:var(--muted)">npm</td>
+<td style="padding:8px 12px;color:var(--muted)">CVE-2024-21538</td>
+<td style="padding:8px 12px;color:var(--muted)">npm overrides → 7.0.6</td>
+</tr>
+<tr style="border-bottom:1px solid var(--border)">
+<td style="padding:8px 12px"><a href="/fix/npm/lodash">lodash</a></td>
+<td style="padding:8px 12px;color:var(--muted)">npm</td>
+<td style="padding:8px 12px;color:var(--muted)">CVE-2021-23337</td>
+<td style="padding:8px 12px;color:var(--muted)">npm overrides → 4.17.21</td>
+</tr>
+<tr style="border-bottom:1px solid var(--border)">
+<td style="padding:8px 12px"><a href="/fix/pypi/urllib3">urllib3</a></td>
+<td style="padding:8px 12px;color:var(--muted)">PyPI</td>
+<td style="padding:8px 12px;color:var(--muted)">CVE-2023-43804</td>
+<td style="padding:8px 12px;color:var(--muted)">pin urllib3>=2.0.7</td>
+</tr>
+<tr style="border-bottom:1px solid var(--border)">
+<td style="padding:8px 12px"><a href="/fix/ruby/rails">rails</a></td>
+<td style="padding:8px 12px;color:var(--muted)">Ruby</td>
+<td style="padding:8px 12px;color:var(--muted)">multiple 2024</td>
+<td style="padding:8px 12px;color:var(--muted)">bundle update rails</td>
+</tr>
+<tr>
+<td style="padding:8px 12px"><a href="/fix/java/log4j">log4j</a></td>
+<td style="padding:8px 12px;color:var(--muted)">Java</td>
+<td style="padding:8px 12px;color:var(--muted)">CVE-2021-44228</td>
+<td style="padding:8px 12px;color:var(--muted)">upgrade to 2.23.1</td>
+</tr>
+</tbody>
+</table>
+
 </main>
 <footer class="site-footer">
   <p>PackageFix · <a href="https://packagefix.dev">packagefix.dev</a> · MIT Licensed · Open Source</p>

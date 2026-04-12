@@ -168,6 +168,75 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
 <div class="index-grid"><div class="index-card"><a href="/guides/github-actions">GitHub Actions</a><p>Scan dependencies on every push — 4 ready-to-use workflow YAMLs</p></div><div class="index-card"><a href="/guides/pre-commit">Pre-commit Hooks</a><p>Catch CVEs before they enter your git history</p></div><div class="index-card"><a href="/terminal">Terminal One-Liner</a><p>Pipe any manifest into PackageFix with one command</p></div></div>
 <h2>Which guide is right for you?</h2>
 <p>If you want a quick one-off check right now — use the <a href="/terminal">terminal one-liner</a>. If you want to catch vulnerabilities before they reach production — add the <a href="/guides/github-actions">GitHub Actions workflow</a>. If you want to catch them before they even enter your git history — use <a href="/guides/pre-commit">pre-commit hooks</a>.</p>
+
+<h2>Dependency security guides by workflow</h2>
+<p>Step-by-step guides for integrating dependency scanning into your development workflow — from pre-commit hooks to CI/CD pipelines and production monitoring.</p>
+
+<div style="display:grid;gap:12px;margin:20px 0">
+
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px 20px">
+<h3 style="margin:0 0 8px;font-size:13px"><a href="/guides/github-actions">GitHub Actions dependency scanning</a></h3>
+<p style="margin:0;font-size:12px;color:var(--muted)">Run npm audit, pip-audit, and bundler-audit automatically on every pull request. Includes complete workflow YAML for npm, PyPI, and Ruby projects.</p>
+</div>
+
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px 20px">
+<h3 style="margin:0 0 8px;font-size:13px"><a href="/guides/pre-commit">Pre-commit dependency checks</a></h3>
+<p style="margin:0;font-size:12px;color:var(--muted)">Block commits that introduce vulnerable dependencies before they reach your repo. Includes pre-commit hook configuration for npm and Python projects.</p>
+</div>
+
+</div>
+
+<h2>Scanning by ecosystem</h2>
+<p>Each ecosystem has different tooling and conventions for dependency scanning. Choose your stack:</p>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin:16px 0">
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px">
+<a href="/npm" style="color:var(--text);font-size:12px;font-weight:600">npm (Node.js)</a>
+<p style="font-size:11px;color:var(--muted);margin:4px 0 0">npm audit, overrides, lockfile scanning</p>
+</div>
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px">
+<a href="/python" style="color:var(--text);font-size:12px;font-weight:600">PyPI (Python)</a>
+<p style="font-size:11px;color:var(--muted);margin:4px 0 0">pip-audit, safety, requirements.txt pinning</p>
+</div>
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px">
+<a href="/ruby" style="color:var(--text);font-size:12px;font-weight:600">Ruby Gems</a>
+<p style="font-size:11px;color:var(--muted);margin:4px 0 0">bundler-audit, Gemfile.lock, bundle update</p>
+</div>
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px">
+<a href="/php" style="color:var(--text);font-size:12px;font-weight:600">PHP Composer</a>
+<p style="font-size:11px;color:var(--muted);margin:4px 0 0">composer audit, security advisories</p>
+</div>
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px">
+<a href="/go" style="color:var(--text);font-size:12px;font-weight:600">Go Modules</a>
+<p style="font-size:11px;color:var(--muted);margin:4px 0 0">govulncheck, go mod tidy</p>
+</div>
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px">
+<a href="/rust" style="color:var(--text);font-size:12px;font-weight:600">Rust Cargo</a>
+<p style="font-size:11px;color:var(--muted);margin:4px 0 0">cargo audit, RustSec advisory database</p>
+</div>
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px">
+<a href="/java" style="color:var(--text);font-size:12px;font-weight:600">Java Maven</a>
+<p style="font-size:11px;color:var(--muted);margin:4px 0 0">OWASP dependency-check, Maven enforcer</p>
+</div>
+</div>
+
+<h2>CI/CD providers</h2>
+<p>Provider-specific guides for adding dependency scanning to your pipeline:</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin:16px 0">
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px">
+<a href="/providers/github-actions/npm-audit" style="color:var(--text);font-size:12px;font-weight:600">GitHub Actions</a>
+<p style="font-size:11px;color:var(--muted);margin:4px 0 0">npm audit + pip-audit workflows</p>
+</div>
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px">
+<a href="/providers/gitlab-ci/dependency-scan" style="color:var(--text);font-size:12px;font-weight:600">GitLab CI</a>
+<p style="font-size:11px;color:var(--muted);margin:4px 0 0">dependency scanning template</p>
+</div>
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px">
+<a href="/providers/circleci/dependency-scan" style="color:var(--text);font-size:12px;font-weight:600">CircleCI</a>
+<p style="font-size:11px;color:var(--muted);margin:4px 0 0">orb-based scanning setup</p>
+</div>
+</div>
+
 <div class="cta-box">
   <p>Paste your manifest — get a fixed version with all CVEs patched in seconds.</p>
   <a href="/" class="cta-btn">Open PackageFix →</a>
