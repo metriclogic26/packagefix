@@ -150,7 +150,16 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
 .site-footer{border-top:1px solid var(--border);padding:24px;text-align:center;font-size:11px;color:var(--muted);margin-top:60px}
 .site-footer a{color:var(--muted)}
 @media(max-width:640px){.nav-links{display:none}.related-grid{grid-template-columns:1fr}.index-grid{grid-template-columns:1fr}}
-</style>
+
+    .nav-dropdown{position:relative}
+    .nav-dropdown-menu{display:none;position:absolute;top:calc(100% + 4px);left:0;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:6px;width:220px;z-index:100;box-shadow:0 8px 24px rgba(0,0,0,.4)}
+    .nav-dropdown:hover .nav-dropdown-menu{display:block}
+    .nav-dropdown-menu a{display:block;color:var(--muted);padding:6px 10px;border-radius:5px;font-size:11px}
+    .nav-dropdown-menu a:hover{color:var(--text);background:var(--bg);text-decoration:none}
+    .nav-dropdown-menu .sep{height:1px;background:var(--border);margin:4px 0}
+    .nav-dropdown-menu .label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;padding:4px 10px 2px;opacity:.6}
+
+    </style>
 </head>
 <body>
 <header class="site-header">
