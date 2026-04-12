@@ -207,6 +207,49 @@ boto3==1.26.0</pre>
 <pre># After
 boto3==1.34.69</pre>
 <p style="margin-top:8px">Then run: <code>pip install -r requirements.txt</code></p>
+
+<h2>Why boto3 CVEs are almost always transitive</h2>
+<p>boto3 itself has a clean CVE record — most "boto3 vulnerabilities" flagged by scanners are actually in its dependencies: <code>botocore</code>, <code>urllib3</code>, or <code>requests</code>. When npm audit or pip-audit flags boto3, check the full dependency path first.</p>
+<pre>
+# See the full dependency tree for boto3
+pip show boto3 | grep Requires
+
+# Check which specific sub-package is flagged
+pip-audit --requirement requirements.txt --format json | python3 -m json.tool | grep -A5 "name"</pre>
+
+<h2>boto3 version history — security relevant releases</h2>
+<table style="width:100%;border-collapse:collapse;font-size:12px;margin:12px 0">
+<thead><tr style="border-bottom:2px solid var(--border)">
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Version</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Key change</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Notes</th>
+</tr></thead><tbody>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px">1.34.x+</td><td style="padding:8px 12px;color:var(--muted)">Updated urllib3 dependency</td><td style="padding:8px 12px;color:var(--muted)">Resolves CVE-2023-43804</td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px">1.26.x+</td><td style="padding:8px 12px;color:var(--muted)">Updated requests dependency</td><td style="padding:8px 12px;color:var(--muted)">Resolves CVE-2023-32681</td></tr>
+<tr><td style="padding:8px 12px">Any version</td><td style="padding:8px 12px;color:var(--muted)">Pinned old urllib3/requests</td><td style="padding:8px 12px;color:var(--red)">May be vulnerable via transitive deps</td></tr>
+</tbody></table>
+
+<h2>Fix transitive boto3 vulnerabilities</h2>
+<pre>
+# Pin safe versions of boto3's dependencies directly
+# Add to requirements.txt:
+urllib3>=2.0.7
+requests>=2.31.0
+botocore>=1.34.0
+boto3>=1.34.0
+
+# Then update
+pip install -r requirements.txt --upgrade</pre>
+
+<h2>IAM credential exposure — the real boto3 security risk</h2>
+<p>The more significant security concern with boto3 is credential handling, not CVEs. Hardcoded AWS keys in source code are the #1 boto3 security incident. boto3 reads credentials from environment variables, <code>~/.aws/credentials</code>, or IAM roles — never hardcode them.</p>
+<pre>
+# Never do this
+s3 = boto3.client('s3', aws_access_key_id='AKIA...', aws_secret_access_key='...')
+
+# Use environment variables or IAM roles instead
+s3 = boto3.client('s3')  # reads from environment or ~/.aws/credentials</pre>
+
 <div class="cta-box">
   <p>Paste your manifest — get a fixed version with all CVEs patched in seconds.</p>
   <a href="/" class="cta-btn">Open PackageFix →</a>

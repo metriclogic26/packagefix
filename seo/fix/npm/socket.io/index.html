@@ -236,6 +236,45 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
 <pre style="margin-bottom:4px"># After</pre>
 <pre>"socket.io": "4.6.2"</pre>
 <p style="margin-top:8px">Then run: <code>npm install</code></p>
+
+<h2>socket.io CVEs and safe versions</h2>
+<p>socket.io enables real-time bidirectional communication. Its CVEs are typically in the engine.io or socket.io-parser dependencies rather than socket.io itself.</p>
+
+<h2>Known socket.io CVEs</h2>
+<table style="width:100%;border-collapse:collapse;font-size:12px;margin:12px 0">
+<thead><tr style="border-bottom:2px solid var(--border)">
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Package</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">CVE</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Severity</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Description</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Safe</th>
+</tr></thead><tbody>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px">engine.io</td><td style="padding:8px 12px;color:var(--muted)">CVE-2022-41940</td><td style="padding:8px 12px"><span style="color:var(--red);font-weight:700">HIGH</span></td><td style="padding:8px 12px;color:var(--muted)">DoS via crafted HTTP request</td><td style="padding:8px 12px">engine.io 6.2.1+</td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px">socket.io-parser</td><td style="padding:8px 12px;color:var(--muted)">CVE-2022-2421</td><td style="padding:8px 12px"><span style="color:var(--red);font-weight:700">HIGH</span></td><td style="padding:8px 12px;color:var(--muted)">Prototype pollution via malformed packet</td><td style="padding:8px 12px">parser 4.2.1+</td></tr>
+<tr><td style="padding:8px 12px">socket.io</td><td style="padding:8px 12px;color:var(--muted)">CVE-2024-38355</td><td style="padding:8px 12px"><span style="color:var(--red);font-weight:700">HIGH</span></td><td style="padding:8px 12px;color:var(--muted)">DoS via specially crafted payload</td><td style="padding:8px 12px">4.6.2+</td></tr>
+</tbody></table>
+
+<h2>Fix socket.io</h2>
+<pre>
+# Update socket.io and its dependencies
+npm install socket.io@latest
+
+# Or pin a specific safe version
+npm install socket.io@4.7.5
+
+# Verify
+npm list socket.io engine.io socket.io-parser</pre>
+
+<h2>socket.io and cross-spawn</h2>
+<p>socket.io pulls in several build tools that transitively depend on cross-spawn. If npm audit flags cross-spawn alongside socket.io, use npm overrides to force the safe version:</p>
+<pre>
+// Add to package.json
+{
+  "overrides": {
+    "cross-spawn": "7.0.6"
+  }
+}</pre>
+
 <div class="cta-box">
   <p>Paste your manifest — see your exact versions against the full CVE history.</p>
   <a href="https://packagefix.dev" class="cta-btn">Scan with PackageFix →</a>

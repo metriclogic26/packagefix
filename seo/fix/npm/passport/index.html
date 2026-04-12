@@ -236,6 +236,45 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
 <pre style="margin-bottom:4px"># After</pre>
 <pre>"passport": "0.6.0"</pre>
 <p style="margin-top:8px">Then run: <code>npm install</code></p>
+
+<h2>passport CVEs and safe versions</h2>
+<p>passport is the most widely used Node.js authentication middleware. Its CVEs are typically in the core passport package or specific strategy packages (passport-local, passport-jwt etc.).</p>
+
+<h2>Known passport CVEs</h2>
+<table style="width:100%;border-collapse:collapse;font-size:12px;margin:12px 0">
+<thead><tr style="border-bottom:2px solid var(--border)">
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">CVE</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Severity</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Description</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Safe Version</th>
+</tr></thead><tbody>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px">CVE-2022-25896</td><td style="padding:8px 12px"><span style="color:var(--red);font-weight:700">HIGH</span></td><td style="padding:8px 12px;color:var(--muted)">Session fixation — wrong user session returned</td><td style="padding:8px 12px">0.6.0+</td></tr>
+<tr><td style="padding:8px 12px">CVE-2022-25895</td><td style="padding:8px 12px"><span style="color:var(--orange);font-weight:700">MED</span></td><td style="padding:8px 12px;color:var(--muted)">Authentication bypass via prototype pollution</td><td style="padding:8px 12px">0.6.0+</td></tr>
+</tbody></table>
+
+<h2>Fix passport</h2>
+<pre>
+# Update passport core
+npm install passport@latest
+
+# Safe version — 0.7.0 or later
+npm install passport@0.7.0
+
+# Check strategy packages too
+npm list passport passport-local passport-jwt</pre>
+
+<h2>CVE-2022-25896 — session fixation</h2>
+<p>This is the most critical passport CVE. In passport below 0.6.0, if the user object is modified after login, the wrong user's session data can be returned on subsequent requests. This can lead to authentication bypass. Fix by updating to passport 0.6.0+ and explicitly calling <code>req.session.regenerate()</code> after login.</p>
+<pre>
+// After successful authentication, regenerate session
+app.post('/login', passport.authenticate('local'), (req, res) => {
+  req.session.regenerate((err) => {
+    if (err) return next(err);
+    req.session.user = req.user;
+    res.redirect('/dashboard');
+  });
+});</pre>
+
 <div class="cta-box">
   <p>Paste your manifest — see your exact versions against the full CVE history.</p>
   <a href="https://packagefix.dev" class="cta-btn">Scan with PackageFix →</a>

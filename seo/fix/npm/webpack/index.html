@@ -236,6 +236,43 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
 <pre style="margin-bottom:4px"># After</pre>
 <pre>"webpack": "5.75.0"</pre>
 <p style="margin-top:8px">Then run: <code>npm install</code></p>
+
+<h2>webpack CVEs and safe versions</h2>
+<p>webpack is a dev dependency in most projects — it runs only during the build process, not in production. CVEs in webpack rarely affect runtime security, but supply chain attacks targeting build tools are an increasing concern.</p>
+
+<h2>Known webpack CVEs</h2>
+<table style="width:100%;border-collapse:collapse;font-size:12px;margin:12px 0">
+<thead><tr style="border-bottom:2px solid var(--border)">
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">CVE</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Severity</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Description</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Safe Version</th>
+</tr></thead><tbody>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px">CVE-2023-28154</td><td style="padding:8px 12px"><span style="color:var(--red);font-weight:700">HIGH</span></td><td style="padding:8px 12px;color:var(--muted)">Prototype pollution via loader options</td><td style="padding:8px 12px">5.76.0+</td></tr>
+<tr><td style="padding:8px 12px">webpack-dev-middleware</td><td style="padding:8px 12px"><span style="color:var(--red);font-weight:700">HIGH</span></td><td style="padding:8px 12px;color:var(--muted)">CVE-2024-29180 — path traversal</td><td style="padding:8px 12px">wdm 7.1.0+</td></tr>
+</tbody></table>
+
+<h2>Fix webpack</h2>
+<pre>
+# Update webpack
+npm install webpack@latest --save-dev
+
+# If using webpack-dev-middleware separately
+npm install webpack-dev-middleware@latest --save-dev
+
+# Check what version you have
+npm list webpack webpack-dev-middleware</pre>
+
+<h2>webpack and cross-spawn</h2>
+<p>webpack-cli pulls in cross-spawn as a transitive dependency. If you are on an old webpack-cli version, you may be running cross-spawn 7.0.3 (CVE-2024-21538). Update webpack-cli to get the patched version:</p>
+<pre>
+npm install webpack-cli@latest --save-dev
+npm list cross-spawn
+# Should show 7.0.6</pre>
+
+<h2>Dev dependencies and security</h2>
+<p>webpack is a devDependency. Its CVEs affect your CI/CD environment and developer machines, not your production runtime. This matters for threat modelling — a webpack CVE that requires local code execution is lower severity in practice than the CVSS score suggests for typical projects.</p>
+
 <div class="cta-box">
   <p>Paste your manifest — see your exact versions against the full CVE history.</p>
   <a href="https://packagefix.dev" class="cta-btn">Scan with PackageFix →</a>

@@ -207,6 +207,40 @@ httpx==0.24.0</pre>
 <pre># After
 httpx==0.27.0</pre>
 <p style="margin-top:8px">Then run: <code>pip install -r requirements.txt</code></p>
+
+<h2>httpx CVEs and safe versions</h2>
+<p>httpx is a modern async HTTP client for Python. Its CVE history is limited but it inherits vulnerabilities from its dependencies: <code>httpcore</code>, <code>certifi</code>, and <code>h11</code>. Always check the full dependency tree when pip-audit flags httpx.</p>
+
+<h2>Known httpx vulnerabilities</h2>
+<table style="width:100%;border-collapse:collapse;font-size:12px;margin:12px 0">
+<thead><tr style="border-bottom:2px solid var(--border)">
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">CVE</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Severity</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Description</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Safe Version</th>
+</tr></thead><tbody>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px">CVE-2021-41945</td><td style="padding:8px 12px"><span style="color:var(--red);font-weight:700">HIGH</span></td><td style="padding:8px 12px;color:var(--muted)">CRLF injection via crafted URL</td><td style="padding:8px 12px">0.23.0+</td></tr>
+<tr><td style="padding:8px 12px">h11 CVE-2025-43859</td><td style="padding:8px 12px"><span style="color:var(--orange);font-weight:700">MED</span></td><td style="padding:8px 12px;color:var(--muted)">HTTP request smuggling via h11</td><td style="padding:8px 12px">httpx 0.27.0+</td></tr>
+</tbody></table>
+
+<h2>Fix httpx vulnerabilities</h2>
+<pre>
+# Update httpx and its core dependencies
+pip install httpx --upgrade
+
+# Pin in requirements.txt
+httpx>=0.27.0
+h11>=0.16.0
+httpcore>=1.0.5
+
+pip install -r requirements.txt
+
+# Verify installed versions
+pip show httpx h11 httpcore | grep -E "Name:|Version:"</pre>
+
+<h2>httpx vs requests — security comparison</h2>
+<p>httpx has a cleaner CVE history than requests (which has CVE-2023-32681 for SSRF). If you are migrating from requests to httpx for async support, pin httpx 0.27.0+ and h11 0.16.0+ to avoid the HTTP smuggling issue.</p>
+
 <div class="cta-box">
   <p>Paste your manifest — get a fixed version with all CVEs patched in seconds.</p>
   <a href="/" class="cta-btn">Open PackageFix →</a>

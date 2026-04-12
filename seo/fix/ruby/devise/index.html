@@ -242,6 +242,46 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
 <pre style="margin-bottom:4px"># After</pre>
 <pre>gem 'devise', '4.9.4'</pre>
 <p style="margin-top:8px">Then run: <code>bundle install</code></p>
+
+<h2>Devise CVEs and safe versions</h2>
+<p>Devise is the most widely used Rails authentication gem. Its CVE history is limited, but vulnerabilities are high-impact because Devise controls authentication for the entire application.</p>
+
+<h2>Known Devise CVEs</h2>
+<table style="width:100%;border-collapse:collapse;font-size:12px;margin:12px 0">
+<thead><tr style="border-bottom:2px solid var(--border)">
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">CVE</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Severity</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Description</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Safe Version</th>
+</tr></thead><tbody>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px">CVE-2019-5421</td><td style="padding:8px 12px"><span style="color:var(--red);font-weight:700">CRITICAL</span></td><td style="padding:8px 12px;color:var(--muted)">Timing attack on password reset tokens</td><td style="padding:8px 12px">4.7.1+</td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px">CVE-2021-28125</td><td style="padding:8px 12px"><span style="color:var(--orange);font-weight:700">MED</span></td><td style="padding:8px 12px;color:var(--muted)">Open redirect via return_to parameter</td><td style="padding:8px 12px">4.8.0+</td></tr>
+<tr><td style="padding:8px 12px">CVE-2022-36084</td><td style="padding:8px 12px"><span style="color:var(--orange);font-weight:700">MED</span></td><td style="padding:8px 12px;color:var(--muted)">Devise-jwt token revocation bypass</td><td style="padding:8px 12px">devise-jwt 0.11.0+</td></tr>
+</tbody></table>
+
+<h2>Fix Devise</h2>
+<pre>
+# Update in Gemfile
+gem 'devise', '>= 4.9.4'
+
+# Install
+bundle update devise
+
+# Verify
+bundle list | grep devise</pre>
+
+<h2>Devise and ruby-jwt</h2>
+<p>If you use Devise with JWT authentication (via devise-jwt gem), both packages must be updated together. devise-jwt depends on ruby-jwt, which has its own CVE history. Run <code>bundle audit</code> to check both.</p>
+<pre>
+# Install bundler-audit
+gem install bundler-audit
+
+# Update advisory database
+bundle audit update
+
+# Check both devise and jwt gems
+bundle audit check</pre>
+
 <div class="cta-box">
   <p>Paste your manifest — see your exact versions against the full CVE history.</p>
   <a href="https://packagefix.dev" class="cta-btn">Scan with PackageFix →</a>

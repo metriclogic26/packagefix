@@ -242,6 +242,40 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
 <pre style="margin-bottom:4px"># After</pre>
 <pre>"Werkzeug==3.0.3"</pre>
 <p style="margin-top:8px">Then run: <code>pip install -r requirements.txt</code></p>
+
+<h2>Werkzeug CVEs — Flask's WSGI toolkit</h2>
+<p>Werkzeug is the WSGI utility library that Flask is built on. Werkzeug vulnerabilities directly affect all Flask applications. When pip-audit flags Werkzeug, your Flask app is exposed.</p>
+
+<h2>Known Werkzeug CVEs</h2>
+<table style="width:100%;border-collapse:collapse;font-size:12px;margin:12px 0">
+<thead><tr style="border-bottom:2px solid var(--border)">
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">CVE</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Severity</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Description</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Safe Version</th>
+</tr></thead><tbody>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px">CVE-2024-49767</td><td style="padding:8px 12px"><span style="color:var(--red);font-weight:700">HIGH</span></td><td style="padding:8px 12px;color:var(--muted)">DoS via multipart form data parsing</td><td style="padding:8px 12px">3.0.6+</td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px">CVE-2024-34069</td><td style="padding:8px 12px"><span style="color:var(--red);font-weight:700">HIGH</span></td><td style="padding:8px 12px;color:var(--muted)">Debugger PIN bypass — RCE if debug=True</td><td style="padding:8px 12px">3.0.3+</td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px">CVE-2023-46136</td><td style="padding:8px 12px"><span style="color:var(--red);font-weight:700">HIGH</span></td><td style="padding:8px 12px;color:var(--muted)">DoS via crafted multipart boundary</td><td style="padding:8px 12px">3.0.1+</td></tr>
+<tr><td style="padding:8px 12px">CVE-2023-25577</td><td style="padding:8px 12px"><span style="color:var(--red);font-weight:700">HIGH</span></td><td style="padding:8px 12px;color:var(--muted)">DoS via large multipart form data</td><td style="padding:8px 12px">2.2.3+</td></tr>
+</tbody></table>
+
+<h2>Fix Werkzeug</h2>
+<pre>
+# Safe version — 3.0.6 or later
+pip install werkzeug --upgrade
+
+# Pin in requirements.txt
+werkzeug>=3.0.6
+
+pip install -r requirements.txt
+
+# Verify
+pip show werkzeug | grep Version</pre>
+
+<h2>CVE-2024-34069 — RCE via debugger PIN bypass</h2>
+<p>This is the highest-risk Werkzeug CVE. The Werkzeug debugger PIN can be bypassed if an attacker knows the machine ID and MAC address — both often obtainable via path traversal. This gives full RCE. Only affects apps running with debug mode enabled. In production, debug mode must always be off.</p>
+
 <div class="cta-box">
   <p>Paste your manifest — see your exact versions against the full CVE history.</p>
   <a href="https://packagefix.dev" class="cta-btn">Scan with PackageFix →</a>

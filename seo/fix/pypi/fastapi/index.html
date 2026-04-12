@@ -207,6 +207,53 @@ fastapi==0.100.0</pre>
 <pre># After
 fastapi==0.109.1</pre>
 <p style="margin-top:8px">Then run: <code>pip install -r requirements.txt</code></p>
+
+<h2>FastAPI CVEs — what you actually need to fix</h2>
+<p>FastAPI has a minimal direct CVE history. Most "FastAPI vulnerabilities" are in its dependencies: <code>starlette</code>, <code>pydantic</code>, or <code>uvicorn</code>. When pip-audit flags FastAPI, the vulnerable package is almost always starlette.</p>
+<pre>
+# Check FastAPI's actual dependencies
+pip show fastapi | grep Requires
+# Requires: starlette, pydantic, typing-extensions
+
+# The vulnerable package in most FastAPI audits
+pip show starlette | grep Version</pre>
+
+<h2>Known FastAPI dependency CVEs</h2>
+<table style="width:100%;border-collapse:collapse;font-size:12px;margin:12px 0">
+<thead><tr style="border-bottom:2px solid var(--border)">
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Package</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">CVE</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Safe Version</th>
+</tr></thead><tbody>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px">starlette</td><td style="padding:8px 12px;color:var(--muted)">CVE-2024-47874</td><td style="padding:8px 12px">0.40.0+</td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px">starlette</td><td style="padding:8px 12px;color:var(--muted)">CVE-2023-29159</td><td style="padding:8px 12px">0.27.0+</td></tr>
+<tr><td style="padding:8px 12px">pydantic</td><td style="padding:8px 12px;color:var(--muted)">CVE-2024-3772</td><td style="padding:8px 12px">2.7.0+</td></tr>
+</tbody></table>
+
+<h2>Fix FastAPI dependency vulnerabilities</h2>
+<pre>
+# Update FastAPI and all its dependencies together
+pip install fastapi[all] --upgrade
+
+# Or pin specific versions in requirements.txt
+fastapi>=0.111.0
+starlette>=0.40.0
+pydantic>=2.7.0
+
+pip install -r requirements.txt</pre>
+
+<h2>FastAPI security best practices</h2>
+<p>Beyond CVEs, the most common FastAPI security issues are: missing authentication on routes, CORS misconfiguration allowing all origins, and unvalidated file uploads. Use FastAPI's built-in <code>Depends</code> for auth and always configure CORS explicitly.</p>
+<pre>
+# Explicit CORS — never use allow_origins=["*"] in production
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["https://yourdomain.com"],
+    allow_credentials=True,
+    allow_methods=["GET", "POST"],
+    allow_headers=["Authorization"],
+)</pre>
+
 <div class="cta-box">
   <p>Paste your manifest — get a fixed version with all CVEs patched in seconds.</p>
   <a href="/" class="cta-btn">Open PackageFix →</a>
