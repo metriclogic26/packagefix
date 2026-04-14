@@ -303,6 +303,30 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
 <p>Then run: <code>npm install</code></p>
 
 <h2>Which packages pull in axios?</h2><p>axios appears as a transitive dependency in many popular frameworks and SDKs:</p><table style='width:100%;border-collapse:collapse;font-size:12px;margin:12px 0'><thead><tr style='border-bottom:2px solid var(--border)'><th style='text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase'>Package</th><th style='text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase'>Downloads</th><th style='text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase'>Why</th></tr></thead><tbody><tr style='border-bottom:1px solid var(--border)'><td style='padding:8px 12px;color:var(--text);font-weight:500'><code>@octokit/rest</code></td><td style='padding:8px 12px;color:var(--muted)'>varies</td><td style='padding:8px 12px;color:var(--muted)'>GitHub API client — uses axios for HTTP</td></tr><tr style='border-bottom:1px solid var(--border)'><td style='padding:8px 12px;color:var(--text);font-weight:500'><code>firebase</code></td><td style='padding:8px 12px;color:var(--muted)'>varies</td><td style='padding:8px 12px;color:var(--muted)'>Some Firebase packages use axios internally</td></tr><tr style='border-bottom:1px solid var(--border)'><td style='padding:8px 12px;color:var(--text);font-weight:500'><code>stripe</code></td><td style='padding:8px 12px;color:var(--muted)'>varies</td><td style='padding:8px 12px;color:var(--muted)'>Stripe SDK HTTP requests</td></tr><tr style='border-bottom:1px solid var(--border)'><td style='padding:8px 12px;color:var(--text);font-weight:500'><code>twilio</code></td><td style='padding:8px 12px;color:var(--muted)'>varies</td><td style='padding:8px 12px;color:var(--muted)'>Twilio SDK — uses axios for API calls</td></tr></tbody></table><div style='background:rgba(108,99,255,.08);border:1px solid rgba(108,99,255,.3);border-left:3px solid var(--purple);border-radius:8px;padding:12px 16px;margin:12px 0'><p style='margin:0;font-size:12px;color:var(--text)'>If axios is transitive and you installed axios@1.14.1 between March 31 00:21–03:30 UTC, assume compromise. Force safe version:</p></div>
+
+<h2>axios 0.x to 1.x breaking changes</h2>
+<p>axios 1.0 introduced several breaking changes from the 0.x series. These are the changes that affect most projects migrating from 0.x to 1.x:</p>
+<table style="width:100%;border-collapse:collapse;font-size:12px;margin:12px 0">
+<thead><tr style="border-bottom:2px solid var(--border)">
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Change</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">0.x</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">1.x</th>
+</tr></thead><tbody>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px">TypeScript types</td><td style="padding:8px 12px;color:var(--muted)">Separate @types/axios</td><td style="padding:8px 12px;color:var(--muted)">Built-in — remove @tes/axios</td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px">Error handling</td><td style="padding:8px 12px;color:var(--muted)">axios.isAxiosError() untyped</td><td style="padding:8px 12px;color:var(--muted)">Fully typed AxiosError</td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px">FormData</td><td style="padding:8px 12px;color:var(--muted)">Manual serialization</td><td style="padding:8px 12px;color:var(--muted)">Automatic serialization</td></tr>
+<tr><td style="padding:8px 12px">ESM support</td><td style="padding:8px 12px;color:var(--muted)">CommonJS only</td><td style="padding:8px 12px;color:var(--muted)">ESM + CommonJS dual package</td></tr>
+</tbody></table>
+<pre>
+# Remove old types package if present
+npm uninstall @types/axios
+
+# Install safe axios version
+npm install axios@1.7.4
+
+# Verify
+npm list axios</pre>
+
 <div class="cta-box">
   <p>Paste your manifest — see your exact installed version against this full CVE list.</p>
   <a href="https://packagefix.dev" class="cta-btn">Scan with PackageFix →</a>
