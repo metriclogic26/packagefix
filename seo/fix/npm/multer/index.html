@@ -305,7 +305,11 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
 </ul>
 </div>
 </div>
-</div><h1>Fix multer — CVE-2022-24434 <span class="badge badge-orange">HIGH</span></h1>
+</div><div style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.3);border-left:3px solid var(--green);border-radius:8px;padding:14px 18px;margin:0 0 24px">
+<div style="font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Yes — multer 2.1.1 is the correct fix version</div>
+<p style="margin:0;font-size:13px;color:var(--text)">multer 2.1.1 is the patched version that fixes DoS via uncontrolled recursion (CVE-2026-3520). multer 2.0.x is also vulnerable. The only safe version is <strong>multer@2.1.1</strong> or later.</p>
+</div>
+<h1>Fix multer — CVE-2022-24434 <span class="badge badge-orange">HIGH</span></h1>
 <p style="font-size:11px;color:var(--muted);margin-bottom:16px">Last updated: April 1, 2026 &middot; multer 1.4.5-lts.1 exists on npm but is vulnerable &middot; Safe version: 2.1.1 &middot; <a href="https://osv.dev" target="_blank" rel="noopener" style="color:var(--muted)">Data: OSV Database</a></p>
 <p class="lead">Fix CVE-2022-24434 (HIGH) in multer for npm. Paste your package.json into PackageFix and get a patched version — no CLI, no signup. Denial of service via crafted multipart request.</p>
 

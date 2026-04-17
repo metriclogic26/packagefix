@@ -215,6 +215,10 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
 <main class="container">
   <div class="breadcrumb"><a href="/">PackageFix</a> <span style='color:var(--border)'>/</span> <a href="/fix">Fix Guides</a> <span style='color:var(--border)'>/</span> <a href="/pypi">PyPI</a> <span style='color:var(--border)'>/</span> <span style="color:var(--text)">Flask</span></div>
   
+<div style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.3);border-left:3px solid var(--green);border-radius:8px;padding:14px 18px;margin:0 0 24px">
+<div style="font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Flask 3.0.3 — current safe version</div>
+<p style="margin:0;font-size:13px;color:var(--text)">Flask 3.0.3 requires Werkzeug 3.0.3+. Always update both together — <code>pip install flask --upgrade werkzeug --upgrade</code>. Flask 3.0.3 patches CVE-2023-30861 (session cookie leakage).</p>
+</div>
 <h1>All Flask CVEs — Complete Vulnerability History</h1>
 <p style="font-size:11px;color:var(--muted);margin-bottom:16px">Last updated: April 1, 2026 &middot; <a href="https://osv.dev" target="_blank" rel="noopener" style="color:var(--muted)">Data: OSV Database</a></p>
 <p class="lead">Flask is Python's most popular microframework. CVEs in Flask itself are rare — most Flask-related vulnerabilities come through Werkzeug or Jinja2. The main direct CVE is a cookie bypass.</p>

@@ -302,6 +302,17 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
 <pre><log4j.version>2.23.1</log4j.version></pre>
 <p>Then run: <code>mvn dependency:resolve</code></p>
 
+<h2>log4j 2.23.1 Java version requirements</h2>
+<p>log4j 2.23.1 requires Java 8 or later. If you are on Java 7, the last compatible safe version is log4j 2.12.4 (Java 7 branch). log4j 1.x is end of life — do noegardless of Java version.</p>
+<table style="width:100%;border-collapse:collapse;font-size:12px;margin:12px 0">
+<thead><tr style="border-bottom:2px solid var(--border)">
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Java Version</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Safe log4j Version</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Notes</th>
+</tr></thead><tbody>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px">Java 8+</td><td style="padding:8px 12px;font-weight:700">2.23.1</td><td style="padding:8px 12px;color:var(--muted)">Latest — recommended</td></tr>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px">Java 7</td><td style="padding:8px 12px;font-weight:700">2.12.4</td><td style="padding:8px 12px;color:var(--muted)">Java 7 branch — patches Log4Shell</td></trr><td style="padding:8px 12px">Java 6</td><td style="padding:8px 12px;font-weight:700">2.3.2</td><td style="padding:8px 12px;color:var(--muted)">Java 6 branch — patches Log4Shell</td></tr>
+</tbody></table>
 <div class="cta-box">
   <p>Paste your manifest — see your exact installed version against this full CVE list.</p>
   <a href="https://packagefix.dev" class="cta-btn">Scan with PackageFix →</a>
