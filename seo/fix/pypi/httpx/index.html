@@ -190,7 +190,12 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
 </header>
 <main class="container">
   <div class="breadcrumb"><a href="/">PackageFix</a> <span style='color:var(--border)'>/</span> <a href="/fix">Fix Guides</a> <span style='color:var(--border)'>/</span> <a href="/pypi">PyPI</a> <span style='color:var(--border)'>/</span> <span style="color:var(--text)">httpx</span></div>
-  <h1>All httpx CVEs — Complete Vulnerability History</h1>
+  <div style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.3);border-left:3px solid var(--green);border-radius:8px;padding:14px 18px;margin:0 0 24px">
+<div style="font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">httpx 0.24.1 - dependency versions</div>
+<p style="margin:0 0 8px;font-size:13px;color:var(--text)">httpx 0.24.1 requires httpcore&gt;=0.17.0 and h11&gt;=0.13,&lt;0.15. If pip-audit flags h11, update httpx to 0.27.0+ which uses h11 0.16.0+ fixing HTTP smuggling.</p>
+<p style="margin:0;font-size:12px;color:var(--muted)">Latest safe version: httpx 0.27.2+ - use pip install httpx --upgrade</p>
+</div>
+<h1>All httpx CVEs — Complete Vulnerability History</h1>
 <p style="font-size:11px;color:var(--muted);margin-bottom:16px">Last updated: April 1, 2026 &middot; <a href="https://osv.dev" target="_blank" rel="noopener" style="color:var(--muted)">Data: OSV Database</a></p>
 <p class="lead">httpx is Python's modern HTTP client with async support. The main CVE is a redirect that downgrades from HTTPS to HTTP, potentially exposing credentials.</p>
 <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px">
