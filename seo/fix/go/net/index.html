@@ -107,7 +107,7 @@
           "name": "Is CVE-2023-44487 being actively exploited?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes \u2014 it appears on the CISA KEV catalog. Fix immediately."
+            "text": "Yes \u2014 it appears on the CISA KEV catalog. Prioritise remediation."
           }
         },
         {
@@ -244,7 +244,7 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
 <h1>Fix golang.org/x/net — CVE-2023-44487 <span class="badge badge-orange">HIGH</span></h1>
 <p style="font-size:11px;color:var(--muted);margin-bottom:16px">Last updated: April 1, 2026 &middot; <a href="https://osv.dev" target="_blank" rel="noopener" style="color:var(--muted)">Data: OSV Database</a></p>
 <p class="lead">Fix CVE-2023-44487 (HIGH) in golang.org/x/net for Go. Paste your go.mod into PackageFix and get a patched version — no CLI, no signup. Http/2 rapid reset causing denial of service.</p>
-<div class="kev-box">🔴 <strong>CISA KEV</strong> — golang.org/x/net appears on the CISA Known Exploited Vulnerabilities catalog. Actively exploited in the wild. Fix immediately.</div>
+<div class="kev-box">🔴 <strong>CISA KEV</strong> — golang.org/x/net appears on the CISA Known Exploited Vulnerabilities catalog. Actively exploited in the wild. Prioritise remediation.</div>
 <div class="problem-box">
   <div class="label">⚠ Vulnerability</div>
   <p style="margin:0"><strong>CVE-2023-44487</strong> (HIGH) — HTTP/2 rapid reset causing denial of service in golang.org/x/net below <code>v0.23.0</code>.</p>
@@ -274,7 +274,7 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:3px;
     <tr><td>Description</td><td>Http/2 rapid reset causing denial of service</td></tr>
   </tbody>
 </table>
-<div class="faq"><h2>Frequently Asked Questions</h2><div class="faq-item"><div class="faq-q">What is CVE-2023-44487?</div><div class="faq-a">CVE-2023-44487 is a HIGH severity vulnerability in golang.org/x/net (Go) that allows HTTP/2 rapid reset causing denial of service. Update to v0.23.0 or later.</div></div><div class="faq-item"><div class="faq-q">How do I fix CVE-2023-44487 in golang.org/x/net?</div><div class="faq-a">Update golang.org/x/net to version v0.23.0 in your go.mod and run go mod tidy.</div></div><div class="faq-item"><div class="faq-q">Is CVE-2023-44487 being actively exploited?</div><div class="faq-a">Yes — it appears on the CISA KEV catalog. Fix immediately.</div></div><div class="faq-item"><div class="faq-q">How do I verify the fix for CVE-2023-44487?</div><div class="faq-a">After updating, paste your go.mod into PackageFix again. If CVE-2023-44487 no longer appears in the CVE table, the fix is applied.</div></div></div>
+<div class="faq"><h2>Frequently Asked Questions</h2><div class="faq-item"><div class="faq-q">What is CVE-2023-44487?</div><div class="faq-a">CVE-2023-44487 is a HIGH severity vulnerability in golang.org/x/net (Go) that allows HTTP/2 rapid reset causing denial of service. Update to v0.23.0 or later.</div></div><div class="faq-item"><div class="faq-q">How do I fix CVE-2023-44487 in golang.org/x/net?</div><div class="faq-a">Update golang.org/x/net to version v0.23.0 in your go.mod and run go mod tidy.</div></div><div class="faq-item"><div class="faq-q">Is CVE-2023-44487 being actively exploited?</div><div class="faq-a">Yes — it appears on the CISA KEV catalog. Prioritise remediation.</div></div><div class="faq-item"><div class="faq-q">How do I verify the fix for CVE-2023-44487?</div><div class="faq-a">After updating, paste your go.mod into PackageFix again. If CVE-2023-44487 no longer appears in the CVE table, the fix is applied.</div></div></div>
 <div style="margin:40px 0"><h2>Related Guides</h2><div class="related-grid"><div class="related-card"><a href="/go">Go Security Overview</a><p>All Go vulnerability guides</p></div><div class="related-card"><a href="/fix/go/outdated-dependencies">Fix Outdated Go Dependencies</a><p>General dependency updates</p></div><div class="related-card"><a href="https://packagefix.dev">Open PackageFix Tool</a><p>Scan your manifest live</p></div><div class="related-card"><a href="/vs/snyk-advisor">PackageFix vs Snyk Advisor</a><p>Free browser alternative</p></div></div></div>
 </main>
 <footer class="site-footer">
