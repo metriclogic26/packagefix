@@ -348,6 +348,26 @@ gem 'rails', '~> 7.2.3'  # Rails 7.2 (last supported minor)</pre>
 <pre>gem 'rails', '7.1.3'</pre>
 <p>Then run: <code>bundle install</code></p>
 
+
+<h2>CVE-2026-41316 — Ruby ERB deserialization RCE (April 2026)</h2>
+<p>Published April 21, 2026. A deserialization vulnerability in Ruby's ERB standard library allows
+Remote Code Execution in Rails applications that call <code>Marshal.load</code> on untrusted data.
+Every Rails app loads both ActiveSupport and ERB — if your app processes untrusted Marshal data
+via caching, file uploads, or IPC, review immediately.</p>
+<div style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3);border-left:3px solid var(--red);border-radius:8px;padding:14px 18px;margin:12px 0">
+<div style="font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Affected</div>
+<p style="margin:0;font-size:12px;color:var(--text)">Any Ruby application using <code>Marshal.load</code> with untrusted input
+that has both erb and activesupport loaded — this includes all Rails applications.</p>
+
+<pre>
+# Fix — update Ruby
+ruby --version  # Check current version
+# Update to Ruby 3.3.11 or Ruby 4.0.2 which include the ERB patch
+
+# Immediate mitigation if you cannot update Ruby
+# Never call Marshal.load on data from untrusted sources
+# Replace Marshal with JSON for serialization where possible</pre>
+
 <div class="cta-box">
   <p>Paste your manifest — see your exact installed version against this full CVE list.</p>
   <a href="https://packagefix.dev" class="cta-btn">Scan with PackageFix →</a>
