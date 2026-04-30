@@ -1,0 +1,287 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>node-fetch v2 to v3 Migration — CommonJS to ESM Breaking Change | PackageFix</title>
+<meta name="description" content="node-fetch v3 is ESM only — cannot use require(). Stay on node-fetch 2.7.0 for CommonJS, migrate to v3 for ESM, or use Node 18+ built-in fetch. CVE-2022-0235 and CVE-2020-15168 fix guide.">
+<link rel="canonical" href="https://packagefix.dev/fix/npm/node-fetch/migrate">
+<meta property="og:title" content="node-fetch v2 to v3 Migration — CommonJS to ESM Breaking Change | PackageFix">
+<meta property="og:description" content="node-fetch v3 is ESM only — cannot use require(). Stay on node-fetch 2.7.0 for CommonJS, migrate to v3 for ESM, or use Node 18+ built-in fetch. CVE-2022-0235 and CVE-2020-15168 fix guide.">
+<meta property="og:url" content="https://packagefix.dev/fix/npm/node-fetch/migrate">
+<meta property="og:type" content="article">
+<link rel="icon" type="image/svg+xml" href="/icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "node-fetch v2 to v3 Migration \u2014 CommonJS to ESM",
+      "datePublished": "2026-04-29",
+      "dateModified": "2026-04-29",
+      "author": {
+        "@type": "Organization",
+        "name": "PackageFix",
+        "url": "https://packagefix.dev"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "PackageFix",
+          "item": "https://packagefix.dev"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Fix Guides",
+          "item": "https://packagefix.dev/fix"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "npm",
+          "item": "https://packagefix.dev/npm"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "node-fetch",
+          "item": "https://packagefix.dev/fix/npm/node-fetch"
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "name": "Migration",
+          "item": "https://packagefix.dev/fix/npm/node-fetch/migrate"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Can I use node-fetch v3 with require()?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. node-fetch v3 is ESM only. If your project uses require(), stay on node-fetch 2.7.0 which is safe and supports CommonJS."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the safe version of node-fetch for CommonJS?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "node-fetch 2.7.0 is the safe CommonJS version. It patches CVE-2022-0235 and CVE-2020-15168."
+          }
+        }
+      ]
+    }
+  ]
+}</script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="eb5afbfd-786f-42e4-b6d3-1ad5a5ee0696"></script>
+<style>
+:root{--bg:#0B0D14;--surface:#12151F;--border:#252836;--purple:#6C63FF;--green:#22C55E;--orange:#F97316;--red:#EF4444;--text:#E2E4F0;--muted:#6B7280}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.6}
+a{color:var(--purple);text-decoration:none}a:hover{text-decoration:underline}
+.site-header{border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:15px;font-weight:700;color:var(--text)}.logo span{color:var(--purple)}
+.nav-links{display:flex;gap:4px;font-size:12px;align-items:center}
+.nav-links>a{color:var(--muted);padding:4px 10px;border-radius:5px}
+.nav-links>a:hover{color:var(--text);background:var(--surface);text-decoration:none}
+.nav-dropdown{position:relative}
+.nav-dropdown-btn{color:var(--text);padding:4px 10px;border-radius:5px;cursor:pointer;display:flex;align-items:center;gap:4px;font-size:12px;font-family:'JetBrains Mono',monospace;background:rgba(108,99,255,.15);border:1px solid rgba(108,99,255,.4)}
+.nav-dropdown-btn:hover{background:rgba(108,99,255,.25)}
+.nav-dropdown-btn::after{content:'▾';font-size:9px;opacity:.6}
+.nav-dropdown-menu{display:none;position:absolute;top:calc(100% + 4px);left:0;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:6px;width:220px;z-index:100;box-shadow:0 8px 24px rgba(0,0,0,.4)}
+.nav-dropdown:hover .nav-dropdown-menu{display:block}
+.nav-dropdown-menu a{display:block;color:var(--muted);padding:6px 10px;border-radius:5px;font-size:11px}
+.nav-dropdown-menu a:hover{color:var(--text);background:var(--bg);text-decoration:none}
+.nav-dropdown-menu .sep{height:1px;background:var(--border);margin:4px 0}
+.nav-dropdown-menu .label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;padding:4px 10px 2px;opacity:.6}
+.container{max-width:860px;margin:0 auto;padding:48px 24px}
+.breadcrumb{font-size:11px;color:var(--muted);margin-bottom:24px;display:flex;gap:6px;flex-wrap:wrap}
+.breadcrumb a{color:var(--muted)}
+h1{font-size:clamp(18px,3vw,26px);font-weight:700;margin-bottom:12px;line-height:1.3}
+h2{font-size:14px;font-weight:600;margin:32px 0 12px}
+h3{font-size:13px;font-weight:600;margin:20px 0 8px;color:var(--text)}
+p{color:var(--muted);margin-bottom:12px;font-size:12px;line-height:1.7}
+.lead{color:var(--text);font-size:13px;margin-bottom:24px;line-height:1.7}
+.meta{font-size:11px;color:var(--muted);margin-bottom:24px}
+pre{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px 16px;overflow-x:auto;font-size:11px;line-height:1.6;margin:8px 0;white-space:pre-wrap}
+code{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:1px 5px;font-size:11px}
+.fix-box{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.3);border-left:3px solid var(--green);border-radius:8px;padding:16px 20px;margin:20px 0}
+.fix-box .label{font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.warning-box{background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.3);border-left:3px solid var(--orange);border-radius:8px;padding:16px 20px;margin:20px 0}
+.warning-box .label{font-size:10px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.cta-box{background:var(--surface);border:1px solid var(--purple);border-radius:10px;padding:24px;margin:32px 0;text-align:center}
+.cta-box p{color:var(--text);font-size:13px;margin-bottom:16px}
+.cta-btn{display:inline-block;background:var(--purple);color:#fff;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;padding:12px 28px;border-radius:7px}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:12px}
+.related-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
+.related-card a{color:var(--text);font-size:12px;font-weight:500}
+.related-card p{font-size:11px;color:var(--muted);margin:4px 0 0}
+.site-footer{border-top:1px solid var(--border);padding:24px;text-align:center;font-size:11px;color:var(--muted);margin-top:60px}
+.site-footer a{color:var(--muted)}
+@media(max-width:640px){.nav-links .nav-dropdown{display:none}.related-grid{grid-template-columns:1fr}}
+</style></head><body>
+<header class="site-header">
+<a href="/" class="logo">Package<span>Fix</span></a>
+<nav class="nav-links">
+    <a href="https://packagefix.dev">Tool</a>
+    <div class="nav-dropdown">
+      <button class="nav-dropdown-btn">Fix Guides</button>
+      <div class="nav-dropdown-menu">
+        <div class="label">Ecosystems</div>
+        <a href="/npm">npm (Node.js)</a>
+        <a href="/python">PyPI (Python)</a>
+        <a href="/ruby">Ruby Gems</a>
+        <a href="/php">PHP Composer</a>
+        <a href="/go">Go Modules</a>
+        <a href="/rust">Rust Cargo</a>
+        <a href="/java">Java Maven</a>
+        <div class="sep"></div>
+        <div class="label">Compare</div>
+        <a href="/compare/snyk-vs-dependabot">Snyk vs Dependabot</a>
+        <a href="/compare/osv-scanner">vs OSV-Scanner</a>
+        <a href="/snyk-advisor-alternative">Snyk Advisor Alternative</a>
+        <div class="sep"></div>
+        <div class="label">Reference</div>
+        <a href="/cisa-kev">CISA KEV Catalog</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/blog">Blog</a>
+      </div>
+    </div>
+    <a href="https://packagefix.dev/cisa-kev">CISA KEV</a>
+    <a href="https://packagefix.dev/blog">Blog</a>
+    <a href="https://github.com/metriclogic26/packagefix">GitHub</a>
+  </nav>
+</header>
+<main class="container">
+<div class="breadcrumb"><a href="/">PackageFix</a> <span style="color:var(--border)">/</span> <a href="/fix">Fix Guides</a> <span style="color:var(--border)">/</span> <a href="/npm">npm</a> <span style="color:var(--border)">/</span> <a href="/fix/npm/node-fetch">node-fetch</a> <span style="color:var(--border)">/</span> <span style="color:var(--text)">v2 to v3 Migration</span></div>
+<h1>node-fetch v2 to v3 Migration Guide &mdash; CommonJS to ESM</h1>
+<p class="meta">5 min read &middot; Updated April 2026 &middot; Safe version: node-fetch@3.3.2 or node-fetch@2.7.0</p>
+
+<div style="background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.3);border-left:3px solid var(--orange);border-radius:8px;padding:14px 18px;margin:0 0 24px">
+<div style="font-size:10px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Breaking change — ESM only</div>
+<p style="margin:0;font-size:13px;color:var(--text)">node-fetch v3 is <strong>ESM only</strong>. If your project uses CommonJS (<code>require()</code>), you cannot upgrade to v3 without additional changes. You have two options: stay on node-fetch v2.7.0 (safe, CJS), or migrate to ESM.</p>
+</div>
+
+<h2>Which version should you use?</h2>
+<table style="width:100%;border-collapse:collapse;font-size:12px;margin:12px 0">
+<thead><tr style="border-bottom:2px solid var(--border)">
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Version</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Module system</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Status</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Use when</th>
+</tr></thead><tbody>
+<tr style="border-bottom:1px solid var(--border);background:rgba(34,197,94,.05)">
+<td style="padding:8px 12px;font-weight:700">3.3.2</td>
+<td style="padding:8px 12px;color:var(--muted)">ESM only</td>
+<td style="padding:8px 12px"><span style="background:rgba(34,197,94,.2);color:var(--green);border:1px solid var(--green);font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px">SAFE</span></td>
+<td style="padding:8px 12px;color:var(--muted)">Project uses import/export</td>
+</tr>
+<tr style="border-bottom:1px solid var(--border);background:rgba(34,197,94,.05)">
+<td style="padding:8px 12px;font-weight:700">2.7.0</td>
+<td style="padding:8px 12px;color:var(--muted)">CommonJS</td>
+<td style="padding:8px 12px"><span style="background:rgba(34,197,94,.2);color:var(--green);border:1px solid var(--green);font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px">SAFE</span></td>
+<td style="padding:8px 12px;color:var(--muted)">Project uses require()</td>
+</tr>
+<tr style="border-bottom:1px solid var(--border)">
+<td style="padding:8px 12px;font-weight:700">2.6.6 and below</td>
+<td style="padding:8px 12px;color:var(--muted)">CommonJS</td>
+<td style="padding:8px 12px"><span style="background:rgba(239,68,68,.2);color:var(--red);border:1px solid var(--red);font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px">VULNERABLE</span></td>
+<td style="padding:8px 12px;color:var(--muted)">CVE-2022-0235, CVE-2020-15168</td>
+</tr>
+</tbody></table>
+
+<h2>Option A — Stay on v2 (CommonJS projects)</h2>
+<div class="fix-box"><div class="label">Recommended for CJS projects</div>
+<pre>
+# Update to safe v2
+npm install node-fetch@2.7.0
+
+# Verify
+npm list node-fetch
+# Should show: node-fetch@2.7.0
+
+# Your code stays exactly the same
+const fetch = require('node-fetch');</pre>
+</div>
+
+<h2>Option B — Migrate to Node.js built-in fetch (best long-term)</h2>
+<p>Node.js 18+ includes a global <code>fetch</code> — no package needed. If you are on Node 18+, remove node-fetch entirely.</p>
+<pre>
+# Check your Node version
+node --version
+# If 18+, you can remove node-fetch
+
+npm uninstall node-fetch
+
+# Replace in your code:
+# Before:
+const fetch = require('node-fetch');
+
+# After: nothing — fetch is global
+const response = await fetch('https://api.example.com');</pre>
+
+<h2>Option C — Migrate to node-fetch v3 (ESM projects)</h2>
+<h3>Common errors when upgrading to v3</h3>
+
+<h3>Error: require() of ES Module not supported</h3>
+<pre>
+Error [ERR_REQUIRE_ESM]: require() of ES Module
+/node_modules/node-fetch/src/index.js not supported.
+node-fetch is loaded from
+/app/node_modules/node-fetch/src/index.js
+Did you mean to import node-fetch?</pre>
+<p>Cause: You upgraded to v3 but your project still uses <code>require()</code>. Fix: either downgrade to 2.7.0 or convert your project to ESM.</p>
+
+<h3>Error: Cannot use import statement in a module</h3>
+<pre>SyntaxError: Cannot use import statement outside a module</pre>
+<p>Fix: Add <code>"type": "module"</code> to your package.json, or rename your files from .js to .mjs.</p>
+
+<h3>Before and after — v2 to v3</h3>
+<pre>
+// v2 (CommonJS)
+const fetch = require('node-fetch');
+const res = await fetch('https://api.example.com');
+const data = await res.json();
+
+// v3 (ESM) — package.json must have "type": "module"
+import fetch from 'node-fetch';
+const res = await fetch('https://api.example.com');
+const data = await res.json();</pre>
+
+<h2>CVEs fixed in each version</h2>
+<table style="width:100%;border-collapse:collapse;font-size:12px;margin:12px 0">
+<thead><tr style="border-bottom:2px solid var(--border)">
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">CVE</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Fixed in</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Description</th>
+</tr></thead><tbody>
+<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px">CVE-2022-0235</td><td style="padding:8px 12px">2.6.7+ / 3.1.1+</td><td style="padding:8px 12px;color:var(--muted)">Sensitive info exposure via redirect to non-HTTP URL</td></tr>
+<tr><td style="padding:8px 12px">CVE-2020-15168</td><td style="padding:8px 12px">2.6.1+ / 3.0.0+</td><td style="padding:8px 12px;color:var(--muted)">No size limit on response body — DoS risk</td></tr>
+</tbody></table>
+
+<div style="margin:40px 0"><h2>Related</h2><div class="related-grid">
+<div class="related-card"><a href="/fix/npm/node-fetch">node-fetch CVE History</a><p>All known vulnerabilities</p></div>
+<div class="related-card"><a href="/fix/npm/axios">Fix axios</a><p>Alternative HTTP client</p></div>
+<div class="related-card"><a href="/fix/npm/got">Fix got</a><p>Another HTTP client alternative</p></div>
+<div class="related-card"><a href="/fix/npm/multer/migrate">multer Migration Guide</a><p>Another breaking migration</p></div>
+</div></div>
+<div class="cta-box">
+<p>Scan your full manifest — PackageFix checks all 7 ecosystems against OSV and CISA KEV.</p>
+<a href="/" class="cta-btn">Scan with PackageFix &rarr;</a>
+<p style="margin-top:12px;font-size:11px;color:var(--muted)">Free &middot; No signup &middot; No CLI required</p>
+</div>
+<p style="font-size:11px;color:var(--muted);border-top:1px solid var(--border);padding-top:12px;margin-top:32px">Vulnerability data sourced from the OSV database and public package registries. Always test dependency updates in a staging environment before deploying to production. PackageFix provides these tools for informational purposes only and cannot guarantee that pinned versions are free from undiscovered vulnerabilities.</p>
+</main>
+<footer class="site-footer">
+<p>PackageFix &middot; <a href="/">packagefix.dev</a> &middot; MIT Licensed</p>
+<p style="margin-top:6px">Vulnerability data: <a href="https://osv.dev">OSV</a> &middot; <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog">CISA KEV</a></p>
+</footer></body></html>

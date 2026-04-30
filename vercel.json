@@ -2335,6 +2335,30 @@
     {
       "source": "/blog/weekly-cve-april-10-2026/",
       "destination": "/seo/blog/weekly-cve-april-10-2026/index.html"
+    },
+    {
+      "source": "/fix/npm/node-fetch/migrate",
+      "destination": "/seo/fix/npm/node-fetch/migrate/index.html"
+    },
+    {
+      "source": "/fix/npm/node-fetch/migrate/",
+      "destination": "/seo/fix/npm/node-fetch/migrate/index.html"
+    },
+    {
+      "source": "/fix/pypi/flask/migrate",
+      "destination": "/seo/fix/pypi/flask/migrate/index.html"
+    },
+    {
+      "source": "/fix/pypi/flask/migrate/",
+      "destination": "/seo/fix/pypi/flask/migrate/index.html"
+    },
+    {
+      "source": "/fix/pypi/fastapi/migrate",
+      "destination": "/seo/fix/pypi/fastapi/migrate/index.html"
+    },
+    {
+      "source": "/fix/pypi/fastapi/migrate/",
+      "destination": "/seo/fix/pypi/fastapi/migrate/index.html"
     }
   ],
   "redirects": [

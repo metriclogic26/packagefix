@@ -1,0 +1,285 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Flask 2.x to 3.x Migration — Breaking Changes and Werkzeug Update | PackageFix</title>
+<meta name="description" content="Flask 3.x breaking changes: Python 3.8 minimum, Markup import path changed, Werkzeug 3.0.6+ required. CVE-2023-30861 fixed in Flask 2.3.2+. Safe version: Flask 3.0.3 with Werkzeug 3.0.6.">
+<link rel="canonical" href="https://packagefix.dev/fix/pypi/flask/migrate">
+<meta property="og:title" content="Flask 2.x to 3.x Migration — Breaking Changes and Werkzeug Update | PackageFix">
+<meta property="og:description" content="Flask 3.x breaking changes: Python 3.8 minimum, Markup import path changed, Werkzeug 3.0.6+ required. CVE-2023-30861 fixed in Flask 2.3.2+. Safe version: Flask 3.0.3 with Werkzeug 3.0.6.">
+<meta property="og:url" content="https://packagefix.dev/fix/pypi/flask/migrate">
+<meta property="og:type" content="article">
+<link rel="icon" type="image/svg+xml" href="/icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "Flask 2.x to 3.x Migration Guide \u2014 Breaking Changes",
+      "datePublished": "2026-04-29",
+      "dateModified": "2026-04-29",
+      "author": {
+        "@type": "Organization",
+        "name": "PackageFix",
+        "url": "https://packagefix.dev"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "PackageFix",
+          "item": "https://packagefix.dev"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Fix Guides",
+          "item": "https://packagefix.dev/fix"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "PyPI",
+          "item": "https://packagefix.dev/python"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "flask",
+          "item": "https://packagefix.dev/fix/pypi/flask"
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "name": "Migration",
+          "item": "https://packagefix.dev/fix/pypi/flask/migrate"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Does Flask 3.x work with Werkzeug 2.x?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Flask 3.x requires Werkzeug 3.0.3 or later. Always update both together: pip install flask --upgrade werkzeug --upgrade"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What Python version does Flask 3.x require?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Flask 3.x requires Python 3.8 or later."
+          }
+        }
+      ]
+    }
+  ]
+}</script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="eb5afbfd-786f-42e4-b6d3-1ad5a5ee0696"></script>
+<style>
+:root{--bg:#0B0D14;--surface:#12151F;--border:#252836;--purple:#6C63FF;--green:#22C55E;--orange:#F97316;--red:#EF4444;--text:#E2E4F0;--muted:#6B7280}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.6}
+a{color:var(--purple);text-decoration:none}a:hover{text-decoration:underline}
+.site-header{border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:15px;font-weight:700;color:var(--text)}.logo span{color:var(--purple)}
+.nav-links{display:flex;gap:4px;font-size:12px;align-items:center}
+.nav-links>a{color:var(--muted);padding:4px 10px;border-radius:5px}
+.nav-links>a:hover{color:var(--text);background:var(--surface);text-decoration:none}
+.nav-dropdown{position:relative}
+.nav-dropdown-btn{color:var(--text);padding:4px 10px;border-radius:5px;cursor:pointer;display:flex;align-items:center;gap:4px;font-size:12px;font-family:'JetBrains Mono',monospace;background:rgba(108,99,255,.15);border:1px solid rgba(108,99,255,.4)}
+.nav-dropdown-btn:hover{background:rgba(108,99,255,.25)}
+.nav-dropdown-btn::after{content:'▾';font-size:9px;opacity:.6}
+.nav-dropdown-menu{display:none;position:absolute;top:calc(100% + 4px);left:0;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:6px;width:220px;z-index:100;box-shadow:0 8px 24px rgba(0,0,0,.4)}
+.nav-dropdown:hover .nav-dropdown-menu{display:block}
+.nav-dropdown-menu a{display:block;color:var(--muted);padding:6px 10px;border-radius:5px;font-size:11px}
+.nav-dropdown-menu a:hover{color:var(--text);background:var(--bg);text-decoration:none}
+.nav-dropdown-menu .sep{height:1px;background:var(--border);margin:4px 0}
+.nav-dropdown-menu .label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;padding:4px 10px 2px;opacity:.6}
+.container{max-width:860px;margin:0 auto;padding:48px 24px}
+.breadcrumb{font-size:11px;color:var(--muted);margin-bottom:24px;display:flex;gap:6px;flex-wrap:wrap}
+.breadcrumb a{color:var(--muted)}
+h1{font-size:clamp(18px,3vw,26px);font-weight:700;margin-bottom:12px;line-height:1.3}
+h2{font-size:14px;font-weight:600;margin:32px 0 12px}
+h3{font-size:13px;font-weight:600;margin:20px 0 8px;color:var(--text)}
+p{color:var(--muted);margin-bottom:12px;font-size:12px;line-height:1.7}
+.lead{color:var(--text);font-size:13px;margin-bottom:24px;line-height:1.7}
+.meta{font-size:11px;color:var(--muted);margin-bottom:24px}
+pre{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px 16px;overflow-x:auto;font-size:11px;line-height:1.6;margin:8px 0;white-space:pre-wrap}
+code{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:1px 5px;font-size:11px}
+.fix-box{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.3);border-left:3px solid var(--green);border-radius:8px;padding:16px 20px;margin:20px 0}
+.fix-box .label{font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.warning-box{background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.3);border-left:3px solid var(--orange);border-radius:8px;padding:16px 20px;margin:20px 0}
+.warning-box .label{font-size:10px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.cta-box{background:var(--surface);border:1px solid var(--purple);border-radius:10px;padding:24px;margin:32px 0;text-align:center}
+.cta-box p{color:var(--text);font-size:13px;margin-bottom:16px}
+.cta-btn{display:inline-block;background:var(--purple);color:#fff;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;padding:12px 28px;border-radius:7px}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:12px}
+.related-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
+.related-card a{color:var(--text);font-size:12px;font-weight:500}
+.related-card p{font-size:11px;color:var(--muted);margin:4px 0 0}
+.site-footer{border-top:1px solid var(--border);padding:24px;text-align:center;font-size:11px;color:var(--muted);margin-top:60px}
+.site-footer a{color:var(--muted)}
+@media(max-width:640px){.nav-links .nav-dropdown{display:none}.related-grid{grid-template-columns:1fr}}
+</style></head><body>
+<header class="site-header">
+<a href="/" class="logo">Package<span>Fix</span></a>
+<nav class="nav-links">
+    <a href="https://packagefix.dev">Tool</a>
+    <div class="nav-dropdown">
+      <button class="nav-dropdown-btn">Fix Guides</button>
+      <div class="nav-dropdown-menu">
+        <div class="label">Ecosystems</div>
+        <a href="/npm">npm (Node.js)</a>
+        <a href="/python">PyPI (Python)</a>
+        <a href="/ruby">Ruby Gems</a>
+        <a href="/php">PHP Composer</a>
+        <a href="/go">Go Modules</a>
+        <a href="/rust">Rust Cargo</a>
+        <a href="/java">Java Maven</a>
+        <div class="sep"></div>
+        <div class="label">Compare</div>
+        <a href="/compare/snyk-vs-dependabot">Snyk vs Dependabot</a>
+        <a href="/compare/osv-scanner">vs OSV-Scanner</a>
+        <a href="/snyk-advisor-alternative">Snyk Advisor Alternative</a>
+        <div class="sep"></div>
+        <div class="label">Reference</div>
+        <a href="/cisa-kev">CISA KEV Catalog</a>
+        <a href="/glossary">Glossary</a>
+        <a href="/blog">Blog</a>
+      </div>
+    </div>
+    <a href="https://packagefix.dev/cisa-kev">CISA KEV</a>
+    <a href="https://packagefix.dev/blog">Blog</a>
+    <a href="https://github.com/metriclogic26/packagefix">GitHub</a>
+  </nav>
+</header>
+<main class="container">
+<div class="breadcrumb"><a href="/">PackageFix</a> <span style="color:var(--border)">/</span> <a href="/fix">Fix Guides</a> <span style="color:var(--border)">/</span> <a href="/python">PyPI</a> <span style="color:var(--border)">/</span> <a href="/fix/pypi/flask">flask</a> <span style="color:var(--border)">/</span> <span style="color:var(--text)">2.x to 3.x Migration</span></div>
+<h1>Flask 2.x to 3.x Migration Guide &mdash; Breaking Changes</h1>
+<p class="meta">5 min read &middot; Updated April 2026 &middot; Safe version: Flask 3.0.3+ with Werkzeug 3.0.6+</p>
+
+<div style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.3);border-left:3px solid var(--green);border-radius:8px;padding:14px 18px;margin:0 0 24px">
+<div style="font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Safe versions</div>
+<p style="margin:0;font-size:13px;color:var(--text)"><strong>Flask 3.0.3+</strong> with <strong>Werkzeug 3.0.6+</strong> &mdash; always update both together. Flask 3.0.3 requires Werkzeug 3.0.3 minimum.</p>
+</div>
+
+<h2>Why upgrade from Flask 2.x?</h2>
+<p>Flask 2.3.1 and below have CVE-2023-30861 (session cookie leakage). Flask 2.3.2 patches it but Werkzeug 2.x has its own DoS CVEs (CVE-2024-49767, CVE-2023-46136). The safest path is upgrading both to 3.x.</p>
+
+<h2>Breaking changes — Flask 2.x to 3.x</h2>
+
+<h3>1. Python 3.8 minimum</h3>
+<p>Flask 3.x requires Python 3.8 or later. Check your Python version first.</p>
+<pre>python --version  # Must be 3.8+</pre>
+
+<h3>2. Removed deprecated Markup auto-escape</h3>
+<pre>
+# Flask 2.x — worked but deprecated
+from markupsafe import Markup
+value = Markup("&lt;b&gt;safe&lt;/b&gt;")
+
+# Flask 3.x — same, but old import paths removed
+# Use markupsafe directly, not flask.Markup</pre>
+
+<h3>3. Before/after request handlers — return value change</h3>
+<pre>
+# Flask 2.x
+@app.before_request
+def before():
+    pass  # return None was implicit
+
+# Flask 3.x — explicit None if not returning response
+@app.before_request
+def before():
+    if not authenticated:
+        return redirect('/login')
+    return None  # explicit</pre>
+
+<h3>4. CLI commands — click 8.0+ required</h3>
+<p>Flask 3.x requires click 8.0 or later. Update click alongside Flask.</p>
+<pre>pip install flask --upgrade click --upgrade</pre>
+
+<h3>5. Werkzeug must be updated together</h3>
+<div class="warning-box"><div class="label">Always update together</div>
+<p style="margin:0;font-size:12px">Never update Flask without also updating Werkzeug. Mismatched versions cause import errors and unexpected behaviour.</p>
+</div>
+<pre>
+# Always update both at once
+pip install flask --upgrade werkzeug --upgrade
+
+# Pin in requirements.txt
+flask>=3.0.3
+werkzeug>=3.0.6</pre>
+
+<h2>Common errors when upgrading</h2>
+
+<h3>ImportError: cannot import name 'Markup' from 'flask'</h3>
+<pre>ImportError: cannot import name 'Markup' from 'flask'</pre>
+<p>Fix: import Markup from markupsafe directly.</p>
+<pre>
+# Before
+from flask import Markup
+
+# After
+from markupsafe import Markup</pre>
+
+<h3>RuntimeError: The current Flask app is not registered</h3>
+<pre>RuntimeError: Working outside of application context.</pre>
+<p>This error exists in both 2.x and 3.x but is more strictly enforced in 3.x. Always use app.app_context() when accessing app outside of request context.</p>
+<pre>
+with app.app_context():
+    # your code here
+    db.session.query(User).all()</pre>
+
+<h3>Werkzeug version mismatch</h3>
+<pre>ImportError: cannot import name 'url_quote' from 'werkzeug.urls'</pre>
+<p>Caused by Flask 3.x installed with old Werkzeug 2.x. Fix: update Werkzeug.</p>
+<pre>pip install werkzeug --upgrade</pre>
+
+<h2>Version compatibility table</h2>
+<table style="width:100%;border-collapse:collapse;font-size:12px;margin:12px 0">
+<thead><tr style="border-bottom:2px solid var(--border)">
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Flask</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Werkzeug</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Python</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Status</th>
+</tr></thead><tbody>
+<tr style="border-bottom:1px solid var(--border);background:rgba(34,197,94,.05)">
+<td style="padding:8px 12px;font-weight:700">3.0.3+</td><td style="padding:8px 12px">3.0.6+</td><td style="padding:8px 12px">3.8+</td>
+<td style="padding:8px 12px"><span style="background:rgba(34,197,94,.2);color:var(--green);border:1px solid var(--green);font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px">SAFE</span></td>
+</tr>
+<tr style="border-bottom:1px solid var(--border)">
+<td style="padding:8px 12px;font-weight:700">2.3.2</td><td style="padding:8px 12px">2.3.x</td><td style="padding:8px 12px">3.7+</td>
+<td style="padding:8px 12px"><span style="background:rgba(249,115,22,.2);color:var(--orange);border:1px solid var(--orange);font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px">OUTDATED</span></td>
+</tr>
+<tr>
+<td style="padding:8px 12px;font-weight:700">2.3.1 and below</td><td style="padding:8px 12px">any</td><td style="padding:8px 12px">any</td>
+<td style="padding:8px 12px"><span style="background:rgba(239,68,68,.2);color:var(--red);border:1px solid var(--red);font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px">VULNERABLE</span></td>
+</tr>
+</tbody></table>
+
+<div style="margin:40px 0"><h2>Related</h2><div class="related-grid">
+<div class="related-card"><a href="/fix/pypi/flask">Flask CVE History</a><p>All known vulnerabilities</p></div>
+<div class="related-card"><a href="/fix/pypi/werkzeug">Fix Werkzeug</a><p>Flask's WSGI toolkit CVEs</p></div>
+<div class="related-card"><a href="/fix/pypi/fastapi/migrate">FastAPI Migration</a><p>fastapi version upgrade guide</p></div>
+<div class="related-card"><a href="/fix/npm/multer/migrate">multer Migration</a><p>npm migration example</p></div>
+</div></div>
+<div class="cta-box">
+<p>Scan your full manifest — PackageFix checks all 7 ecosystems against OSV and CISA KEV.</p>
+<a href="/" class="cta-btn">Scan with PackageFix &rarr;</a>
+<p style="margin-top:12px;font-size:11px;color:var(--muted)">Free &middot; No signup &middot; No CLI required</p>
+</div>
+<p style="font-size:11px;color:var(--muted);border-top:1px solid var(--border);padding-top:12px;margin-top:32px">Vulnerability data sourced from the OSV database and public package registries. Always test dependency updates in a staging environment before deploying to production. PackageFix provides these tools for informational purposes only and cannot guarantee that pinned versions are free from undiscovered vulnerabilities.</p>
+</main>
+<footer class="site-footer">
+<p>PackageFix &middot; <a href="/">packagefix.dev</a> &middot; MIT Licensed</p>
+<p style="margin-top:6px">Vulnerability data: <a href="https://osv.dev">OSV</a> &middot; <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog">CISA KEV</a></p>
+</footer></body></html>
