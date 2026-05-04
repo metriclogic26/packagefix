@@ -272,6 +272,17 @@ with app.app_context():
 <div class="related-card"><a href="/fix/pypi/fastapi/migrate">FastAPI Migration</a><p>fastapi version upgrade guide</p></div>
 <div class="related-card"><a href="/fix/npm/multer/migrate">multer Migration</a><p>npm migration example</p></div>
 </div></div>
+<h2>After updating - verify your fix</h2><p>Run these commands to confirm the update worked:</p><pre>
+# npm projects
+npm list multer
+npm list node-fetch
+
+# Python projects
+pip show fastapi | grep Version
+pip show flask | grep Version
+
+# Scan your full manifest for other vulnerabilities
+# Paste your requirements.txt or package.json into PackageFix</pre><p>Paste your full manifest into PackageFix to check all packages at once.</p>
 <div class="cta-box">
 <p>Scan your full manifest — PackageFix checks all 7 ecosystems against OSV and CISA KEV.</p>
 <a href="/" class="cta-btn">Scan with PackageFix &rarr;</a>
