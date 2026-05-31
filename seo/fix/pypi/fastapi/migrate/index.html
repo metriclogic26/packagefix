@@ -285,6 +285,44 @@ pip show flask | grep Version
 
 # Scan your full manifest for other vulnerabilities
 # Paste your requirements.txt or package.json into PackageFix</pre><p>Paste your full manifest into PackageFix to check all packages at once.</p>
+
+<h2>FastAPI starlette version requirements — full compatibility table</h2>
+<table style="width:100%;border-collapse:collapse;font-size:12px;margin:12px 0">
+<thead><tr style="border-bottom:2px solid var(--border)">
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">FastAPI</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">starlette required</th>
+<th style="text-align:left;padding:8px 12px;color:var(--muted);font-size:10px;text-transform:uppercase">Status</th>
+</tr></thead><tbody>
+<tr style="border-bottom:1px solid var(--border);background:rgba(34,197,94,.05)">
+<td style="padding:8px 12px;font-weight:700">0.115.x (latest)</td>
+<td style="padding:8px 12px">starlette&gt;=0.40.0</td>
+<td style="padding:8px 12px"><span style="background:rgba(34,197,94,.2);color:var(--green);border:1px solid var(--grn);font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px">SAFE</span></td>
+</tr>
+<tr style="border-bottom:1px solid var(--border)">
+<td style="padding:8px 12px">0.111.0</td>
+<td style="padding:8px 12px">starlette&gt;=0.37.2,&lt;0.38.0</td>
+<td style="padding:8px 12px"><span style="background:rgba(239,68,68,.2);color:var(--red);border:1px solid var(--red);font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px">VULNERABLE</span></td>
+</tr>
+<tr style="border-bottom:1px solid var(--border)">
+<td style="padding:8px 12px">0.110.0</td>
+<td style="padding:8px 12px">starlette&gt;=0.36.3,&lt;0.37.0</td>
+<td style="padding:8px 12px"><span style="background:rgba(249,115,22,.2);color:var(--orange);border:1px solid var(--orange);font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px">OUTDATED</span></td>
+</tr>
+<tr style="border-bottom:1px solid var(--border)">
+<td style="padding:8px 12px">0.109.1</td>
+<td style="padding:8px 12px">starlette&gt;=0.35.0,&lt;0.36.0</td>
+<td style="padding:8px 12px"><span style="background:rgba(249,115,22,.2);color:var(--orange);border:1px solid var(--orange);font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px">OUTDATED</span></td>
+</tr>
+<tr>
+<td style="padding:8px 12px">0.104.1</td>
+<td style="padding:8px 12px">starlette&gt;=0.27.0,&lt;0.28.0</td>
+<td style="padding:8px 12px"><span style="background:rgba(239,68,68,.2);color:var(--red);border:1px solid var(--red);font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px">VULNERABLE</span></td>
+</tr>
+</tbody></table>
+<p>If you are on FastAPI 0.109.1 or 0.110.0, upgrade directly to 0.115.x.</p>
+<pre>pip install fastapi --upgrade
+pip show fastapi starlette | grep Version</pre>
+
 <div class="cta-box">
 <p>Scan your full manifest — PackageFix checks all 7 ecosystems against OSV and CISA KEV.</p>
 <a href="/" class="cta-btn">Scan with PackageFix &rarr;</a>
