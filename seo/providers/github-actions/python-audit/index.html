@@ -207,6 +207,80 @@ jobs:
   <div class="label">✓ Manual Scan</div>
   <p style="margin:0">For a quick one-off scan before deployment, paste your manifest into PackageFix — no pipeline setup needed.</p>
 </div>
+
+<h2>Complete GitHub Actions workflow for Python dependency auditing</h2>
+<pre>
+# .github/workflows/python-audit.yml
+name: Python Dependency Audit
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run pip-audit
+        run: |
+          pip install pip-audit
+          pip-audit --requirement requirements.txt</pre>
+
+<h2>Fail only on HIGH and CRITICAL CVEs</h2>
+<p>By default pip-audit fails on any CVE. To fail only on high severity:</p>
+<pre>
+      - name: pip-audit
+        run: |
+          pip install pip-audit
+          pip-audit --requirement requirements.txt --format json > audit.json || true
+          python3 -c "
+import json, sys
+data = json.load(open('audit.json'))
+high = [v for d in data['dependencies']
+        for v in d['vulns']
+        if v.get('fix_versions')]
+if high:
+    for v in high:
+        print(v['id'], v['description'][:80])
+    sys.exit(1)
+print('No fixable vulnerabilities found')
+"</pre>
+
+<h2>Cache pip between runs</h2>
+<pre>
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: pip-${{ hashFiles('requirements.txt') }}
+
+      - name: Install and audit
+        run: |
+          pip install -r requirements.txt pip-audit
+          pip-audit --requirement requirements.txt</pre>
+
+<h2>Common issues</h2>
+<h3>pip-audit flags transitive dependencies</h3>
+<p>pip-audit scans your full installed environment including transitive deps.
+Use <code>--ignore-vuln GHSA-xxxx-xxxx-xxxx</code> for known false positives
+while waiting for upstream fixes.</p>
+
+<h3>pip-audit is slow</h3>
+<p>Use the cache step above. Also consider running audit only on push to main,
+not on every pull request commit, to save CI minutes.</p>
+
 <div class="cta-box">
   <p>Scan your dependencies now — paste your manifest, get a fixed version back in seconds.</p>
   <a href="https://packagefix.dev" class="cta-btn">Open PackageFix →</a>
